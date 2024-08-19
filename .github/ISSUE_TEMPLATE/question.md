@@ -4,7 +4,6 @@ about: Ask something about the functionality of the software
 title: ''
 labels: ''
 assignees: ''
-
 ---
 
 **What is your question?**

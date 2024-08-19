@@ -4,7 +4,6 @@ about: Create a report to help us improve
 title: ''
 labels: ''
 assignees: ''
-
 ---
 
 **Describe the bug**
@@ -19,9 +18,9 @@ A clear and concise description of what you expected to happen.
 **Screenshots or files**
 If applicable, add screenshots/files to help explain your problem.
 
-**machine/OS:
- - OS: [e.g. iOS]
+\*\*machine/OS:
 
+- OS: [e.g. iOS]
 
 **Additional context**
 Add any other context about the problem here.

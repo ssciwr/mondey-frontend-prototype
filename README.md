@@ -20,7 +20,7 @@ To start a dev server:
 
 ## Notes
 
-Commands used to generate most of the initial empty app: 
+Commands used to generate most of the initial empty app:
 
 ```bash
 pnpm create svelte@latest

@@ -4,12 +4,10 @@ about: A meat-feature is a feature that decays naturally into multiple individua
 title: ''
 labels: ''
 assignees: ''
-
 ---
 
 **What's the overarching idea and why is this additional feature necessary?**
 
 **Describe into what individual steps/features your suggestion decays, and outline their basic ideas in one sentence each**
-
 
 **Additional context**
