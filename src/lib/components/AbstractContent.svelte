@@ -44,9 +44,6 @@
 	$: lastpage = '/';
 	$: nextpage = '/';
 	$: infopage = '/';
-
-	// actual content: this is a callback function that creates a new page element
-	export let content = null;
 </script>
 
 <!-- Top element-->
@@ -70,24 +67,23 @@
 </Navbar>
 
 <!--Content goes here-->
-{#if content}
-	<svelte:component this={content} />
-{/if}
+<slot></slot>
+<!-- FIXME: check slots again to make sure I use it correctly-->
 
 {#if showBottomNavbar}
 	<!-- bottom element: back, info and next buttons-->
 	<BottomNav position="absolute" classInner="grid-cols-3">
-		<BottomNavItem href={lastpage} btnName="Back" btnClass={basicColorBehavior}>
+		<BottomNavItem href={lastpage} btnName="Zurück" btnClass={basicColorBehavior}>
 			<CaretLeftSolid class={bottomBarBtnClass} />
 			<Tooltip arrow={false}>Zur letzten Seite</Tooltip>
 		</BottomNavItem>
-		<BottomNavItem href={infopage} btnName="Help" btnClass={basicColorBehavior}>
+		<BottomNavItem href={infopage} btnName="Hilfe" btnClass={basicColorBehavior}>
 			<LightbulbSolid class={bottomBarBtnClass} />
 			<Tooltip arrow={false}>Hilfe</Tooltip>
 		</BottomNavItem>
-		<BottomNavItem href={nextpage} btnName="Next" btnClass={basicColorBehavior}>
+		<BottomNavItem href={nextpage} btnName="Weiter" btnClass={basicColorBehavior}>
 			<CaretRightSolid class={bottomBarBtnClass} />
-			<Tooltip arrow={false}>Zur naechsten Seite</Tooltip>
+			<Tooltip arrow={false}>Zur nächsten Seite</Tooltip>
 		</BottomNavItem>
 	</BottomNav>
 {/if}
