@@ -1,5 +1,5 @@
-import flowbitePlugin from 'flowbite/plugin';
 import typographyPlugin from '@tailwindcss/typography';
+import flowbitePlugin from 'flowbite/plugin';
 
 import type { Config } from 'tailwindcss';
 
@@ -8,7 +8,7 @@ export default {
 		'./src/**/*.{html,js,svelte,ts}',
 		'./node_modules/flowbite-svelte/**/*.{html,js,svelte,ts}'
 	],
-	darkMode: 'selector',
+	darkMode: 'class',
 	theme: {
 		extend: {
 			colors: {
