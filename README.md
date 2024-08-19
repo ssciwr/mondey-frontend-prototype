@@ -2,8 +2,9 @@
 
 Initial frontend prototyping for the MONDEY project.
 
-The website is automatically built and deployed to [ssciwr.github.io/mondey-frontend-prototype](https://ssciwr.github.io/mondey-frontend-prototype) on every push
-to the main branch using this [Github Action](.github/workflows/deploy.yml).
+The static website is automatically built and deployed to
+[ssciwr.github.io/mondey-frontend-prototype](https://ssciwr.github.io/mondey-frontend-prototype)
+on every push to the main branch using this [Github Action](.github/workflows/deploy.yml).
 
 ## Local development
 
@@ -13,9 +14,9 @@ Initial setup to edit the website locally:
 - clone the repo
 - install node dependencies, e.g. `pnpm install`
 
-To start a dev server and open the website in browser:
+To start a dev server:
 
-- `pnpm run dev -- --open`
+- `pnpm run dev`
 
 ## Notes
 
