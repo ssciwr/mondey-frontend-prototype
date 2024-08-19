@@ -22,6 +22,9 @@
 	import logo_dark from '../assets/mondey_dark.svg';
 	import logo_light from '../assets/mondey_light.svg';
 
+	// variables
+	export let showBottomNavbar = true;
+
 	// button stylings
 	export const basicBtnForm = 'rounded-lg text-xl p-2';
 
@@ -35,9 +38,9 @@
 
 	// styling for the nav
 	const navULclass =
-		'flex flex-col p-4 mt-4 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:text-lg md:font-medium';
+		'flex flex-col pl-4 mt-4 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:text-lg md:font-medium';
 
-    // variables for communication upon hitting the page
+	// variables for communication upon hitting the page
 	// FIXME: these are placehorlders and must later be changed using contexts or other better mechanisms for inter component comunication
 	$: lastpage = '/';
 	$: nextpage = '/';
@@ -64,18 +67,20 @@
 	</NavUl>
 </Navbar>
 
-<!-- bottom element: back, info and next buttons-->
-<BottomNav position="absolute" navType="application" classInner="grid-cols-3">
-	<BottomNavItem href={lastpage} appBtnPosition="left" btnName="Back" btnClass={topBarBtnClass}>
-		<CaretLeftSolid class={bottomBarBtnClass} />
-		<Tooltip arrow={false}>Zur letzten Seite</Tooltip>
-	</BottomNavItem>
-	<BottomNavItem href={infopage} appBtnPosition="middle" btnName="Help" btnClass={topBarBtnClass}>
-		<LightbulbSolid class={bottomBarBtnClass} />
-		<Tooltip arrow={false}>Hilfe</Tooltip>
-	</BottomNavItem>
-	<BottomNavItem href={nextpage} appBtnPosition="right" btnName="Next" btnClass={topBarBtnClass}>
-		<CaretRightSolid class={bottomBarBtnClass} />
-		<Tooltip arrow={false}>Zur naechsten Seite</Tooltip>
-	</BottomNavItem>
-</BottomNav>
+{#if showBottomNavbar}
+	<!-- bottom element: back, info and next buttons-->
+	<BottomNav position="absolute" classInner="grid-cols-3">
+		<BottomNavItem href={lastpage} appBtnPosition="left" btnName="Back" btnClass={topBarBtnClass}>
+			<CaretLeftSolid class={bottomBarBtnClass} />
+			<Tooltip arrow={false}>Zur letzten Seite</Tooltip>
+		</BottomNavItem>
+		<BottomNavItem href={infopage} appBtnPosition="middle" btnName="Help" btnClass={topBarBtnClass}>
+			<LightbulbSolid class={bottomBarBtnClass} />
+			<Tooltip arrow={false}>Hilfe</Tooltip>
+		</BottomNavItem>
+		<BottomNavItem href={nextpage} appBtnPosition="right" btnName="Next" btnClass={topBarBtnClass}>
+			<CaretRightSolid class={bottomBarBtnClass} />
+			<Tooltip arrow={false}>Zur naechsten Seite</Tooltip>
+		</BottomNavItem>
+	</BottomNav>
+{/if}
