@@ -22,8 +22,14 @@
 	import logo_dark from '../assets/mondey_dark.svg';
 	import logo_light from '../assets/mondey_light.svg';
 
-	// variables
+	// variables for showing or hiding elements
 	export let showBottomNavbar = true;
+
+	// variables for communication upon hitting the page
+	// FIXME: these are placehorlders and must later be changed using contexts or other better mechanisms for inter component comunication
+	export let lastpage = '/';
+	export let nextpage = '/';
+	export let infopage = '/';
 
 	// button stylings
 	export const basicBtnForm = 'rounded-lg text-xl p-2';
@@ -38,12 +44,6 @@
 	// styling for the nav
 	const navULclass =
 		'flex flex-col p-4 mt-4 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:text-lg md:font-medium';
-
-	// variables for communication upon hitting the page
-	// FIXME: these are placehorlders and must later be changed using contexts or other better mechanisms for inter component comunication
-	$: lastpage = '/';
-	$: nextpage = '/';
-	$: infopage = '/';
 </script>
 
 <!-- Top element-->
@@ -68,7 +68,7 @@
 
 <!--Content goes here-->
 <slot></slot>
-<!-- FIXME: check slots again to make sure I use it correctly-->
+<!-- FIXME: check slots again to make sure I use them correctly-->
 
 {#if showBottomNavbar}
 	<!-- bottom element: back, info and next buttons-->
