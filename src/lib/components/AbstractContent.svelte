@@ -28,23 +28,25 @@
 	// button stylings
 	export const basicBtnForm = 'rounded-lg text-xl p-2';
 
-	export const basicBtnColor =
-		'text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700';
+	export const basicColorBehavior =
+		'text-gray-500 dark:text-gray-400 hover:text-primary-800 dark:hover:text-primary-500 group-hover:text-primary-800 dark:group-hover:text-primary-500';
 
-	export const topBarBtnClass = basicBtnColor + basicBtnForm;
+	export const topBarBtnClass = basicColorBehavior + basicBtnForm;
 
-	export const bottomBarBtnClass =
-		'w-8 h-8 mb-1 group-hover:text-primary-800 dark:group-hover:text-primary-500' + basicBtnColor;
+	export const bottomBarBtnClass = 'w-8 h-8 mb-1' + basicColorBehavior;
 
 	// styling for the nav
 	const navULclass =
-		'flex flex-col pl-4 mt-4 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:text-lg md:font-medium';
+		'flex flex-col p-4 mt-4 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:text-lg md:font-medium';
 
 	// variables for communication upon hitting the page
 	// FIXME: these are placehorlders and must later be changed using contexts or other better mechanisms for inter component comunication
 	$: lastpage = '/';
 	$: nextpage = '/';
 	$: infopage = '/';
+
+	// actual content: this is a callback function that creates a new page element
+	export let content = null;
 </script>
 
 <!-- Top element-->
@@ -67,18 +69,23 @@
 	</NavUl>
 </Navbar>
 
+<!--Content goes here-->
+{#if content}
+	<svelte:component this={content} />
+{/if}
+
 {#if showBottomNavbar}
 	<!-- bottom element: back, info and next buttons-->
 	<BottomNav position="absolute" classInner="grid-cols-3">
-		<BottomNavItem href={lastpage} appBtnPosition="left" btnName="Back" btnClass={topBarBtnClass}>
+		<BottomNavItem href={lastpage} btnName="Back" btnClass={basicColorBehavior}>
 			<CaretLeftSolid class={bottomBarBtnClass} />
 			<Tooltip arrow={false}>Zur letzten Seite</Tooltip>
 		</BottomNavItem>
-		<BottomNavItem href={infopage} appBtnPosition="middle" btnName="Help" btnClass={topBarBtnClass}>
+		<BottomNavItem href={infopage} btnName="Help" btnClass={basicColorBehavior}>
 			<LightbulbSolid class={bottomBarBtnClass} />
 			<Tooltip arrow={false}>Hilfe</Tooltip>
 		</BottomNavItem>
-		<BottomNavItem href={nextpage} appBtnPosition="right" btnName="Next" btnClass={topBarBtnClass}>
+		<BottomNavItem href={nextpage} btnName="Next" btnClass={basicColorBehavior}>
 			<CaretRightSolid class={bottomBarBtnClass} />
 			<Tooltip arrow={false}>Zur naechsten Seite</Tooltip>
 		</BottomNavItem>
