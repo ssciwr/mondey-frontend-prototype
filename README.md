@@ -20,16 +20,12 @@ To start a dev server:
 
 ## Notes
 
-Commands used to generate most of the first commit:
+Commands used to generate most of the initial empty app: 
 
 ```bash
 pnpm create svelte@latest
 pnpm i -D @sveltejs/adapter-static
-```
-
-Commands used to add flowbite-svelte UI library:
-
-```bash
 npx svelte-add@latest tailwindcss
 pnpm i -D flowbite-svelte flowbite
+pnpm i -D flowbite-svelte-icons
 ```
