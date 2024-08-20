@@ -7,11 +7,13 @@
 	const paragraphStyle = 'mb-3 font-normal text-gray-700 dark:text-gray-400 leading-tight';
 	const arrowStyle = 'ms-2 h-6 w-6 text-white';
 	const buttonStyle = 'w-fit';
+	const galleryStyle = 'grid-cols-2 gap-y-12';
+	const cardStyle = 'p-6 m-4 w-full';
 </script>
 
 <!-- This is a dummy landing page that is only there to check that the AbstractComponent works as it should-->
-<Gallery class="grid-cols-2 gap-4 p-4">
-	<Card>
+<Gallery class={galleryStyle}>
+	<Card class={cardStyle}>
 		<h5 class={headerStyle}>Was ist Mondey?</h5>
 		<p class={paragraphStyle}>
 			<i>Mondey</i> ist ein wissentschaftlich geprüftes Programm zure Dokumentation der Entwicklung von
@@ -20,7 +22,7 @@
 		<Button class={buttonStyle}>Mehr Info <ArrowRightOutline class={arrowStyle} /></Button>
 	</Card>
 
-	<Card>
+	<Card class={cardStyle}>
 		<h5 class={headerStyle}>Wozu ist Mondey gut?</h5>
 		<p class={paragraphStyle}>
 			Anhand ihrer Bewertungen der Fähigkeiten des Kindes erhalten sie Feedback zum
@@ -30,7 +32,7 @@
 		<Button class={buttonStyle}>Mehr Info <ArrowRightOutline class={arrowStyle} /></Button>
 	</Card>
 
-	<Card>
+	<Card class={cardStyle}>
 		<h5 class={headerStyle}>Was umfasst Mondey?</h5>
 		<p class={paragraphStyle}>
 			<i>Mondey</i> umfasst unterschiedliche Entwicklungsbereiche wie von Kindern im Alter von 0 bis
@@ -40,7 +42,7 @@
 		<Button class={buttonStyle}>Mehr Info <ArrowRightOutline class={arrowStyle} /></Button>
 	</Card>
 
-	<Card>
+	<Card class={cardStyle}>
 		<h5 class={headerStyle}>Wie funktioniert Mondey?</h5>
 		<p class={paragraphStyle}>
 			Sie bewerten wie gut das Kind bestimmte Alltagshandlungen durchführen kann mit Hilfe einer
@@ -49,7 +51,7 @@
 		<Button class={buttonStyle}>Mehr Info <ArrowRightOutline class={arrowStyle} /></Button>
 	</Card>
 
-	<Card>
+	<Card class={cardStyle}>
 		<h5 class={headerStyle}>Wo fange ich an?</h5>
 		<p class={paragraphStyle}>
 			Um zu beginnen, müssen sie sich registrieren und ein Profil für ihr Kind anlegen.

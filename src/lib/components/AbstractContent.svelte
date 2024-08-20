@@ -45,7 +45,7 @@
 	const navULclass =
 		'flex flex-col p-4 mt-4 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:text-lg md:font-medium';
 
-	const contentContainerClass = 'content-container mx-auto max-w-6xl p-4';
+	const contentContainerClass = 'mx-auto max-w-6xl p-4';
 </script>
 
 <!-- Top element-->
