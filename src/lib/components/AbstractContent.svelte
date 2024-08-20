@@ -26,24 +26,26 @@
 	export let showBottomNavbar = true;
 
 	// variables for communication upon hitting the page
-	// FIXME: these are placehorlders and must later be changed using contexts or other better mechanisms for inter component comunication
+	// FIXME: these are placeholders and must later be changed using contexts or other better mechanisms for inter component comunication
 	export let lastpage = '/';
 	export let nextpage = '/';
 	export let infopage = '/';
 
 	// button stylings
-	export const basicBtnForm = 'rounded-lg text-xl p-2';
+	const basicBtnForm = 'rounded-lg text-xl p-2';
 
-	export const basicColorBehavior =
+	const basicColorBehavior =
 		'text-gray-500 dark:text-gray-400 hover:text-primary-800 dark:hover:text-primary-500 group-hover:text-primary-800 dark:group-hover:text-primary-500';
 
-	export const topBarBtnClass = basicColorBehavior + basicBtnForm;
+	const topBarBtnClass = basicColorBehavior + basicBtnForm;
 
-	export const bottomBarBtnClass = 'w-8 h-8 mb-1' + basicColorBehavior;
+	const bottomBarBtnClass = 'w-8 h-8 mb-1' + basicColorBehavior;
 
 	// styling for the nav
 	const navULclass =
 		'flex flex-col p-4 mt-4 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:text-lg md:font-medium';
+
+	const contentContainerClass = 'content-container mx-auto max-w-6xl p-4';
 </script>
 
 <!-- Top element-->
@@ -67,8 +69,9 @@
 </Navbar>
 
 <!--Content goes here-->
-<slot></slot>
-<!-- FIXME: check slots again to make sure I use them correctly-->
+<div class={contentContainerClass}>
+	<slot></slot>
+</div>
 
 {#if showBottomNavbar}
 	<!-- bottom element: back, info and next buttons-->

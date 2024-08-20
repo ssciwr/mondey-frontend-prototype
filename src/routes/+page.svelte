@@ -1,6 +1,8 @@
 <script>
-import AbstractContent from "$lib/components/AbstractContent.svelte";
+	import AbstractContent from '$lib/components/AbstractContent.svelte';
+	import Frontpage from '$lib/components/Frontpage.svelte';
 </script>
 
-
-<AbstractContent />
+<AbstractContent showBottomNavbar={false}>
+	<Frontpage />
+</AbstractContent>
