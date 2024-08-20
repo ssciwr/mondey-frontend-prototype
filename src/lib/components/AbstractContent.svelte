@@ -59,7 +59,7 @@
 	const contentContainerStyle = 'mx-auto max-w-6xl p-4';
 </script>
 
-<!-- Top element-->
+<!-- Top element: basic navigation-->
 <Navbar>
 	<NavBrand href="/">
 		<img src={logo_light} class="block h-16 dark:hidden" alt="MONDEY Logo" />
@@ -84,7 +84,7 @@
 	</div>
 </Navbar>
 
-<!--Content goes here-->
+<!--Page content goes here-->
 <div class={contentContainerStyle}>
 	<slot></slot>
 </div>
@@ -92,15 +92,15 @@
 {#if showBottomNavbar}
 	<!-- bottom element: back, info and next buttons-->
 	<BottomNav position="absolute" classInner={bottomNavStyle.bottomNavStyleInner}>
-		<BottomNavItem href={lastpage} btnName="Zurück" btnClass={bottomNavStyle.basicColorBehavior}>
+		<BottomNavItem href={lastpage} btnName="Zurück" btnClass={basicStyle.basicColorBehavior}>
 			<CaretLeftSolid class={bottomNavStyle.bottomBarBtnStyle} />
 			<Tooltip arrow={false}>Zur letzten Seite</Tooltip>
 		</BottomNavItem>
-		<BottomNavItem href={infopage} btnName="Hilfe" btnClass={bottomNavStyle.basicColorBehavior}>
+		<BottomNavItem href={infopage} btnName="Hilfe" btnClass={basicStyle.basicColorBehavior}>
 			<LightbulbSolid class={bottomNavStyle.bottomBarBtnStyle} />
 			<Tooltip arrow={false}>Hilfe</Tooltip>
 		</BottomNavItem>
-		<BottomNavItem href={nextpage} btnName="Weiter" btnClass={bottomNavStyle.basicColorBehavior}>
+		<BottomNavItem href={nextpage} btnName="Weiter" btnClass={basicStyle.basicColorBehavior}>
 			<CaretRightSolid class={bottomNavStyle.bottomBarBtnStyle} />
 			<Tooltip arrow={false}>Zur nächsten Seite</Tooltip>
 		</BottomNavItem>
