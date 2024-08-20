@@ -1,7 +1,7 @@
 <script>
 	import AbstractContent from '$lib/components/AbstractContent.svelte';
 
-	import Dropdown from '$lib/components/Dropdown.svelte';
+	import DummyDropdown from '$lib/components/DummpyDropdown.svelte';
 
 	const defaultOptions = ['gar nicht', 'ansatzweise', 'weitgehend', 'zuverlässig'];
 
@@ -29,5 +29,5 @@
 </script>
 
 <AbstractContent showBottomNavbar={true}>
-	<Dropdown />
+	<DummyDropdown />
 </AbstractContent>
