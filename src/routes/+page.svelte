@@ -1,16 +1,17 @@
 <script>
+	import logo_dark from '$lib/assets/mondey_dark.svg';
+	import logo_light from '$lib/assets/mondey_light.svg';
+	import AbstractDropdown from '$lib/components/AbstractDropdown.svelte';
 	import {
-		P,
 		Banner,
+		DarkMode,
 		Navbar,
 		NavBrand,
+		NavHamburger,
 		NavLi,
 		NavUl,
-		NavHamburger,
-		DarkMode
+		P
 	} from 'flowbite-svelte';
-	import logo_light from '$lib/assets/mondey_light.svg';
-	import logo_dark from '$lib/assets/mondey_dark.svg';
 </script>
 
 <Banner><P>This is a work-in-progress prototype frontend for the MONDEY website</P></Banner>
@@ -29,3 +30,7 @@
 	<DarkMode />
 </Navbar>
 <div class="flex flex-col items-center justify-center"></div>
+
+<div>
+	<AbstractDropdown></AbstractDropdown>
+</div>
