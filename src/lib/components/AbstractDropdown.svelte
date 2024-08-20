@@ -1,46 +1,28 @@
 <script>
-	import { Button, Dropdown, DropdownDivider, DropdownItem } from 'flowbite-svelte';
-	import { ChevronDownOutline } from 'flowbite-svelte-icons';
+	// @ts-nocheck
+	import { Label, Select, Tooltip } from 'flowbite-svelte';
+	import { LightbulbSolid } from 'flowbite-svelte-icons';
 
-	export class DropdownData {
-		constructor(items, name) {
-			this.items = items;
-			this.name = name;
-			this.selected = false;
-		}
-	}
-
-	export let header = 'dummy dropdown data';
-	export const defaultOptions = ['gar nicht', 'ansatzweise', 'weitgehend', 'zuverlässig'];
-
-	export let dropdownData = [
-		new DropdownData(defaultOptions, 'standing up'),
-		new DropdownData(defaultOptions, 'making a mess'),
-		new DropdownData(defaultOptions, 'gripping a pen the right way')
-	];
-
-	const style = {
-        basic: {}, 
-		buttonstyle: {
-			button: ,
-			icon: ''
-		},
-		dropdownstyle: {
-			item: '',
-			dropdown: ''
-		}
-	};
+	/**
+	 * @type {any[]}
+	 */
+	// @ts-ignore
+	export let dropdownData = [];
+	export let heading = 'dummy dropdown data';
+	const headerStyle = 'mb-2 text-2xl font-bold tracking-tight text-gray-700 dark:text-gray-400';
+	const paragraphStyle = 'mb-3 font-normal text-gray-700 dark:text-gray-400 leading-tight';
+	const symbolStyle = 'h-6 w-6 text-gray-700 dark:text-gray-400';
+	const labelStyle = 'mb-2 text-lg text-gray-700 dark:text-gray-400';
 </script>
 
-<div>
-	<h1>{header}</h1>
+<div class="items-center space-x-4 rtl:space-x-reverse">
+	<h1 class={headerStyle}>{heading}</h1>
 	{#each dropdownData as dropdown}
-		<Button class={style.buttonstyle.button}>{dropdown.name} <ChevronDownOutline /></Button>
-		<Dropdown>
-			{#each dropdown.items as item}
-				<DropdownItem>{item}</DropdownItem>
-				<DropdownDivider />
-			{/each}
-		</Dropdown>
+		<div class={paragraphStyle}>
+			<Label for="select-lg" class={labelStyle}>{dropdown.name}</Label>
+			<LightbulbSolid class={symbolStyle}></LightbulbSolid>
+			<Select size="lg" class="mb-6" items={dropdown.items} bind:value={dropdown.selected} />
+			<Tooltip>{dropdown.about}</Tooltip>
+		</div>
 	{/each}
 </div>

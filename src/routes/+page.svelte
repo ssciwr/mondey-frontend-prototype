@@ -1,36 +1,33 @@
 <script>
-	import logo_dark from '$lib/assets/mondey_dark.svg';
-	import logo_light from '$lib/assets/mondey_light.svg';
-	import AbstractDropdown from '$lib/components/AbstractDropdown.svelte';
-	import {
-		Banner,
-		DarkMode,
-		Navbar,
-		NavBrand,
-		NavHamburger,
-		NavLi,
-		NavUl,
-		P
-	} from 'flowbite-svelte';
+	import AbstractContent from '$lib/components/AbstractContent.svelte';
+
+	import Dropdown from '$lib/components/Dropdown.svelte';
+
+	const defaultOptions = ['gar nicht', 'ansatzweise', 'weitgehend', 'zuverlässig'];
+
+	const dropdownData = [
+		{
+			name: 'standing up',
+			items: defaultOptions,
+			tooltip:
+				'How well can the child stand up from sitting or crawling around and how readily is it able to do so'
+		},
+		{
+			name: 'making a mess',
+			items: defaultOptions,
+			tooltip:
+				'This describes how efficiently the child can distribute toys in every single corner of every single room in the house'
+		},
+		{
+			name: 'gripping a pen the right way',
+			items: defaultOptions,
+			tooltip: 'How well can the child hold a pen or pencil and how coordinated can it use it'
+		}
+	];
+
+	const heading = 'some dummy dropdown page';
 </script>
 
-<Banner><P>This is a work-in-progress prototype frontend for the MONDEY website</P></Banner>
-<Navbar>
-	<NavBrand href="/">
-		<img src={logo_light} class="block h-16 dark:hidden" alt="MONDEY Logo" />
-		<img src={logo_dark} class="hidden h-16 dark:block" alt="MONDEY Logo" />
-	</NavBrand>
-	<NavHamburger />
-	<NavUl>
-		<NavLi href="/" active={true}>Home</NavLi>
-		<NavLi href="/">Downloads</NavLi>
-		<NavLi href="/">Aktuelles</NavLi>
-		<NavLi href="/">Kontakt</NavLi>
-	</NavUl>
-	<DarkMode />
-</Navbar>
-<div class="flex flex-col items-center justify-center"></div>
-
-<div>
-	<AbstractDropdown></AbstractDropdown>
-</div>
+<AbstractContent showBottomNavbar={true}>
+	<Dropdown />
+</AbstractContent>
