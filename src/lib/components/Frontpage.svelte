@@ -7,7 +7,7 @@
 	const paragraphStyle = 'mb-3 font-normal text-gray-700 dark:text-gray-400 leading-tight';
 	const arrowStyle = 'ms-2 h-6 w-6 text-white';
 	const buttonStyle = 'w-fit';
-	const galleryStyle = 'grid-cols-2 gap-y-12';
+	const galleryStyle = 'grid-cols-1 md:grid-cols-2 gap-y-12';
 	const cardStyle = 'p-6 m-4 w-full';
 </script>
 

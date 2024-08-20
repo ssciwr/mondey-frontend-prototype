@@ -3,6 +3,6 @@
 	import Frontpage from '$lib/components/Frontpage.svelte';
 </script>
 
-<AbstractContent showBottomNavbar={false}>
+<AbstractContent showBottomNavbar={true}>
 	<Frontpage />
 </AbstractContent>
