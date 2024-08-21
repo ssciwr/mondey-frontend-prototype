@@ -5,7 +5,6 @@
 	import { Avatar, DarkMode, Navbar, NavBrand, NavHamburger, NavLi, NavUl } from 'flowbite-svelte';
 	import { MoonSolid, SunSolid } from 'flowbite-svelte-icons';
 	import '../app.css';
-	// logo
 </script>
 
 <Navbar>
