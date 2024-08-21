@@ -4,5 +4,5 @@
 </script>
 
 <AbstractContent showBottomNavbar={false}>
-	<Frontpage getStarted={'/dummydropdown'} />
+	<Frontpage getStarted={'/firstdropdown'} />
 </AbstractContent>

@@ -28,9 +28,9 @@
 		)
 	];
 
-	const heading = 'some dummy dropdown page';
+	const heading = 'the second dummy dropdown page';
 </script>
 
-<AbstractContent showBottomNavbar={true} lastPage="/" nextPage="/" infoPage="/info">
+<AbstractContent showBottomNavbar={true} lastPage="/firstdropdown" nextPage="/" infoPage="/info">
 	<AbstractDropdown {dropdownData} {heading} />
 </AbstractContent>
