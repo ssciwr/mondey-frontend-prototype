@@ -1,7 +1,7 @@
 <script>
 	import AbstractContent from '$lib/components/AbstractContent.svelte';
-	import AbstractDropdownItem from '$lib/components/AbstractDropdownItem.svelte';
 	import AbstractDataInput from '$lib/components/DataInput/AbstractDataInput.svelte';
+	import AbstractDropdownItem from '$lib/components/DataInput/AbstractDropdownItem.svelte';
 
 	const defaultOptions = ['gar nicht', 'ansatzweise', 'weitgehend', 'zuverlässig'];
 
