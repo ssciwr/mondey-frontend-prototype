@@ -37,6 +37,11 @@
 	const heading = 'the second data selection page';
 </script>
 
-<AbstractContent showBottomNavbar={true} lastPage="/firstdropdown" nextPage="/" infoPage="/info">
+<AbstractContent
+	showBottomNavbar={true}
+	lastpage="/firstdropdown"
+	nextpage="/feedback"
+	infopage="/info"
+>
 	<AbstractDataInput data={dropdownData} {heading} itemComponent={AbstractDropdownItem} />
 </AbstractContent>

@@ -1,8 +1,7 @@
 <script>
 	import CardDisplay from '$lib/components/DataDisplay/CardDisplay.svelte';
 	import { Gallery } from 'flowbite-svelte';
-	export let getStarted = '/';
-	console.log('get started: ', getStarted);
+	export let getStarted = '/firstdropdown';
 
 	export let items = [
 		{
