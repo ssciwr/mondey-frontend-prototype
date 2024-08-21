@@ -11,7 +11,6 @@
 		NavUl,
 		Tooltip
 	} from 'flowbite-svelte';
-
 	import {
 		CaretLeftSolid,
 		CaretRightSolid,
@@ -19,7 +18,7 @@
 		MoonSolid,
 		SunSolid
 	} from 'flowbite-svelte-icons';
-
+	// logo
 	import logo_dark from '../assets/mondey_dark.svg';
 	import logo_light from '../assets/mondey_light.svg';
 
@@ -27,81 +26,94 @@
 	export let showBottomNavbar = true;
 
 	// variables for communication upon hitting the page
+	export let userName = 'Registrieren';
+
 	// FIXME: these are placeholders and must later be changed using contexts or other better mechanisms for inter component comunication
-	export let lastpage = '/';
-	export let nextpage = '/';
-	export let infopage = '/';
+	export function onclickNext() {
+		console.log('Next page');
+	}
 
-	export let name = 'Registrieren';
+	export function onclickLast() {
+		console.log('Last page');
+	}
 
-	const basicStyle = {
-		basicBtnForm: 'rounded-lg text-xl p-2',
-		basicColorBehavior:
-			'text-gray-500 dark:text-gray-400 hover:text-primary-800 dark:hover:text-primary-500 group-hover:text-primary-800 dark:group-hover:text-primary-500'
-	};
-
-	const topNavStyle = {
-		topBarBtnStyle: basicStyle.basicColorBehavior + basicStyle.basicBtnForm,
-		navULStyle:
-			'flex flex-col p-4 mt-4 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:text-lg md:font-medium'
-	};
-
-	const bottomNavStyle = {
-		bottomBarBtnStyle: 'w-8 h-8 mb-1' + basicStyle.basicColorBehavior,
-		bottomNavStyleInner: 'grid-cols-3'
-	};
-
-	const avatar_style = {
-		outer: 'flex items-center space-x-4 rtl:space-x-reverse',
-		avatar: 'flex items-center space-x-4 rtl:space-x-reverse',
-		inner: 'space-y-1' + basicStyle.basicColorBehavior
-	};
-	const contentContainerStyle = 'mx-auto max-w-6xl p-4';
+	export function onclickInfo() {
+		console.log('Info page');
+	}
 </script>
 
 <!-- Top element: basic navigation-->
-<Navbar>
-	<NavBrand href="/">
-		<img src={logo_light} class="block h-16 dark:hidden" alt="MONDEY Logo" />
-		<img src={logo_dark} class="hidden h-16 dark:block" alt="MONDEY Logo" />
-	</NavBrand>
-	<NavHamburger />
-	<NavUl ulClass={topNavStyle.navULStyle}>
-		<NavLi href="/" active={true}>Home</NavLi>
-		<NavLi href="/">Aktuelles</NavLi>
-		<NavLi href="/">Downloads</NavLi>
-		<NavLi href="/">Kontakt</NavLi>
-		<DarkMode class={topNavStyle.topBarBtnStyle}>
-			<MoonSolid slot="darkIcon" />
-			<SunSolid slot="lightIcon" />
-		</DarkMode>
-		<Tooltip arrow={false}>Darkmode ein- oder ausschalten</Tooltip>
-	</NavUl>
-	<div class={avatar_style.outer}>
-		<Avatar class={avatar_style.avatar} rounded border />
-		<div class={avatar_style.inner}>{name}</div>
-		<Tooltip>Registrieren oder einloggen</Tooltip>
+<Navbar class="overflow-x-auto whitespace-nowrap">
+	<div class="flex flex-nowrap items-center space-x-4 rtl:space-x-reverse">
+		<NavBrand href="/">
+			<img src={logo_light} class="block h-16 dark:hidden" alt="MONDEY Logo" />
+			<img src={logo_dark} class="hidden h-16 dark:block" alt="MONDEY Logo" />
+		</NavBrand>
+		<NavHamburger />
+		<NavUl ulClass="flex flex-row space-x-4 rtl:space-x-reverse md:text-lg md:font-medium">
+			<NavLi href="/" active={true}>Home</NavLi>
+			<NavLi href="/">Aktuelles</NavLi>
+			<NavLi href="/">Downloads</NavLi>
+			<NavLi href="/">Kontakt</NavLi>
+			<DarkMode
+				class="rounded-lg p-2 text-xl text-gray-500 hover:text-primary-800 group-hover:text-primary-800 dark:text-gray-400 dark:hover:text-primary-500 dark:group-hover:text-primary-500"
+			>
+				<MoonSolid slot="darkIcon" />
+				<SunSolid slot="lightIcon" />
+			</DarkMode>
+			<Tooltip arrow={false}>Darkmode ein- oder ausschalten</Tooltip>
+		</NavUl>
+		<div class="flex items-center space-x-4 rtl:space-x-reverse">
+			<Avatar
+				class="space-y-1 text-gray-500 hover:text-primary-800 group-hover:text-primary-800 dark:text-gray-400 dark:hover:text-primary-500 dark:group-hover:text-primary-500"
+				rounded
+				border
+			/>
+			<div class="flex items-center space-x-4 rtl:space-x-reverse">{userName}</div>
+			<Tooltip>Registrieren oder einloggen</Tooltip>
+		</div>
 	</div>
 </Navbar>
 
 <!--Page content goes here-->
-<div class={contentContainerStyle}>
+<div class="mx-auto max-w-6xl flex-1 overflow-y-auto p-4 pb-20">
 	<slot></slot>
 </div>
 
 {#if showBottomNavbar}
 	<!-- bottom element: back, info and next buttons-->
-	<BottomNav position="absolute" classInner={bottomNavStyle.bottomNavStyleInner}>
-		<BottomNavItem href={lastpage} btnName="Zurück" btnClass={basicStyle.basicColorBehavior}>
-			<CaretLeftSolid class={bottomNavStyle.bottomBarBtnStyle} />
+	<BottomNav
+		class="fixed bottom-0 left-0 right-0 border-t border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800"
+		classInner="grid-cols-3"
+	>
+		<BottomNavItem
+			btnName="Zurück"
+			btnClass="text-gray-500 dark:text-gray-400 hover:text-primary-800 dark:hover:text-primary-500 group-hover:text-primary-800 dark:group-hover:text-primary-500"
+			on:click={onclickLast}
+		>
+			<CaretLeftSolid
+				class="mb-1 h-8 w-8 text-gray-500 hover:text-primary-800 group-hover:text-primary-800 dark:text-gray-400 dark:hover:text-primary-500 dark:group-hover:text-primary-500"
+			/>
 			<Tooltip arrow={false}>Zur letzten Seite</Tooltip>
 		</BottomNavItem>
-		<BottomNavItem href={infopage} btnName="Hilfe" btnClass={basicStyle.basicColorBehavior}>
-			<LightbulbSolid class={bottomNavStyle.bottomBarBtnStyle} />
+		<BottomNavItem
+			btnName="Hilfe"
+			btnClass="text-gray-500 dark:text-gray-400 hover:text-primary-800 dark:hover:text-primary-500 group-hover:text-primary-800 dark:group-hover:text-primary-500"
+			on:click={onclickLast}
+		>
+			<LightbulbSolid
+				class="mb-1 h-8 w-8 text-gray-500 hover:text-primary-800 group-hover:text-primary-800 dark:text-gray-400 dark:hover:text-primary-500 dark:group-hover:text-primary-500"
+			/>
 			<Tooltip arrow={false}>Hilfe</Tooltip>
 		</BottomNavItem>
-		<BottomNavItem href={nextpage} btnName="Weiter" btnClass={basicStyle.basicColorBehavior}>
-			<CaretRightSolid class={bottomNavStyle.bottomBarBtnStyle} />
+		<BottomNavItem
+			btnName="Weiter"
+			btnClass="text-gray-500 dark:text-gray-400 hover:text-primary-800 dark:hover:text-primary-500 group-hover:text-primary-800 dark:group-hover:text-primary-500"
+			on:click={onclickNext}
+		>
+			<CaretRightSolid
+				class="mb-1 h-8 w-8 text-gray-500 hover:text-primary-800 group-hover:text-primary-800 dark:text-gray-400 dark:hover:text-primary-500 dark:group-hover:text-primary-500"
+			/>
 			<Tooltip arrow={false}>Zur nächsten Seite</Tooltip>
 		</BottomNavItem>
 	</BottomNav>
