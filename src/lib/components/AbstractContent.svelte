@@ -29,16 +29,20 @@
 	export let userName = 'Registrieren';
 
 	// FIXME: these are placeholders and must later be changed using contexts or other better mechanisms for inter component comunication
+	export let lastPage = '/';
+	export let nextPage = '/';
+	export let infoPage = '/';
+
 	export function onclickNext() {
-		console.log('Next page');
+		console.log('Next page', nextPage);
 	}
 
 	export function onclickLast() {
-		console.log('Last page');
+		console.log('Last page', lastPage);
 	}
 
 	export function onclickInfo() {
-		console.log('Info page');
+		console.log('Info page', infoPage);
 	}
 </script>
 
@@ -90,6 +94,7 @@
 			btnName="Zurück"
 			btnClass="text-gray-500 dark:text-gray-400 hover:text-primary-800 dark:hover:text-primary-500 group-hover:text-primary-800 dark:group-hover:text-primary-500"
 			on:click={onclickLast}
+			href={lastPage}
 		>
 			<CaretLeftSolid
 				class="mb-1 h-8 w-8 text-gray-500 hover:text-primary-800 group-hover:text-primary-800 dark:text-gray-400 dark:hover:text-primary-500 dark:group-hover:text-primary-500"
@@ -100,6 +105,7 @@
 			btnName="Hilfe"
 			btnClass="text-gray-500 dark:text-gray-400 hover:text-primary-800 dark:hover:text-primary-500 group-hover:text-primary-800 dark:group-hover:text-primary-500"
 			on:click={onclickLast}
+			href={infoPage}
 		>
 			<LightbulbSolid
 				class="mb-1 h-8 w-8 text-gray-500 hover:text-primary-800 group-hover:text-primary-800 dark:text-gray-400 dark:hover:text-primary-500 dark:group-hover:text-primary-500"
@@ -110,6 +116,7 @@
 			btnName="Weiter"
 			btnClass="text-gray-500 dark:text-gray-400 hover:text-primary-800 dark:hover:text-primary-500 group-hover:text-primary-800 dark:group-hover:text-primary-500"
 			on:click={onclickNext}
+			href={nextPage}
 		>
 			<CaretRightSolid
 				class="mb-1 h-8 w-8 text-gray-500 hover:text-primary-800 group-hover:text-primary-800 dark:text-gray-400 dark:hover:text-primary-500 dark:group-hover:text-primary-500"

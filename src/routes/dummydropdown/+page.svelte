@@ -1,8 +1,8 @@
 <script>
 	import AbstractContent from '$lib/components/AbstractContent.svelte';
+	import DummyDropdown from '$lib/components/DummyDropdown.svelte';
 </script>
 
-<AbstractContent showBottomNavbar={true}>
-	<!-- <DummyDropdown /> -->
-	<h1>Test</h1>
+<AbstractContent showBottomNavbar={true} lastPage="/" nextPage="/" infoPage="/info">
+	<DummyDropdown />
 </AbstractContent>
