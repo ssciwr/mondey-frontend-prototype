@@ -5,7 +5,7 @@
 
 	const letteroptions = ['a', 'b', 'c', 'd'];
 	const defaultOptions = ['gar nicht', 'ansatzweise', 'weitgehend', 'zuverlässig'];
-
+	const description = 'This is a dummy dropdown page to test the dropdown component';
 	const data_to_display = [
 		{
 			name: 'standing up',
@@ -31,6 +31,11 @@
 	const heading = 'some initial dummy dropdown page';
 </script>
 
-<AbstractContent showBottomNavbar={true} lastpage="/" nextpage="/nextdropdown" infopage="/info">
-	<AbstractDataInput data={data_to_display} {heading} itemComponent={AbstractDropdownItem} />
+<AbstractContent showBottomNavbar={true} lastpage={'/'} nextpage={'/nextdropdown'} infopage="/info">
+	<AbstractDataInput
+		data={data_to_display}
+		{heading}
+		itemComponent={AbstractDropdownItem}
+		{description}
+	/>
 </AbstractContent>
