@@ -3,6 +3,6 @@
 	import Frontpage from '$lib/components/Frontpage.svelte';
 </script>
 
-<AbstractContent showBottomNavbar={true}>
-	<Frontpage />
+<AbstractContent showBottomNavbar={false}>
+	<Frontpage getStarted={'/firstdropdown'} />
 </AbstractContent>
