@@ -4,7 +4,7 @@
 	import AbstractDropdownItem from '$lib/components/DataInput/AbstractDropdownItem.svelte';
 
 	const defaultOptions = ['gar nicht', 'ansatzweise', 'weitgehend', 'zuverlässig'];
-
+	const description = 'This is the second data selection page to test the dropdown component';
 	const dropdownData = [
 		{
 			name: 'standing up',
@@ -37,6 +37,16 @@
 	const heading = 'the second data selection page';
 </script>
 
-<AbstractContent showBottomNavbar={true} lastPage="/firstdropdown" nextPage="/" infoPage="/info">
-	<AbstractDataInput data={dropdownData} {heading} itemComponent={AbstractDropdownItem} />
+<AbstractContent
+	showBottomNavbar={true}
+	lastpage={'/firstdropdown'}
+	nextpage={'/'}
+	infopage="/info"
+>
+	<AbstractDataInput
+		data={dropdownData}
+		{heading}
+		itemComponent={AbstractDropdownItem}
+		{description}
+	/>
 </AbstractContent>

@@ -7,10 +7,18 @@
 	export let data;
 	export let heading;
 	export let itemComponent; // = AbstractDropdownItem;
+	export let description;
 </script>
 
 <div class="items-center space-x-4 rtl:space-x-reverse">
-	<h1 class="mb-2 text-2xl font-bold tracking-tight text-gray-700 dark:text-gray-400">{heading}</h1>
+	<h1 class="mb-6 text-2xl font-bold tracking-tight text-gray-700 dark:text-gray-400">{heading}</h1>
+	<p class="mb-6 text-lg font-normal leading-tight text-gray-700 dark:text-gray-400">
+		{description}
+		Lorem ipsum dolor sit, amet consectetur adipisicing elit. Animi, iste nisi amet tempora laborum natus
+		dolorum quis consectetur non ab nemo sint deleniti officiis enim a explicabo possimus. Voluptatem
+		repellat autem dicta unde ducimus. Commodi fugiat, error magnam necessitatibus fugit blanditiis cum
+		itaque nostrum quaerat, pariatur aperiam ipsum sed quo!
+	</p>
 	{#each data as data_element}
 		<svelte:component this={itemComponent} data={data_element} />
 	{/each}
