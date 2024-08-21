@@ -1,6 +1,7 @@
 <script>
 	import AbstractContent from '$lib/components/AbstractContent.svelte';
-	import AbstractDropdown from '$lib/components/AbstractDropdown.svelte';
+	import AbstractDataInput from '$lib/components/DataInput/AbstractDataInput.svelte';
+	import AbstractDropdownItem from '$lib/components/DataInput/AbstractDropdownItem.svelte';
 
 	const letteroptions = ['a', 'b', 'c', 'd'];
 	const defaultOptions = ['gar nicht', 'ansatzweise', 'weitgehend', 'zuverlässig'];
@@ -31,5 +32,5 @@
 </script>
 
 <AbstractContent showBottomNavbar={true} lastPage="/" nextPage="/nextdropdown" infoPage="/info">
-	<AbstractDropdown data={data_to_display} {heading} />
+	<AbstractDataInput data={data_to_display} {heading} itemComponent={AbstractDropdownItem} />
 </AbstractContent>
