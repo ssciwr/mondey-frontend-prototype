@@ -34,31 +34,29 @@
 </script>
 
 <!-- Top element: basic navigation-->
-<Navbar class="overflow-x-auto whitespace-nowrap">
-	<div class="flex flex-nowrap items-center space-x-4 rtl:space-x-reverse">
-		<NavBrand href="/">
-			<img src={logo_light} class="block h-16 dark:hidden" alt="MONDEY Logo" />
-			<img src={logo_dark} class="hidden h-16 dark:block" alt="MONDEY Logo" />
-		</NavBrand>
-		<NavHamburger />
-		<NavUl ulClass="flex flex-row space-x-4 rtl:space-x-reverse md:text-lg md:font-medium ml-auto">
-			<NavLi href="/" active={true}>Home</NavLi>
-			<NavLi href="/">Aktuelles</NavLi>
-			<NavLi href="/">Downloads</NavLi>
-			<NavLi href="/">Kontakt</NavLi>
+<Navbar>
+	<NavBrand href="/">
+		<img src={logo_light} class="block h-16 dark:hidden" alt="MONDEY Logo" />
+		<img src={logo_dark} class="hidden h-16 dark:block" alt="MONDEY Logo" />
+	</NavBrand>
+	<NavHamburger />
+	<NavUl ulClass="flex space-x-4 text-lg ">
+		<NavLi href="/" active={true}>Home</NavLi>
+		<NavLi href="/">Aktuelles</NavLi>
+		<NavLi href="/">Downloads</NavLi>
+		<NavLi href="/">Kontakt</NavLi>
 
-			<FunctionalIcon tooltip={'Darkmode ein- oder ausschalten'}>
-				<DarkMode class="apply-icon-style">
-					<MoonSolid slot="darkIcon" />
-					<SunSolid slot="lightIcon" />
-				</DarkMode>
-			</FunctionalIcon>
+		<FunctionalIcon tooltip={'Darkmode ein- oder ausschalten'}>
+			<DarkMode class="apply-icon-style">
+				<MoonSolid slot="darkIcon" />
+				<SunSolid slot="lightIcon" />
+			</DarkMode>
+		</FunctionalIcon>
 
-			<FunctionalIcon tooltip={'Registrieren oder einloggen'}>
-				<Avatar rounded border class="apply-icon-style" />
-			</FunctionalIcon>
-		</NavUl>
-	</div>
+		<FunctionalIcon tooltip={'Registrieren oder einloggen'}>
+			<Avatar rounded class="apply-icon-style" />
+		</FunctionalIcon>
+	</NavUl>
 </Navbar>
 
 <!--Page content goes here-->

@@ -14,7 +14,7 @@
 	}
 
 	:global(.apply-icon-style) {
-		@apply rounded-lg p-2 text-xl text-gray-500 transition-colors;
+		@apply rounded-lg p-2 text-xl text-gray-500;
 	}
 
 	:global(.apply-icon-style:hover) {
