@@ -1,6 +1,8 @@
 <script>
 	import { Button, Card, Gallery } from 'flowbite-svelte';
 	import { ArrowRightOutline } from 'flowbite-svelte-icons';
+	export let getStarted = '/';
+	console.log('get started: ', getStarted);
 </script>
 
 <!-- This is a dummy landing page that is only there to check that the AbstractComponent works as it should-->
@@ -13,7 +15,9 @@
 			<i>Mondey</i> ist ein wissentschaftlich geprüftes Programm zure Dokumentation der Entwicklung von
 			Kindern bis 6 Jahren.
 		</p>
-		<Button class="w-fit">Mehr Info <ArrowRightOutline class="ms-2 h-6 w-6 text-white" /></Button>
+		<Button href="/info" class="w-fit"
+			>Mehr Info <ArrowRightOutline class="ms-2 h-6 w-6 text-white" /></Button
+		>
 	</Card>
 
 	<Card class="m-4 w-full p-6">
@@ -25,7 +29,9 @@
 			Entwicklungsstand des Kindes und können so frühzeitig Fördermaßnahmen einleiten. Dies folgt
 			einem übersichtlichen Ampelsystem.
 		</p>
-		<Button class="w-fit">Mehr Info <ArrowRightOutline class="ms-2 h-6 w-6 text-white" /></Button>
+		<Button href="/info" class="w-fit"
+			>Mehr Info <ArrowRightOutline class="ms-2 h-6 w-6 text-white" /></Button
+		>
 	</Card>
 
 	<Card class="m-4 w-full p-6">
@@ -37,9 +43,10 @@
 			6 Jahren. Dazu gehören unter anderem Grob-und feinmotorik, Wahrnehmung, Denkne, Sprache und Soziale
 			Beziehungen.
 		</p>
-		<Button class="w-fit">Mehr Info <ArrowRightOutline class="ms-2 h-6 w-6 text-white" /></Button>
+		<Button href="/info" class="w-fit"
+			>Mehr Info <ArrowRightOutline class="ms-2 h-6 w-6 text-white" /></Button
+		>
 	</Card>
-
 	<Card class="m-4 w-full p-6">
 		<h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
 			Wie funktioniert Mondey?
@@ -48,7 +55,9 @@
 			Sie bewerten wie gut das Kind bestimmte Alltagshandlungen durchführen kann mit Hilfe einer
 			Liste von Fragen.
 		</p>
-		<Button class="w-fit">Mehr Info <ArrowRightOutline class="ms-2 h-6 w-6 text-white" /></Button>
+		<Button href="/info" class="w-fit"
+			>Mehr Info <ArrowRightOutline class="ms-2 h-6 w-6 text-white" /></Button
+		>
 	</Card>
 
 	<Card class="m-4 w-full p-6">
@@ -58,7 +67,9 @@
 		<p class="mb-3 font-normal leading-tight text-gray-700 dark:text-gray-400">
 			Um zu beginnen, müssen sie sich registrieren und ein Profil für ihr Kind anlegen.
 		</p>
-		<Button class="w-fit">Los geht's <ArrowRightOutline class="ms-2 h-6 w-6 text-white" /></Button>
+		<Button class="w-fit" href={getStarted}
+			>Los geht's <ArrowRightOutline class="ms-2 h-6 w-6 text-white" /></Button
+		>
 	</Card>
 
 	<Card class="m-4 w-full p-6">
@@ -69,7 +80,9 @@
 				facilis! Voluptas corrupti recusandae sapiente doloribus voluptatem fugiat ducimus.
 			</i>
 		</p>
-		<Button class="w-fit">dummy <ArrowRightOutline class="ms-2 h-6 w-6 text-white" /></Button>
+		<Button href="/info" class="w-fit"
+			>dummy <ArrowRightOutline class="ms-2 h-6 w-6 text-white" /></Button
+		>
 	</Card>
 
 	<Card class="m-4 w-full p-6">
@@ -80,7 +93,9 @@
 				facilis! Voluptas corrupti recusandae sapiente doloribus voluptatem fugiat ducimus.
 			</i>
 		</p>
-		<Button class="w-fit">dummy <ArrowRightOutline class="ms-2 h-6 w-6 text-white" /></Button>
+		<Button href="/info" class="w-fit"
+			>dummy <ArrowRightOutline class="ms-2 h-6 w-6 text-white" /></Button
+		>
 	</Card>
 
 	<Card class="m-4 w-full p-6">
@@ -91,7 +106,9 @@
 				facilis! Voluptas corrupti recusandae sapiente doloribus voluptatem fugiat ducimus.
 			</i>
 		</p>
-		<Button class="w-fit">dummy <ArrowRightOutline class="ms-2 h-6 w-6 text-white" /></Button>
+		<Button href="/info" class="w-fit"
+			>dummy <ArrowRightOutline class="ms-2 h-6 w-6 text-white" /></Button
+		>
 	</Card>
 
 	<Card class="m-4 w-full p-6">
@@ -102,6 +119,8 @@
 				facilis! Voluptas corrupti recusandae sapiente doloribus voluptatem fugiat ducimus.
 			</i>
 		</p>
-		<Button class="w-fit">dummy <ArrowRightOutline class="ms-2 h-6 w-6 text-white" /></Button>
+		<Button href="/info" class="w-fit"
+			>dummy <ArrowRightOutline class="ms-2 h-6 w-6 text-white" /></Button
+		>
 	</Card>
 </Gallery>

@@ -26,12 +26,12 @@
 	export let showBottomNavbar = true;
 
 	// variables for communication upon hitting the page
-	// FIXME: these are placeholders and must later be changed using contexts or other better mechanisms for inter component comunication
-	export let lastpage = '/';
-	export let nextpage = '/';
-	export let infopage = '/';
-
 	export let userName = 'Registrieren';
+
+	// FIXME: these are placeholders and must later be changed using contexts or other better mechanisms for inter component comunication
+	export let lastPage = '/';
+	export let nextPage = '/';
+	export let infoPage = '/';
 </script>
 
 <!-- Top element: basic navigation-->
@@ -79,9 +79,9 @@
 		classInner="grid-cols-3"
 	>
 		<BottomNavItem
-			href={lastpage}
 			btnName="Zurück"
 			btnClass="text-gray-500 dark:text-gray-400 hover:text-primary-800 dark:hover:text-primary-500 group-hover:text-primary-800 dark:group-hover:text-primary-500"
+			href={lastPage}
 		>
 			<CaretLeftSolid
 				class="mb-1 h-8 w-8 text-gray-500 hover:text-primary-800 group-hover:text-primary-800 dark:text-gray-400 dark:hover:text-primary-500 dark:group-hover:text-primary-500"
@@ -89,9 +89,9 @@
 			<Tooltip arrow={false}>Zur letzten Seite</Tooltip>
 		</BottomNavItem>
 		<BottomNavItem
-			href={infopage}
 			btnName="Hilfe"
 			btnClass="text-gray-500 dark:text-gray-400 hover:text-primary-800 dark:hover:text-primary-500 group-hover:text-primary-800 dark:group-hover:text-primary-500"
+			href={infoPage}
 		>
 			<LightbulbSolid
 				class="mb-1 h-8 w-8 text-gray-500 hover:text-primary-800 group-hover:text-primary-800 dark:text-gray-400 dark:hover:text-primary-500 dark:group-hover:text-primary-500"
@@ -99,9 +99,9 @@
 			<Tooltip arrow={false}>Hilfe</Tooltip>
 		</BottomNavItem>
 		<BottomNavItem
-			href={nextpage}
 			btnName="Weiter"
 			btnClass="text-gray-500 dark:text-gray-400 hover:text-primary-800 dark:hover:text-primary-500 group-hover:text-primary-800 dark:group-hover:text-primary-500"
+			href={nextPage}
 		>
 			<CaretRightSolid
 				class="mb-1 h-8 w-8 text-gray-500 hover:text-primary-800 group-hover:text-primary-800 dark:text-gray-400 dark:hover:text-primary-500 dark:group-hover:text-primary-500"
