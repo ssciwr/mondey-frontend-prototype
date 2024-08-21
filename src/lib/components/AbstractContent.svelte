@@ -33,30 +33,6 @@
 	export let infopage = '/';
 
 	export let name = 'Registrieren';
-
-	const basicStyle = {
-		basicBtnForm: 'rounded-lg text-xl p-2',
-		basicColorBehavior:
-			'text-gray-500 dark:text-gray-400 hover:text-primary-800 dark:hover:text-primary-500 group-hover:text-primary-800 dark:group-hover:text-primary-500'
-	};
-
-	const topNavStyle = {
-		topBarBtnStyle: basicStyle.basicColorBehavior + basicStyle.basicBtnForm,
-		navULStyle:
-			'flex flex-col p-4 mt-4 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:text-lg md:font-medium'
-	};
-
-	const bottomNavStyle = {
-		bottomBarBtnStyle: 'w-8 h-8 mb-1' + basicStyle.basicColorBehavior,
-		bottomNavStyleInner: 'grid-cols-3'
-	};
-
-	const avatar_style = {
-		outer: 'flex items-center space-x-4 rtl:space-x-reverse',
-		avatar: 'flex items-center space-x-4 rtl:space-x-reverse',
-		inner: 'space-y-1' + basicStyle.basicColorBehavior
-	};
-	const contentContainerStyle = 'mx-auto max-w-6xl p-4';
 </script>
 
 <!-- Top element: basic navigation-->
@@ -66,42 +42,69 @@
 		<img src={logo_dark} class="hidden h-16 dark:block" alt="MONDEY Logo" />
 	</NavBrand>
 	<NavHamburger />
-	<NavUl ulClass={topNavStyle.navULStyle}>
+	<NavUl
+		ulClass="flex flex-col p-4 mt-4 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:text-lg md:font-medium"
+	>
 		<NavLi href="/" active={true}>Home</NavLi>
 		<NavLi href="/">Aktuelles</NavLi>
 		<NavLi href="/">Downloads</NavLi>
 		<NavLi href="/">Kontakt</NavLi>
-		<DarkMode class={topNavStyle.topBarBtnStyle}>
+		<DarkMode
+			class="rounded-lg p-2 text-xl text-gray-500 hover:text-primary-800 group-hover:text-primary-800 dark:text-gray-400 dark:hover:text-primary-500 dark:group-hover:text-primary-500"
+			,
+		>
 			<MoonSolid slot="darkIcon" />
 			<SunSolid slot="lightIcon" />
 		</DarkMode>
 		<Tooltip arrow={false}>Darkmode ein- oder ausschalten</Tooltip>
 	</NavUl>
-	<div class={avatar_style.outer}>
-		<Avatar class={avatar_style.avatar} rounded border />
-		<div class={avatar_style.inner}>{name}</div>
+	<div class="flex items-center space-x-4 rtl:space-x-reverse">
+		<Avatar
+			class="space-y-1 text-gray-500 hover:text-primary-800 group-hover:text-primary-800 dark:text-gray-400 dark:hover:text-primary-500 dark:group-hover:text-primary-500"
+			rounded
+			border
+		/>
+		<div class="flex items-center space-x-4 rtl:space-x-reverse">{name}</div>
 		<Tooltip>Registrieren oder einloggen</Tooltip>
 	</div>
 </Navbar>
 
 <!--Page content goes here-->
-<div class={contentContainerStyle}>
+<div class="mx-auto max-w-6xl p-4">
 	<slot></slot>
 </div>
 
 {#if showBottomNavbar}
 	<!-- bottom element: back, info and next buttons-->
-	<BottomNav position="absolute" classInner={bottomNavStyle.bottomNavStyleInner}>
-		<BottomNavItem href={lastpage} btnName="Zurück" btnClass={basicStyle.basicColorBehavior}>
-			<CaretLeftSolid class={bottomNavStyle.bottomBarBtnStyle} />
+	<BottomNav position="absolute" classInner="grid-cols-3">
+		<BottomNavItem
+			href={lastpage}
+			btnName="Zurück"
+			btnClass="text-gray-500 dark:text-gray-400 hover:text-primary-800 dark:hover:text-primary-500 group-hover:text-primary-800 dark:group-hover:text-primary-500"
+		>
+			<CaretLeftSolid
+				class="mb-1 h-8 w-8 text-gray-500 hover:text-primary-800 group-hover:text-primary-800 dark:text-gray-400 dark:hover:text-primary-500 dark:group-hover:text-primary-500"
+			/>
 			<Tooltip arrow={false}>Zur letzten Seite</Tooltip>
 		</BottomNavItem>
-		<BottomNavItem href={infopage} btnName="Hilfe" btnClass={basicStyle.basicColorBehavior}>
-			<LightbulbSolid class={bottomNavStyle.bottomBarBtnStyle} />
+		<BottomNavItem
+			href={infopage}
+			btnName="Hilfe"
+			btnClass="text-gray-500 dark:text-gray-400 hover:text-primary-800 dark:hover:text-primary-500 group-hover:text-primary-800 dark:group-hover:text-primary-500"
+		>
+			<LightbulbSolid
+				class="mb-1 h-8 w-8 text-gray-500 hover:text-primary-800 group-hover:text-primary-800 dark:text-gray-400 dark:hover:text-primary-500 dark:group-hover:text-primary-500"
+			/>
 			<Tooltip arrow={false}>Hilfe</Tooltip>
 		</BottomNavItem>
-		<BottomNavItem href={nextpage} btnName="Weiter" btnClass={basicStyle.basicColorBehavior}>
-			<CaretRightSolid class={bottomNavStyle.bottomBarBtnStyle} />
+		<BottomNavItem
+			href={nextpage}
+			btnName="Weiter"
+			btnClass="text-gray-500 dark:text-gray-400 hover:text-primary-800 dark:hover:text-primary-500 group-hover:text-primary-800 dark:group-hover:text-primary-500"
+		>
+			<CaretRightSolid
+				class="mb-1 h-8 w-8 text-gray-500 hover:text-primary-800 group-hover:text-primary-800 dark:text-gray-400 dark:hover:text-primary-500 dark:group-hover:text-primary-500"
+			/>
 			<Tooltip arrow={false}>Zur nächsten Seite</Tooltip>
 		</BottomNavItem>
 	</BottomNav>
