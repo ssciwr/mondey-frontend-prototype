@@ -32,18 +32,6 @@
 	export let lastPage = '/';
 	export let nextPage = '/';
 	export let infoPage = '/';
-
-	export function onclickNext() {
-		console.log('Next page', nextPage);
-	}
-
-	export function onclickLast() {
-		console.log('Last page', lastPage);
-	}
-
-	export function onclickInfo() {
-		console.log('Info page', infoPage);
-	}
 </script>
 
 <!-- Top element: basic navigation-->
@@ -93,7 +81,6 @@
 		<BottomNavItem
 			btnName="Zurück"
 			btnClass="text-gray-500 dark:text-gray-400 hover:text-primary-800 dark:hover:text-primary-500 group-hover:text-primary-800 dark:group-hover:text-primary-500"
-			on:click={onclickLast}
 			href={lastPage}
 		>
 			<CaretLeftSolid
@@ -104,7 +91,6 @@
 		<BottomNavItem
 			btnName="Hilfe"
 			btnClass="text-gray-500 dark:text-gray-400 hover:text-primary-800 dark:hover:text-primary-500 group-hover:text-primary-800 dark:group-hover:text-primary-500"
-			on:click={onclickLast}
 			href={infoPage}
 		>
 			<LightbulbSolid
@@ -115,7 +101,6 @@
 		<BottomNavItem
 			btnName="Weiter"
 			btnClass="text-gray-500 dark:text-gray-400 hover:text-primary-800 dark:hover:text-primary-500 group-hover:text-primary-800 dark:group-hover:text-primary-500"
-			on:click={onclickNext}
 			href={nextPage}
 		>
 			<CaretRightSolid

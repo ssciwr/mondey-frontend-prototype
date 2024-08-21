@@ -4,8 +4,8 @@
 	 * @type {any[]}
 	 */
 	// @ts-ignore
-	export let data = [];
-	export let heading = 'dummy dropdown data';
+	export let data;
+	export let heading;
 	export let itemComponent; // = AbstractDropdownItem;
 </script>
 
