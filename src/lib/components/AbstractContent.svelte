@@ -2,7 +2,6 @@
 	import {
 		Avatar,
 		BottomNav,
-		BottomNavItem,
 		DarkMode,
 		Navbar,
 		NavBrand,
@@ -11,16 +10,11 @@
 		NavUl,
 		Tooltip
 	} from 'flowbite-svelte';
-	import {
-		CaretLeftSolid,
-		CaretRightSolid,
-		LightbulbSolid,
-		MoonSolid,
-		SunSolid
-	} from 'flowbite-svelte-icons';
+	import { CaretLeftSolid, MoonSolid, SunSolid } from 'flowbite-svelte-icons';
 	// logo
 	import logo_dark from '../assets/mondey_dark.svg';
 	import logo_light from '../assets/mondey_light.svg';
+	import BottomNavElement from './Navigation/BottomNavElement.svelte';
 
 	// variables for showing or hiding elements
 	export let showBottomNavbar = true;
@@ -78,35 +72,25 @@
 		class="fixed bottom-0 left-0 right-0 border-t border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800"
 		classInner="grid-cols-3"
 	>
-		<BottomNavItem
-			href={lastpage}
-			btnName="Zurück"
-			btnClass="text-gray-500 dark:text-gray-400 hover:text-primary-800 dark:hover:text-primary-500 group-hover:text-primary-800 dark:group-hover:text-primary-500"
-		>
-			<CaretLeftSolid
-				class="mb-1 h-8 w-8 text-gray-500 hover:text-primary-800 group-hover:text-primary-800 dark:text-gray-400 dark:hover:text-primary-500 dark:group-hover:text-primary-500"
-			/>
-			<Tooltip arrow={false}>Zur letzten Seite</Tooltip>
-		</BottomNavItem>
-		<BottomNavItem
-			href={infopage}
-			btnName="Hilfe"
-			btnClass="text-gray-500 dark:text-gray-400 hover:text-primary-800 dark:hover:text-primary-500 group-hover:text-primary-800 dark:group-hover:text-primary-500"
-		>
-			<LightbulbSolid
-				class="mb-1 h-8 w-8 text-gray-500 hover:text-primary-800 group-hover:text-primary-800 dark:text-gray-400 dark:hover:text-primary-500 dark:group-hover:text-primary-500"
-			/>
-			<Tooltip arrow={false}>Hilfe</Tooltip>
-		</BottomNavItem>
-		<BottomNavItem
-			href={nextpage}
-			btnName="Weiter"
-			btnClass="text-gray-500 dark:text-gray-400 hover:text-primary-800 dark:hover:text-primary-500 group-hover:text-primary-800 dark:group-hover:text-primary-500"
-		>
-			<CaretRightSolid
-				class="mb-1 h-8 w-8 text-gray-500 hover:text-primary-800 group-hover:text-primary-800 dark:text-gray-400 dark:hover:text-primary-500 dark:group-hover:text-primary-500"
-			/>
-			<Tooltip arrow={false}>Zur nächsten Seite</Tooltip>
-		</BottomNavItem>
+		<BottomNavElement
+			href="{lastpage},"
+			description="{'Zurück'},"
+			Icon="{CaretLeftSolid},"
+			tooltip={'Zur letzten Seite'}
+		></BottomNavElement>
+
+		<!-- <BottomNavElement
+			href="{infopage},"
+			description="{'Hilfe'},"
+			Icon="{LightbulbSolid},"
+			tooltip={'Zusätzliche Informationen'}
+		></BottomNavElement>
+
+		<BottomNavElement
+			href="{nextpage},"
+			description="{'Weiter'},"
+			Icon="{CaretLeftSolid},"
+			tooltip={'Zur nächsten Seite'}
+		></BottomNavElement> -->
 	</BottomNav>
 {/if}
