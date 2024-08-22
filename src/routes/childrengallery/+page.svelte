@@ -9,7 +9,8 @@
 				name: 'making a mess',
 				status: 'good'
 			},
-			tag: 'cohort1'
+			tag: 'cohort1',
+			image: '/lib/assets/children.png'
 		},
 		{
 			name: 'B',
@@ -18,7 +19,8 @@
 				name: 'making a mess',
 				status: 'good'
 			},
-			tag: 'cohort1'
+			tag: 'cohort1',
+			image: '/lib/assets/children.png'
 		},
 		{
 			name: 'C',
@@ -27,7 +29,8 @@
 				name: 'making a mess',
 				status: 'good'
 			},
-			tag: 'cohort2'
+			tag: 'cohort2',
+			image: '/lib/assets/children.png'
 		},
 		{
 			name: 'D',
@@ -36,7 +39,8 @@
 				name: 'making a mess',
 				status: 'good'
 			},
-			tag: 'cohort1'
+			tag: 'cohort1',
+			image: '/lib/assets/children.png'
 		},
 		{
 			name: 'E',
@@ -45,7 +49,8 @@
 				name: 'making a mess',
 				status: 'good'
 			},
-			tag: 'cohort1'
+			tag: 'cohort1',
+			image: '/lib/assets/children.png'
 		},
 		{
 			name: 'F',
@@ -54,7 +59,8 @@
 				name: 'making a mess',
 				status: 'good'
 			},
-			tag: 'cohort2'
+			tag: 'cohort2',
+			image: '/lib/assets/children.png'
 		}
 	];
 </script>
