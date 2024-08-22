@@ -40,7 +40,7 @@
 <AbstractContent
 	showBottomNavbar={true}
 	lastpage={'/firstdropdown'}
-	nextpage={'/'}
+	nextpage={'/surveyfeedback'}
 	infopage="/info"
 >
 	<AbstractDataInput

@@ -1,8 +1,7 @@
 <script>
 	import CardDisplay from '$lib/components/DataDisplay/CardDisplay.svelte';
 	import { Gallery } from 'flowbite-svelte';
-	export let getStarted = '/';
-	console.log('get started: ', getStarted);
+	export let getStarted = '/firstdropdown';
 
 	export let items = [
 		{
@@ -36,7 +35,7 @@
 		{
 			header: 'Wo fange ich an?',
 			summary: 'Um zu beginnen, müssen sie sich registrieren und ein Profil für ihr Kind anlegen.',
-			link: '/firstdropdown',
+			link: getStarted,
 			buttonName: 'Los geht´s'
 		},
 		{

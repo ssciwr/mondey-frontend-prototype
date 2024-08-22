@@ -18,7 +18,7 @@
 <!-- Top element: basic navigation-->
 
 <!--Page content goes here-->
-<div class="mx-auto max-w-6xl flex-1 overflow-y-auto p-4 pb-20">
+<div class="mx-auto max-w-6xl flex-1 overflow-x-auto overflow-y-auto p-4 pb-20">
 	<slot></slot>
 </div>
 
