@@ -2,19 +2,22 @@
 	import AbstractContent from '$lib/components/AbstractContent.svelte';
 	import TableDisplay from '$lib/components/DataDisplay/TableDisplay.svelte';
 
-	export let data_to_display = [
-		{ name: 'surveyA', time: 2017, status: 'good' },
-		{ name: 'surveyB', time: 2016, status: 'bad' },
-		{ name: 'surveyC', time: 2012, status: 'bad' },
-		{ name: 'surveyD', time: 2020, status: 'warn' },
-		{ name: 'surveyE', time: 2019, status: 'good' }
+	const data_to_display = [
+		{ name: 'milestoneA', status: 'done' },
+		{ name: 'milestoneB', status: 'open' },
+		{ name: 'milestoneC', status: 'open' },
+		{ name: 'milestoneD', status: 'incomplete' },
+		{ name: 'milestoneE', status: 'done' }
 	];
 
-	export let statusIndicator = {
-		good: 'bg-green-500',
-		bad: 'bg-red-600',
-		warn: 'bg-yellow-300'
+	const statusIndicator = {
+		done: 'bg-green-500',
+		open: 'bg-red-600',
+		incomplete: 'bg-yellow-300'
 	};
+
+	const caption =
+		'This is an overview over which milestones for the current survey have been completed';
 </script>
 
 <AbstractContent
@@ -23,5 +26,5 @@
 	nextpage="/trafficlightfeedback"
 	infopage="/info"
 >
-	<TableDisplay data={data_to_display} {statusIndicator} />
+	<TableDisplay data={data_to_display} {statusIndicator} {caption} />
 </AbstractContent>

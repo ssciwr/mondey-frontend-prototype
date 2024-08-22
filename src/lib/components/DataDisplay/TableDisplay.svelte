@@ -1,18 +1,16 @@
 <script>
-	import {
-		TableBody,
-		TableBodyCell,
-		TableBodyRow,
-		TableHead,
-		TableHeadCell,
-		TableSearch
-	} from 'flowbite-svelte';
+	// @ts-nocheck
 
+	import { TableBody, TableBodyRow, TableSearch } from 'flowbite-svelte';
+
+	import TableCell from '$lib/components/DataDisplay/TableElements/TableCell.svelte';
+	import TableHeader from '$lib/components/DataDisplay/TableElements/TableHeader.svelte';
+
+	import { filterItems, makePlaceholderText } from '$lib/components/ComponentLogic/tableLogic.js';
 	// variables
-	export let data = [{ id: 1, name: 'testA', time: 2017, status: 'good' }];
-
-	export let caption =
-		'Hier finden sie eine Übersicht über alle abgeschlossenen und ausstehenden Meilensteine für die momentane Bestandsaufnahme.';
+	export let data = [];
+	export let caption = '';
+	const legendcaption = 'Meaning of indicators';
 
 	export let statusIndicator = {
 		good: 'bg-green-500',
@@ -21,54 +19,30 @@
 	};
 
 	export let statusColumns = ['status'];
-
 	export let searchableColumns = ['name'];
 	// functionality
 	let searchTerm = '';
 
+	// toString here for generality
+	$: filteredItems = filterItems(data, searchTerm, searchableColumns);
+
 	// make the placeholdertext for the searchbar dynamic
 	const numCols = Object.keys(data[0]).length;
-	let placeholderText = 'Search ' + searchableColumns[0];
-
-	if (searchableColumns.length > 1 && searchableColumns.length < numCols - 1) {
-		placeholderText = 'Search ' + `any of ${searchableColumns.join(', ')}`;
-	} else if (searchableColumns.length >= numCols - 1 && searchableColumns.length < numCols) {
-		const difference = Object.keys(data[0]).filter((key) => !searchableColumns.includes(key));
-		placeholderText = 'Search all columns except ' + `${difference.join(', ')}`;
-	} else if (searchableColumns.length === numCols) {
-		placeholderText = 'Search all columns';
-	}
-
-	// TODO: adjust this to searchable stuff
-	$: filteredItems = data.filter(
-		(item) => item.name.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1
-	);
+	const placeholderText = makePlaceholderText(data, searchableColumns);
 </script>
 
 <TableSearch
 	placeholder={placeholderText}
-	hoverable={true}
 	bind:inputValue={searchTerm}
+	hoverable={true}
 	striped={true}
-	shadow
 >
-	<caption class="mb-3 font-normal leading-tight text-gray-700 dark:text-gray-400">
-		{caption}
-	</caption>
-	<TableHead>
-		{#each Object.keys(data[0]) as key}
-			<TableHeadCell>{key}</TableHeadCell>
-		{/each}
-	</TableHead>
+	<TableHeader {caption} columns={Object.keys(data[0])} />
 	<TableBody tableBodyClass="divide-y">
 		{#each filteredItems as item}
 			<TableBodyRow>
 				{#each Object.entries(item) as pair}
-					{#if statusColumns.includes(pair[0])}
-						<TableBodyCell class={statusIndicator[pair[1]]}>{pair[1]}</TableBodyCell>
-					{:else}
-						<TableBodyCell>{pair[1]}</TableBodyCell>
-					{/if}
+					<TableCell key={pair[0]} value={pair[1]} {statusIndicator} {statusColumns} />
 				{/each}
 			</TableBodyRow>
 		{/each}
