@@ -26,5 +26,11 @@
 	nextpage="/trafficlightfeedback"
 	infopage="/info"
 >
-	<TableDisplay data={data_to_display} {statusIndicator} {caption} />
+	<TableDisplay
+		data={data_to_display}
+		{statusIndicator}
+		{caption}
+		statusColumns="{['status']},"
+		searchableColumns={['name']}
+	/>
 </AbstractContent>

@@ -18,8 +18,8 @@
 		warn: 'bg-yellow-500'
 	};
 
-	export let statusColumns = ['status'];
-	export let searchableColumns = ['name'];
+	export let statusColumns = [];
+	export let searchableColumns = [];
 	// functionality
 	let searchTerm = '';
 
