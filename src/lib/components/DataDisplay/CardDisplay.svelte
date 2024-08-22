@@ -14,7 +14,9 @@
 	<p class="mb-3 font-normal leading-tight text-gray-700 dark:text-gray-400">
 		{summary}
 	</p>
-	<Button href={link} class="w-fit"
-		>{button} <ArrowRightOutline class="ms-2 h-6 w-6 text-white" /></Button
-	>
+	{#if button}
+		<Button href={link} class="w-fit"
+			>{button} <ArrowRightOutline class="ms-2 h-6 w-6 text-white" /></Button
+		>
+	{/if}
 </Card>
