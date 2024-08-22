@@ -1,5 +1,6 @@
+import { filterItems, makePlaceholderText } from '$lib/components/DataDisplay/TableDisplay.svelte';
+
 import { describe, expect, it } from 'vitest';
-import { filterItems, makePlaceholderText } from './tableLogic.js';
 
 describe('filterItems: should return items in given columns ', () => {
 	const data = [
@@ -14,6 +15,7 @@ describe('filterItems: should return items in given columns ', () => {
 		const result = filterItems(data, searchTerm, searchableColumns);
 		expect(result).toEqual(data);
 	});
+
 	it('should return no items when the search term has no overlap with entries of searchable columns', () => {
 		const searchTerm = 1;
 		const result = filterItems(data, searchTerm, searchableColumns);
