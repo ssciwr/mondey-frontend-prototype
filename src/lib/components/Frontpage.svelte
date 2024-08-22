@@ -35,7 +35,7 @@
 		{
 			header: 'Wo fange ich an?',
 			summary: 'Um zu beginnen, müssen sie sich registrieren und ein Profil für ihr Kind anlegen.',
-			link: '/firstdropdown',
+			link: getStarted,
 			buttonName: 'Los geht´s'
 		},
 		{
