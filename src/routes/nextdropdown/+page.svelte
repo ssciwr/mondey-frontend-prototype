@@ -40,7 +40,7 @@
 <AbstractContent
 	showBottomNavbar={true}
 	lastpage="/firstdropdown"
-	nextpage="/feedback"
+	nextpage="/surveyfeedback"
 	infopage="/info"
 >
 	<AbstractDataInput data={dropdownData} {heading} itemComponent={AbstractDropdownItem} />
