@@ -27,7 +27,6 @@
 	$: filteredItems = filterItems(data, searchTerm, searchableColumns);
 
 	// make the placeholdertext for the searchbar dynamic
-	const numCols = Object.keys(data[0]).length;
 	const placeholderText = makePlaceholderText(data, searchableColumns);
 </script>
 

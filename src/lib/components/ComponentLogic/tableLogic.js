@@ -6,19 +6,19 @@ export function filterItems(data, searchTerm, searchableColumns) {
 
 export function makePlaceholderText(data, searchableColumns) {
 	const numCols = Object.keys(data[0]).length;
-	let placeholderText = 'Search ';
+	let placeholderText = 'Filter ';
 
 	if (searchableColumns.length === 1) {
 		placeholderText = placeholderText + searchableColumns[0];
 	} else if (searchableColumns.length > 1 && searchableColumns.length <= numCols / 2) {
-		placeholderText = 'Search ' + `any of ${searchableColumns.join(', ')}`;
+		placeholderText = 'Filter ' + `any of ${searchableColumns.join(', ')}`;
 	} else if (searchableColumns.length > numCols / 2 && searchableColumns.length < numCols) {
 		const difference = Object.keys(data[0]).filter((key) => !searchableColumns.includes(key));
-		placeholderText = 'Search all columns except ' + `${difference.join(', ')}`;
+		placeholderText = 'Filter all columns except ' + `${difference.join(', ')}`;
 	} else if (searchableColumns.length === numCols) {
-		placeholderText = 'Search all columns';
+		placeholderText = 'Filter all columns';
 	} else {
-		placeholderText = 'Search disabled';
+		placeholderText = 'Filter disabled';
 	}
 
 	return placeholderText;

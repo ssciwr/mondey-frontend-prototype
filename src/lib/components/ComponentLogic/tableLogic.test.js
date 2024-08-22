@@ -47,27 +47,27 @@ describe('makePlaceholderText: should return a placeholder text based on the num
 	it('should return colname when only one searchable columns', () => {
 		const searchableColumns = ['name'];
 		const result = makePlaceholderText(data, searchableColumns);
-		expect(result).toEqual('Search name');
+		expect(result).toEqual('Filter name');
 	});
 	it('should return with except when searchable colnames are more than half of the colnames', () => {
 		const searchableColumns = ['name', 'age', 'income'];
 		const result = makePlaceholderText(data, searchableColumns);
-		expect(result).toEqual('Search all columns except id');
+		expect(result).toEqual('Filter all columns except id');
 	});
 	it('should return with list when searchable colnames are less than half of the colnames', () => {
 		const searchableColumns = ['name', 'age'];
 		const result = makePlaceholderText(data, searchableColumns);
-		expect(result).toEqual('Search any of name, age');
+		expect(result).toEqual('Filter any of name, age');
 	});
 	it('should return with all when searchable colnames are less than half of the colnames', () => {
 		const searchableColumns = ['name', 'age', 'income', 'id'];
 		const result = makePlaceholderText(data, searchableColumns);
-		expect(result).toEqual('Search all columns');
+		expect(result).toEqual('Filter all columns');
 	});
 
 	it('should return with all when searchable colnames are less than half of the colnames', () => {
 		const searchableColumns = [];
 		const result = makePlaceholderText(data, searchableColumns);
-		expect(result).toEqual('Search disabled');
+		expect(result).toEqual('Filter disabled');
 	});
 });
