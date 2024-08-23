@@ -13,17 +13,18 @@
 	import { SearchOutline } from 'flowbite-svelte-icons';
 
 	export let data;
-	export let header;
+	export let header = null;
 	export let itemComponent;
 	export let withSearch = true;
 	export let searchableCol = '';
+	export let componentProps;
 
 	// dynamic statements
 	let searchTerm = '';
 	$: filteredItems = filterDataByColumn(data, searchableCol, searchTerm);
 </script>
 
-{#if header}
+{#if header !== null}
 	<Heading
 		tag="h1"
 		class="mb-2  tracking-tight "
@@ -44,7 +45,7 @@
 {/if}
 
 <Gallery class="grid-cols-1 justify-center gap-8 md:grid-cols-2">
-	{#each filteredItems as item}
-		<svelte:component this={itemComponent} data={item} />
+	{#each filteredItems as item, index}
+		<svelte:component this={itemComponent} data={item} styleProps={componentProps[index]} />
 	{/each}
 </Gallery>
