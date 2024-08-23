@@ -27,7 +27,7 @@
 		</FunctionalIcon>
 
 		<FunctionalIcon tooltip={'Registrieren oder einloggen'}>
-			<Avatar rounded class="apply-icon-style" />
+			<Avatar rounded class="apply-icon-style" href="/registerUser" />
 		</FunctionalIcon>
 	</NavUl>
 </Navbar>
