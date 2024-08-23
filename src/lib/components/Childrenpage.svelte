@@ -18,6 +18,8 @@
 		return data;
 	}
 
+	// dynamically create the styles for individual gallery tiles based on the data.
+	// The 'Neu' element needs to be styled differently in particular
 	export function createStyle(data) {
 		return data.map((item) => ({
 			card:
@@ -37,7 +39,7 @@
 			summary:
 				item.header == 'Neu'
 					? {
-							class: 'mb-3 flex font-normal leading-tight text-white dark:text-gray-400'
+							class: 'mb-3 flex font-normal leading-tight text-white dark:text-white'
 						}
 					: null,
 			button: null
@@ -55,6 +57,7 @@
 		{
 			name: 'Anna',
 			info: 'A child that is making a mess and is doing good. Click to view more.',
+			image: 'child_avatar.png',
 			href: '/surveyfeedback'
 		},
 		{
@@ -66,7 +69,8 @@
 		{
 			name: 'C',
 			info: 'A child that is making a mess and is doing good. Click to view more.',
-			href: '/surveyfeedback'
+			href: '/surveyfeedback',
+			image: 'child_avatar.png'
 		},
 		{
 			name: 'Dora',
