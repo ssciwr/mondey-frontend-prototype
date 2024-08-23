@@ -1,6 +1,14 @@
 <script>
 	import AbstractContent from '$lib/components/AbstractContent.svelte';
-	import GalleryDisplay from '$lib/components/DataDisplay/GalleryDisplay.svelte';
+
+	const cardProps = {
+		header: 'Child',
+		summary: 'Summary',
+		button: 'View',
+		link: '/child',
+		image: '/lib/assets/children.png'
+	};
+
 	const data = [
 		{
 			name: 'A',
@@ -71,5 +79,5 @@
 	nextpage={'/firstdropdown'}
 	infopage="/info"
 >
-	<GalleryDisplay {data} />
+	<!-- <GalleryDisplay {data} itemComponent="{CardDisplay}," componentProps={cardProps} /> -->
 </AbstractContent>
