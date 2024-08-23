@@ -1,9 +1,26 @@
+<script context="module">
+	export function filterDataByColumn(data, col, searchTerm) {
+		if (searchTerm === '') {
+			return data;
+		} else {
+			return data.filter((item) => item[col].toLowerCase().includes(searchTerm.toLowerCase()));
+		}
+	}
+</script>
+
 <script>
-	import { Gallery, Heading } from 'flowbite-svelte';
+	import { Button, Gallery, Heading, Search } from 'flowbite-svelte';
+	import { SearchOutline } from 'flowbite-svelte-icons';
+
 	export let data;
 	export let header;
 	export let itemComponent;
-	export let componentProps;
+	export let withSearch = true;
+	export let searchableCol = '';
+
+	// dynamic statements
+	let searchTerm = '';
+	$: filteredItems = filterDataByColumn(data, searchableCol, searchTerm);
 </script>
 
 {#if header}
@@ -17,8 +34,17 @@
 	</Heading>
 {/if}
 
+{#if withSearch}
+	<form class="flex gap-2">
+		<Search size="md" placeholder={'Search for child'} bind:value={searchTerm} />
+		<Button class="!p-2.5">
+			<SearchOutline class="h-6 w-6" />
+		</Button>
+	</form>
+{/if}
+
 <Gallery class="grid-cols-1 justify-center gap-8 md:grid-cols-2">
-	{#each data as item}
-		<svelte:component this={itemComponent} data={item} props={componentProps} />
+	{#each filteredItems as item}
+		<svelte:component this={itemComponent} data={item} />
 	{/each}
 </Gallery>

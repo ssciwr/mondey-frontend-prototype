@@ -1,63 +1,79 @@
 <script>
 	import CardDisplay from '$lib/components/DataDisplay/CardDisplay.svelte';
 	import GalleryDisplay from '$lib/components/DataDisplay/GalleryDisplay.svelte';
-	import { Button, Heading } from 'flowbite-svelte';
-	import { PlusOutline } from 'flowbite-svelte-icons';
+	import { Heading } from 'flowbite-svelte';
 	import AbstractContent from './AbstractContent.svelte';
-	const cardProps = {
-		horizontal: true
-	};
 
 	export function generateData() {
 		return [
 			{
-				name: 'A',
-				tag: 'cohort1',
-				image: 'children.png',
-				info: 'A child that is making a mess and is doing good. Click to view more.'
+				name: 'Anna',
+				info: 'A child that is making a mess and is doing good. Click to view more.',
+				href: '/surveyfeedback'
 			},
 			{
-				name: 'B',
-				tag: 'cohort1',
+				name: 'Ben',
 				image: 'children.png',
-				info: 'A child that is making a mess and is doing good. Click to view more.'
+				info: 'A child that is making a mess and is doing good. Click to view more.',
+				href: '/surveyfeedback'
 			},
 			{
 				name: 'C',
-				tag: 'cohort2',
-				image: '/children.png',
-				info: 'A child that is making a mess and is doing good. Click to view more.'
+				info: 'A child that is making a mess and is doing good. Click to view more.',
+				href: '/surveyfeedback'
 			},
 			{
-				name: 'D',
-				tag: 'cohort1',
+				name: 'Dora',
 				image: '/children.png',
-				info: 'A child that is making a mess and is doing good. Click to view more.'
+				info: 'A child that is making a mess and is doing good. Click to view more.',
+				href: '/surveyfeedback'
 			},
 			{
 				name: 'E',
-				tag: 'cohort1',
 				image: 'children.png',
-				info: 'A child that is making a mess and is doing good. Click to view more.'
+				info: 'A child that is making a mess and is doing good. Click to view more.',
+				href: '/surveyfeedback'
 			},
 			{
 				name: 'F',
-				tag: 'cohort2',
 				image: 'children.png',
-				info: 'A child that is making a mess and is doing good. Click to view more.'
+				info: 'A child that is making a mess and is doing good. Click to view more.',
+				href: '/surveyfeedback'
 			}
 		];
 	}
 
-	export function convertData(data) {
-		return data.map((item) => {
+	export function convertData(rawdata) {
+		let data = rawdata.map((item) => {
 			return {
 				header: item.name,
 				summary: item.info,
 				image: item.image,
-				link: '/'
+				href: item.href ? item.href : '/',
+				props: {
+					horizontal: item.image ? true : false
+				}
 			};
 		});
+
+		// put in new element at the front which adds new child
+		data.unshift({
+			header: 'Neu',
+			summary: 'Ein neues Kind anmelden',
+			href: '/',
+			props: {
+				class:
+					'm-2 max-w-prose bg-primary-700 dark:bg-primary-600 hover:bg-primary-800 dark:hover:bg-primary-700',
+				horizontal: false,
+				header: {
+					class: 'mb-2 text-2xl font-bold tracking-tight text-white dark:text-white'
+				},
+				summary: {
+					class: 'mb-3 flex font-normal leading-tight text-white dark:text-gray-400'
+				}
+			}
+		});
+		return data;
 	}
 
 	const data = convertData(generateData());
@@ -71,10 +87,6 @@
 			Wählen sie ein Kind zur Beobachtung aus oder legen melden sie ein neues Kind an.
 		</p>
 
-		<div>
-			<Button class="m-2" href="/"><PlusOutline class="h-24 w-24" /></Button>
-		</div>
-
-		<GalleryDisplay {data} itemComponent={CardDisplay} componentProps={cardProps} />
+		<GalleryDisplay {data} itemComponent={CardDisplay} searchableCol={'header'} />
 	</div>
 </AbstractContent>
