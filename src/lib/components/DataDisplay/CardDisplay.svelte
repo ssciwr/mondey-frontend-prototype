@@ -4,7 +4,7 @@
 	export let header = 'header';
 	export let summary;
 	export let button;
-	export let link = '/';
+	export let link;
 	export let image;
 </script>
 
