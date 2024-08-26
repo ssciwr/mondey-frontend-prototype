@@ -3,7 +3,13 @@
 	import AbstractRegistrationForm from '$lib/components/DataInput/AbstractRegistrationForm.svelte';
 	import { Input } from 'flowbite-svelte';
 
-	function range(size, startAt = 0, step = 1) {
+	function intervalRange(size, startAt = 0, step = 1) {
+		return [...Array(size).keys()].map(
+			(i) => String(i * step + startAt) + '-' + String((i + 1) * step + startAt)
+		);
+	}
+
+	function numericalRange(size, startAt = 0, step = 1) {
 		return [...Array(size).keys()].map((i) => i * step + startAt);
 	}
 
@@ -12,7 +18,7 @@
 			itemComponent: AbstractDropdownItem,
 			componentProps: {
 				name: 'Geburtsjahr',
-				items: range(100, 1920),
+				items: numericalRange(100, 1920),
 				about: 'Wählen sie ihr Geburtsjahr aus',
 				selected: 1988
 			}
@@ -48,20 +54,20 @@
 			itemComponent: AbstractDropdownItem,
 			componentProps: {
 				name: 'Arbeitszeit/Woche',
-				items: range(13, 0, 5),
+				items: intervalRange(13, 0, 5),
 				about:
 					'Wählen sie ihre Arbeitszeit pro Woche aus. Wählen sie die Zahl, die dem tatsächlichen Wert am nächsten kommt.',
-				selected: 40
+				selected: '35-40'
 			}
 		},
 		{
 			itemComponent: AbstractDropdownItem,
 			componentProps: {
 				name: 'Familieneinkommen/Jahr',
-				items: range(23, 0, 5000),
+				items: intervalRange(23, 0, 5000),
 				about:
 					'Wählen sie ihre Jahreseinkommen aus. Wählen sie die Zahl, die dem tatsächlichen Wert am nächsten kommt.',
-				selected: 50000
+				selected: '50000-55000'
 			}
 		},
 
@@ -79,7 +85,7 @@
 	const heading = 'Überprüfen sie ihre Daten';
 	const description = 'Bitte überprüfen sie ihre Daten und korrigieren sie diese gegebenenfalls.';
 
-	const buttons = [{ label: 'Abschicken', href: '/' }];
+	const buttons = [{ label: 'Abschicken', href: '/childLand/childDataInput' }];
 </script>
 
 <div class="container m-1 mx-auto w-full max-w-md">

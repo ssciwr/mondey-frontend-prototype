@@ -11,7 +11,7 @@
 		class="mb-3 font-normal leading-tight text-gray-700 dark:text-gray-400"
 		{items}
 		placeholder={$$props.name}
-		bind:value={$$props.selected}
+		bind:value={$$props.value}
 	/>
 	{#if $$props.about}
 		<Tooltip>{$$props.about}</Tooltip>

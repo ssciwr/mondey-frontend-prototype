@@ -1,5 +1,4 @@
 <script>
-	import AbstractContent from '$lib/components/AbstractContent.svelte';
 	import AbstractDropdownItem from '$lib/components/DataInput/AbstractDropdownItem.svelte';
 	import AbstractRegistrationForm from '$lib/components/DataInput/AbstractRegistrationForm.svelte';
 	import { Input, Textarea } from 'flowbite-svelte';
@@ -105,10 +104,23 @@
 		}
 	];
 	const heading = 'Neues Kind registrieren';
+
+	const buttons = [
+		{
+			label: 'Zurück',
+			href: '/userLand/userDataValidation'
+		},
+		{
+			label: 'Info',
+			href: '/info'
+		},
+		{
+			label: 'Weiter',
+			href: '/childLand/childDataValidation'
+		}
+	];
 </script>
 
 <div class="m-1 w-full max-w-md items-center justify-center">
-	<AbstractContent infopage={'/info'} lastpage={'/registerUser/userDataValidation'} nextpage={'/'}>
-		<AbstractRegistrationForm {heading} props={data} />
-	</AbstractContent>
+	<AbstractRegistrationForm {heading} props={data} {buttons} />
 </div>
