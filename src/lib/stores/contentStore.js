@@ -19,8 +19,4 @@ function removeContent(type, key) {
 	});
 }
 
-function getContent(type, key) {
-	return content.value[type][key];
-}
-
-export { addContent, content, getContent, removeContent };
+export { addContent, content, removeContent };

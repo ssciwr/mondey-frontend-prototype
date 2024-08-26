@@ -27,8 +27,4 @@ async function removeUser(userToken) {
 	});
 }
 
-async function getUser(userToken) {
-	return users.value[userToken];
-}
-
-export { addUser, getUser, removeUser, users };
+export { addUser, removeUser, users };
