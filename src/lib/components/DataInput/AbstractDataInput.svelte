@@ -6,7 +6,7 @@
 	export let buttons = null;
 </script>
 
-<div class="space-y-6rtl:space-x-reverse items-center space-x-4">
+<div class="space-y-6rtl:space-x-reverse items-center justify-center space-x-4">
 	{#if heading}
 		<Heading
 			tag="h1"
@@ -34,19 +34,17 @@
 			{/if}
 			<svelte:component this={prop.itemComponent} {...prop.componentProps} />
 		{/each}
-
-		{#if buttons}
-			<ButtonGroup>
-				{#each buttons as bprops}
-					<Button
-						outline
-						pill={true}
-						href={bprops.href}
-						class="text-gray-500 hover:text-primary-800 group-hover:text-primary-800 dark:text-gray-400 dark:hover:text-primary-500 dark:group-hover:text-primary-500"
-						>{bprops.label}</Button
-					>
-				{/each}
-			</ButtonGroup>
-		{/if}
 	</form>
+
+	{#if buttons}
+		<ButtonGroup class="mt-6 flex justify-center">
+			{#each buttons as bprops}
+				<Button
+					href={bprops.href}
+					class="dark:bg-primay-700 bg-primary-700 text-center text-sm text-white hover:bg-primary-800 hover:text-white dark:hover:bg-primary-800"
+					>{bprops.label}</Button
+				>
+			{/each}
+		</ButtonGroup>
+	{/if}
 </div>

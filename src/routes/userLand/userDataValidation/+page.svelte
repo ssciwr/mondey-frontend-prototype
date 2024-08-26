@@ -1,5 +1,4 @@
 <script>
-	import AbstractContent from '$lib/components/AbstractContent.svelte';
 	import AbstractDropdownItem from '$lib/components/DataInput/AbstractDropdownItem.svelte';
 	import AbstractRegistrationForm from '$lib/components/DataInput/AbstractRegistrationForm.svelte';
 	import { Input } from 'flowbite-svelte';
@@ -83,12 +82,6 @@
 	const buttons = [{ label: 'Abschicken', href: '/' }];
 </script>
 
-<div class="m-1 w-full max-w-md items-center justify-center">
-	<AbstractContent
-		infopage={'/info'}
-		lastpage={'/registerUser/userDataInput'}
-		nextpage={'/registerChild'}
-	>
-		<AbstractRegistrationForm {props} {heading} {description} {buttons} />
-	</AbstractContent>
+<div class="container m-1 mx-auto w-full max-w-md">
+	<AbstractRegistrationForm {props} {heading} {description} {buttons} />
 </div>
