@@ -4,6 +4,7 @@
 	export let props = [];
 	export let heading = null;
 	export let buttons = null;
+	export let description = null;
 </script>
 
 <div class="m-1 items-center justify-center pb-6">
@@ -15,6 +16,6 @@
 				>{heading}</Heading
 			>
 		{/if}
-		<AbstractDataInput {props} {buttons} />
+		<AbstractDataInput {props} {buttons} {description} />
 	</Card>
 </div>

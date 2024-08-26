@@ -91,7 +91,7 @@
 
 	let props = user_props;
 
-	$: if (role === 'Forscher/in') {
+	$: if (role === 'researcher') {
 		props = user_props;
 		props.push({
 			itemComponent: AbstractDropdownItem,
@@ -139,7 +139,7 @@
 		},
 		{
 			label: 'Weiter',
-			href: '/childLand/childDataInput'
+			href: '/userLand/userLogin'
 		}
 	];
 </script>

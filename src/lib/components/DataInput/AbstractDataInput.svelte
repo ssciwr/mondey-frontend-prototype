@@ -1,4 +1,5 @@
 <script>
+	import NavigationButtons from '../Navigation/NavigationButtons.svelte';
 	import { Button, ButtonGroup, Heading } from 'flowbite-svelte';
 	export let props = [];
 	export let heading = null;
@@ -37,14 +38,7 @@
 	</form>
 
 	{#if buttons}
-		<ButtonGroup class="mt-6 flex justify-center">
-			{#each buttons as bprops}
-				<Button
-					href={bprops.href}
-					class="dark:bg-primay-700 bg-primary-700 text-center text-sm text-white hover:bg-primary-800 hover:text-white dark:hover:bg-primary-800"
-					>{bprops.label}</Button
-				>
-			{/each}
-		</ButtonGroup>
+		<NavigationButtons {buttons} />
 	{/if}
+
 </div>

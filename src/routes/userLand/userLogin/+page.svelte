@@ -2,10 +2,12 @@
 	import AbstractRegistrationForm from '$lib/components/DataInput/AbstractRegistrationForm.svelte';
 	import { Input } from 'flowbite-svelte';
 
-	const default_data = [
+	export let role = 'user';
+
+	let data = [
 		{
 			itemComponent: Input,
-			componentData: {
+			componentProps: {
 				type: 'text',
 				name: 'Benutzerkennung',
 				placeholder: 'Benutzerkennung',
@@ -16,7 +18,7 @@
 		},
 		{
 			itemComponent: Input,
-			componentData: {
+			componentProps: {
 				type: 'password',
 				name: 'Passwort',
 				placeholder: 'Passwort',
@@ -27,14 +29,10 @@
 		}
 	];
 
-	export let data = default_data;
-
-	export let role = 'user';
-
-	if (role === 'admin') {
+	$: if (role === 'admin') {
 		data.push({
 			itemComponent: Input,
-			componentData: {
+			componentProps: {
 				type: 'text',
 				name: 'Projektcode',
 				placeholder: 'Projektcode',
@@ -54,10 +52,5 @@
 </script>
 
 <div>
-	<AbstractRegistrationForm
-		props={data}
-		heading={'Login'}
-		{buttons}
-		href={'/userLand/userDataInput'}
-	/>
+	<AbstractRegistrationForm heading={'Einloggen'} {buttons} props={data} />
 </div>
