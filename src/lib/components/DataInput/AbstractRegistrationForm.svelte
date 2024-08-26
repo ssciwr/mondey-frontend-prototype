@@ -1,18 +1,26 @@
 <script>
-	import { Button, Card, Heading, Input, Label } from 'flowbite-svelte';
-
-	export let data;
-	export let heading = '';
-	export let buttonLabel = '';
+	import { Button, Card, Heading } from 'flowbite-svelte';
+	import AbstractDataInput from './AbstractDataInput.svelte';
+	export let props = [];
+	export let heading = null;
+	export let buttonLabel = null;
+	export let href = '';
 </script>
 
-<Card>
-	<Heading tag="h3">{heading}</Heading>
-	<form>
-		{#each data as { label, type, placeholder }}
-			<Label>{label}</Label>
-			<Input {type} {label} {placeholder} />
-		{/each}
-	</form>
-	<Button type="submit" href="/registerUser/userDataInput" class="w-full">{buttonLabel}</Button>
-</Card>
+<div class="m-1 items-center justify-center pb-6">
+	<Card>
+		{#if heading}
+			<Heading
+				tag="h3"
+				class="m-1 mb-3 p-1 text-center font-bold tracking-tight text-gray-700 dark:text-gray-400"
+				>{heading}</Heading
+			>
+		{/if}
+		<!-- <Label>{label}</Label>
+			<Input {type} {label} {placeholder} /> -->
+		<AbstractDataInput {props} />
+		{#if buttonLabel}
+			<Button type="submit" {href} class="w-full">{buttonLabel}</Button>
+		{/if}
+	</Card>
+</div>
