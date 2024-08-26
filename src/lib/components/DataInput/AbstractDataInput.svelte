@@ -23,6 +23,14 @@
 
 	<form class="flex flex-col space-y-6">
 		{#each props as prop}
+			{#if prop.label}
+				<label
+					for={prop.componentProps.name}
+					class="text-lg font-normal text-gray-700 dark:text-gray-400"
+				>
+					{prop.label}
+				</label>
+			{/if}
 			<svelte:component this={prop.itemComponent} {...prop.componentProps} />
 		{/each}
 	</form>

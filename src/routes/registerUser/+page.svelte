@@ -10,7 +10,8 @@
 				label: 'Benutzername',
 				type: 'text',
 				placeholder: 'Wählen sie einen beliebigen Benutzernamen',
-				required: true
+				required: true,
+				about: 'Wählen sie einen beliebigen Benutzernamen'
 			},
 			itemComponent: Input
 		},
@@ -18,7 +19,9 @@
 			componentProps: {
 				label: 'E-Mail (optional)',
 				type: 'email',
-				placeholder: 'E-Mail'
+				placeholder: 'E-Mail',
+				about:
+					'Geben sie ihre E-mail Adresse an falls sie über aktuelle Forschungsergebnisse informiert werden möchten.'
 			},
 			itemComponent: Input
 		},
@@ -27,7 +30,9 @@
 				label: 'Passwort',
 				type: 'password',
 				placeholder: 'Passwort',
-				required: true
+				required: true,
+				about:
+					'Wählen sie ein Passwort aus. Ihr login key wird aus diesem Passwort und ihrem Benutzernamen generiert.'
 			},
 			itemComponent: Input
 		},
@@ -36,7 +41,8 @@
 				label: 'Passwort wiederholen',
 				type: 'password',
 				placeholder: 'Passwort wiederholen',
-				required: true
+				required: true,
+				about: 'Bestätigen sie ihr Passwort'
 			},
 			itemComponent: Input
 		},

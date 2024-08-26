@@ -7,30 +7,46 @@
 	const description = 'This is the second data selection page to test the dropdown component';
 	const dropdownData = [
 		{
-			name: 'standing up',
-			items: defaultOptions,
-			about:
-				'How well can the child stand up from sitting or crawling around and how readily is it able to do so',
-			selected: false
+			itemComponent: AbstractDropdownItem,
+			label: 'standing up',
+			componentProps: {
+				name: 'standing up',
+				items: defaultOptions,
+				about:
+					'How well can the child stand up from sitting or crawling around and how readily is it able to do so',
+				selected: false
+			}
 		},
 		{
-			name: 'making a mess',
-			items: defaultOptions,
-			about:
-				'This describes how efficiently the child can distribute toys in every single corner of every single room in the house',
-			selected: false
+			itemComponent: AbstractDropdownItem,
+			label: 'making a mess',
+			componentProps: {
+				name: 'making a mess',
+				items: defaultOptions,
+				about:
+					'This describes how efficiently the child can distribute toys in every single corner of every single room in the house',
+				selected: false
+			}
 		},
 		{
-			name: 'gripping a pen the right way',
-			items: defaultOptions,
-			about: 'How well can the child hold a pen or pencil and how coordinated can it use it',
-			selected: false
+			itemComponent: AbstractDropdownItem,
+			label: 'gripping a pen the right way',
+			componentProps: {
+				name: 'gripping a pen the right way',
+				items: defaultOptions,
+				about: 'How well can the child hold a pen or pencil and how coordinated can it use it',
+				selected: false
+			}
 		},
 		{
-			name: 'talking in full sentences',
-			items: defaultOptions,
-			about: 'How well articulated is the child in its speech and how well can it express itself',
-			selected: false
+			itemComponent: AbstractDropdownItem,
+			label: 'talking in full sentences',
+			componentProps: {
+				name: 'talking in full sentences',
+				items: defaultOptions,
+				about: 'How well articulated is the child in its speech and how well can it express itself',
+				selected: false
+			}
 		}
 	];
 
@@ -43,10 +59,5 @@
 	nextpage={'/surveyfeedback'}
 	infopage="/info"
 >
-	<AbstractDataInput
-		componentProps={dropdownData}
-		{heading}
-		itemComponent={AbstractDropdownItem}
-		{description}
-	/>
+	<AbstractDataInput props={dropdownData} {heading} {description} />
 </AbstractContent>
