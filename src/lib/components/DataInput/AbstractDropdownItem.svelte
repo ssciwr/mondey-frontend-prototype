@@ -13,5 +13,7 @@
 		placeholder={$$props.name}
 		bind:value={$$props.selected}
 	/>
-	<Tooltip>{$$props.about}</Tooltip>
+	{#if $$props.about}
+		<Tooltip>{$$props.about}</Tooltip>
+	{/if}
 </div>
