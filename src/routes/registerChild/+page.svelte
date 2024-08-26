@@ -108,7 +108,7 @@
 </script>
 
 <div class="m-1 w-full max-w-md items-center justify-center">
-	<AbstractContent infopage={'/info'} lastpage={'/userDataValidation'} nextpage={'/'}>
+	<AbstractContent infopage={'/info'} lastpage={'/registerUser/userDataValidation'} nextpage={'/'}>
 		<AbstractRegistrationForm {heading} props={data} />
 	</AbstractContent>
 </div>

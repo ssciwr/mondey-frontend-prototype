@@ -5,6 +5,8 @@
 	import { Avatar, DarkMode, Navbar, NavBrand, NavHamburger, NavLi, NavUl } from 'flowbite-svelte';
 	import { MoonSolid, SunSolid } from 'flowbite-svelte-icons';
 	import '../app.css';
+
+	export let isLoggedIn = true;
 </script>
 
 <Navbar>
@@ -27,7 +29,11 @@
 		</FunctionalIcon>
 
 		<FunctionalIcon tooltip={'Registrieren oder einloggen'}>
-			<Avatar rounded class="apply-icon-style" href="/registerUser" />
+			<Avatar
+				rounded
+				class="apply-icon-style"
+				href={isLoggedIn ? '/userLand/userRegistration' : '/userLand/userLogin'}
+			/>
 		</FunctionalIcon>
 	</NavUl>
 </Navbar>
