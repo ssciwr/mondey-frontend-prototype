@@ -14,7 +14,7 @@ const childrenlist: ChildrenList = {};
 
 const childrenData = writable(childrenlist);
 
-async function addChildrenData(data: ChildData, childtoken: string, usertoken: string) {
+async function addChildData(data: ChildData, childtoken: string, usertoken: string) {
 	childrenData.update((childrenlist) => {
 		if (!(usertoken in childrenlist)) {
 			throw new Error(`User token ${usertoken} not found`);
@@ -34,7 +34,7 @@ async function addChildrenData(data: ChildData, childtoken: string, usertoken: s
 	});
 }
 
-async function removeChildrenData(childtoken: string, usertoken: string) {
+async function removeChildData(childtoken: string, usertoken: string) {
 	childrenData.update((childrenlist) => {
 		if (!(usertoken in childrenlist)) {
 			throw new Error(`User token ${usertoken} not found`);
@@ -50,4 +50,4 @@ async function removeChildrenData(childtoken: string, usertoken: string) {
 	});
 }
 
-export { addChildrenData, childrenData, removeChildrenData };
+export { addChildData, childrenData, removeChildData };
