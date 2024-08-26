@@ -4,6 +4,8 @@
 	import AbstractRegistrationForm from '$lib/components/DataInput/AbstractRegistrationForm.svelte';
 	import { Input } from 'flowbite-svelte';
 
+	// this stuff here will become backend calls in the end because that is where the data this page will be filled with
+	// will come from. Hence, they are not put into a separate library or anything
 	function intervalRange(size, startAt = 0, step = 1) {
 		return [...Array(size).keys()].map(
 			(i) => String(i * step + startAt) + '-' + String((i + 1) * step + startAt)
