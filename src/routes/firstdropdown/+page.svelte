@@ -33,9 +33,9 @@
 
 <AbstractContent showBottomNavbar={true} lastpage={'/'} nextpage={'/nextdropdown'} infopage="/info">
 	<AbstractDataInput
-		data={data_to_display}
 		{heading}
 		itemComponent={AbstractDropdownItem}
 		{description}
+		componentProps={data_to_display}
 	/>
 </AbstractContent>

@@ -44,7 +44,7 @@
 	infopage="/info"
 >
 	<AbstractDataInput
-		data={dropdownData}
+		componentProps={dropdownData}
 		{heading}
 		itemComponent={AbstractDropdownItem}
 		{description}

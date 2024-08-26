@@ -1,31 +1,62 @@
 <script>
+	import AbstractContent from '$lib/components/AbstractContent.svelte';
+	import AbstractDropdownItem from '$lib/components/DataInput/AbstractDropdownItem.svelte';
 	import AbstractRegistrationForm from '$lib/components/DataInput/AbstractRegistrationForm.svelte';
-	const data = [
+	import { Input } from 'flowbite-svelte';
+
+	const props = [
 		{
-			label: 'Benutzername',
-			type: 'text',
-			placeholder: 'Wählen sie einen beliebigen Benutzernamen'
+			componentProps: {
+				label: 'Benutzername',
+				type: 'text',
+				placeholder: 'Wählen sie einen beliebigen Benutzernamen',
+				required: true
+			},
+			itemComponent: Input
 		},
 		{
-			label: 'E-Mail (optional)',
-			type: 'text',
-			placeholder: 'E-Mail'
+			componentProps: {
+				label: 'E-Mail (optional)',
+				type: 'email',
+				placeholder: 'E-Mail'
+			},
+			itemComponent: Input
 		},
 		{
-			label: 'Passwort',
-			type: 'text',
-			placeholder: 'Passwort'
+			componentProps: {
+				label: 'Passwort',
+				type: 'password',
+				placeholder: 'Passwort',
+				required: true
+			},
+			itemComponent: Input
 		},
 		{
-			label: 'Passwort wiederholen',
-			type: 'text',
-			placeholder: 'Passwort wiederholen'
+			componentProps: {
+				label: 'Passwort wiederholen',
+				type: 'password',
+				placeholder: 'Passwort wiederholen',
+				required: true
+			},
+			itemComponent: Input
+		},
+		{
+			componentProps: {
+				name: 'Benutzerrolle',
+				items: ['Benutzer/in', 'Admin', 'Forscher/in'],
+				about: 'Welche Rolle soll der neue Benutzer haben?',
+				selected: 'Benutzer/in'
+			},
+			itemComponent: AbstractDropdownItem
 		}
 	];
 	const heading = 'Als neuer Benutzer registrieren';
 	const buttonLabel = 'Weiter';
+	const href = '/registerUser/userDataInput';
 </script>
 
-<div class="flex">
-	<AbstractRegistrationForm {data} {heading} {buttonLabel} />
+<div class="m-1 w-full max-w-md items-center justify-center">
+	<AbstractContent infopage={'/info'} nextpage={'/registerUser/userDataInput'}>
+		<AbstractRegistrationForm {heading} {href} {props} />
+	</AbstractContent>
 </div>
