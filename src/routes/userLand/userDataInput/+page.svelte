@@ -139,7 +139,7 @@
 		},
 		{
 			label: 'Weiter',
-			href: '/userLand/userDataValidation'
+			href: '/childLand/childDataInput'
 		}
 	];
 </script>

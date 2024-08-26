@@ -116,7 +116,7 @@
 		},
 		{
 			label: 'Weiter',
-			href: '/childLand/childDataValidation'
+			href: '/'
 		}
 	];
 </script>
