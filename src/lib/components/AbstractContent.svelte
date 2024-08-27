@@ -13,6 +13,8 @@
 	export let lastpage = '/';
 	export let nextpage = '/';
 	export let infopage = '/';
+	export let showNavIcons = true;
+	export let iconProps = {};
 </script>
 
 <!-- Top element: basic navigation-->
@@ -27,25 +29,32 @@
 		class="fixed bottom-0 left-0 right-0 border-t border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800"
 		classInner="grid-cols-3"
 	>
-		<BottomNavElement
-			href={lastpage}
-			description={'Zurück'}
-			Icon={CaretLeftSolid}
-			tooltip={'Zur letzten Seite'}
-		/>
+		{#if showNavIcons}
+			<BottomNavElement
+				href={lastpage}
+				description={'Zurück'}
+				Icon={CaretLeftSolid}
+				tooltip={'Zur letzten Seite'}
+				componentProps={iconProps}
+			/>
+		{/if}
 
 		<BottomNavElement
 			href={infopage}
 			description={'Hilfe'}
 			Icon={LightbulbSolid}
 			tooltip={'Zusätzliche Informationen'}
+			componentProps={iconProps}
 		/>
 
-		<BottomNavElement
-			href={nextpage}
-			description={'Weiter'}
-			Icon={CaretRightSolid}
-			tooltip={'Zur nächsten Seite'}
-		/>
+		{#if showNavIcons}
+			<BottomNavElement
+				href={nextpage}
+				description={'Weiter'}
+				Icon={CaretRightSolid}
+				tooltip={'Zur nächsten Seite'}
+				componentProps={iconProps}
+			/>
+		{/if}
 	</BottomNav>
 {/if}
