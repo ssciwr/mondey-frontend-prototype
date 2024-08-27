@@ -120,7 +120,7 @@ async function fetchObservationData(usertoken: string, childtoken: string) {
 	}
 
 	if (!(childtoken in contentData[usertoken as keyof ChildrenList])) {
-		throw new Error('No such child in the childrenstore for user' + usertoken);
+		throw new Error('No such child in the childrenstore for user ' + usertoken);
 	}
 
 	return contentData[usertoken as keyof ChildrenList][childtoken].observationData;

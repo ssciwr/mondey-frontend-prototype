@@ -4,6 +4,8 @@ import {
 	addChildData,
 	addChildObservation,
 	children,
+	fetchChildData,
+	fetchObservationData,
 	removeChildData,
 	type ChildObject,
 	type ChildrenList,
@@ -125,4 +127,40 @@ describe('normal functionality', () => {
 			expect((error as Error).message).toBe('Child token notthere not found for user token alpha');
 		}
 	});
+
+	it('should fetch observation data', async () => {
+		children.set(mockChildList);
+		expect(await fetchObservationData('alpha', 'childA')).toEqual(mockObservationData);
+	});
+
+	it('should fetch child data', async () => {
+		children.set(mockChildList);
+		expect(await fetchChildData('alpha', 'childA')).toEqual({
+			name: 'foo',
+			age: 3,
+			nationality: 'turkish'
+		});
+	});
+
+	it('cannot fetch from uknown keys', async () => {
+		children.set(mockChildList);
+
+		try {
+			await fetchObservationData('x', 'childA');
+		} catch (error: Error | unknown) {
+			expect((error as Error).message).toBe('No such user in the childrenstore');
+		}
+
+		try {
+			await fetchObservationData('alpha', 'unknown');
+		} catch (error: Error | unknown) {
+			expect((error as Error).message).toBe('No such child in the childrenstore for user alpha');
+		}
+	});
+
+	it('should fetch list of childrendata', async () => {});
+
+	it('cannot fetch childrendata from uknown', async () => {});
+
+	it('cannot fetch observationdata from uknown', async () => {});
 });
