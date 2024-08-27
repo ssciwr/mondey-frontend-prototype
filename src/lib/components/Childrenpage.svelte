@@ -5,7 +5,6 @@
 				header: item.name,
 				summary: item.info,
 				image: item.image,
-				observationData: item.observationData,
 				href: '/trafficlightfeedback'
 			};
 		});
@@ -48,66 +47,37 @@
 	}
 </script>
 
-<script>
+<script lang="ts">
 	import CardDisplay from '$lib/components/DataDisplay/CardDisplay.svelte';
 	import GalleryDisplay from '$lib/components/DataDisplay/GalleryDisplay.svelte';
+	import { children, createDummyData, fetchChildrenDataforUser } from '$lib/stores/childrenStore';
 	import { Heading } from 'flowbite-svelte';
-	import AbstractContent from './AbstractContent.svelte';
+	import { onMount } from 'svelte';
+	// create data and
 
-	const rawdata = [
-		{
-			name: 'Anna',
-			info: 'A child that is making a mess and is doing good. Click to view more.',
-			image: 'child_avatar.png',
-			href: '/surveyfeedback'
-		},
-		{
-			name: 'Ben',
-			image: 'children.png',
-			info: 'A child that is making a mess and is doing good. Click to view more.',
-			href: '/surveyfeedback'
-		},
-		{
-			name: 'C',
-			info: 'A child that is making a mess and is doing good. Click to view more.',
-			href: '/surveyfeedback',
-			image: 'child_avatar.png'
-		},
-		{
-			name: 'Dora',
-			image: '/children.png',
-			info: 'A child that is making a mess and is doing good. Click to view more.',
-			href: '/surveyfeedback'
-		},
-		{
-			name: 'E',
-			image: 'children.png',
-			info: 'A child that is making a mess and is doing good. Click to view more.',
-			href: '/surveyfeedback'
-		},
-		{
-			name: 'F',
-			image: 'children.png',
-			info: 'A child that is making a mess and is doing good. Click to view more.',
-			href: '/surveyfeedback'
-		}
-	];
+	let data = [];
 
-	const data = convertData(rawdata);
+	// this fetches dummy child data from the database for the dummy user
+	onMount(async () => {
+		children.set({});
+		await createDummyData();
+		let rawdata = await fetchChildrenDataforUser('dummyUser');
+		data = convertData(rawdata);
+	});
 </script>
 
-<AbstractContent showNavIcons={false} iconProps={{ class: 'w-10 h-10' }}>
-	<Heading tag="h1" class="mb-2" color="text-gray-700 dark:text-gray-400">Übersicht</Heading>
+<!-- <AbstractContent showNavIcons={false} iconProps={{ class: 'w-10 h-10' }}> -->
+<Heading tag="h1" class="mb-2" color="text-gray-700 dark:text-gray-400">Übersicht</Heading>
 
-	<div class="cols-1 grid gap-y-8">
-		<p class="text-lg text-gray-700 dark:text-gray-400">
-			Wählen sie ein Kind zur Beobachtung aus oder legen melden sie ein neues Kind an.
-		</p>
-		<GalleryDisplay
-			{data}
-			itemComponent={CardDisplay}
-			searchableCol={'header'}
-			componentProps={createStyle(data)}
-		/>
-	</div>
-</AbstractContent>
+<div class="cols-1 grid gap-y-8">
+	<p class="text-lg text-gray-700 dark:text-gray-400">
+		Wählen sie ein Kind zur Beobachtung aus oder legen melden sie ein neues Kind an.
+	</p>
+	<GalleryDisplay
+		{data}
+		itemComponent={CardDisplay}
+		searchableCol={'header'}
+		componentProps={createStyle(data)}
+	/>
+</div>
+<!-- </AbstractContent> -->
