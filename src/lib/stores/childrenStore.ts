@@ -292,6 +292,7 @@ export {
 	fetchObservationDataForUser,
 	removeChildData,
 	type ChildData,
+	type ChildObject,
 	type ChildrenList,
 	type ObservationData
 };
