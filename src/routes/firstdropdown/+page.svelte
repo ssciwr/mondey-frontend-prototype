@@ -8,23 +8,35 @@
 	const description = 'This is a dummy dropdown page to test the dropdown component';
 	const data_to_display = [
 		{
-			name: 'standing up',
-			items: letteroptions,
-			about:
-				'How well can the child stand up from sitting or crawling around and how readily is it able to do so',
-			selected: false
+			itemComponent: AbstractDropdownItem,
+			label: 'standing up',
+			componentProps: {
+				name: 'standing up',
+				items: letteroptions,
+				about:
+					'How well can the child stand up from sitting or crawling around and how readily is it able to do so',
+				selected: false
+			}
 		},
 		{
-			name: 'gripping a pen the right way',
-			items: defaultOptions,
-			about: 'How well can the child hold a pen or pencil and how coordinated can it use it',
-			selected: false
+			itemComponent: AbstractDropdownItem,
+			label: 'gripping a pen the right way',
+			componentProps: {
+				name: 'gripping a pen the right way',
+				items: defaultOptions,
+				about: 'How well can the child hold a pen or pencil and how coordinated can it use it',
+				selected: false
+			}
 		},
 		{
-			name: 'talking in full sentences',
-			items: letteroptions,
-			about: 'How well articulated is the child in its speech and how well can it express itself',
-			selected: false
+			itemComponent: AbstractDropdownItem,
+			label: 'talking in full sentences',
+			componentProps: {
+				name: 'talking in full sentences',
+				items: letteroptions,
+				about: 'How well articulated is the child in its speech and how well can it express itself',
+				selected: false
+			}
 		}
 	];
 
@@ -32,10 +44,5 @@
 </script>
 
 <AbstractContent showBottomNavbar={true} lastpage={'/'} nextpage={'/nextdropdown'} infopage="/info">
-	<AbstractDataInput
-		data={data_to_display}
-		{heading}
-		itemComponent={AbstractDropdownItem}
-		{description}
-	/>
+	<AbstractDataInput {heading} {description} props={data_to_display} />
 </AbstractContent>

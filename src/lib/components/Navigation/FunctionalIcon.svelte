@@ -10,7 +10,7 @@
 
 <style>
 	:global(.functional-icon-container) {
-		@apply flex items-center space-x-4 rtl:space-x-reverse;
+		@apply flex cursor-pointer items-center space-x-4 rtl:space-x-reverse;
 	}
 
 	:global(.apply-icon-style) {

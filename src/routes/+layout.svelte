@@ -27,11 +27,13 @@
 		</FunctionalIcon>
 
 		<FunctionalIcon tooltip={'Registrieren oder einloggen'}>
-			<Avatar rounded class="apply-icon-style" />
+			<Avatar rounded class="apply-icon-style" href={'/userLand/userLogin'} />
 		</FunctionalIcon>
 	</NavUl>
 </Navbar>
 
-<div class="mx-auto max-w-6xl flex-1 overflow-y-auto p-4 pb-20">
+<div
+	class="mx-[max(10vw,2rem)] my-[max(2vw,2rem)] flex-auto items-center justify-center overflow-y-auto pb-20"
+>
 	<slot></slot>
 </div>
