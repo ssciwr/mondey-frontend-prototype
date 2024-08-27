@@ -42,22 +42,31 @@ describe('test_normal_functionality', async () => {
 
 	it('should remove content from the contentstore successfully', async () => {
 		content.set(mockContentList);
+		console.log(get(content));
 		await removeContent('childrenSurveys', 'testsurvey');
-		// await removeContent('registrationForms', 'childRegistration');
+		await removeContent('registrationForms', 'childRegistration');
 
 		expect(get(content)['childrenSurveys']['testsurvey']).toBeUndefined();
-		// expect(get(content)['registrationForms']['childRegistration']).toBeUndefined();
+		expect(get(content)['registrationForms']['childRegistration']).toBeUndefined();
 	});
 
-	// it('throw error when adding an element with an existing key', async () => {
-	// 	content.set(mockContentList);
+	it('throw error when removing an element with an existing key', async () => {
+		content.set(mockContentList);
 
-	// 	try {
-	// 		await removeContent('childrenSurveys', 'notthere');
-	// 	} catch (error: Error | unknown) {
-	// 		expect((error as Error).message).toBe('No such key in the contentstore');
-	// 	}
-	// });
+		try {
+			await removeContent('childrenSurveys', 'notthere');
+		} catch (error: Error | unknown) {
+			expect((error as Error).message).toBe('No such key in the contentstore');
+		}
+	});
 
-	it('throw error when removing an element with a non-existing key', async () => {});
+	it('throw error when adding an element with an already present key', async () => {
+		content.set(mockContentList);
+
+		try {
+			await addContent('childrenSurveys', 'testsurvey', mockChildSurvey);
+		} catch (error: Error | unknown) {
+			expect((error as Error).message).toBe('No such key in the contentstore');
+		}
+	});
 });

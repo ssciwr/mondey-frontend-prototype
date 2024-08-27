@@ -38,6 +38,8 @@ async function removeContent(type: string, key: string) {
 	if (!(type in contentlist)) {
 		throw new Error('No such register in the contentstore');
 	}
+	console.log('removeContent', type, key, Object.keys(contentlist));
+
 	console.log('removeContent', type, key, Object.keys(contentlist[type]));
 
 	if (!(key in contentlist[type as keyof ContentList])) {
@@ -49,14 +51,9 @@ async function removeContent(type: string, key: string) {
 	});
 }
 
-async function dummyAdd(a: number, b: number) {
-	return a + b;
-}
-
 export {
 	addContent,
 	content,
-	dummyAdd,
 	removeContent,
 	type ChildrenSurvey,
 	type ContentList,
