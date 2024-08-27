@@ -58,8 +58,7 @@
 
 <div class="container m-1 mx-auto w-full max-w-md space-y-6">
 	<AbstractRegistrationForm heading={'Einloggen'} {buttons} props={data} />
-
-	Not registered?
+	<span class="text-gray-700 dark:text-gray-400">Not registered?</span>
 	<a
 		href="/userLand/userRegistration"
 		class="text-primary-700 hover:underline dark:text-primary-500"
