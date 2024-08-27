@@ -40,7 +40,7 @@ const users = writable(userlist);
 async function addUser(userToken: string, userData: UserData) {
 	users.update((userlist) => {
 		if (userToken in userlist) {
-			// raise some error
+			throw new Error('User with this token already exists');
 		} else {
 			userData['token'] = userToken;
 			userlist[userToken] = userData;
@@ -53,9 +53,11 @@ async function removeUser(userToken: string) {
 	users.update((userlist) => {
 		if (userToken in userlist) {
 			delete userlist[userToken];
+		} else {
+			throw new Error('User with this token does not exist');
 		}
 		return userlist;
 	});
 }
 
-export { addUser, removeUser, users };
+export { addUser, removeUser, users, type UserData, type UserList };
