@@ -66,7 +66,7 @@ describe('normal functionality', () => {
 		}
 	});
 
-	it('should throw when adding with nonexistant user or existing child key', async () => {
+	it('should throw when removing with nonexistant user or nonexisting child key', async () => {
 		children.set(mockChildList);
 		try {
 			await removeChildData('x', 'childA');
