@@ -283,6 +283,7 @@ async function createDummyData() {
 
 export {
 	addChildData,
+	addChildObservation,
 	addUser,
 	children,
 	createDummyData,

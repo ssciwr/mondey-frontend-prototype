@@ -2,6 +2,7 @@ import { get } from 'svelte/store';
 import { describe, expect, it } from 'vitest';
 import {
 	addChildData,
+	addChildObservation,
 	children,
 	removeChildData,
 	type ChildObject,
@@ -55,6 +56,36 @@ describe('normal functionality', () => {
 		children.set(mockChildList);
 		await addChildData('alpha', 'childC', mockChildData3.childData);
 		expect(get(children)['alpha']['childC'].childData).toEqual(mockChildData3.childData);
+	});
+
+	it('should add child observationdata successfully', async () => {
+		children.set(mockChildList);
+		await addChildData('alpha', 'childC', mockChildData3.childData);
+		await addChildObservation('alpha', 'childC', mockChildData3.observationData);
+
+		expect(get(children)['alpha']['childC'].observationData).toEqual(
+			mockChildData3.observationData
+		);
+	});
+
+	it('cannot assign observationdata when childData is missing', async () => {
+		children.set(mockChildList);
+		try {
+			await addChildObservation('alpha', 'childC', mockChildData3.observationData);
+		} catch (error: Error | unknown) {
+			expect((error as Error).message).toBe(
+				'Child token childC does not exist for user token alpha'
+			);
+		}
+	});
+
+	it('cannot assign observationdata for unknown user', async () => {
+		children.set(mockChildList);
+		try {
+			await addChildObservation('x', 'childC', mockChildData3.observationData);
+		} catch (error: Error | unknown) {
+			expect((error as Error).message).toBe('User token x not found');
+		}
 	});
 
 	it('should remove child successfully', async () => {
