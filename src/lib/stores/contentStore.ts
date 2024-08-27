@@ -29,23 +29,26 @@ async function addContent(
 	new_content: ChildrenSurvey | RegistrationForm
 ) {
 	content.update((contentlist: ContentList) => {
+		if (!(type in contentlist)) {
+			throw new Error('No such register in the contentstore');
+		}
+
+		if (key in contentlist[type]) {
+			throw new Error('Key already exists in the contentstore');
+		}
 		contentlist[type as keyof ContentList][key] = new_content;
 		return contentlist;
 	});
 }
 
 async function removeContent(type: string, key: string) {
-	if (!(type in contentlist)) {
-		throw new Error('No such register in the contentstore');
-	}
-	console.log('removeContent', type, key, Object.keys(contentlist));
-
-	console.log('removeContent', type, key, Object.keys(contentlist[type]));
-
-	if (!(key in contentlist[type as keyof ContentList])) {
-		throw new Error('No such key in the contentstore');
-	}
 	content.update((contentlist) => {
+		if (!(type in contentlist)) {
+			throw new Error('No such register in the contentstore');
+		}
+		if (!(key in contentlist[type as keyof ContentList])) {
+			throw new Error('No such key in the contentstore');
+		}
 		delete contentlist[type as keyof ContentList][key];
 		return contentlist;
 	});

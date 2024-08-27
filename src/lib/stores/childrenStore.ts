@@ -1,7 +1,7 @@
 import { writable } from 'svelte/store';
 
 interface ChildData {
-	[key: string]: string[] | string;
+	[key: string]: unknown;
 }
 
 interface ChildrenList {
@@ -12,30 +12,25 @@ interface ChildrenList {
 
 const childrenlist: ChildrenList = {};
 
-const childrenData = writable(childrenlist);
+const children = writable(childrenlist);
 
-async function addChildData(data: ChildData, childtoken: string, usertoken: string) {
-	childrenData.update((childrenlist) => {
+async function addChildData(data: ChildData, usertoken: string, childtoken: string) {
+	children.update((childrenlist) => {
 		if (!(usertoken in childrenlist)) {
 			throw new Error(`User token ${usertoken} not found`);
 		}
 
-		if (!(childtoken in childrenlist[usertoken])) {
-			throw new Error(`Child token ${childtoken} not found for user token ${usertoken}`);
+		if (childtoken in childrenlist[usertoken]) {
+			throw new Error(`Child token ${childtoken} already exists for user token ${usertoken}`);
 		}
+		childrenlist[usertoken][childtoken] = data;
 
-		data['token'] = usertoken;
-		if (usertoken in childrenlist) {
-			childrenlist[usertoken][childtoken] = data;
-		} else {
-			childrenlist[usertoken][childtoken] = data;
-		}
 		return childrenlist;
 	});
 }
 
-async function removeChildData(childtoken: string, usertoken: string) {
-	childrenData.update((childrenlist) => {
+async function removeChildData(usertoken: string, childtoken: string) {
+	children.update((childrenlist) => {
 		if (!(usertoken in childrenlist)) {
 			throw new Error(`User token ${usertoken} not found`);
 		}
@@ -50,4 +45,4 @@ async function removeChildData(childtoken: string, usertoken: string) {
 	});
 }
 
-export { addChildData, childrenData, removeChildData };
+export { addChildData, children, removeChildData, type ChildData, type ChildrenList };
