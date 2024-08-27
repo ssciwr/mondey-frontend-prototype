@@ -1,5 +1,8 @@
 import { get, writable } from 'svelte/store';
 
+// README: this API is experimental and not by any means a final design
+
+// Types
 interface ObservationData {
 	summary: object;
 	current: object;
@@ -20,6 +23,7 @@ interface ChildrenList {
 	};
 }
 
+// store itself: README:
 const childrenlist: ChildrenList = {};
 
 const children = writable(childrenlist);
