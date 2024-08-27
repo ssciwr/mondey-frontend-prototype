@@ -1,7 +1,7 @@
 import { writable } from 'svelte/store';
 
 interface ChildData {
-	token: string;
+	[key: string]: string[] | string;
 }
 
 interface ChildrenList {
