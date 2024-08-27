@@ -5,13 +5,13 @@ interface ChildrenSurvey {
 	[name: string]: unknown;
 }
 
-interface RegistrationForms {
+interface RegistrationForm {
 	[name: string]: unknown;
 }
 
 interface ContentList {
 	childrenSurveys: ChildrenSurvey;
-	registrationForms: RegistrationForms;
+	registrationForms: RegistrationForm;
 }
 
 const contentlist: ContentList = {
@@ -23,18 +23,42 @@ const contentlist: ContentList = {
 const content = writable(contentlist);
 
 // functions to add and remove stuff from the store
-function addContent(type: string, key: string) {
+async function addContent(
+	type: string,
+	key: string,
+	new_content: ChildrenSurvey | RegistrationForm
+) {
 	content.update((contentlist: ContentList) => {
-		contentlist[type as keyof ContentList][key] = content;
+		contentlist[type as keyof ContentList][key] = new_content;
 		return contentlist;
 	});
 }
 
-function removeContent(type: string, key: string) {
+async function removeContent(type: string, key: string) {
+	if (!(type in contentlist)) {
+		throw new Error('No such register in the contentstore');
+	}
+	console.log('removeContent', type, key, Object.keys(contentlist[type]));
+
+	if (!(key in contentlist[type as keyof ContentList])) {
+		throw new Error('No such key in the contentstore');
+	}
 	content.update((contentlist) => {
 		delete contentlist[type as keyof ContentList][key];
 		return contentlist;
 	});
 }
 
-export { addContent, content, removeContent };
+async function dummyAdd(a: number, b: number) {
+	return a + b;
+}
+
+export {
+	addContent,
+	content,
+	dummyAdd,
+	removeContent,
+	type ChildrenSurvey,
+	type ContentList,
+	type RegistrationForm
+};

@@ -1,12 +1,7 @@
-// userStore.test.ts
-
 import { get } from 'svelte/store';
 import { describe, expect, it } from 'vitest';
 import { addUser, removeUser, type UserData, users } from './userStore';
 
-// Mock user data
-
-// Test suite for userStore
 describe('test_normal_function', () => {
 	const mockUserToken = 'mockUserToken';
 	const mockUserData: UserData = {
