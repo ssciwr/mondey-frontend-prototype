@@ -1,25 +1,43 @@
 <script>
-	// @ts-nocheck
-	/**
-	 * @type {any[]}
-	 */
-	// @ts-ignore
-	export let data;
-	export let heading;
-	export let itemComponent; // = AbstractDropdownItem;
-	export let description;
+	import { Heading } from 'flowbite-svelte';
+	import NavigationButtons from '../Navigation/NavigationButtons.svelte';
+	export let props = [];
+	export let heading = null;
+	export let description = null;
+	export let buttons = null;
 </script>
 
-<div class="items-center space-x-4 rtl:space-x-reverse">
-	<h1 class="mb-6 text-2xl font-bold tracking-tight text-gray-700 dark:text-gray-400">{heading}</h1>
-	<p class="mb-6 text-lg font-normal leading-tight text-gray-700 dark:text-gray-400">
-		{description}
-		Lorem ipsum dolor sit, amet consectetur adipisicing elit. Animi, iste nisi amet tempora laborum natus
-		dolorum quis consectetur non ab nemo sint deleniti officiis enim a explicabo possimus. Voluptatem
-		repellat autem dicta unde ducimus. Commodi fugiat, error magnam necessitatibus fugit blanditiis cum
-		itaque nostrum quaerat, pariatur aperiam ipsum sed quo!
-	</p>
-	{#each data as data_element}
-		<svelte:component this={itemComponent} data={data_element} />
-	{/each}
+<div class="space-y-6rtl:space-x-reverse items-center justify-center space-x-4">
+	{#if heading}
+		<Heading
+			tag="h1"
+			class="mb-6 p-6 text-2xl font-bold tracking-tight text-gray-700 dark:text-gray-400"
+		>
+			{heading}
+		</Heading>
+	{/if}
+
+	{#if description}
+		<p class="mb-6 text-lg font-normal leading-tight text-gray-700 dark:text-gray-400">
+			{description}
+		</p>
+	{/if}
+
+	<form class="flex flex-col space-y-6">
+		{#each props as prop}
+			{#if prop.componentProps.label}
+				<label
+					for={prop.componentProps.name}
+					class=" font-semibold text-gray-700 dark:text-gray-400"
+				>
+					{prop.componentProps.label}
+				</label>
+			{/if}
+			<svelte:component this={prop.itemComponent} {...prop.componentProps} />
+		{/each}
+	</form>
+
+	{#if buttons}
+		<NavigationButtons {buttons} />
+	{/if}
 </div>
