@@ -19,6 +19,7 @@
 
 <Card
 	img={data.image}
+	imgClass="max-md:hidden object-scale-down"
 	href={data.button ? null : data.href}
 	class={data.button
 		? 'm-2 max-w-prose'
