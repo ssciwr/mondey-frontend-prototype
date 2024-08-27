@@ -25,7 +25,8 @@
 				name: 'Geburtsjahr',
 				items: numericalRange(100, 1920),
 				about: 'Wählen sie ihr Geburtsjahr aus',
-				selected: 1988
+				selected: 1988,
+				label: 'Geburtsjahr'
 			}
 		},
 		{
@@ -34,7 +35,8 @@
 				name: 'Geschlecht',
 				items: ['männlich', 'weiblich', 'divers'],
 				about: 'Wählen sie ihr Geschlecht aus',
-				selected: 'weiblich'
+				selected: 'weiblich',
+				label: 'Geschlecht'
 			}
 		},
 		{
@@ -51,7 +53,8 @@
 					'Promotion'
 				],
 				about: 'Wählen sie ihren höchsten Bildungsabschluss aus',
-				selected: 'Realschulabschluss'
+				selected: 'Realschulabschluss',
+				label: 'Höchster Bildungsabschluss'
 			}
 		},
 
@@ -62,7 +65,8 @@
 				items: intervalRange(13, 0, 5),
 				about:
 					'Wählen sie ihre Arbeitszeit pro Woche aus. Wählen sie die Zahl, die dem tatsächlichen Wert am nächsten kommt.',
-				selected: '35-40'
+				selected: '35-40',
+				label: 'Arbeitszeit/Woche'
 			}
 		},
 		{
@@ -72,7 +76,8 @@
 				items: intervalRange(23, 0, 5000),
 				about:
 					'Wählen sie ihre Jahreseinkommen aus. Wählen sie die Zahl, die dem tatsächlichen Wert am nächsten kommt.',
-				selected: '50000-55000'
+				selected: '50000-55000',
+				label: 'Familieneinkommen/Jahr'
 			}
 		},
 
@@ -82,7 +87,8 @@
 				name: 'Beruf',
 				type: 'text',
 				about: 'Geben sie ihren Beruf an',
-				placeholder: 'Geben sie ihren Beruf an'
+				placeholder: 'Geben sie ihren Beruf an',
+				label: 'Beruf'
 			}
 		}
 	];

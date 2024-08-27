@@ -8,8 +8,7 @@
 			componentProps: {
 				type: 'text',
 				name: 'name',
-				placeholder: 'Name',
-				// label: 'Name',
+				label: 'Name',
 				value: '',
 				required: true
 			}
@@ -19,8 +18,7 @@
 			componentProps: {
 				type: 'date',
 				name: 'dateofbirth',
-				placeholder: 'Geburtsdatum',
-				// label: 'Geburtsdatum',
+				label: 'Geburtsdatum',
 				value: '',
 				required: true
 			}
@@ -28,9 +26,9 @@
 		{
 			itemComponent: AbstractDropdownItem,
 			componentProps: {
-				name: 'Frühgeburt?',
+				name: 'Bitte auswählen',
 				items: ['Ja', 'Nein'],
-				// label: 'Frühgeburt',
+				label: 'Frühgeburt',
 				value: '',
 				required: true
 			}
@@ -38,9 +36,9 @@
 		{
 			itemComponent: AbstractDropdownItem,
 			componentProps: {
-				name: 'Geschlecht',
+				name: 'Bitte auswählen',
 				items: ['Männlich', 'Weiblich'],
-				// label: 'Geschlecht',
+				label: 'Geschlecht',
 				value: '',
 				required: true
 			}
@@ -48,9 +46,9 @@
 		{
 			itemComponent: AbstractDropdownItem,
 			componentProps: {
-				name: 'Nationalität',
+				name: 'Bitte auswählen',
 				items: ['De', 'US', 'Fr', 'IT', 'Es'],
-				// label: 'Geschlecht',
+				label: 'Nationalität',
 				value: '',
 				required: true
 			}
@@ -58,9 +56,9 @@
 		{
 			itemComponent: AbstractDropdownItem,
 			componentProps: {
-				name: 'Muttersprache',
+				name: 'Bitte auswählen',
 				items: ['Deutsch', 'Englisch (UK)', 'Englisch (Us)', 'Mandarin', 'Arabisch'],
-				// label: 'Geschlecht',
+				label: 'Bitte geben sie die erste Sprache an die das Kind gelernt hat',
 				value: '',
 				required: true
 			}
@@ -68,7 +66,7 @@
 		{
 			itemComponent: AbstractDropdownItem,
 			componentProps: {
-				name: 'Verhältnis des Kindes zu ihnen',
+				name: 'Bitte auswählen',
 				items: [
 					'Kind',
 					'Enkelkind',
@@ -79,24 +77,25 @@
 					'Betreuung zu Hause'
 				],
 				value: '',
+				label: 'Verhältnis des Kindes zu ihnen',
 				required: true
 			}
 		},
 		{
 			itemComponent: AbstractDropdownItem,
 			componentProps: {
-				name: 'Entwicklungsauffälligkeiten',
+				name: 'Bitte auswählen',
 				items: ['Hörprobleme', 'Fehlsichtigkeit', 'Sprachfehler'],
 				value: '',
+				label: 'Entwicklungsauffälligkeiten',
 				required: true
 			}
 		},
 		{
 			itemComponent: Textarea,
 			componentProps: {
-				name: 'Anmerkungen',
-				label: 'Anmerkungen',
-				placeholder: 'Anmerkungen',
+				name: 'Bitte eintragen',
+				label: 'Sonstige Anmerkungen',
 				rows: 5,
 				value: '',
 				required: true

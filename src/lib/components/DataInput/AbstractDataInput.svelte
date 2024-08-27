@@ -1,6 +1,6 @@
 <script>
+	import { Heading } from 'flowbite-svelte';
 	import NavigationButtons from '../Navigation/NavigationButtons.svelte';
-	import { Button, ButtonGroup, Heading } from 'flowbite-svelte';
 	export let props = [];
 	export let heading = null;
 	export let description = null;
@@ -25,12 +25,12 @@
 
 	<form class="flex flex-col space-y-6">
 		{#each props as prop}
-			{#if prop.label}
+			{#if prop.componentProps.label}
 				<label
 					for={prop.componentProps.name}
-					class="text-lg font-normal text-gray-700 dark:text-gray-400"
+					class=" font-semibold text-gray-700 dark:text-gray-400"
 				>
-					{prop.label}
+					{prop.componentProps.label}
 				</label>
 			{/if}
 			<svelte:component this={prop.itemComponent} {...prop.componentProps} />
@@ -40,5 +40,4 @@
 	{#if buttons}
 		<NavigationButtons {buttons} />
 	{/if}
-
 </div>
