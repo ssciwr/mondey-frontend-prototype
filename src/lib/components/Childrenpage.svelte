@@ -13,7 +13,7 @@
 		data.unshift({
 			header: 'Neu',
 			summary: 'Ein neues Kind anmelden',
-			href: '/'
+			href: '/childLand/childDataInput'
 		});
 		return data;
 	}

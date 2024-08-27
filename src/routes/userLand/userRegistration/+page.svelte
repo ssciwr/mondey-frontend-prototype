@@ -75,6 +75,6 @@
 	const heading = 'Als neuer Benutzer registrieren';
 </script>
 
-<div class="m-1 w-full max-w-md items-center justify-center">
+<div class="container m-1 mx-auto w-full max-w-md">
 	<AbstractRegistrationForm {heading} {props} {buttons} />
 </div>

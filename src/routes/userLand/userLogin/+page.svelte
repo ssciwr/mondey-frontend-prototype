@@ -51,6 +51,6 @@
 	];
 </script>
 
-<div>
+<div class="container m-1 mx-auto w-full max-w-md">
 	<AbstractRegistrationForm heading={'Einloggen'} {buttons} props={data} />
 </div>
