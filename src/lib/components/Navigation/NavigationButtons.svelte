@@ -8,7 +8,7 @@
 	{#each buttons as bprops}
 		<Button
 			href={bprops.href}
-			class="dark:bg-primay-700 bg-primary-700 text-center text-sm text-white hover:bg-primary-800 hover:text-white dark:hover:bg-primary-800"
+			class="dark:bg-primay-700 w-full bg-primary-700 text-center text-sm text-white hover:bg-primary-800 hover:text-white dark:hover:bg-primary-800"
 			>{bprops.label}</Button
 		>
 	{/each}

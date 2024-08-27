@@ -5,6 +5,7 @@
 	export let heading = null;
 	export let buttons = null;
 	export let description = null;
+	console.log('props: ', props);
 </script>
 
 <div class="m-1 items-center justify-center pb-6">
