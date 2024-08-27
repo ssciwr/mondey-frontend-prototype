@@ -1,4 +1,4 @@
-import { writable } from 'svelte/store';
+import { get, writable } from 'svelte/store';
 
 // types
 interface ChildrenSurvey {
@@ -33,7 +33,7 @@ async function addContent(
 			throw new Error('No such register in the contentstore');
 		}
 
-		if (key in contentlist[type]) {
+		if (key in contentlist[type as keyof ContentList]) {
 			throw new Error('Key already exists in the contentstore');
 		}
 		contentlist[type as keyof ContentList][key] = new_content;
@@ -54,9 +54,25 @@ async function removeContent(type: string, key: string) {
 	});
 }
 
+async function fetchContent(type: string, key: string) {
+	const contentData = get(content);
+	if (!(type in contentData)) {
+		throw new Error('No such register in the contentstore');
+	}
+
+	if (!(key in contentData[type as keyof ContentList])) {
+		throw new Error('No such key in the contentstore');
+	}
+
+	return contentData[type as keyof ContentList][key];
+}
+
+// this hardcodes some dummy content data.
+
 export {
 	addContent,
 	content,
+	fetchContent,
 	removeContent,
 	type ChildrenSurvey,
 	type ContentList,

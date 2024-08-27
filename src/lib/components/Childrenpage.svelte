@@ -5,7 +5,8 @@
 				header: item.name,
 				summary: item.info,
 				image: item.image,
-				href: item.href ? item.href : '/'
+				observationData: item.observationData,
+				href: '/trafficlightfeedback'
 			};
 		});
 
