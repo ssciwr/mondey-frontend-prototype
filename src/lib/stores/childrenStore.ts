@@ -48,6 +48,7 @@ const childrenlist: ChildrenList = {};
 
 const children = writable(childrenlist);
 
+// addX and removeX are helper functions and can probably be removed once we have a proper backend
 /**
  * Add a new user with an empty children store
  * @param usertoken the token of the user to add
