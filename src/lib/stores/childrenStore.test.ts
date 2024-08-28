@@ -5,7 +5,9 @@ import {
 	addChildObservation,
 	children,
 	fetchChildData,
+	fetchChildrenDataforUser,
 	fetchObservationData,
+	fetchObservationDataForUser,
 	removeChildData,
 	type ChildObject,
 	type ChildrenList,
@@ -158,9 +160,51 @@ describe('normal functionality', () => {
 		}
 	});
 
-	it('should fetch list of childrendata', async () => {});
+	it('should fetch list of childrendata', async () => {
+		children.set(mockChildList);
+		const data = await fetchChildrenDataforUser('alpha');
 
-	it('cannot fetch childrendata from uknown', async () => {});
+		expect(data).toEqual([
+			{
+				name: 'bar',
+				age: 5,
+				nationality: 'german'
+			},
+			{
+				name: 'foo',
+				age: 3,
+				nationality: 'turkish'
+			}
+		]);
+	});
 
-	it('cannot fetch observationdata from uknown', async () => {});
+	it('should fetch list of observationdata successfully', async () => {
+		children.set(mockChildList);
+		const data = await fetchObservationDataForUser('alpha');
+
+		expect(data).toEqual([
+			['childA', mockObservationData],
+			['childB', mockObservationData]
+		]);
+	});
+
+	it('cannot fetch childrendata from uknown', async () => {
+		children.set(mockChildList);
+
+		try {
+			await fetchChildrenDataforUser('x');
+		} catch (error: Error | unknown) {
+			expect((error as Error).message).toBe('No such user in the childrenstore');
+		}
+	});
+
+	it('cannot fetch observationdata from uknown', async () => {
+		children.set(mockChildList);
+
+		try {
+			fetchObservationDataForUser('x');
+		} catch (error: Error | unknown) {
+			expect((error as Error).message).toBe('No such user in the childrenstore');
+		}
+	});
 });
