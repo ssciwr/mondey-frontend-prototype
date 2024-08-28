@@ -2,8 +2,8 @@
 	import AbstractContent from '$lib/components/AbstractContent.svelte';
 	import AbstractDataInput from '$lib/components/DataInput/AbstractDataInput.svelte';
 	import AbstractDropdownItem from '$lib/components/DataInput/AbstractDropdownItem.svelte';
-
 	import { type MilestoneDef } from '$lib/stores/contentStore';
+
 	/**
 	 * Converts the milestone data and adds components to display each element.
 	 * @param milestoneData list of milestone data recovered from the backend

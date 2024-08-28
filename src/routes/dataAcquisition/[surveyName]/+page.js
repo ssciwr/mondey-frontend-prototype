@@ -13,3 +13,4 @@ export async function load({ params }) {
 		data: data
 	};
 }
+export const prerender = false;
