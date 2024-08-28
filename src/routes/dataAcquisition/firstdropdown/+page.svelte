@@ -46,7 +46,7 @@
 <AbstractContent
 	showBottomNavbar={true}
 	lastpage={'/childrengallery'}
-	nextpage={'/nextdropdown'}
+	nextpage={'/dataAcquisition/nextdropdown'}
 	infopage="/info"
 >
 	<AbstractDataInput {heading} {description} props={data_to_display} />

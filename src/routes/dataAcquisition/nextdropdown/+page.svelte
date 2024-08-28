@@ -55,7 +55,7 @@
 
 <AbstractContent
 	showBottomNavbar={true}
-	lastpage={'/firstdropdown'}
+	lastpage={'/dataAcquisition/firstdropdown'}
 	nextpage={'/surveyfeedback'}
 	infopage="/info"
 >

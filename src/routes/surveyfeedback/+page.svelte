@@ -20,7 +20,12 @@
 		'This is an overview over which milestones for the current survey have been completed';
 </script>
 
-<AbstractContent showBottomNavbar={true} lastpage="/nextdropdown" nextpage="/" infopage="/info">
+<AbstractContent
+	showBottomNavbar={true}
+	lastpage="/dataAcquisition/nextdropdown"
+	nextpage="/"
+	infopage="/info"
+>
 	<TableDisplay
 		data={data_to_display}
 		{statusIndicator}

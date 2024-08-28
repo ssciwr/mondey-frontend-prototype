@@ -18,7 +18,11 @@
 	const statusColumns = Object.keys(data_to_display[0]).filter((key) => key !== 'name');
 </script>
 
-<AbstractContent lastpage="/childrengallery" nextpage="/firstdropdown" infopage="/info">
+<AbstractContent
+	lastpage="/childrengallery"
+	nextpage={`/dataAcquisition/${'surveyA'}`}
+	infopage="/info"
+>
 	<TableDisplay
 		{caption}
 		data={data_to_display}
