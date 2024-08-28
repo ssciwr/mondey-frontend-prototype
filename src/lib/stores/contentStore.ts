@@ -24,43 +24,13 @@ const contentlist: ContentList = {};
 // store that has an object which stores the content.
 const content = writable(contentlist);
 
-// functions to add and remove stuff from the store and retrieve values
-// /add and remove are helpver functions and will go once we have a proper backend
-/**
- * Add content to the store
- * @param key identifier for the content to add
- * @param new_content content to add to the store
- */
-async function addContent(key: string, new_content: ContentNode) {
-	content.update((contentlist: ContentList) => {
-		if (key in contentlist) {
-			throw new Error('Key already exists in the contentstore');
-		}
-		contentlist[key] = new_content;
-		return contentlist;
-	});
-}
-
-/**
- * Remove content from the store corresponding to the key given.
- * @param key identifier for the content to remove
- */
-async function removeContent(key: string) {
-	content.update((contentlist) => {
-		if (!(key in contentlist)) {
-			throw new Error('No such key in the contentstore');
-		}
-		delete contentlist[key];
-		return contentlist;
-	});
-}
-
 /**
  * Retrieve content from the store
  * @param key identifier for the content to fetch
  * @returns content element corresponding to the key
  */
 async function fetchContent(key: string) {
+	// later: fetch stuff from server and write to store. For now, get from dummy data in store
 	const contentData = get(content);
 
 	if (!(key in contentData)) {
@@ -176,11 +146,9 @@ async function createDummyData() {
 }
 
 export {
-	addContent,
 	content,
 	createDummyData,
 	fetchContent,
-	removeContent,
 	type ContentList,
 	type ContentNode,
 	type MilestoneDef

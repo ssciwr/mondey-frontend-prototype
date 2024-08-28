@@ -302,7 +302,7 @@ async function createDummyData() {
 		id: 'childAnna',
 		user: 'dummyUser',
 		image: 'child_avatar.png',
-		info: 'Anna child that is making a mess and is doing good. Click to view more.'
+		info: 'Anna child that is doing good and developing according to their age.. Click to view more.'
 	});
 	await addChildObservation('dummyUser', 'childAnna', {
 		id: 'childAnna',
@@ -316,7 +316,7 @@ async function createDummyData() {
 		id: 'childBen',
 		user: 'dummyUser',
 		image: 'child_avatar.png',
-		info: 'Ben child that is making a mess and is doing good. Click to view more.'
+		info: 'Ben child that is doing good and developing according to their age.. Click to view more.'
 	});
 	await addChildObservation('dummyUser', 'childBen', {
 		id: 'childAnna',
@@ -330,7 +330,7 @@ async function createDummyData() {
 		id: 'childC',
 		user: 'dummyUser',
 		image: 'children.png',
-		info: 'C child that is making a mess and is doing good. Click to view more.'
+		info: 'C child that is doing good and developing according to their age. Click to view more.'
 	});
 	await addChildObservation('dummyUser', 'childC', {
 		id: 'childAnna',
@@ -344,7 +344,7 @@ async function createDummyData() {
 		id: 'childDora',
 		user: 'dummyUser',
 		image: 'children.png',
-		info: 'Dora child that is making a mess and is doing good. Click to view more.'
+		info: 'Dora child that is doing good and developing according to their age.. Click to view more.'
 	});
 	await addChildObservation('dummyUser', 'childDora', {
 		id: 'childAnna',
@@ -358,7 +358,7 @@ async function createDummyData() {
 		id: 'childE',
 		user: 'dummyUser',
 		image: 'children.png',
-		info: 'E child that is making a mess and is doing good. Click to view more.'
+		info: 'E child that is doing good and developing according to their age.. Click to view more.'
 	});
 	await addChildObservation('dummyUser', 'childE', {
 		id: 'childAnna',
@@ -372,7 +372,7 @@ async function createDummyData() {
 		id: 'childF',
 		user: 'dummyUser',
 		image: 'children.png',
-		info: 'F child that is making a mess and is doing good. Click to view more.'
+		info: 'F child that is doing good and developing according to their age.. Click to view more.'
 	});
 	await addChildObservation('dummyUser', 'childF', {
 		id: 'childAnna',
