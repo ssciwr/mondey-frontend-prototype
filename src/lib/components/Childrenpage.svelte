@@ -58,21 +58,24 @@
 		type ChildrenList
 	} from '$lib/stores/childrenStore';
 	import { Heading } from 'flowbite-svelte';
-	import { onMount } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 	// create data and
 
 	let data: ChildData[] = [];
 
-	children.subscribe(async (childlist: ChildrenList) => {
+	const unsubscribe = children.subscribe(async (childlist: ChildrenList) => {
 		let rawdata = await fetchChildrenDataforUser('dummyUser');
 		data = convertData(rawdata);
 	});
 
-	// this fetches dummy child data from the database for the dummy user
+	// this fetches dummy child data for the dummy user whenever the component is mounted into the dom
+	// it is conceptualized as emulating an API call that would normally fetch this from the server.
 	onMount(async () => {
 		children.set({});
 		await createDummyData();
 	});
+
+	onDestroy(unsubscribe);
 </script>
 
 <Heading tag="h1" class="mb-2" color="text-gray-700 dark:text-gray-400">Übersicht</Heading>
