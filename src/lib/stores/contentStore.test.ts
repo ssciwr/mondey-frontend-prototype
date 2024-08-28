@@ -4,55 +4,79 @@ import {
 	addContent,
 	content,
 	removeContent,
-	type ChildrenSurvey,
 	type ContentList,
-	type RegistrationForm
+	type MilestoneDef
 } from './contentStore';
 
 describe('test_normal_functionality', async () => {
-	const mockChildSurvey: ChildrenSurvey = {
-		can_do_this: 'incomplete',
-		can_do_that: 'fully',
-		can_do_the_other: 'no'
-	};
-
-	const mockRegistrationForm: RegistrationForm = {
-		name: 'Tom',
-		gender: 'male'
+	const mockChildSurvey: MilestoneDef = {
+		name: 'dummy',
+		label: 'dummy description',
+		items: ['dummy1', 'dummy2', 'dummy3', 'dummy4']
 	};
 
 	const mockContentList: ContentList = {
-		childrenSurveys: {
-			testsurvey: mockChildSurvey
+		A: {
+			milestones: [mockChildSurvey, mockChildSurvey, mockChildSurvey],
+			description: 'nothing to be seen here',
+			last: '/',
+			next: 'B'
 		},
-		registrationForms: {
-			testregistration: mockRegistrationForm
+		B: {
+			milestones: [mockChildSurvey, mockChildSurvey, mockChildSurvey],
+			description: 'nothing to be seen here',
+			last: 'A',
+			next: 'C'
+		},
+		C: {
+			milestones: [mockChildSurvey, mockChildSurvey, mockChildSurvey],
+			description: 'nothing to be seen here',
+			last: 'B',
+			next: '/'
 		}
 	};
 
 	it('should add content successfully when key is not yet there', async () => {
 		content.set(mockContentList);
-		await addContent('childrenSurveys', 'dummySurvey', mockChildSurvey);
-		await addContent('registrationForms', 'childRegistration', mockRegistrationForm);
+		await addContent('this', {
+			milestones: [mockChildSurvey, mockChildSurvey, mockChildSurvey],
+			description: 'nothing to be seen here',
+			last: '/',
+			next: 'B'
+		});
+		await addContent('that', {
+			milestones: [mockChildSurvey, mockChildSurvey, mockChildSurvey],
+			description: 'nothing to be seen here',
+			last: 'B',
+			next: 'C'
+		});
 
-		expect(get(content)['childrenSurveys']['dummySurvey']).toEqual(mockChildSurvey);
-		expect(get(content)['registrationForms']['childRegistration']).toEqual(mockRegistrationForm);
+		expect(get(content)['this']).toEqual({
+			milestones: [mockChildSurvey, mockChildSurvey, mockChildSurvey],
+			description: 'nothing to be seen here',
+			last: '/',
+			next: 'B'
+		});
+		expect(get(content)['that']).toEqual({
+			milestones: [mockChildSurvey, mockChildSurvey, mockChildSurvey],
+			description: 'nothing to be seen here',
+			last: 'B',
+			next: 'C'
+		});
 	});
 
 	it('should remove content from the contentstore successfully', async () => {
 		content.set(mockContentList);
-		await removeContent('childrenSurveys', 'testsurvey');
-		await removeContent('registrationForms', 'testregistration');
+		await removeContent('A');
 
-		expect(get(content)['childrenSurveys']['testsurvey']).toBeUndefined();
-		expect(get(content)['registrationForms']['testregistration']).toBeUndefined();
+		expect(get(content)['A']).toBeUndefined();
 	});
 
 	it('throw error when removing an element with an existing key', async () => {
 		content.set(mockContentList);
 
 		try {
-			await removeContent('childrenSurveys', 'notthere');
+			await removeContent('notthere');
 		} catch (error: Error | unknown) {
 			expect((error as Error).message).toBe('No such key in the contentstore');
 		}
@@ -62,7 +86,12 @@ describe('test_normal_functionality', async () => {
 		content.set(mockContentList);
 
 		try {
-			await addContent('childrenSurveys', 'testsurvey', mockChildSurvey);
+			await addContent('A', {
+				milestones: [mockChildSurvey, mockChildSurvey, mockChildSurvey],
+				description: 'nothing to be seen here',
+				last: '/',
+				next: 'B'
+			});
 		} catch (error: Error | unknown) {
 			expect((error as Error).message).toBe('Key already exists in the contentstore');
 		}
