@@ -1,8 +1,8 @@
 <script>
+	import AbstractDataInput from '$lib/components/DataInput/AbstractDataInput.svelte';
 	import AbstractDropdownItem from '$lib/components/DataInput/AbstractDropdownItem.svelte';
-	import AbstractRegistrationForm from '$lib/components/DataInput/AbstractRegistrationForm.svelte';
-	import { Input, Textarea } from 'flowbite-svelte';
-	const data = [
+	import { Card, Heading, Input, Textarea } from 'flowbite-svelte';
+	$: data = [
 		{
 			itemComponent: Input,
 			componentProps: {
@@ -102,6 +102,7 @@
 			}
 		}
 	];
+
 	const heading = 'Neues Kind registrieren';
 
 	const buttons = [
@@ -112,6 +113,15 @@
 	];
 </script>
 
-<div class="container m-1 mx-auto w-full max-w-md">
-	<AbstractRegistrationForm {heading} props={data} {buttons} />
+<div class="container m-1 mx-auto w-full max-w-md items-center justify-center pb-6">
+	<Card>
+		{#if heading}
+			<Heading
+				tag="h3"
+				class="m-1 mb-3 p-1 text-center font-bold tracking-tight text-gray-700 dark:text-gray-400"
+				>{heading}</Heading
+			>
+		{/if}
+		<AbstractDataInput props={data} {buttons} />
+	</Card>
 </div>
