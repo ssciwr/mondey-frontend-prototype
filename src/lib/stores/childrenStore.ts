@@ -4,6 +4,8 @@ import { get, writable } from 'svelte/store';
 
 // Types
 interface ObservationData {
+	id: string;
+	user: string;
 	summary: object;
 	current: object;
 }
@@ -11,6 +13,7 @@ interface ObservationData {
 interface ChildData {
 	name: string;
 	id: string;
+	user: string;
 	[key: string]: unknown;
 }
 
@@ -114,6 +117,7 @@ async function fetchChildData(usertoken: string, childtoken: string) {
 }
 
 async function fetchObservationData(usertoken: string, childtoken: string) {
+
 	// /API calls/ fetch requests could go here.
 	const contentData = get(children);
 
@@ -181,18 +185,19 @@ async function createDummyData() {
 	];
 	const surveys: string[] = ['surveyA', 'surveyB', 'surveyC', 'surveyD', 'surveyE'];
 
-	const summary: {
-		[key: string]: {
-			[key: string]: string;
-		};
-	} = {};
+	interface SummaryElement {
+		name: string;
+		[key: string]: unknown;
+	}
+	const summary: SummaryElement[] = [];
 
 	for (const s of surveys) {
-		summary[s] = {};
+		const element: SummaryElement = { name: s };
 
 		for (const date of dates) {
-			summary[s][date] = chooseRandom(values);
+			element[date] = chooseRandom(values);
 		}
+		summary.push(element);
 	}
 
 	const current: { [survey: string]: { name: string; status: string }[] } = {};
@@ -210,61 +215,95 @@ async function createDummyData() {
 		}
 	}
 
-	const dummyObservationData = {
-		summary: summary,
-		current: current
-	};
-	
 	await addUser('dummyUser');
 
 	await addChildData('dummyUser', 'childAnna', {
 		name: 'Anna',
 		id: 'childAnna',
+		user: 'dummyUser',
 		image: 'child_avatar.png',
 		info: 'A child that is making a mess and is doing good. Click to view more.'
 	});
-	await addChildObservation('dummyUser', 'childAnna', dummyObservationData);
+	await addChildObservation('dummyUser', 'childAnna', {
+		id: 'childAnna',
+		user: 'dummyUser',
+		summary: summary,
+		current: current
+	});
 
 	await addChildData('dummyUser', 'childBen', {
 		name: 'Ben',
 		id: 'childBen',
+		user: 'dummyUser',
 		image: 'child_avatar.png',
 		info: 'A child that is making a mess and is doing good. Click to view more.'
 	});
-	await addChildObservation('dummyUser', 'childBen', dummyObservationData);
+	await addChildObservation('dummyUser', 'childBen', {
+		id: 'childAnna',
+		user: 'dummyUser',
+		summary: summary,
+		current: current
+	});
 
 	await addChildData('dummyUser', 'childC', {
 		name: 'C',
 		id: 'childC',
+		user: 'dummyUser',
 		image: 'children.png',
 		info: 'A child that is making a mess and is doing good. Click to view more.'
 	});
-	await addChildObservation('dummyUser', 'childC', dummyObservationData);
+	await addChildObservation('dummyUser', 'childC', {
+		id: 'childAnna',
+		user: 'dummyUser',
+		summary: summary,
+		current: current
+	});
 
 	await addChildData('dummyUser', 'childDora', {
 		name: 'Dora',
 		id: 'childDora',
+		user: 'dummyUser',
 		image: 'children.png',
 		info: 'A child that is making a mess and is doing good. Click to view more.'
 	});
-	await addChildObservation('dummyUser', 'childDora', dummyObservationData);
+	await addChildObservation('dummyUser', 'childDora', {
+		id: 'childAnna',
+		user: 'dummyUser',
+		summary: summary,
+		current: current
+	});
 
 	await addChildData('dummyUser', 'childE', {
 		name: 'E',
 		id: 'childE',
+		user: 'dummyUser',
 		image: 'children.png',
 		info: 'A child that is making a mess and is doing good. Click to view more.'
 	});
-	await addChildObservation('dummyUser', 'childE', dummyObservationData);
+	await addChildObservation('dummyUser', 'childE', {
+		id: 'childAnna',
+		user: 'dummyUser',
+		summary: summary,
+		current: current
+	});
 
 	await addChildData('dummyUser', 'childF', {
 		name: 'F',
 		id: 'childF',
+		user: 'dummyUser',
 		image: 'children.png',
 		info: 'A child that is making a mess and is doing good. Click to view more.'
 	});
-	await addChildObservation('dummyUser', 'childF', dummyObservationData);
+	await addChildObservation('dummyUser', 'childF', {
+		id: 'childAnna',
+		user: 'dummyUser',
+		summary: summary,
+		current: current
+	});
 }
+
+// add data. This must later be done in another way via API calls, or as an intermediate step via localstorage
+await createDummyData();
 
 // <--
 

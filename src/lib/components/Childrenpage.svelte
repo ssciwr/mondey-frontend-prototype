@@ -5,7 +5,7 @@
 				header: item.name,
 				summary: item.info,
 				image: item.image,
-				href: `/childLand/${item.id}`
+				href: `/childLand/${item.user}/${item.id}`
 			};
 		});
 
@@ -65,8 +65,6 @@
 
 	async function init() {
 		loading = true;
-		children.set({});
-		await createDummyData();
 		let rawdata = await fetchChildrenDataforUser('dummyUser');
 		data = convertData(rawdata);
 		loading = false;
