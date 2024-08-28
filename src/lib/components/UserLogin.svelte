@@ -1,8 +1,6 @@
 <script>
 	import AbstractRegistrationForm from '$lib/components/DataInput/AbstractRegistrationForm.svelte';
-	import { createDummyUser } from '$lib/stores/userStore';
 	import { Input } from 'flowbite-svelte';
-	import { onMount } from 'svelte';
 	import UserLoginUtil from './UserLoginUtil.svelte';
 
 	export let role = 'user';
@@ -56,10 +54,6 @@
 			href: '/'
 		}
 	];
-
-	onMount(async () => {
-		createDummyUser();
-	});
 </script>
 
 <div class="container m-1 mx-auto w-full max-w-md space-y-6">
