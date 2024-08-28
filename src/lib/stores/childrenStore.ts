@@ -206,7 +206,10 @@ async function fetchChildrenDataforUser(usertoken: string) {
  * @returns A list of tuples, where the first element is the child identifier and the second element is the observation data of the child
  */
 async function fetchObservationDataForUser(usertoken: string) {
+	console.log('fetching observation data for user', usertoken);
 	const contentData = get(children);
+	console.log(contentData);
+
 	if (!(usertoken in contentData)) {
 		throw new Error('No such user in the childrenstore');
 	}

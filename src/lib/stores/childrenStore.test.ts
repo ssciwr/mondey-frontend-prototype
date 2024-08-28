@@ -208,7 +208,7 @@ describe('normal functionality', () => {
 		reset();
 
 		try {
-			fetchObservationDataForUser('x');
+			await fetchObservationDataForUser('x');
 		} catch (error: Error | unknown) {
 			expect((error as Error).message).toBe('No such user in the childrenstore');
 		}
