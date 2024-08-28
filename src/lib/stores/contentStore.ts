@@ -1,6 +1,6 @@
 import { get, writable } from 'svelte/store';
 
-// types
+// types. Create some interfaces to define the structure of the content and make clear what will be expected from API calls
 interface MilestoneDef {
 	name: string;
 	items: string[];
@@ -20,10 +20,17 @@ interface ContentList {
 
 const contentlist: ContentList = {};
 
+// README: perhaps put this into a derived store that is a map of keys to content nodes. This way we can have a single
 // store that has an object which stores the content.
 const content = writable(contentlist);
 
 // functions to add and remove stuff from the store
+
+/**
+ * Add content to the store
+ * @param key identifier for the content to add
+ * @param new_content content to add to the store
+ */
 async function addContent(key: string, new_content: ContentNode) {
 	content.update((contentlist: ContentList) => {
 		if (key in contentlist) {
@@ -34,6 +41,10 @@ async function addContent(key: string, new_content: ContentNode) {
 	});
 }
 
+/**
+ * Remove content from the store corresponding to the key given.
+ * @param key identifier for the content to remove
+ */
 async function removeContent(key: string) {
 	content.update((contentlist) => {
 		if (!(key in contentlist)) {
@@ -44,6 +55,11 @@ async function removeContent(key: string) {
 	});
 }
 
+/**
+ * Retrieve content from the store
+ * @param key identifier for the content to fetch
+ * @returns content element corresponding to the key
+ */
 async function fetchContent(key: string) {
 	const contentData = get(content);
 
@@ -54,11 +70,17 @@ async function fetchContent(key: string) {
 	return contentData[key];
 }
 
+/**
+ * Get the number of surveys in the store
+ */
 function getSurveyNumber() {
 	const contentData = get(content);
 	return Object.keys(contentData).length;
 }
 
+/**
+ * Create some dummy data to test the store
+ */
 async function createDummyData() {
 	const dummySurveys = {
 		surveyA: {
