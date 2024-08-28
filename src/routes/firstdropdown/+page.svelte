@@ -43,6 +43,11 @@
 	const heading = 'some initial dummy dropdown page';
 </script>
 
-<AbstractContent showBottomNavbar={true} lastpage={'/'} nextpage={'/nextdropdown'} infopage="/info">
+<AbstractContent
+	showBottomNavbar={true}
+	lastpage={'/childrengallery'}
+	nextpage={'/nextdropdown'}
+	infopage="/info"
+>
 	<AbstractDataInput {heading} {description} props={data_to_display} />
 </AbstractContent>

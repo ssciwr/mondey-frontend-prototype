@@ -117,7 +117,6 @@ async function fetchChildData(usertoken: string, childtoken: string) {
 }
 
 async function fetchObservationData(usertoken: string, childtoken: string) {
-
 	// /API calls/ fetch requests could go here.
 	const contentData = get(children);
 
@@ -171,6 +170,13 @@ function chooseRandom(values: string[]) {
 }
 
 async function createDummyData() {
+	if ('dummyUser' in childrenlist) {
+		return;
+	}
+	// add user
+	await addUser('dummyUser');
+
+	// create data
 	const values = ['good', 'warn', 'bad'];
 	const dates = [
 		'05-11-2017',
@@ -215,14 +221,12 @@ async function createDummyData() {
 		}
 	}
 
-	await addUser('dummyUser');
-
 	await addChildData('dummyUser', 'childAnna', {
 		name: 'Anna',
 		id: 'childAnna',
 		user: 'dummyUser',
 		image: 'child_avatar.png',
-		info: 'A child that is making a mess and is doing good. Click to view more.'
+		info: 'Anna child that is making a mess and is doing good. Click to view more.'
 	});
 	await addChildObservation('dummyUser', 'childAnna', {
 		id: 'childAnna',
@@ -236,7 +240,7 @@ async function createDummyData() {
 		id: 'childBen',
 		user: 'dummyUser',
 		image: 'child_avatar.png',
-		info: 'A child that is making a mess and is doing good. Click to view more.'
+		info: 'Ben child that is making a mess and is doing good. Click to view more.'
 	});
 	await addChildObservation('dummyUser', 'childBen', {
 		id: 'childAnna',
@@ -250,7 +254,7 @@ async function createDummyData() {
 		id: 'childC',
 		user: 'dummyUser',
 		image: 'children.png',
-		info: 'A child that is making a mess and is doing good. Click to view more.'
+		info: 'C child that is making a mess and is doing good. Click to view more.'
 	});
 	await addChildObservation('dummyUser', 'childC', {
 		id: 'childAnna',
@@ -264,7 +268,7 @@ async function createDummyData() {
 		id: 'childDora',
 		user: 'dummyUser',
 		image: 'children.png',
-		info: 'A child that is making a mess and is doing good. Click to view more.'
+		info: 'Dora child that is making a mess and is doing good. Click to view more.'
 	});
 	await addChildObservation('dummyUser', 'childDora', {
 		id: 'childAnna',
@@ -278,7 +282,7 @@ async function createDummyData() {
 		id: 'childE',
 		user: 'dummyUser',
 		image: 'children.png',
-		info: 'A child that is making a mess and is doing good. Click to view more.'
+		info: 'E child that is making a mess and is doing good. Click to view more.'
 	});
 	await addChildObservation('dummyUser', 'childE', {
 		id: 'childAnna',
@@ -292,7 +296,7 @@ async function createDummyData() {
 		id: 'childF',
 		user: 'dummyUser',
 		image: 'children.png',
-		info: 'A child that is making a mess and is doing good. Click to view more.'
+		info: 'F child that is making a mess and is doing good. Click to view more.'
 	});
 	await addChildObservation('dummyUser', 'childF', {
 		id: 'childAnna',
@@ -301,9 +305,6 @@ async function createDummyData() {
 		current: current
 	});
 }
-
-// add data. This must later be done in another way via API calls, or as an intermediate step via localstorage
-await createDummyData();
 
 // <--
 

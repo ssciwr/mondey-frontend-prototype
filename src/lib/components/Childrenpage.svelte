@@ -51,7 +51,6 @@
 	import CardDisplay from '$lib/components/DataDisplay/CardDisplay.svelte';
 	import GalleryDisplay from '$lib/components/DataDisplay/GalleryDisplay.svelte';
 	import {
-		children,
 		createDummyData,
 		fetchChildrenDataforUser,
 		type ChildData
@@ -65,6 +64,7 @@
 
 	async function init() {
 		loading = true;
+		await createDummyData();
 		let rawdata = await fetchChildrenDataforUser('dummyUser');
 		data = convertData(rawdata);
 		loading = false;

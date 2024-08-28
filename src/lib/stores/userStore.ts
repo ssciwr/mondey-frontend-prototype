@@ -1,4 +1,4 @@
-import { writable } from 'svelte/store';
+import { get, writable } from 'svelte/store';
 
 // type interfaces
 interface PersonalData {
@@ -60,4 +60,31 @@ async function removeUser(userToken: string) {
 	});
 }
 
-export { addUser, removeUser, users, type UserData, type UserList };
+async function fetchUser(userToken: string) {
+	if (!(userToken in userlist)) {
+		throw new Error('User with this token does not exist');
+	} else {
+		const userdata = get(users);
+		return userdata[userToken];
+	}
+}
+
+async function createDummyUser() {
+	await addUser('dummy', {
+		role: 'admin',
+		email: 'dummy@nothing.com',
+		name: 'dummy',
+		token: 'whatever',
+		password: '123',
+		data: {
+			yearofbirth: 1990,
+			gender: 'male',
+			profession: 'student',
+			education: 'bachelor',
+			workinghours: 'fulltime',
+			householdincome: '35000-40000'
+		}
+	});
+}
+
+export { addUser, createDummyUser, fetchUser, removeUser, users, type UserData, type UserList };

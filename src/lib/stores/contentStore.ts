@@ -67,8 +67,6 @@ async function fetchContent(type: string, key: string) {
 	return contentData[type as keyof ContentList][key];
 }
 
-// this hardcodes some dummy content data.
-
 export {
 	addContent,
 	content,
