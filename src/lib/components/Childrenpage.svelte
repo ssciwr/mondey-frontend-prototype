@@ -50,23 +50,31 @@
 <script lang="ts">
 	import CardDisplay from '$lib/components/DataDisplay/CardDisplay.svelte';
 	import GalleryDisplay from '$lib/components/DataDisplay/GalleryDisplay.svelte';
-	import { children, createDummyData, fetchChildrenDataforUser } from '$lib/stores/childrenStore';
+	import {
+		children,
+		createDummyData,
+		fetchChildrenDataforUser,
+		type ChildData,
+		type ChildrenList
+	} from '$lib/stores/childrenStore';
 	import { Heading } from 'flowbite-svelte';
 	import { onMount } from 'svelte';
 	// create data and
 
-	let data = [];
+	let data: ChildData[] = [];
+
+	children.subscribe(async (childlist: ChildrenList) => {
+		let rawdata = await fetchChildrenDataforUser('dummyUser');
+		data = convertData(rawdata);
+	});
 
 	// this fetches dummy child data from the database for the dummy user
 	onMount(async () => {
 		children.set({});
 		await createDummyData();
-		let rawdata = await fetchChildrenDataforUser('dummyUser');
-		data = convertData(rawdata);
 	});
 </script>
 
-<!-- <AbstractContent showNavIcons={false} iconProps={{ class: 'w-10 h-10' }}> -->
 <Heading tag="h1" class="mb-2" color="text-gray-700 dark:text-gray-400">Übersicht</Heading>
 
 <div class="cols-1 grid gap-y-8">
@@ -80,4 +88,3 @@
 		componentProps={createStyle(data)}
 	/>
 </div>
-<!-- </AbstractContent> -->
