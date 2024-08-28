@@ -3,6 +3,13 @@ import { get, writable } from 'svelte/store';
 // README: this API is experimental and not by any means a final design
 
 // Types: create interfaces for the elements that are stored and are expected to be returned from the 'backend' (or its mockup at the moment)
+/**
+ * Interface for the observation data of a child
+ * @param id identifier of the child
+ * @param user user identifier
+ * @param summary summary of the observation: table that contains the status of the child for each survey for each date
+ * @param current current status of individual milestones for the currently open survey
+ */
 interface ObservationData {
 	id: string;
 	user: string;
@@ -10,6 +17,14 @@ interface ObservationData {
 	current: object;
 }
 
+/**
+ * Interface for the data of a child
+ * @param name name of the child
+ * @param id identifier of the child
+ * @param user user identifier
+ * @param image image of the child
+ * @param [key: string] further data elements
+ */
 interface ChildData {
 	name: string;
 	id: string;
@@ -224,7 +239,7 @@ function chooseRandom(values: string[]) {
 }
 
 /**
- * create dummy data for the children store. This will later be replaced by API calls to the server
+ * create dummy data for the children store. This will later be
  */
 async function createDummyData() {
 	if ('dummyUser' in childrenlist) {

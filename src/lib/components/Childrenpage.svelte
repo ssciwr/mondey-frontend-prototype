@@ -20,6 +20,7 @@
 
 	// dynamically create the styles for individual gallery tiles based on the data.
 	// The 'Neu' element needs to be styled differently in particular
+	// FIXME: this needs to go. styles have no business being defined in <script>
 	export function createStyle(data) {
 		return data.map((item) => ({
 			card:

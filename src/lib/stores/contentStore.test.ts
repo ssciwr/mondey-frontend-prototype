@@ -1,12 +1,6 @@
 import { get } from 'svelte/store';
 import { describe, expect, it } from 'vitest';
-import {
-	addContent,
-	content,
-	removeContent,
-	type ContentList,
-	type MilestoneDef
-} from './contentStore';
+import { addContent, content, removeContent, type MilestoneDef } from './contentStore';
 
 describe('test_normal_functionality', async () => {
 	const mockChildSurvey: MilestoneDef = {
@@ -15,29 +9,31 @@ describe('test_normal_functionality', async () => {
 		items: ['dummy1', 'dummy2', 'dummy3', 'dummy4']
 	};
 
-	const mockContentList: ContentList = {
-		A: {
-			milestones: [mockChildSurvey, mockChildSurvey, mockChildSurvey],
-			description: 'nothing to be seen here',
-			last: '/',
-			next: 'B'
-		},
-		B: {
-			milestones: [mockChildSurvey, mockChildSurvey, mockChildSurvey],
-			description: 'nothing to be seen here',
-			last: 'A',
-			next: 'C'
-		},
-		C: {
-			milestones: [mockChildSurvey, mockChildSurvey, mockChildSurvey],
-			description: 'nothing to be seen here',
-			last: 'B',
-			next: '/'
-		}
-	};
+	function reset() {
+		content.set({
+			A: {
+				milestones: [mockChildSurvey, mockChildSurvey, mockChildSurvey],
+				description: 'nothing to be seen here',
+				last: '/',
+				next: 'B'
+			},
+			B: {
+				milestones: [mockChildSurvey, mockChildSurvey, mockChildSurvey],
+				description: 'nothing to be seen here',
+				last: 'A',
+				next: 'C'
+			},
+			C: {
+				milestones: [mockChildSurvey, mockChildSurvey, mockChildSurvey],
+				description: 'nothing to be seen here',
+				last: 'B',
+				next: '/'
+			}
+		});
+	}
 
 	it('should add content successfully when key is not yet there', async () => {
-		content.set(mockContentList);
+		reset();
 		await addContent('this', {
 			milestones: [mockChildSurvey, mockChildSurvey, mockChildSurvey],
 			description: 'nothing to be seen here',
@@ -66,15 +62,14 @@ describe('test_normal_functionality', async () => {
 	});
 
 	it('should remove content from the contentstore successfully', async () => {
-		content.set(mockContentList);
+		reset();
 		await removeContent('A');
 
 		expect(get(content)['A']).toBeUndefined();
 	});
 
 	it('throw error when removing an element with an existing key', async () => {
-		content.set(mockContentList);
-
+		reset();
 		try {
 			await removeContent('notthere');
 		} catch (error: Error | unknown) {
@@ -83,8 +78,7 @@ describe('test_normal_functionality', async () => {
 	});
 
 	it('throw error when adding an element with an already present key', async () => {
-		content.set(mockContentList);
-
+		reset();
 		try {
 			await addContent('A', {
 				milestones: [mockChildSurvey, mockChildSurvey, mockChildSurvey],
