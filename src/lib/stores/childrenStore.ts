@@ -9,6 +9,7 @@ interface ObservationData {
 }
 
 interface ChildData {
+	name: string;
 	[key: string]: unknown;
 }
 
@@ -128,13 +129,17 @@ async function fetchObservationData(usertoken: string, childtoken: string) {
 
 async function fetchChildrenDataforUser(usertoken: string) {
 	const contentData = get(children);
+
 	if (!(usertoken in contentData)) {
 		throw new Error('No such user in the childrenstore');
 	}
 
-	return Object.keys(contentData[usertoken]).map((child) => {
-		return contentData[usertoken][child].childData;
-	});
+	// sort them alphabetically
+	return Object.keys(contentData[usertoken])
+		.map((child) => {
+			return contentData[usertoken][child].childData;
+		})
+		.sort((a, b) => a.name.localeCompare(b.name));
 }
 async function fetchObservationDataForUser(usertoken: string) {
 	const contentData = get(children);
@@ -143,7 +148,7 @@ async function fetchObservationDataForUser(usertoken: string) {
 	}
 
 	return Object.keys(contentData[usertoken]).map((child) => {
-		return contentData[usertoken][child].observationData;
+		return [child, contentData[usertoken][child].observationData];
 	});
 }
 

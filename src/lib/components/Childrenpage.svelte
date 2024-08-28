@@ -54,40 +54,43 @@
 		children,
 		createDummyData,
 		fetchChildrenDataforUser,
-		type ChildData,
-		type ChildrenList
+		type ChildData
 	} from '$lib/stores/childrenStore';
 	import { Heading } from 'flowbite-svelte';
-	import { onDestroy, onMount } from 'svelte';
+	import { onMount } from 'svelte';
 	// create data and
 
 	let data: ChildData[] = [];
+	let loading = true;
 
-	const unsubscribe = children.subscribe(async (childlist: ChildrenList) => {
+	async function init() {
+		loading = true;
+		children.set({});
+		await createDummyData();
 		let rawdata = await fetchChildrenDataforUser('dummyUser');
 		data = convertData(rawdata);
-	});
+		loading = false;
+	}
 
 	// this fetches dummy child data for the dummy user whenever the component is mounted into the dom
 	// it is conceptualized as emulating an API call that would normally fetch this from the server.
-	onMount(async () => {
-		children.set({});
-		await createDummyData();
-	});
-
-	onDestroy(unsubscribe);
+	onMount(init);
 </script>
 
 <Heading tag="h1" class="mb-2" color="text-gray-700 dark:text-gray-400">Übersicht</Heading>
 
 <div class="cols-1 grid gap-y-8">
-	<p class="text-lg text-gray-700 dark:text-gray-400">
-		Wählen sie ein Kind zur Beobachtung aus oder legen melden sie ein neues Kind an.
-	</p>
-	<GalleryDisplay
-		{data}
-		itemComponent={CardDisplay}
-		searchableCol={'header'}
-		componentProps={createStyle(data)}
-	/>
+	{#if loading}
+		<p>Daten werden geladen...</p>
+	{:else}
+		<p class="text-lg text-gray-700 dark:text-gray-400">
+			Wählen sie ein Kind zur Beobachtung aus oder legen melden sie ein neues Kind an.
+		</p>
+		<GalleryDisplay
+			{data}
+			itemComponent={CardDisplay}
+			searchableCol={'header'}
+			componentProps={createStyle(data)}
+		/>
+	{/if}
 </div>
