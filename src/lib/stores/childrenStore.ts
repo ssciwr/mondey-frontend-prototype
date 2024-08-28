@@ -10,6 +10,7 @@ interface ObservationData {
 
 interface ChildData {
 	name: string;
+	id: string;
 	[key: string]: unknown;
 }
 
@@ -156,93 +157,69 @@ async function fetchObservationDataForUser(usertoken: string) {
 // hardcode dummy child data which later will live in the database on the server and be fetched from there via API calls
 // the stuff below is therefore temporary and is an approximation of the datastructure that may be returned perhaps from the backend,
 // and thus is subject to change
+
+function getRandomInt(max: number) {
+	return Math.floor(Math.random() * max);
+}
+
+function chooseRandom(values: string[]) {
+	return values[getRandomInt(values.length)];
+}
+
 async function createDummyData() {
-	const dummyObservationData = {
-		summary: {
-			surveyA: {
-				'05-11-2017': 'good',
-				'08-05-2016': 'bad',
-				'22-07-2012': 'bad',
-				'11-11-2020': 'warn',
-				'30-03-2019': 'warn',
-				'01-06-2022': 'good',
-				'30-12-2021': 'bad',
-				'30-11-2021': 'good',
-				'30-10-2021': 'good'
-			},
-			suveryB: {
-				'05-11-2017': 'bad',
-				'08-05-2016': 'warn',
-				'22-07-2012': 'bad',
-				'11-11-2020': 'warn',
-				'30-03-2019': 'good',
-				'01-06-2022': 'bad',
-				'30-12-2021': 'good',
-				'30-11-2021': 'good',
-				'30-10-2021': 'good'
-			},
-			surveyC: {
-				'05-11-2017': 'warn',
-				'08-05-2016': 'warn',
-				'22-07-2012': 'bad',
-				'11-11-2020': 'warn',
-				'30-03-2019': 'bad',
-				'01-06-2022': 'good',
-				'30-12-2021': 'good',
-				'30-11-2021': 'good',
-				'30-10-2021': 'bad'
-			},
-			surveyD: {
-				'05-11-2017': 'good',
-				'08-05-2016': 'good',
-				'22-07-2012': 'good',
-				'11-11-2020': 'warn',
-				'30-03-2019': 'good',
-				'01-06-2022': 'good',
-				'30-12-2021': 'good',
-				'30-11-2021': 'good',
-				'30-10-2021': 'good'
-			},
-			surveyE: {
-				'05-11-2017': 'good',
-				'08-05-2016': 'warn',
-				'22-07-2012': 'warn',
-				'11-11-2020': 'warn',
-				'30-03-2019': 'good',
-				'01-06-2022': 'good',
-				'30-12-2021': 'good',
-				'30-11-2021': 'warn',
-				'30-10-2021': 'good'
-			}
-		},
-		current: {
-			surveyA: [
-				{ name: 'milestoneA', status: 'done' },
-				{ name: 'milestoneB', status: 'open' },
-				{ name: 'milestoneC', status: 'open' },
-				{ name: 'milestoneD', status: 'incomplete' },
-				{ name: 'milestoneE', status: 'done' }
-			],
-			surveyB: [
-				{ name: 'milestoneA', status: 'done' },
-				{ name: 'milestoneB', status: 'open' },
-				{ name: 'milestoneC', status: 'open' },
-				{ name: 'milestoneD', status: 'incomplete' },
-				{ name: 'milestoneE', status: 'done' }
-			],
-			surveyC: [
-				{ name: 'milestoneA', status: 'done' },
-				{ name: 'milestoneB', status: 'open' },
-				{ name: 'milestoneC', status: 'open' },
-				{ name: 'milestoneD', status: 'incomplete' },
-				{ name: 'milestoneE', status: 'done' }
-			]
+	const values = ['good', 'warn', 'bad'];
+	const dates = [
+		'05-11-2017',
+		'08-05-2016',
+		'22-07-2012',
+		'11-11-2020',
+		'30-03-2019',
+		'01-06-2022',
+		'30-12-2021',
+		'30-11-2021',
+		'30-10-2021'
+	];
+	const surveys: string[] = ['surveyA', 'surveyB', 'surveyC', 'surveyD', 'surveyE'];
+
+	const summary: {
+		[key: string]: {
+			[key: string]: string;
+		};
+	} = {};
+
+	for (const s of surveys) {
+		summary[s] = {};
+
+		for (const date of dates) {
+			summary[s][date] = chooseRandom(values);
 		}
+	}
+
+	const current: { [survey: string]: { name: string; status: string }[] } = {};
+
+	const milestones = ['milestoneA', 'milestoneB', 'milestoneC', 'milestoneD', 'milestoneE'];
+	const completionValues = ['done', 'open', 'incomplete'];
+
+	for (const survey of surveys) {
+		current[survey] = [];
+		for (const milestone of milestones) {
+			current[survey].push({
+				name: milestone,
+				status: chooseRandom(completionValues)
+			});
+		}
+	}
+
+	const dummyObservationData = {
+		summary: summary,
+		current: current
 	};
+	
 	await addUser('dummyUser');
 
 	await addChildData('dummyUser', 'childAnna', {
 		name: 'Anna',
+		id: 'childAnna',
 		image: 'child_avatar.png',
 		info: 'A child that is making a mess and is doing good. Click to view more.'
 	});
@@ -250,6 +227,7 @@ async function createDummyData() {
 
 	await addChildData('dummyUser', 'childBen', {
 		name: 'Ben',
+		id: 'childBen',
 		image: 'child_avatar.png',
 		info: 'A child that is making a mess and is doing good. Click to view more.'
 	});
@@ -257,6 +235,7 @@ async function createDummyData() {
 
 	await addChildData('dummyUser', 'childC', {
 		name: 'C',
+		id: 'childC',
 		image: 'children.png',
 		info: 'A child that is making a mess and is doing good. Click to view more.'
 	});
@@ -264,6 +243,7 @@ async function createDummyData() {
 
 	await addChildData('dummyUser', 'childDora', {
 		name: 'Dora',
+		id: 'childDora',
 		image: 'children.png',
 		info: 'A child that is making a mess and is doing good. Click to view more.'
 	});
@@ -271,6 +251,7 @@ async function createDummyData() {
 
 	await addChildData('dummyUser', 'childE', {
 		name: 'E',
+		id: 'childE',
 		image: 'children.png',
 		info: 'A child that is making a mess and is doing good. Click to view more.'
 	});
@@ -278,6 +259,7 @@ async function createDummyData() {
 
 	await addChildData('dummyUser', 'childF', {
 		name: 'F',
+		id: 'childF',
 		image: 'children.png',
 		info: 'A child that is making a mess and is doing good. Click to view more.'
 	});
