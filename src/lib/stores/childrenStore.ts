@@ -2,7 +2,7 @@ import { get, writable } from 'svelte/store';
 
 // README: this API is experimental and not by any means a final design
 
-// Types
+// Types: create interfaces for the elements that are stored and are expected to be returned from the 'backend' (or its mockup at the moment)
 interface ObservationData {
 	id: string;
 	user: string;
@@ -28,11 +28,15 @@ interface ChildrenList {
 	};
 }
 
-// store itself: README:
+// the store itself: README: TODO: Consider creating a derived store for maps that exposes some key-value retrieval functionality
 const childrenlist: ChildrenList = {};
 
 const children = writable(childrenlist);
 
+/**
+ * Add a new user with an empty children store
+ * @param usertoken the token of the user to add
+ */
 async function addUser(usertoken: string) {
 	children.update((childrenlist) => {
 		if (usertoken in childrenlist) {
@@ -45,6 +49,12 @@ async function addUser(usertoken: string) {
 	});
 }
 
+/**
+ * Add new child data to the data of a user
+ * @param usertoken User identifier to add the child to
+ * @param childtoken Child identifier to add the child to
+ * @param data data of the child to add
+ */
 async function addChildData(usertoken: string, childtoken: string, data: ChildData) {
 	// /API calls/ fetch requests could go here.
 
@@ -63,6 +73,12 @@ async function addChildData(usertoken: string, childtoken: string, data: ChildDa
 	});
 }
 
+/**
+ * Add observation data to the data of a child
+ * @param usertoken User identifier to add the child to
+ * @param childtoken Child identifier to add observation data to
+ * @param observationData The observationdata to add
+ */
 async function addChildObservation(
 	usertoken: string,
 	childtoken: string,
@@ -83,6 +99,11 @@ async function addChildObservation(
 	});
 }
 
+/**
+ * Remove a child from the data of a user
+ * @param usertoken user identifer to remove the child from
+ * @param childtoken childidentifier to remove
+ */
 async function removeChildData(usertoken: string, childtoken: string) {
 	// /API calls/ fetch requests could go here.
 
@@ -101,6 +122,12 @@ async function removeChildData(usertoken: string, childtoken: string) {
 	});
 }
 
+/**
+ * Retrieve the data of a child
+ * @param usertoken user to fetch child data from
+ * @param childtoken child identifier to fetch data from
+ * @returns ChildData of the child
+ */
 async function fetchChildData(usertoken: string, childtoken: string) {
 	// /API calls/ fetch requests could go here.
 	const contentData = get(children);
@@ -116,6 +143,12 @@ async function fetchChildData(usertoken: string, childtoken: string) {
 	return contentData[usertoken as keyof ChildrenList][childtoken].childData;
 }
 
+/**
+ * Retrieve the observation data of a child
+ * @param usertoken user to fetch child observations from
+ * @param childtoken child identifier to fetch observations from
+ * @returns ObservationData of the child
+ */
 async function fetchObservationData(usertoken: string, childtoken: string) {
 	// /API calls/ fetch requests could go here.
 	const contentData = get(children);
@@ -131,6 +164,11 @@ async function fetchObservationData(usertoken: string, childtoken: string) {
 	return contentData[usertoken as keyof ChildrenList][childtoken].observationData;
 }
 
+/**
+ * fetch all the children data of a user
+ * @param usertoken User to fetch data for
+ * @returns a list of ChildData objects for the user, sorted alphabetically by child name.
+ */
 async function fetchChildrenDataforUser(usertoken: string) {
 	const contentData = get(children);
 
@@ -145,6 +183,12 @@ async function fetchChildrenDataforUser(usertoken: string) {
 		})
 		.sort((a, b) => a.name.localeCompare(b.name));
 }
+
+/**
+ * fetch all observationdata for all children of a user
+ * @param usertoken user to fetch data for
+ * @returns A list of tuples, where the first element is the child identifier and the second element is the observation data of the child
+ */
 async function fetchObservationDataForUser(usertoken: string) {
 	const contentData = get(children);
 	if (!(usertoken in contentData)) {
@@ -161,14 +205,27 @@ async function fetchObservationDataForUser(usertoken: string) {
 // the stuff below is therefore temporary and is an approximation of the datastructure that may be returned perhaps from the backend,
 // and thus is subject to change
 
+/**
+ * helper function for generating random integers
+ * @param max the maximum value of the random integer (always starts from 0)
+ * @returns
+ */
 function getRandomInt(max: number) {
 	return Math.floor(Math.random() * max);
 }
 
+/**
+ * helper function for choosing a random value from a list
+ * @param values list of values to choose from
+ * @returns
+ */
 function chooseRandom(values: string[]) {
 	return values[getRandomInt(values.length)];
 }
 
+/**
+ * create dummy data for the children store. This will later be replaced by API calls to the server
+ */
 async function createDummyData() {
 	if ('dummyUser' in childrenlist) {
 		return;
