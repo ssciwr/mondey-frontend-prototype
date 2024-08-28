@@ -144,6 +144,30 @@ async function createDummyData() {
 				}
 			],
 			last: 'surveyB',
+			next: 'surveyD'
+		},
+		surveyD: {
+			description: 'This is another survey called D',
+			milestones: [
+				{
+					name: 'Solving a shape-sorting toy',
+					items: ['not at all', 'to some extend', 'mostly', 'reliably'],
+					label: 'How well can the child solve a shape-sorting toy'
+				},
+				{
+					name: 'Counting to 10',
+					items: ['not at all', 'to some extend', 'mostly', 'reliably'],
+					label:
+						'How well can the child count to 10 and how well does it understand numbers within that range'
+				},
+				{
+					name: 'Counting to 20',
+					items: ['not at all', 'to some extend', 'mostly', 'reliably'],
+					label:
+						'How well can the child count to 20 and how well does it understand numbers within that range'
+				}
+			],
+			last: 'surveyC',
 			next: null
 		}
 	};

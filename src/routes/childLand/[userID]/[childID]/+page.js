@@ -1,9 +1,9 @@
-import { createDummyData, fetchChildData, fetchObservationData } from '$lib/stores/childrenStore';
+import { fetchChildData, fetchObservationData } from '$lib/stores/childrenStore';
 import { error } from '@sveltejs/kit';
 
 /** @type {import('./$types').PageLoad}     */
 export async function load({ params }) {
-	await createDummyData();
+	// await createDummyData();
 
 	const observationData = await fetchObservationData(params.userID, params.childID);
 	const childData = await fetchChildData(params.userID, params.childID);
