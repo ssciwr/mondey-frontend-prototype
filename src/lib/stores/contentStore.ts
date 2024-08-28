@@ -24,8 +24,8 @@ const contentlist: ContentList = {};
 // store that has an object which stores the content.
 const content = writable(contentlist);
 
-// functions to add and remove stuff from the store
-
+// functions to add and remove stuff from the store and retrieve values
+// /add and remove are helpver functions and will go once we have a proper backend
 /**
  * Add content to the store
  * @param key identifier for the content to add
@@ -68,14 +68,6 @@ async function fetchContent(key: string) {
 	}
 
 	return contentData[key];
-}
-
-/**
- * Get the number of surveys in the store
- */
-function getSurveyNumber() {
-	const contentData = get(content);
-	return Object.keys(contentData).length;
 }
 
 /**
@@ -164,7 +156,6 @@ export {
 	content,
 	createDummyData,
 	fetchContent,
-	getSurveyNumber,
 	removeContent,
 	type ContentList,
 	type ContentNode,
