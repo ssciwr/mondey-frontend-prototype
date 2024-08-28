@@ -5,7 +5,7 @@
 				header: item.name,
 				summary: item.info,
 				image: item.image,
-				href: '/trafficlightfeedback'
+				href: `/childLand/${item.id}`
 			};
 		});
 

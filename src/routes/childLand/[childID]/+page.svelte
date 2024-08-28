@@ -1,3 +1,6 @@
+<script context="module">
+</script>
+
 <script>
 	import AbstractContent from '$lib/components/AbstractContent.svelte';
 	import TableDisplay from '$lib/components/DataDisplay/TableDisplay.svelte';
