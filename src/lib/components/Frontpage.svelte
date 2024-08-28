@@ -3,7 +3,7 @@
 
 	import CardDisplay from './DataDisplay/CardDisplay.svelte';
 	import GalleryDisplay from './DataDisplay/GalleryDisplay.svelte';
-	export let getStarted = '/firstdropdown';
+	export let getStarted = '';
 
 	export let items = [
 		{
