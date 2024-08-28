@@ -22,7 +22,7 @@
 
 <AbstractContent
 	showBottomNavbar={true}
-	lastpage="/dataAcquisition/nextdropdown"
+	lastpage="/dataAcquisition/surveyC"
 	nextpage="/"
 	infopage="/info"
 >
