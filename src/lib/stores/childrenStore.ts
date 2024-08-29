@@ -1,3 +1,4 @@
+import { browser } from '$app/environment';
 import { get, writable } from 'svelte/store';
 
 // README: this API is experimental and not by any means a final design
@@ -47,14 +48,19 @@ interface ChildrenList {
 
 const children = writable({});
 
-export async function load() {
-	const stored = localStorage.getItem('children');
-	const childrenlist = stored ? JSON.parse(stored) : {};
+export function load() {
+	let childrenlist = {};
+	if (browser) {
+		const stored = localStorage.getItem('children');
+		childrenlist = stored ? JSON.parse(stored) : {};
+	}
 	children.set(childrenlist);
 }
 
-export async function save() {
-	localStorage.setItem('children', JSON.stringify(get(children)));
+export function save() {
+	if (browser) {
+		localStorage.setItem('children', JSON.stringify(get(children)));
+	}
 }
 
 // addX and removeX are helper functions and can probably be removed once we have a proper backend

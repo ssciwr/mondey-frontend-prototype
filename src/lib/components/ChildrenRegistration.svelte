@@ -4,6 +4,8 @@
 		addChildData,
 		children,
 		generateChildID,
+		load,
+		save,
 		type ChildData
 	} from '$lib/stores/childrenStore';
 	import {
@@ -17,7 +19,6 @@
 		Textarea
 	} from 'flowbite-svelte';
 	import { onDestroy, onMount } from 'svelte';
-	import { get } from 'svelte/store';
 
 	// data processing functions
 	export function processData(element: any) {
@@ -57,15 +58,15 @@
 		let required: { [key: string]: Boolean } = {};
 		childData = data.reduce((dict: any, curr) => {
 			dict[curr.props.key] = curr.value;
-			required[curr.props.key] == curr.props.required;
+			required[curr.props.key] = curr.props.required;
 			return dict;
 		}, {});
 
-		if (
-			Object.entries(childData).every(
-				(kv) => required[kv[0]] && kv[1] !== undefined && kv[1] !== null
-			)
-		) {
+		const test = Object.entries(childData).every((kv) =>
+			required[kv[0]] ? kv[1] !== undefined && kv[1] !== null : true
+		);
+
+		if (test) {
 			missingValues = [];
 			const childID = generateChildID(childData.name);
 			// add additional data to the child
@@ -191,13 +192,11 @@
 
 	// use component lifecycle to make sure data is written and read persistently
 	onMount(() => {
-		const stored = localStorage.getItem('children');
-		const childrenlist = stored ? JSON.parse(stored) : {};
-		children.set(childrenlist);
+		load();
 	});
 
 	onDestroy(() => {
-		localStorage.setItem('children', JSON.stringify(get(children)));
+		save();
 	});
 </script>
 
