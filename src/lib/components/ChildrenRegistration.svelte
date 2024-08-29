@@ -6,7 +6,16 @@
 		generateChildID,
 		type ChildData
 	} from '$lib/stores/childrenStore';
-	import { Button, Card, Heading, Input, Label, Select, Textarea } from 'flowbite-svelte';
+	import {
+		Button,
+		Card,
+		Fileupload,
+		Heading,
+		Input,
+		Label,
+		Select,
+		Textarea
+	} from 'flowbite-svelte';
 	import { onDestroy, onMount } from 'svelte';
 	import { get } from 'svelte/store';
 
@@ -20,6 +29,10 @@
 			}));
 
 			component = Select;
+		} else if (element.key == 'image') {
+			component = Fileupload;
+		} else if (element.key == 'remarks') {
+			component = Textarea;
 		} else {
 			component = Input;
 			let type = 'text';
@@ -36,21 +49,26 @@
 		};
 	}
 	// event handlers and verification function
-	async function submitData() {
+	export function submitData() {
 		addChildData(userid, generateChildID(childData.name), childData);
 	}
 
-	async function verifyInput() {
+	export function verifyInput() {
+		let required: { [key: string]: Boolean } = {};
 		childData = data.reduce((dict: any, curr) => {
 			dict[curr.props.key] = curr.value;
+			required[curr.props.key] == curr.props.required;
 			return dict;
 		}, {});
 
-		if (Object.values(childData).every((val) => val !== undefined && val !== '' && val !== null)) {
+		if (
+			Object.entries(childData).every(
+				(kv) => required[kv[0]] && kv[1] !== undefined && kv[1] !== null
+			)
+		) {
 			missingValues = [];
 			const childID = generateChildID(childData.name);
 			// add additional data to the child
-			childData['remarks'] = remarks;
 			childData['user'] = userid;
 			childData['id'] = childID;
 			nextpage = '/childrengallery';
@@ -58,48 +76,57 @@
 		} else {
 			showAlert = true;
 			(missingValues as Boolean[]) = Object.keys(childData)
-				.map((key) => (childData[key] ? false : true))
+				.map((key) => {
+					return childData[key] && required[key] ? false : true;
+				})
 				.filter((v) => v === true);
 		}
 	}
 
 	// data to display -> will later be fetched from the server
-	const heading = 'Neues Kind registrieren';
+	export let heading = 'Neues Kind registrieren';
 
-	export const rawData = [
+	// this can be supplied from the database
+	export let rawData = [
 		{
 			label: 'Name',
 			placeholder: 'Bitte eintragen',
-			key: 'name'
+			key: 'name',
+			required: true
 		},
 		{
 			label: 'Geburtsdatum',
 			placeholder: 'Bitte eintragen',
-			key: 'dateOfBirth'
+			key: 'dateOfBirth',
+			required: true
 		},
 		{
 			label: 'Frühgeburt',
 			items: ['ja', 'nein'],
 			placeholder: 'Bitte auswählen',
-			key: 'bornEarly'
+			key: 'bornEarly',
+			required: true
 		},
 		{
 			label: 'Geschlecht',
 			items: ['männlich', 'weiblich'],
 			placeholder: 'Bitte auswählen',
-			key: 'gender'
+			key: 'gender',
+			required: true
 		},
 		{
 			label: 'Nationalität',
 			items: ['Deutschland', 'Grossbritannien', 'USA', 'China'],
 			placeholder: 'Bitte auswählen',
-			key: 'nationality'
+			key: 'nationality',
+			required: true
 		},
 		{
 			label: 'Sprache',
 			items: ['Deutsch', 'Englisch (UK)', 'Englisch (Us)', 'Mandarin', 'Arabisch'],
 			placeholder: 'Bitte auswählen',
-			key: 'language'
+			key: 'language',
+			required: true
 		},
 		{
 			label: 'Verhältnis zum Kind',
@@ -113,18 +140,32 @@
 				'Betreuung extern',
 				'Betreuung zu Hause'
 			],
-			placeholder: 'Bitte auswählen'
+			placeholder: 'Bitte auswählen',
+			required: true
 		},
 		{
 			label: 'Entwicklungsauffälligkeiten',
 			items: ['Hörprobleme', 'Fehlsichtigkeit', 'Sprachfehler'],
 			placeholder: 'Bitte auswählen',
-			key: 'developmentalIssues'
+			key: 'developmentalIssues',
+			required: true
+		},
+		{
+			label: 'Anmerkungen',
+			placeholder: 'Weitere Bemerkungen',
+			key: 'remarks',
+			required: false
+		},
+		{
+			label: 'Foto',
+			placeholder: 'Bitte wählen sie ein Bild aus falls gewünscht',
+			key: 'image',
+			required: false
 		}
 	];
 
 	//  dummy user
-	export const userid = 'dummyUser';
+	export let userid = 'dummyUser';
 
 	// dummy user added to users until this page is hooked up to the user system
 	try {
@@ -147,7 +188,6 @@
 	// rerender page if missing values or showAlert changes
 	$: missingValues = [];
 	$: showAlert = false;
-	$: remarks = '';
 
 	// use component lifecycle to make sure data is written and read persistently
 	onMount(() => {
@@ -165,12 +205,13 @@
 {#if showAlert}
 	<AlertMessage
 		title="Fehler"
-		message="Bitte füllen Sie alle Felder aus."
+		message="Bitte füllen Sie mindestens die benötigten Felder (hervorgehoben) aus."
 		lastpage="/childLand/childDataInput"
 		infopage="/info"
 		infotitle="Was passiert mit den Daten"
 		onclick={() => {
 			showAlert = false;
+			missingValues = [];
 		}}
 	/>
 {/if}
@@ -192,20 +233,19 @@
 			{/if}
 			<svelte:component
 				this={element.component}
-				class={missingValues[i] ? 'bg-primary-600 text-white dark:bg-primary-600' : ''}
+				class={missingValues[i] && element.props['required'] === true
+					? 'bg-primary-600 text-white dark:bg-primary-600'
+					: ''}
 				bind:value={element.value}
 				{...element.props}
 			/>
 		{/each}
 
-		<Label class="font-semibold text-gray-700 dark:text-gray-400">Anmerkungen</Label>
-		<Textarea name={'remarks'} bind:value={remarks} placeholder="Bitte eintragen (optional)" />
-
 		<Button
 			class="w-full rounded-lg bg-primary-700 px-4 py-2 font-semibold text-white hover:bg-primary-800"
 			on:click={verified ? submitData : verifyInput}
 			href={nextpage}
-			>{verified ? 'Hinzufügen' : 'Überprüfen'}
+			>{verified ? 'Kind hinzufügen' : 'Klicken um Daten zu bestätigen'}
 		</Button>
 	</form>
 </Card>
