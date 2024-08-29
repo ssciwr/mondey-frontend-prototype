@@ -1,13 +1,18 @@
 <script lang="ts">
 	import AlertMessage from '$lib/components/AlertMessage.svelte';
+
 	import {
 		addChildData,
+		addChildObservation,
 		children,
+		createDummyCurrent,
+		createDummySummary,
 		generateChildID,
 		load,
 		save,
 		type ChildData
 	} from '$lib/stores/childrenStore';
+
 	import {
 		Button,
 		Card,
@@ -18,6 +23,7 @@
 		Select,
 		Textarea
 	} from 'flowbite-svelte';
+
 	import { onDestroy, onMount } from 'svelte';
 
 	// data processing functions
@@ -50,11 +56,18 @@
 		};
 	}
 	// event handlers and verification function
-	export function submitData() {
-		addChildData(userID, generateChildID(childData.name), childData);
+	export async function submitData() {
+		const childID = generateChildID(childData.name);
+		await addChildData(userID, childID, childData);
+		await addChildObservation(userID, childID, {
+			user: userID,
+			id: childID,
+			summary: await createDummySummary(),
+			current: await createDummyCurrent()
+		});
 	}
 
-	export function verifyInput() {
+	export async function verifyInput() {
 		let required: { [key: string]: Boolean } = {};
 		childData = data.reduce((dict: any, curr) => {
 			dict[curr.props.key] = curr.value;
@@ -192,12 +205,17 @@
 	$: showAlert = false;
 
 	// use component lifecycle to make sure data is written and read persistently
-	onMount(() => {
-		load();
+	let unsubscribe;
+	onMount(async () => {
+		await load();
+		unsubscribe = children.subscribe((childrenlist) => {
+			save();
+		});
 	});
 
-	onDestroy(() => {
-		save();
+	onDestroy(async () => {
+		await save();
+		unsubscribe();
 	});
 </script>
 

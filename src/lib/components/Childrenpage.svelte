@@ -62,19 +62,10 @@
 	import { onDestroy, onMount } from 'svelte';
 	// create data and
 
-	let data: ChildData[] = [];
-	let loading = true;
-	const userID = 'dummyUser';
-
 	async function init() {
 		loading = true;
 		try {
-			addUser(userID);
-		} catch (error) {
-			console.log('Error adding user: ', error);
-		}
-		try {
-			load();
+			await load();
 		} catch (error) {
 			console.log('Error loading data: ', error);
 		}
@@ -90,10 +81,16 @@
 		loading = false;
 	}
 
+	let data: ChildData[] = [];
+	let loading = true;
+	const userID = 'dummyUser';
+
 	// this fetches dummy child data for the dummy user whenever the component is mounted into the dom
 	// it is conceptualized as emulating an API call that would normally fetch this from the server.
 	onMount(init);
-	onDestroy(save);
+	onDestroy(async () => {
+		save();
+	});
 </script>
 
 <Heading tag="h1" class="mb-2" color="text-gray-700 dark:text-gray-400">Übersicht</Heading>

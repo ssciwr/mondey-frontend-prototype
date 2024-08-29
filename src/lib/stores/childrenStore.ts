@@ -45,20 +45,29 @@ interface ChildrenList {
 }
 
 // the store itself: README: TODO: Consider creating a derived store for maps that exposes some key-value retrieval functionality
+let childrenlist = {};
+const children = writable(childrenlist);
 
-const children = writable({});
-
-export function load() {
-	let childrenlist = {};
+async function clear() {
 	if (browser) {
+		localStorage.clear();
+	}
+}
+
+async function load() {
+	if (browser) {
+		console.log('Loading children list');
+		console.log('childrenlist: ', childrenlist);
 		const stored = localStorage.getItem('children');
 		childrenlist = stored ? JSON.parse(stored) : {};
 	}
 	children.set(childrenlist);
 }
 
-export function save() {
+async function save() {
 	if (browser) {
+		console.log('Saving children list');
+		console.log('childrenlist: ', childrenlist);
 		localStorage.setItem('children', JSON.stringify(get(children)));
 	}
 }
@@ -271,17 +280,7 @@ function chooseRandom(values: string[]) {
 	return values[getRandomInt(values.length)];
 }
 
-/**
- * create dummy data for the children store. This will later be
- */
-async function createDummyData() {
-	if ('dummyUser' in childrenlist) {
-		return;
-	}
-	// add user
-	await addUser('dummyUser');
-
-	// create data
+async function createDummySummary() {
 	const values = ['good', 'warn', 'bad'];
 	const dates = [
 		'05-11-2017',
@@ -311,7 +310,11 @@ async function createDummyData() {
 		summary.push(element);
 	}
 
+	return summary;
+}
+async function createDummyCurrent() {
 	const current: { [survey: string]: { name: string; status: string }[] } = {};
+	const surveys: string[] = ['surveyA', 'surveyB', 'surveyC', 'surveyD', 'surveyE'];
 
 	const milestones = ['milestoneA', 'milestoneB', 'milestoneC', 'milestoneD', 'milestoneE'];
 	const completionValues = ['done', 'open', 'incomplete'];
@@ -325,105 +328,24 @@ async function createDummyData() {
 			});
 		}
 	}
-
-	await addChildData('dummyUser', 'childAnna', {
-		name: 'Anna',
-		id: 'childAnna',
-		user: 'dummyUser',
-		image: 'child_avatar.png',
-		info: 'Anna child that is doing good and developing according to their age.. Click to view more.'
-	});
-	await addChildObservation('dummyUser', 'childAnna', {
-		id: 'childAnna',
-		user: 'dummyUser',
-		summary: summary,
-		current: current
-	});
-
-	await addChildData('dummyUser', 'childBen', {
-		name: 'Ben',
-		id: 'childBen',
-		user: 'dummyUser',
-		image: 'child_avatar.png',
-		info: 'Ben child that is doing good and developing according to their age.. Click to view more.'
-	});
-	await addChildObservation('dummyUser', 'childBen', {
-		id: 'childAnna',
-		user: 'dummyUser',
-		summary: summary,
-		current: current
-	});
-
-	await addChildData('dummyUser', 'childC', {
-		name: 'C',
-		id: 'childC',
-		user: 'dummyUser',
-		image: 'children.png',
-		info: 'C child that is doing good and developing according to their age. Click to view more.'
-	});
-	await addChildObservation('dummyUser', 'childC', {
-		id: 'childAnna',
-		user: 'dummyUser',
-		summary: summary,
-		current: current
-	});
-
-	await addChildData('dummyUser', 'childDora', {
-		name: 'Dora',
-		id: 'childDora',
-		user: 'dummyUser',
-		image: 'children.png',
-		info: 'Dora child that is doing good and developing according to their age.. Click to view more.'
-	});
-	await addChildObservation('dummyUser', 'childDora', {
-		id: 'childAnna',
-		user: 'dummyUser',
-		summary: summary,
-		current: current
-	});
-
-	await addChildData('dummyUser', 'childE', {
-		name: 'E',
-		id: 'childE',
-		user: 'dummyUser',
-		image: 'children.png',
-		info: 'E child that is doing good and developing according to their age.. Click to view more.'
-	});
-	await addChildObservation('dummyUser', 'childE', {
-		id: 'childAnna',
-		user: 'dummyUser',
-		summary: summary,
-		current: current
-	});
-
-	await addChildData('dummyUser', 'childF', {
-		name: 'F',
-		id: 'childF',
-		user: 'dummyUser',
-		image: 'children.png',
-		info: 'F child that is doing good and developing according to their age.. Click to view more.'
-	});
-	await addChildObservation('dummyUser', 'childF', {
-		id: 'childAnna',
-		user: 'dummyUser',
-		summary: summary,
-		current: current
-	});
+	return current;
 }
-
-// <--
 
 export {
 	addChildData,
 	addChildObservation,
 	addUser,
 	children,
-	createDummyData,
+	clear,
+	createDummyCurrent,
+	createDummySummary,
 	fetchChildData,
 	fetchChildrenDataforUser,
 	fetchObservationData,
 	fetchObservationDataForUser,
+	load,
 	removeChildData,
+	save,
 	type ChildData,
 	type ChildObject,
 	type ChildrenList,

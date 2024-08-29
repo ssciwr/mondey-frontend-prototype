@@ -1,8 +1,11 @@
 <script>
 	// @ts-nocheck
 
-	import CardDisplay from './DataDisplay/CardDisplay.svelte';
-	import GalleryDisplay from './DataDisplay/GalleryDisplay.svelte';
+	import CardDisplay from '$lib/components//DataDisplay/CardDisplay.svelte';
+	import GalleryDisplay from '$lib/components/DataDisplay/GalleryDisplay.svelte';
+	import { addUser, clear, save } from '$lib/stores/childrenStore';
+	import { onMount } from 'svelte';
+
 	export let getStarted = '';
 
 	export let items = [
@@ -64,6 +67,24 @@
 	];
 
 	const props = {};
+
+	onMount(async () => {
+		try {
+			await clear();
+		} catch (error) {
+			console.log('error in frontpage: ', error);
+		}
+		try {
+			await addUser('dummyUser');
+		} catch (error) {
+			console.log('error in frontpage: ', error);
+		}
+		try {
+			await save();
+		} catch (error) {
+			console.log('error in frontpage: ', error);
+		}
+	});
 </script>
 
 <GalleryDisplay
