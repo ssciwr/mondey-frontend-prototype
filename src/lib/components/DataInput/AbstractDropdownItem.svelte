@@ -2,7 +2,6 @@
 	import { Select, Tooltip } from 'flowbite-svelte';
 	// have the data processing here to coerce the input into the format that the component expects
 
-	console.log('passed props: ', $$props, ', value: ', $$props.value);
 	const items = $$props.items.map((item) => ({ name: item, value: item }));
 </script>
 
