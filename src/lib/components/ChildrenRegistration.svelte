@@ -61,6 +61,8 @@
 		title="Fehler"
 		message="Bitte füllen Sie alle Felder aus."
 		lastpage="/childLand/childDataInput"
+		infopage="/info"
+		infotitle="Was passiert mit den Daten"
 		onclick={() => {
 			showAlert = false;
 		}}
