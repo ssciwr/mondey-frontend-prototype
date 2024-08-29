@@ -51,17 +51,33 @@
 <script lang="ts">
 	import CardDisplay from '$lib/components/DataDisplay/CardDisplay.svelte';
 	import GalleryDisplay from '$lib/components/DataDisplay/GalleryDisplay.svelte';
-	import { fetchChildrenDataforUser, load, save, type ChildData } from '$lib/stores/childrenStore';
+	import {
+		addUser,
+		fetchChildrenDataforUser,
+		load,
+		save,
+		type ChildData
+	} from '$lib/stores/childrenStore';
 	import { Heading } from 'flowbite-svelte';
 	import { onDestroy, onMount } from 'svelte';
 	// create data and
 
 	let data: ChildData[] = [];
 	let loading = true;
+	const userID = 'dummyUser';
 
 	async function init() {
 		loading = true;
-		load();
+		try {
+			addUser(userID);
+		} catch (error) {
+			console.log('Error adding user: ', error);
+		}
+		try {
+			load();
+		} catch (error) {
+			console.log('Error loading data: ', error);
+		}
 
 		// Update the store with the value from localStorage
 		let rawdata = [];
