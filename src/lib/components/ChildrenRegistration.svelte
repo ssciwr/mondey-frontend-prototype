@@ -51,7 +51,7 @@
 	}
 	// event handlers and verification function
 	export function submitData() {
-		addChildData(userid, generateChildID(childData.name), childData);
+		addChildData(userID, generateChildID(childData.name), childData);
 	}
 
 	export function verifyInput() {
@@ -70,7 +70,7 @@
 			missingValues = [];
 			const childID = generateChildID(childData.name);
 			// add additional data to the child
-			childData['user'] = userid;
+			childData['user'] = userID;
 			childData['id'] = childID;
 			nextpage = '/childrengallery';
 			verified = true;
@@ -108,49 +108,49 @@
 			key: 'bornEarly',
 			required: true
 		},
-		{
-			label: 'Geschlecht',
-			items: ['männlich', 'weiblich'],
-			placeholder: 'Bitte auswählen',
-			key: 'gender',
-			required: true
-		},
-		{
-			label: 'Nationalität',
-			items: ['Deutschland', 'Grossbritannien', 'USA', 'China'],
-			placeholder: 'Bitte auswählen',
-			key: 'nationality',
-			required: true
-		},
-		{
-			label: 'Sprache',
-			items: ['Deutsch', 'Englisch (UK)', 'Englisch (Us)', 'Mandarin', 'Arabisch'],
-			placeholder: 'Bitte auswählen',
-			key: 'language',
-			required: true
-		},
-		{
-			label: 'Verhältnis zum Kind',
-			key: 'relationship',
-			items: [
-				'Kind',
-				'Enkelkind',
-				'Neffe/Nichte',
-				'Pflegekind',
-				'Adoptivkind',
-				'Betreuung extern',
-				'Betreuung zu Hause'
-			],
-			placeholder: 'Bitte auswählen',
-			required: true
-		},
-		{
-			label: 'Entwicklungsauffälligkeiten',
-			items: ['Hörprobleme', 'Fehlsichtigkeit', 'Sprachfehler'],
-			placeholder: 'Bitte auswählen',
-			key: 'developmentalIssues',
-			required: true
-		},
+		// {
+		// 	label: 'Geschlecht',
+		// 	items: ['männlich', 'weiblich'],
+		// 	placeholder: 'Bitte auswählen',
+		// 	key: 'gender',
+		// 	required: true
+		// },
+		// {
+		// 	label: 'Nationalität',
+		// 	items: ['Deutschland', 'Grossbritannien', 'USA', 'China'],
+		// 	placeholder: 'Bitte auswählen',
+		// 	key: 'nationality',
+		// 	required: true
+		// },
+		// {
+		// 	label: 'Sprache',
+		// 	items: ['Deutsch', 'Englisch (UK)', 'Englisch (Us)', 'Mandarin', 'Arabisch'],
+		// 	placeholder: 'Bitte auswählen',
+		// 	key: 'language',
+		// 	required: true
+		// },
+		// {
+		// 	label: 'Verhältnis zum Kind',
+		// 	key: 'relationship',
+		// 	items: [
+		// 		'Kind',
+		// 		'Enkelkind',
+		// 		'Neffe/Nichte',
+		// 		'Pflegekind',
+		// 		'Adoptivkind',
+		// 		'Betreuung extern',
+		// 		'Betreuung zu Hause'
+		// 	],
+		// 	placeholder: 'Bitte auswählen',
+		// 	required: true
+		// },
+		// {
+		// 	label: 'Entwicklungsauffälligkeiten',
+		// 	items: ['Hörprobleme', 'Fehlsichtigkeit', 'Sprachfehler'],
+		// 	placeholder: 'Bitte auswählen',
+		// 	key: 'developmentalIssues',
+		// 	required: true
+		// },
 		{
 			label: 'Anmerkungen',
 			placeholder: 'Weitere Bemerkungen',
@@ -166,15 +166,15 @@
 	];
 
 	//  dummy user
-	export let userid = 'dummyUser';
+	export let userID = 'dummyUser';
 
 	// dummy user added to users until this page is hooked up to the user system
 	try {
 		children.update((childrenlist) => {
-			if (userid in childrenlist) {
-				throw new Error(`User token ${userid} already exists`);
+			if (userID in childrenlist) {
+				throw new Error(`User token ${userID} already exists`);
 			}
-			childrenlist[userid] = {};
+			childrenlist[userID] = {};
 			return childrenlist;
 		});
 	} catch (error) {
@@ -186,6 +186,7 @@
 	let childData: ChildData;
 	let verified: Boolean = false;
 	let nextpage: string | null = null;
+
 	// rerender page if missing values or showAlert changes
 	$: missingValues = [];
 	$: showAlert = false;
