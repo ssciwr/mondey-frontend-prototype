@@ -51,10 +51,9 @@
 <script lang="ts">
 	import CardDisplay from '$lib/components/DataDisplay/CardDisplay.svelte';
 	import GalleryDisplay from '$lib/components/DataDisplay/GalleryDisplay.svelte';
-	import { children, fetchChildrenDataforUser, type ChildData } from '$lib/stores/childrenStore';
+	import { fetchChildrenDataforUser, load, save, type ChildData } from '$lib/stores/childrenStore';
 	import { Heading } from 'flowbite-svelte';
 	import { onDestroy, onMount } from 'svelte';
-	import { get } from 'svelte/store';
 	// create data and
 
 	let data: ChildData[] = [];
@@ -62,13 +61,7 @@
 
 	async function init() {
 		loading = true;
-
-		const stored = localStorage.getItem('children');
-		const childrenlist = stored ? JSON.parse(stored) : {};
-
-		console.log('read childrenlist: ', childrenlist);
-
-		children.set(childrenlist);
+		load();
 
 		// Update the store with the value from localStorage
 		let rawdata = [];
@@ -84,9 +77,7 @@
 	// this fetches dummy child data for the dummy user whenever the component is mounted into the dom
 	// it is conceptualized as emulating an API call that would normally fetch this from the server.
 	onMount(init);
-	onDestroy(() => {
-		localStorage.setItem('children', JSON.stringify(get(children)));
-	});
+	onDestroy(save);
 </script>
 
 <Heading tag="h1" class="mb-2" color="text-gray-700 dark:text-gray-400">Übersicht</Heading>
