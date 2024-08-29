@@ -115,11 +115,12 @@
 		infopage="/info"
 		infotitle="Was passiert mit den Daten"
 		onclick={() => {
-			showAlert = false; // FIXME: this does not rerender the page. it should though
+			showAlert = false;
 		}}
 	/>
 {/if}
 
+<!-- The actual content -->
 <Card class="container m-1 mx-auto w-full max-w-xl">
 	{#if heading}
 		<Heading
