@@ -1,6 +1,6 @@
 <script lang="ts">
+	import AlertMessage from '$lib/components/AlertMessage.svelte';
 	import { Button, Card, Heading, Input, Label, Select, Textarea } from 'flowbite-svelte';
-
 	const heading = 'Neues Kind registrieren';
 
 	let name: String;
@@ -11,10 +11,27 @@
 	let first_language: String;
 	let problems: String;
 	let relationship: String;
-	let remarks: String;
+	let remarks: String = '';
+	let missing_values: Boolean[] = [];
+
+	interface SubmittedData {
+		name: String;
+		date_of_birth: Date;
+		bornEarly: Boolean;
+		gender: String;
+		nationality: String;
+		first_language: String;
+		problems: String;
+		relationship: String;
+		remarks?: String;
+	}
+
+	let _is_missing = false;
+
+	$: showAlert = false;
 
 	function onSubmit() {
-		let data = {
+		const data: SubmittedData = {
 			name,
 			date_of_birth,
 			bornEarly,
@@ -22,17 +39,31 @@
 			nationality,
 			first_language,
 			problems,
-			relationship
+			relationship,
+			remarks
 		};
+
 		if (Object.values(data).every((val) => val !== undefined)) {
-			console.log('everything defined: ', data);
-			data['remarks' as String] = remarks;
 			return data;
 		} else {
+			showAlert = true;
+			missing_values = Object.keys(data)
+				.map((key) => (data[key] ? true : false))
+				.filter((v) => v === false);
 		}
 	}
 </script>
 
+{#if showAlert}
+	<AlertMessage
+		title="Fehler"
+		message="Bitte füllen Sie alle Felder aus."
+		lastpage="/childLand/childDataInput"
+		onclick={() => {
+			showAlert = false;
+		}}
+	/>
+{/if}
 <Card class="container m-1 mx-auto w-full max-w-md items-center justify-center pb-6">
 	{#if heading}
 		<Heading
@@ -134,7 +165,7 @@
 			<Button
 				class="w-full rounded-lg bg-primary-700 px-4 py-2 font-semibold text-white hover:bg-primary-800"
 				on:click={onSubmit}
-				>Weiter
+				>Hinzufügen
 			</Button>
 		</form>
 	</div>
