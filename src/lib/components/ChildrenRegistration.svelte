@@ -1,9 +1,17 @@
 <script lang="ts">
 	import AlertMessage from '$lib/components/AlertMessage.svelte';
+	import {
+		addChildData,
+		children,
+		generateChildID,
+		type ChildData
+	} from '$lib/stores/childrenStore';
 	import { Button, Card, Heading, Input, Label, Select, Textarea } from 'flowbite-svelte';
+	import { onDestroy, onMount } from 'svelte';
+	import { get } from 'svelte/store';
 
 	// data processing functions
-	function processData(element: any) {
+	export function processData(element: any) {
 		let component = null;
 		if (element.items) {
 			element.items = element.items.map((item: String) => ({
@@ -27,21 +35,29 @@
 			value: undefined
 		};
 	}
-	// event handlers
-	function onSubmit() {
-		let childData = data.reduce((dict: any, curr) => {
-			dict[curr.props.label] = curr.value;
+	// event handlers and verification function
+	async function submitData() {
+		addChildData(userid, generateChildID(childData.name), childData);
+	}
+
+	async function verifyInput() {
+		childData = data.reduce((dict: any, curr) => {
+			dict[curr.props.key] = curr.value;
 			return dict;
 		}, {});
 
 		if (Object.values(childData).every((val) => val !== undefined && val !== '' && val !== null)) {
-			missing_values = [];
+			missingValues = [];
+			const childID = generateChildID(childData.name);
+			// add additional data to the child
 			childData['remarks'] = remarks;
-			console.log(childData);
-			return childData;
+			childData['user'] = userid;
+			childData['id'] = childID;
+			nextpage = '/childrengallery';
+			verified = true;
 		} else {
 			showAlert = true;
-			(missing_values as Boolean[]) = Object.keys(childData)
+			(missingValues as Boolean[]) = Object.keys(childData)
 				.map((key) => (childData[key] ? false : true))
 				.filter((v) => v === true);
 		}
@@ -50,37 +66,44 @@
 	// data to display -> will later be fetched from the server
 	const heading = 'Neues Kind registrieren';
 
-	const rawData = [
+	export const rawData = [
 		{
 			label: 'Name',
-			placeholder: 'Bitte eintragen'
+			placeholder: 'Bitte eintragen',
+			key: 'name'
 		},
 		{
 			label: 'Geburtsdatum',
-			placeholder: 'Bitte eintragen'
+			placeholder: 'Bitte eintragen',
+			key: 'dateOfBirth'
 		},
 		{
 			label: 'Frühgeburt',
 			items: ['ja', 'nein'],
-			placeholder: 'Bitte auswählen'
+			placeholder: 'Bitte auswählen',
+			key: 'bornEarly'
 		},
 		{
 			label: 'Geschlecht',
 			items: ['männlich', 'weiblich'],
-			placeholder: 'Bitte auswählen'
+			placeholder: 'Bitte auswählen',
+			key: 'gender'
 		},
 		{
 			label: 'Nationalität',
 			items: ['Deutschland', 'Grossbritannien', 'USA', 'China'],
-			placeholder: 'Bitte auswählen'
+			placeholder: 'Bitte auswählen',
+			key: 'nationality'
 		},
 		{
 			label: 'Sprache',
 			items: ['Deutsch', 'Englisch (UK)', 'Englisch (Us)', 'Mandarin', 'Arabisch'],
-			placeholder: 'Bitte auswählen'
+			placeholder: 'Bitte auswählen',
+			key: 'language'
 		},
 		{
 			label: 'Verhältnis zum Kind',
+			key: 'relationship',
 			items: [
 				'Kind',
 				'Enkelkind',
@@ -95,15 +118,47 @@
 		{
 			label: 'Entwicklungsauffälligkeiten',
 			items: ['Hörprobleme', 'Fehlsichtigkeit', 'Sprachfehler'],
-			placeholder: 'Bitte auswählen'
+			placeholder: 'Bitte auswählen',
+			key: 'developmentalIssues'
 		}
 	];
-	// rerender page if missing values or showAlert changes
 
+	//  dummy user
+	export const userid = 'dummyUser';
+
+	// dummy user added to users until this page is hooked up to the user system
+	try {
+		children.update((childrenlist) => {
+			if (userid in childrenlist) {
+				throw new Error(`User token ${userid} already exists`);
+			}
+			childrenlist[userid] = {};
+			return childrenlist;
+		});
+	} catch (error) {
+		console.log('something went wrong when adding user: ', error);
+	}
+
+	// data
 	let data = rawData.map(processData);
-	$: missing_values = [];
+	let childData: ChildData;
+	let verified: Boolean = false;
+	let nextpage: string | null = null;
+	// rerender page if missing values or showAlert changes
+	$: missingValues = [];
 	$: showAlert = false;
 	$: remarks = '';
+
+	// use component lifecycle to make sure data is written and read persistently
+	onMount(() => {
+		const stored = localStorage.getItem('children');
+		const childrenlist = stored ? JSON.parse(stored) : {};
+		children.set(childrenlist);
+	});
+
+	onDestroy(() => {
+		localStorage.setItem('children', JSON.stringify(get(children)));
+	});
 </script>
 
 <!-- Show big alert message when something is missing -->
@@ -137,7 +192,7 @@
 			{/if}
 			<svelte:component
 				this={element.component}
-				class={missing_values[i] ? 'bg-primary-600 text-white dark:bg-primary-600' : ''}
+				class={missingValues[i] ? 'bg-primary-600 text-white dark:bg-primary-600' : ''}
 				bind:value={element.value}
 				{...element.props}
 			/>
@@ -148,9 +203,9 @@
 
 		<Button
 			class="w-full rounded-lg bg-primary-700 px-4 py-2 font-semibold text-white hover:bg-primary-800"
-			on:click={onSubmit}
-			href={!showAlert ? undefined : '/childrengallery'}
-			>Hinzufügen
+			on:click={verified ? submitData : verifyInput}
+			href={nextpage}
+			>{verified ? 'Hinzufügen' : 'Überprüfen'}
 		</Button>
 	</form>
 </Card>

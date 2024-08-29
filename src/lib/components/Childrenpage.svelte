@@ -51,13 +51,10 @@
 <script lang="ts">
 	import CardDisplay from '$lib/components/DataDisplay/CardDisplay.svelte';
 	import GalleryDisplay from '$lib/components/DataDisplay/GalleryDisplay.svelte';
-	import {
-		createDummyData,
-		fetchChildrenDataforUser,
-		type ChildData
-	} from '$lib/stores/childrenStore';
+	import { children, fetchChildrenDataforUser, type ChildData } from '$lib/stores/childrenStore';
 	import { Heading } from 'flowbite-svelte';
-	import { onMount } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
+	import { get } from 'svelte/store';
 	// create data and
 
 	let data: ChildData[] = [];
@@ -65,8 +62,21 @@
 
 	async function init() {
 		loading = true;
-		await createDummyData();
-		let rawdata = await fetchChildrenDataforUser('dummyUser');
+
+		const stored = localStorage.getItem('children');
+		const childrenlist = stored ? JSON.parse(stored) : {};
+
+		console.log('read childrenlist: ', childrenlist);
+
+		children.set(childrenlist);
+
+		// Update the store with the value from localStorage
+		let rawdata = [];
+		try {
+			rawdata = await fetchChildrenDataforUser('dummyUser');
+		} catch (error) {
+			console.log('some error occured: ', error);
+		}
 		data = convertData(rawdata);
 		loading = false;
 	}
@@ -74,6 +84,9 @@
 	// this fetches dummy child data for the dummy user whenever the component is mounted into the dom
 	// it is conceptualized as emulating an API call that would normally fetch this from the server.
 	onMount(init);
+	onDestroy(() => {
+		localStorage.setItem('children', JSON.stringify(get(children)));
+	});
 </script>
 
 <Heading tag="h1" class="mb-2" color="text-gray-700 dark:text-gray-400">Übersicht</Heading>

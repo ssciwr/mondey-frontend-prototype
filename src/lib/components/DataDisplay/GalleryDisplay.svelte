@@ -37,7 +37,7 @@
 
 {#if withSearch}
 	<form class="flex gap-2">
-		<Search size="md" placeholder={'Search for child'} bind:value={searchTerm} />
+		<Search size="md" placeholder={'Kinder nach Namen durchsuchen'} bind:value={searchTerm} />
 		<Button class="!p-2.5">
 			<SearchOutline class="h-6 w-6" />
 		</Button>

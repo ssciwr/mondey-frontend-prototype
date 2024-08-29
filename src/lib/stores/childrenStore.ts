@@ -44,11 +44,24 @@ interface ChildrenList {
 }
 
 // the store itself: README: TODO: Consider creating a derived store for maps that exposes some key-value retrieval functionality
-const childrenlist: ChildrenList = {};
 
-const children = writable(childrenlist);
+const children = writable({});
 
 // addX and removeX are helper functions and can probably be removed once we have a proper backend
+
+/**
+ * Generate a dummy child id code
+ * @param childname name of the child
+ * @returns child id code string made up of ascii code numbers in string form
+ */
+export function generateChildID(childname: string): string {
+	return childname
+		.split('')
+		.map((char) => char.charCodeAt(0))
+		.reduce((acc, num) => acc + num.toString(), '')
+		.toLowerCase();
+}
+
 /**
  * Add a new user with an empty children store
  * @param usertoken the token of the user to add
