@@ -24,7 +24,7 @@
 		return {
 			component: component,
 			props: element,
-			value: null
+			value: undefined
 		};
 	}
 	// event handlers
@@ -34,10 +34,10 @@
 			return dict;
 		}, {});
 
-		console.log(childData);
-
-		if (Object.values(childData).every((val) => val !== undefined)) {
+		if (Object.values(childData).every((val) => val !== undefined && val !== '' && val !== null)) {
 			missing_values = [];
+			childData['remarks'] = remarks;
+			console.log(childData);
 			return childData;
 		} else {
 			showAlert = true;
@@ -100,7 +100,7 @@
 	];
 	// rerender page if missing values or showAlert changes
 
-	$: data = rawData.map(processData);
+	let data = rawData.map(processData);
 	$: missing_values = [];
 	$: showAlert = false;
 	$: remarks = '';
@@ -115,7 +115,7 @@
 		infopage="/info"
 		infotitle="Was passiert mit den Daten"
 		onclick={() => {
-			showAlert = false;
+			showAlert = false; // FIXME: this does not rerender the page. it should though
 		}}
 	/>
 {/if}
@@ -141,111 +141,7 @@
 				{...element.props}
 			/>
 		{/each}
-		<!-- 		
-		<Label class="font-semibold text-gray-700 dark:text-gray-400">Name</Label>
-		<Input
-			class={missing_values[0] ? 'bg-primary-600 text-white dark:bg-primary-600' : ''}
-			type="text"
-			name="name"
-			placeholder="Bitte eingeben"
-			bind:value={name}
-			required
-		/>
 
-		<Label class=" font-semibold text-gray-700 dark:text-gray-400">Geburtsdatum</Label>
-		<Input
-			class={missing_values[1] ? 'bg-primary-600 text-white dark:bg-primary-600' : ''}
-			type="date"
-			name="birthday"
-			bind:value={date_of_birth}
-			required
-		/>
-
-		<Label class=" font-semibold text-gray-700 dark:text-gray-400">Frühgeburt</Label>
-		<Select
-			name={'born_early'}
-			class={missing_values[2] ? 'bg-primary-600 text-white dark:bg-primary-600' : ''}
-			placeholder={'Bitte auswählen'}
-			items={[
-				{ name: 'Ja', value: 'Ja' },
-				{ name: 'Nein', value: 'Nein' }
-			]}
-			bind:value={bornEarly}
-			required
-		/>
-
-		<Label class=" font-semibold text-gray-700 dark:text-gray-400">Geschlecht</Label>
-		<Select
-			class={missing_values[3] ? 'bg-primary-600 text-white dark:bg-primary-600' : ''}
-			name={'gender'}
-			placeholder={'Bitte auswählen'}
-			items={[
-				{ name: 'männlich', value: 'männlich' },
-				{ name: 'weiblich', value: 'weiblich' }
-			]}
-			bind:value={gender}
-			required
-		/>
-
-		<Label class=" font-semibold text-gray-700 dark:text-gray-400">Nationalität</Label>
-		<Select
-			class={missing_values[4] ? 'bg-primary-600 text-white dark:bg-primary-600' : ''}
-			name={'nationality'}
-			placeholder={'Bitte auswählen'}
-			items={['Deutschland', 'Grossbritannien', 'USA', 'China'].map((item) => ({
-				name: item,
-				value: item
-			}))}
-			bind:value={nationality}
-			required
-		/>
-
-		<Label class=" font-semibold text-gray-700 dark:text-gray-400">Sprache</Label>
-		<Select
-			class={missing_values[5] ? 'bg-primary-600 text-white dark:bg-primary-600' : ''}
-			name={'first_language'}
-			placeholder={'Bitte auswählen'}
-			items={['Deutsch', 'Englisch (UK)', 'Englisch (Us)', 'Mandarin', 'Arabisch'].map((item) => ({
-				name: item,
-				value: item
-			}))}
-			bind:value={first_language}
-			required
-		/>
-
-		<Label class=" font-semibold text-gray-700 dark:text-gray-400">Verhältnis zum Kind</Label>
-		<Select
-			class={missing_values[6] ? 'bg-primary-600 text-white dark:bg-primary-600' : ''}
-			name={'Verhältnis zum Kind'}
-			placeholder={'Bitte auswählen'}
-			items={[
-				'Kind',
-				'Enkelkind',
-				'Neffe/Nichte',
-				'Pflegekind',
-				'Adoptivkind',
-				'Betreuung extern',
-				'Betreuung zu Hause'
-			].map((item) => ({ name: item, value: item }))}
-			bind:value={relationship}
-			required
-		/>
-
-		<Label class=" font-semibold text-gray-700 dark:text-gray-400"
-			>Entwicklungsauffälligkeiten</Label
-		>
-		<Select
-			class={missing_values[7] ? 'bg-primary-600 text-white dark:bg-primary-600' : ''}
-			name={'developmental_problems'}
-			placeholder={'Bitte auswählen'}
-			items={['Hörprobleme', 'Fehlsichtigkeit', 'Sprachfehler'].map((item) => ({
-				name: item,
-				value: item
-			}))}
-			required
-			bind:value={problems}
-		/>
--->
 		<Label class="font-semibold text-gray-700 dark:text-gray-400">Anmerkungen</Label>
 		<Textarea name={'remarks'} bind:value={remarks} placeholder="Bitte eintragen (optional)" />
 
