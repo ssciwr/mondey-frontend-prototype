@@ -1,58 +1,109 @@
 <script lang="ts">
 	import AlertMessage from '$lib/components/AlertMessage.svelte';
 	import { Button, Card, Heading, Input, Label, Select, Textarea } from 'flowbite-svelte';
-	const heading = 'Neues Kind registrieren';
 
-	let name: String;
-	let date_of_birth: Date;
-	let bornEarly: Boolean;
-	let gender: String;
-	let nationality: String;
-	let first_language: String;
-	let problems: String;
-	let relationship: String;
-	let remarks: String = '';
+	// data processing functions
+	function processData(element: any) {
+		let component = null;
+		if (element.items) {
+			element.items = element.items.map((item: String) => ({
+				name: item,
+				value: item
+			}));
 
-	// rerender page if missing values or showAlert changes
-	$: missing_values = [];
-	$: showAlert = false;
+			component = Select;
+		} else {
+			component = Input;
+			let type = 'text';
+			if (element.label.toLowerCase().includes('datum')) {
+				type = 'date';
+			}
+			element['type'] = type;
+		}
 
-	// input data submission
-	interface SubmittedData {
-		name: String;
-		date_of_birth: Date;
-		bornEarly: Boolean;
-		gender: String;
-		nationality: String;
-		first_language: String;
-		problems: String;
-		relationship: String;
-		remarks?: String;
-	}
-
-	function onSubmit() {
-		const data: SubmittedData = {
-			name,
-			date_of_birth,
-			bornEarly,
-			gender,
-			nationality,
-			first_language,
-			problems,
-			relationship,
-			remarks
+		return {
+			component: component,
+			props: element,
+			value: null
 		};
+	}
+	// event handlers
+	function onSubmit() {
+		let childData = data.reduce((dict: any, curr) => {
+			dict[curr.props.label] = curr.value;
+			return dict;
+		}, {});
 
-		if (Object.values(data).every((val) => val !== undefined)) {
+		console.log(childData);
+
+		if (Object.values(childData).every((val) => val !== undefined)) {
 			missing_values = [];
-			return data;
+			return childData;
 		} else {
 			showAlert = true;
-			(missing_values as Boolean[]) = Object.keys(data)
-				.map((key) => (data[key as keyof SubmittedData] ? false : true))
+			(missing_values as Boolean[]) = Object.keys(childData)
+				.map((key) => (childData[key] ? false : true))
 				.filter((v) => v === true);
 		}
 	}
+
+	// data to display -> will later be fetched from the server
+	const heading = 'Neues Kind registrieren';
+
+	const rawData = [
+		{
+			label: 'Name',
+			placeholder: 'Bitte eintragen'
+		},
+		{
+			label: 'Geburtsdatum',
+			placeholder: 'Bitte eintragen'
+		},
+		{
+			label: 'Frühgeburt',
+			items: ['ja', 'nein'],
+			placeholder: 'Bitte auswählen'
+		},
+		{
+			label: 'Geschlecht',
+			items: ['männlich', 'weiblich'],
+			placeholder: 'Bitte auswählen'
+		},
+		{
+			label: 'Nationalität',
+			items: ['Deutschland', 'Grossbritannien', 'USA', 'China'],
+			placeholder: 'Bitte auswählen'
+		},
+		{
+			label: 'Sprache',
+			items: ['Deutsch', 'Englisch (UK)', 'Englisch (Us)', 'Mandarin', 'Arabisch'],
+			placeholder: 'Bitte auswählen'
+		},
+		{
+			label: 'Verhältnis zum Kind',
+			items: [
+				'Kind',
+				'Enkelkind',
+				'Neffe/Nichte',
+				'Pflegekind',
+				'Adoptivkind',
+				'Betreuung extern',
+				'Betreuung zu Hause'
+			],
+			placeholder: 'Bitte auswählen'
+		},
+		{
+			label: 'Entwicklungsauffälligkeiten',
+			items: ['Hörprobleme', 'Fehlsichtigkeit', 'Sprachfehler'],
+			placeholder: 'Bitte auswählen'
+		}
+	];
+	// rerender page if missing values or showAlert changes
+
+	$: data = rawData.map(processData);
+	$: missing_values = [];
+	$: showAlert = false;
+	$: remarks = '';
 </script>
 
 <!-- Show big alert message when something is missing -->
@@ -79,6 +130,18 @@
 	{/if}
 
 	<form class="m-1 mx-auto w-full flex-col space-y-6">
+		{#each data as element, i}
+			{#if element.props.label}
+				<Label class="font-semibold text-gray-700 dark:text-gray-400">{element.props.label}</Label>
+			{/if}
+			<svelte:component
+				this={element.component}
+				class={missing_values[i] ? 'bg-primary-600 text-white dark:bg-primary-600' : ''}
+				bind:value={element.value}
+				{...element.props}
+			/>
+		{/each}
+		<!-- 		
 		<Label class="font-semibold text-gray-700 dark:text-gray-400">Name</Label>
 		<Input
 			class={missing_values[0] ? 'bg-primary-600 text-white dark:bg-primary-600' : ''}
@@ -182,13 +245,14 @@
 			required
 			bind:value={problems}
 		/>
-
+-->
 		<Label class="font-semibold text-gray-700 dark:text-gray-400">Anmerkungen</Label>
 		<Textarea name={'remarks'} bind:value={remarks} placeholder="Bitte eintragen (optional)" />
 
 		<Button
 			class="w-full rounded-lg bg-primary-700 px-4 py-2 font-semibold text-white hover:bg-primary-800"
 			on:click={onSubmit}
+			href={!showAlert ? undefined : '/childrengallery'}
 			>Hinzufügen
 		</Button>
 	</form>
