@@ -26,8 +26,6 @@
 		remarks?: String;
 	}
 
-	let _is_missing = false;
-
 	$: showAlert = false;
 
 	function onSubmit() {
@@ -48,7 +46,7 @@
 		} else {
 			showAlert = true;
 			missing_values = Object.keys(data)
-				.map((key) => (data[key] ? true : false))
+				.map((key) => (data[key as keyof SubmittedData] ? true : false))
 				.filter((v) => v === false);
 		}
 	}
