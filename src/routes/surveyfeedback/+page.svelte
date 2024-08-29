@@ -22,8 +22,8 @@
 
 <AbstractContent
 	showBottomNavbar={true}
-	lastpage="/nextdropdown"
-	nextpage="/trafficlightfeedback"
+	lastpage="/dataAcquisition/surveyC"
+	nextpage="/"
 	infopage="/info"
 >
 	<TableDisplay

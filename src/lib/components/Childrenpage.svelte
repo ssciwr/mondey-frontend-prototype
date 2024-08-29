@@ -5,7 +5,7 @@
 				header: item.name,
 				summary: item.info,
 				image: item.image,
-				href: item.href ? item.href : '/'
+				href: `/childLand/${item.user}/${item.id}`
 			};
 		});
 
@@ -20,6 +20,7 @@
 
 	// dynamically create the styles for individual gallery tiles based on the data.
 	// The 'Neu' element needs to be styled differently in particular
+	// FIXME: this needs to go. styles have no business being defined in <script>
 	export function createStyle(data) {
 		return data.map((item) => ({
 			card:
@@ -47,58 +48,40 @@
 	}
 </script>
 
-<script>
+<script lang="ts">
 	import CardDisplay from '$lib/components/DataDisplay/CardDisplay.svelte';
 	import GalleryDisplay from '$lib/components/DataDisplay/GalleryDisplay.svelte';
+	import {
+		createDummyData,
+		fetchChildrenDataforUser,
+		type ChildData
+	} from '$lib/stores/childrenStore';
 	import { Heading } from 'flowbite-svelte';
-	import AbstractContent from './AbstractContent.svelte';
+	import { onMount } from 'svelte';
+	// create data and
 
-	const rawdata = [
-		{
-			name: 'Anna',
-			info: 'A child that is making a mess and is doing good. Click to view more.',
-			image: 'child_avatar.png',
-			href: '/surveyfeedback'
-		},
-		{
-			name: 'Ben',
-			image: 'children.png',
-			info: 'A child that is making a mess and is doing good. Click to view more.',
-			href: '/surveyfeedback'
-		},
-		{
-			name: 'C',
-			info: 'A child that is making a mess and is doing good. Click to view more.',
-			href: '/surveyfeedback',
-			image: 'child_avatar.png'
-		},
-		{
-			name: 'Dora',
-			image: '/children.png',
-			info: 'A child that is making a mess and is doing good. Click to view more.',
-			href: '/surveyfeedback'
-		},
-		{
-			name: 'E',
-			image: 'children.png',
-			info: 'A child that is making a mess and is doing good. Click to view more.',
-			href: '/surveyfeedback'
-		},
-		{
-			name: 'F',
-			image: 'children.png',
-			info: 'A child that is making a mess and is doing good. Click to view more.',
-			href: '/surveyfeedback'
-		}
-	];
+	let data: ChildData[] = [];
+	let loading = true;
 
-	const data = convertData(rawdata);
+	async function init() {
+		loading = true;
+		await createDummyData();
+		let rawdata = await fetchChildrenDataforUser('dummyUser');
+		data = convertData(rawdata);
+		loading = false;
+	}
+
+	// this fetches dummy child data for the dummy user whenever the component is mounted into the dom
+	// it is conceptualized as emulating an API call that would normally fetch this from the server.
+	onMount(init);
 </script>
 
-<AbstractContent showNavIcons={false} iconProps={{ class: 'w-10 h-10' }}>
-	<Heading tag="h1" class="mb-2" color="text-gray-700 dark:text-gray-400">Übersicht</Heading>
+<Heading tag="h1" class="mb-2" color="text-gray-700 dark:text-gray-400">Übersicht</Heading>
 
-	<div class="cols-1 grid gap-y-8">
+<div class="cols-1 grid gap-y-8">
+	{#if loading}
+		<p>Daten werden geladen...</p>
+	{:else}
 		<p class="text-lg text-gray-700 dark:text-gray-400">
 			Wählen sie ein Kind zur Beobachtung aus oder legen melden sie ein neues Kind an.
 		</p>
@@ -108,5 +91,5 @@
 			searchableCol={'header'}
 			componentProps={createStyle(data)}
 		/>
-	</div>
-</AbstractContent>
+	{/if}
+</div>
