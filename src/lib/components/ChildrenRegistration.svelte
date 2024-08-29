@@ -12,8 +12,12 @@
 	let problems: String;
 	let relationship: String;
 	let remarks: String = '';
-	let missing_values: Boolean[] = [];
 
+	// rerender page if missing values or showAlert changes
+	$: missing_values = [];
+	$: showAlert = false;
+
+	// input data submission
 	interface SubmittedData {
 		name: String;
 		date_of_birth: Date;
@@ -25,8 +29,6 @@
 		relationship: String;
 		remarks?: String;
 	}
-
-	$: showAlert = false;
 
 	function onSubmit() {
 		const data: SubmittedData = {
@@ -42,16 +44,18 @@
 		};
 
 		if (Object.values(data).every((val) => val !== undefined)) {
+			missing_values = [];
 			return data;
 		} else {
 			showAlert = true;
-			missing_values = Object.keys(data)
-				.map((key) => (data[key as keyof SubmittedData] ? true : false))
-				.filter((v) => v === false);
+			(missing_values as Boolean[]) = Object.keys(data)
+				.map((key) => (data[key as keyof SubmittedData] ? false : true))
+				.filter((v) => v === true);
 		}
 	}
 </script>
 
+<!-- Show big alert message when something is missing -->
 {#if showAlert}
 	<AlertMessage
 		title="Fehler"
@@ -62,7 +66,8 @@
 		}}
 	/>
 {/if}
-<Card class="container m-1 mx-auto w-full max-w-md items-center justify-center pb-6">
+
+<Card class="container m-1 mx-auto w-full max-w-xl">
 	{#if heading}
 		<Heading
 			tag="h3"
@@ -71,100 +76,118 @@
 		>
 	{/if}
 
-	<div class="space-y-6rtl:space-x-reverse items-center justify-center space-x-4">
-		<form class="flex flex-col space-y-6">
-			<Label class=" font-semibold text-gray-700 dark:text-gray-400">Name</Label>
-			<Input
-				type="text"
-				name="name"
-				required={true}
-				placeholder="Bitte eingeben"
-				bind:value={name}
-			/>
+	<form class="m-1 mx-auto w-full flex-col space-y-6">
+		<Label class="font-semibold text-gray-700 dark:text-gray-400">Name</Label>
+		<Input
+			class={missing_values[0] ? 'bg-primary-600 text-white dark:bg-primary-600' : ''}
+			type="text"
+			name="name"
+			placeholder="Bitte eingeben"
+			bind:value={name}
+			required
+		/>
 
-			<Label class=" font-semibold text-gray-700 dark:text-gray-400">Geburtsdatum</Label>
-			<Input type="date" name="birthday" required={true} bind:value={date_of_birth} />
+		<Label class=" font-semibold text-gray-700 dark:text-gray-400">Geburtsdatum</Label>
+		<Input
+			class={missing_values[1] ? 'bg-primary-600 text-white dark:bg-primary-600' : ''}
+			type="date"
+			name="birthday"
+			bind:value={date_of_birth}
+			required
+		/>
 
-			<Label class=" font-semibold text-gray-700 dark:text-gray-400">Frühgeburt</Label>
-			<Select
-				name={'born_early'}
-				placeholder={'Bitte auswählen'}
-				items={[
-					{ name: 'Ja', value: 'Ja' },
-					{ name: 'Nein', value: 'Nein' }
-				]}
-				bind:value={bornEarly}
-			/>
+		<Label class=" font-semibold text-gray-700 dark:text-gray-400">Frühgeburt</Label>
+		<Select
+			name={'born_early'}
+			class={missing_values[2] ? 'bg-primary-600 text-white dark:bg-primary-600' : ''}
+			placeholder={'Bitte auswählen'}
+			items={[
+				{ name: 'Ja', value: 'Ja' },
+				{ name: 'Nein', value: 'Nein' }
+			]}
+			bind:value={bornEarly}
+			required
+		/>
 
-			<Label class=" font-semibold text-gray-700 dark:text-gray-400">Geschlecht</Label>
-			<Select
-				name={'gender'}
-				placeholder={'Bitte auswählen'}
-				items={[
-					{ name: 'männlich', value: 'männlich' },
-					{ name: 'weiblich', value: 'weiblich' }
-				]}
-				bind:value={gender}
-			/>
+		<Label class=" font-semibold text-gray-700 dark:text-gray-400">Geschlecht</Label>
+		<Select
+			class={missing_values[3] ? 'bg-primary-600 text-white dark:bg-primary-600' : ''}
+			name={'gender'}
+			placeholder={'Bitte auswählen'}
+			items={[
+				{ name: 'männlich', value: 'männlich' },
+				{ name: 'weiblich', value: 'weiblich' }
+			]}
+			bind:value={gender}
+			required
+		/>
 
-			<Label class=" font-semibold text-gray-700 dark:text-gray-400">Nationalität</Label>
-			<Select
-				name={'nationality'}
-				placeholder={'Bitte auswählen'}
-				items={['Deutschland', 'Grossbritannien', 'USA', 'China'].map((item) => ({
-					name: item,
-					value: item
-				}))}
-				bind:value={nationality}
-			/>
+		<Label class=" font-semibold text-gray-700 dark:text-gray-400">Nationalität</Label>
+		<Select
+			class={missing_values[4] ? 'bg-primary-600 text-white dark:bg-primary-600' : ''}
+			name={'nationality'}
+			placeholder={'Bitte auswählen'}
+			items={['Deutschland', 'Grossbritannien', 'USA', 'China'].map((item) => ({
+				name: item,
+				value: item
+			}))}
+			bind:value={nationality}
+			required
+		/>
 
-			<Label class=" font-semibold text-gray-700 dark:text-gray-400">Sprache</Label>
-			<Select
-				name={'first_language'}
-				placeholder={'Bitte auswählen'}
-				items={['Deutsch', 'Englisch (UK)', 'Englisch (Us)', 'Mandarin', 'Arabisch'].map(
-					(item) => ({ name: item, value: item })
-				)}
-				bind:value={first_language}
-			/>
+		<Label class=" font-semibold text-gray-700 dark:text-gray-400">Sprache</Label>
+		<Select
+			class={missing_values[5] ? 'bg-primary-600 text-white dark:bg-primary-600' : ''}
+			name={'first_language'}
+			placeholder={'Bitte auswählen'}
+			items={['Deutsch', 'Englisch (UK)', 'Englisch (Us)', 'Mandarin', 'Arabisch'].map((item) => ({
+				name: item,
+				value: item
+			}))}
+			bind:value={first_language}
+			required
+		/>
 
-			<Label class=" font-semibold text-gray-700 dark:text-gray-400">Verhältnis zum Kind</Label>
-			<Select
-				name={'Verhältnis zum Kind'}
-				placeholder={'Bitte auswählen'}
-				items={[
-					'Kind',
-					'Enkelkind',
-					'Neffe/Nichte',
-					'Pflegekind',
-					'Adoptivkind',
-					'Betreuung extern',
-					'Betreuung zu Hause'
-				].map((item) => ({ name: item, value: item }))}
-				bind:value={relationship}
-			/>
+		<Label class=" font-semibold text-gray-700 dark:text-gray-400">Verhältnis zum Kind</Label>
+		<Select
+			class={missing_values[6] ? 'bg-primary-600 text-white dark:bg-primary-600' : ''}
+			name={'Verhältnis zum Kind'}
+			placeholder={'Bitte auswählen'}
+			items={[
+				'Kind',
+				'Enkelkind',
+				'Neffe/Nichte',
+				'Pflegekind',
+				'Adoptivkind',
+				'Betreuung extern',
+				'Betreuung zu Hause'
+			].map((item) => ({ name: item, value: item }))}
+			bind:value={relationship}
+			required
+		/>
 
-			<Label class=" font-semibold text-gray-700 dark:text-gray-400"
-				>Entwicklungsauffälligkeiten</Label
-			>
-			<Select
-				name={'developmental_problems'}
-				placeholder={'Bitte auswählen'}
-				items={['Hörprobleme', 'Fehlsichtigkeit', 'Sprachfehler'].map((item) => ({
-					name: item,
-					value: item
-				}))}
-				bind:value={problems}
-			/>
+		<Label class=" font-semibold text-gray-700 dark:text-gray-400"
+			>Entwicklungsauffälligkeiten</Label
+		>
+		<Select
+			class={missing_values[7] ? 'bg-primary-600 text-white dark:bg-primary-600' : ''}
+			name={'developmental_problems'}
+			placeholder={'Bitte auswählen'}
+			items={['Hörprobleme', 'Fehlsichtigkeit', 'Sprachfehler'].map((item) => ({
+				name: item,
+				value: item
+			}))}
+			required
+			bind:value={problems}
+		/>
 
-			<Label class="font-semibold text-gray-700 dark:text-gray-400">Anmerkungen</Label>
-			<Textarea name={'remarks'} bind:value={remarks} placeholder="Bitte eintragen" />
+		<Label class="font-semibold text-gray-700 dark:text-gray-400">Anmerkungen</Label>
+		<Textarea name={'remarks'} bind:value={remarks} placeholder="Bitte eintragen (optional)" />
 
-			<Button
-				class="w-full rounded-lg bg-primary-700 px-4 py-2 font-semibold text-white hover:bg-primary-800"
-				on:click={onSubmit}
-				>Hinzufügen
-			</Button>
-		</form>
-	</div>
+		<Button
+			class="w-full rounded-lg bg-primary-700 px-4 py-2 font-semibold text-white hover:bg-primary-800"
+			on:click={onSubmit}
+			>Hinzufügen
+		</Button>
+	</form>
 </Card>
