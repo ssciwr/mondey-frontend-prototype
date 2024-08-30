@@ -271,8 +271,7 @@
 			{#if element.props.label}
 				<Label class="font-semibold text-gray-700 dark:text-gray-400">{element.props.label}</Label>
 			{/if}
-			Data value: {element.value == '' ? 'empty' : element.value}
-			Data type: {typeof element.value}
+
 			{#if element.props.key === 'image'}
 				<svelte:component
 					this={element.component}
