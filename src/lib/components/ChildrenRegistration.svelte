@@ -59,7 +59,7 @@
 	}
 	// event handlers and verification function
 	export async function submitData() {
-		verified = await verifyInput();
+		const verified = await verifyInput();
 		if (verified) {
 			const childID = generateChildID(childData.name);
 			await addChildData(userID, childID, childData);
@@ -69,22 +69,24 @@
 				summary: await createDummySummary(),
 				current: await createDummyCurrent()
 			});
-
-			await goto(nextpage as string, false);
+			await goto(nextpage as string);
 		} else {
 			showAlert = true;
+			const firstError = missingValues.findIndex((value) => value === true);
+			if (missingValues[firstError] === true) {
+				refs[firstError].focus();
+			}
 		}
 	}
 
 	export async function verifyInput(): Promise<Boolean> {
 		let required: { [key: string]: Boolean } = {};
+
 		childData = data.reduce((dict: any, curr) => {
 			dict[curr.props.key] = curr.value;
 			required[curr.props.key] = curr.props.required;
 			return dict;
 		}, {});
-
-		let success = false;
 
 		const test = Object.entries(childData).every((kv) =>
 			required[kv[0]] ? kv[1] !== undefined && kv[1] !== null : true
@@ -97,15 +99,14 @@
 			childData['user'] = userID;
 			childData['id'] = childID;
 			childData['info'] = childData.remarks;
-			success = true;
 			showCheckMessage = false;
+			return true;
 		} else {
 			(missingValues as Boolean[]) = Object.keys(childData).map((key) => {
 				return childData[key] && required[key] ? false : true;
 			});
+			return false;
 		}
-
-		return success;
 	}
 
 	// data to display -> will later be fetched from the server
@@ -206,9 +207,9 @@
 	}
 
 	// data
+	let refs: unknown[] = [];
 	let data = rawData.map(processData);
 	let childData: ChildData;
-	let verified: Boolean = false;
 	let nextpage: string = '/childrengallery';
 	let unsubscribe: Function = children.subscribe((childrenlist) => {
 		save();
@@ -229,7 +230,19 @@
 		await save();
 		unsubscribe();
 	});
+
+	console.log(
+		' value: ',
+		data.map((d) => d.value)
+	);
 </script>
+
+{#each data as element, i}
+	<p>index: {i}</p>
+	<p>missing: {missingValues[i]}</p>
+	<p>name: {element.props.label}</p>
+	<p>value: {element.value}</p>
+{/each}
 
 <!-- Show big alert message when something is missing -->
 {#if showAlert}
@@ -274,10 +287,12 @@
 			{#if element.props.label}
 				<Label class="font-semibold text-gray-700 dark:text-gray-400">{element.props.label}</Label>
 			{/if}
-
+			Data value: {element.value == '' ? 'empty' : element.value}
+			Data type: {typeof element.value}
 			{#if element.props.key === 'image'}
 				<svelte:component
 					this={element.component}
+					bind:this={refs[i]}
 					class={missingValues[i] && element.props['required'] === true
 						? 'bg-primary-600 text-white dark:bg-primary-600'
 						: ''}
