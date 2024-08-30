@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import AlertMessage from '$lib/components/AlertMessage.svelte';
 
 	import {
@@ -58,25 +59,32 @@
 	}
 	// event handlers and verification function
 	export async function submitData() {
-		const childID = generateChildID(childData.name);
-		await addChildData(userID, childID, childData);
-		await addChildObservation(userID, childID, {
-			user: userID,
-			id: childID,
-			summary: await createDummySummary(),
-			current: await createDummyCurrent()
-		});
+		verified = await verifyInput();
+		if (verified) {
+			const childID = generateChildID(childData.name);
+			await addChildData(userID, childID, childData);
+			await addChildObservation(userID, childID, {
+				user: userID,
+				id: childID,
+				summary: await createDummySummary(),
+				current: await createDummyCurrent()
+			});
 
-		console.log('childData: ', childData);
+			await goto(nextpage as string, false);
+		} else {
+			showAlert = true;
+		}
 	}
 
-	export async function verifyInput() {
+	export async function verifyInput(): Promise<Boolean> {
 		let required: { [key: string]: Boolean } = {};
 		childData = data.reduce((dict: any, curr) => {
 			dict[curr.props.key] = curr.value;
 			required[curr.props.key] = curr.props.required;
 			return dict;
 		}, {});
+
+		let success = false;
 
 		const test = Object.entries(childData).every((kv) =>
 			required[kv[0]] ? kv[1] !== undefined && kv[1] !== null : true
@@ -89,15 +97,15 @@
 			childData['user'] = userID;
 			childData['id'] = childID;
 			childData['info'] = childData.remarks;
-			nextpage = '/childrengallery';
-			verified = true;
+			success = true;
 			showCheckMessage = false;
 		} else {
-			showAlert = true;
 			(missingValues as Boolean[]) = Object.keys(childData).map((key) => {
 				return childData[key] && required[key] ? false : true;
 			});
 		}
+
+		return success;
 	}
 
 	// data to display -> will later be fetched from the server
@@ -201,7 +209,7 @@
 	let data = rawData.map(processData);
 	let childData: ChildData;
 	let verified: Boolean = false;
-	let nextpage: string | null = null;
+	let nextpage: string = '/childrengallery';
 	let unsubscribe: Function = children.subscribe((childrenlist) => {
 		save();
 	});
@@ -300,9 +308,8 @@
 
 		<Button
 			class="w-full rounded-lg bg-primary-700 px-4 py-2 font-semibold text-white hover:bg-primary-800"
-			on:click={verified ? submitData : verifyInput}
-			href={nextpage}
-			>{verified ? 'Kind hinzufügen' : 'Klicken um Daten zu bestätigen'}
+			on:click={submitData}
+			>{'Kind hinzufügen'}
 		</Button>
 	</form>
 </Card>

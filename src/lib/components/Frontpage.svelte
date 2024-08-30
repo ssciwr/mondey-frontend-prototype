@@ -69,16 +69,19 @@
 	const props = {};
 
 	onMount(async () => {
+		// delete old data first, then add new user and save it to disk
 		try {
 			await clear();
 		} catch (error) {
 			console.log('error in frontpage: ', error);
 		}
+
 		try {
 			await addUser('dummyUser');
 		} catch (error) {
 			console.log('error in frontpage: ', error);
 		}
+
 		try {
 			await save();
 		} catch (error) {
