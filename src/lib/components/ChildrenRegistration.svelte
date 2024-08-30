@@ -275,8 +275,15 @@
 						: ''}
 					{...element.props}
 					on:change={(event) => {
-						console.log('event: ', event.target.files[0]);
-						element.value = event.target.files[0];
+						if (!(event.target === null)) {
+							const image = event.target.files[0];
+							// use https://svelte.dev/repl/b17c13d4f1bb40799ccf09e0841ddd90?version=4.2.19
+							let reader = new FileReader();
+							reader.readAsDataURL(image);
+							reader.onload = (e) => {
+								element.value = e.target.result;
+							};
+						}
 					}}
 				/>
 			{:else}
