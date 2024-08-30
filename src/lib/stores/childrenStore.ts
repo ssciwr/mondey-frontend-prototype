@@ -56,8 +56,6 @@ async function clear() {
 
 async function load() {
 	if (browser) {
-		console.log('Loading children list');
-		console.log('childrenlist: ', childrenlist);
 		const stored = localStorage.getItem('children');
 		childrenlist = stored ? JSON.parse(stored) : {};
 	}
@@ -66,13 +64,9 @@ async function load() {
 
 async function save() {
 	if (browser) {
-		console.log('Saving children list');
-		console.log('childrenlist: ', childrenlist);
 		localStorage.setItem('children', JSON.stringify(get(children)));
 	}
 }
-
-// addX and removeX are helper functions and can probably be removed once we have a proper backend
 
 /**
  * Generate a dummy child id code
@@ -97,7 +91,7 @@ async function addUser(usertoken: string) {
 			throw new Error(`User token ${usertoken} already exists`);
 		}
 
-		childrenlist[usertoken] = {};
+		childrenlist[usertoken as keyof typeof childrenlist] = {};
 
 		return childrenlist;
 	});
@@ -117,7 +111,7 @@ async function addChildData(usertoken: string, childtoken: string, data: ChildDa
 			throw new Error(`User token ${usertoken} not found`);
 		}
 
-		if (childtoken in childrenlist[usertoken]) {
+		if (childtoken in childrenlist[usertoken as keyof typeof childrenlist]) {
 			throw new Error(`Child token ${childtoken} already exists for user token ${usertoken}`);
 		}
 
@@ -143,11 +137,12 @@ async function addChildObservation(
 			throw new Error(`User token ${usertoken} not found`);
 		}
 
-		if (!(childtoken in childrenlist[usertoken])) {
+		if (!(childtoken in childrenlist[usertoken as keyof typeof childrenlist])) {
 			throw new Error(`Child token ${childtoken} does not exist for user token ${usertoken}`);
 		}
 
-		childrenlist[usertoken][childtoken].observationData = observationData;
+		childrenlist[usertoken as keyof typeof childrenlist][childtoken].observationData =
+			observationData;
 
 		return childrenlist;
 	});
@@ -166,11 +161,11 @@ async function removeChildData(usertoken: string, childtoken: string) {
 			throw new Error(`User token ${usertoken} not found`);
 		}
 
-		if (!(childtoken in childrenlist[usertoken])) {
+		if (!(childtoken in childrenlist[usertoken as keyof typeof childrenlist])) {
 			throw new Error(`Child token ${childtoken} not found for user token ${usertoken}`);
 		}
 
-		delete childrenlist[usertoken][childtoken];
+		delete childrenlist[usertoken as keyof typeof childrenlist][childtoken];
 
 		return childrenlist;
 	});
@@ -190,11 +185,11 @@ async function fetchChildData(usertoken: string, childtoken: string) {
 		throw new Error('No such user in the childrenstore');
 	}
 
-	if (!(childtoken in contentData[usertoken as keyof ChildrenList])) {
+	if (!(childtoken in contentData[usertoken as keyof typeof childrenlist])) {
 		throw new Error('No such child in the childrenstore for user ' + usertoken);
 	}
 
-	return contentData[usertoken as keyof ChildrenList][childtoken].childData;
+	return contentData[usertoken as keyof typeof childrenlist][childtoken].childData;
 }
 
 /**
@@ -211,11 +206,11 @@ async function fetchObservationData(usertoken: string, childtoken: string) {
 		throw new Error('No such user in the childrenstore');
 	}
 
-	if (!(childtoken in contentData[usertoken as keyof ChildrenList])) {
+	if (!(childtoken in contentData[usertoken as keyof typeof contentData])) {
 		throw new Error('No such child in the childrenstore for user ' + usertoken);
 	}
 
-	return contentData[usertoken as keyof ChildrenList][childtoken].observationData;
+	return contentData[usertoken as keyof typeof contentData][childtoken].observationData;
 }
 
 /**
@@ -231,9 +226,9 @@ async function fetchChildrenDataforUser(usertoken: string) {
 	}
 
 	// sort them alphabetically
-	return Object.keys(contentData[usertoken])
+	return Object.keys(contentData[usertoken as keyof typeof contentData])
 		.map((child) => {
-			return contentData[usertoken][child].childData;
+			return contentData[usertoken as keyof typeof contentData][child].childData;
 		})
 		.sort((a, b) => a.name.localeCompare(b.name));
 }
@@ -244,16 +239,14 @@ async function fetchChildrenDataforUser(usertoken: string) {
  * @returns A list of tuples, where the first element is the child identifier and the second element is the observation data of the child
  */
 async function fetchObservationDataForUser(usertoken: string) {
-	console.log('fetching observation data for user', usertoken);
 	const contentData = get(children);
-	console.log(contentData);
 
 	if (!(usertoken in contentData)) {
 		throw new Error('No such user in the childrenstore');
 	}
 
-	return Object.keys(contentData[usertoken]).map((child) => {
-		return [child, contentData[usertoken][child].observationData];
+	return Object.keys(contentData[usertoken as keyof typeof contentData]).map((child) => {
+		return [child, contentData[usertoken as keyof typeof contentData][child].observationData];
 	});
 }
 

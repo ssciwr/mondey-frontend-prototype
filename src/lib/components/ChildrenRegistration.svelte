@@ -36,10 +36,11 @@
 			}));
 
 			component = Select;
-		} else if (element.key == 'image') {
-			component = Fileupload;
-		} else if (element.key == 'remarks') {
+		} else if (element.key === 'remarks') {
 			component = Textarea;
+		} else if (element.key === 'image') {
+			component = Fileupload;
+			element.accept = ['.jpg', '.png', '.webp'];
 		} else {
 			component = Input;
 			let type = 'text';
@@ -65,6 +66,8 @@
 			summary: await createDummySummary(),
 			current: await createDummyCurrent()
 		});
+
+		console.log('childData: ', childData);
 	}
 
 	export async function verifyInput() {
@@ -85,15 +88,15 @@
 			// add additional data to the child
 			childData['user'] = userID;
 			childData['id'] = childID;
+			childData['info'] = childData.remarks;
 			nextpage = '/childrengallery';
 			verified = true;
+			showCheckMessage = false;
 		} else {
 			showAlert = true;
-			(missingValues as Boolean[]) = Object.keys(childData)
-				.map((key) => {
-					return childData[key] && required[key] ? false : true;
-				})
-				.filter((v) => v === true);
+			(missingValues as Boolean[]) = Object.keys(childData).map((key) => {
+				return childData[key] && required[key] ? false : true;
+			});
 		}
 	}
 
@@ -121,49 +124,49 @@
 			key: 'bornEarly',
 			required: true
 		},
-		// {
-		// 	label: 'Geschlecht',
-		// 	items: ['männlich', 'weiblich'],
-		// 	placeholder: 'Bitte auswählen',
-		// 	key: 'gender',
-		// 	required: true
-		// },
-		// {
-		// 	label: 'Nationalität',
-		// 	items: ['Deutschland', 'Grossbritannien', 'USA', 'China'],
-		// 	placeholder: 'Bitte auswählen',
-		// 	key: 'nationality',
-		// 	required: true
-		// },
-		// {
-		// 	label: 'Sprache',
-		// 	items: ['Deutsch', 'Englisch (UK)', 'Englisch (Us)', 'Mandarin', 'Arabisch'],
-		// 	placeholder: 'Bitte auswählen',
-		// 	key: 'language',
-		// 	required: true
-		// },
-		// {
-		// 	label: 'Verhältnis zum Kind',
-		// 	key: 'relationship',
-		// 	items: [
-		// 		'Kind',
-		// 		'Enkelkind',
-		// 		'Neffe/Nichte',
-		// 		'Pflegekind',
-		// 		'Adoptivkind',
-		// 		'Betreuung extern',
-		// 		'Betreuung zu Hause'
-		// 	],
-		// 	placeholder: 'Bitte auswählen',
-		// 	required: true
-		// },
-		// {
-		// 	label: 'Entwicklungsauffälligkeiten',
-		// 	items: ['Hörprobleme', 'Fehlsichtigkeit', 'Sprachfehler'],
-		// 	placeholder: 'Bitte auswählen',
-		// 	key: 'developmentalIssues',
-		// 	required: true
-		// },
+		{
+			label: 'Geschlecht',
+			items: ['männlich', 'weiblich'],
+			placeholder: 'Bitte auswählen',
+			key: 'gender',
+			required: true
+		},
+		{
+			label: 'Nationalität',
+			items: ['Deutschland', 'Grossbritannien', 'USA', 'China'],
+			placeholder: 'Bitte auswählen',
+			key: 'nationality',
+			required: true
+		},
+		{
+			label: 'Sprache',
+			items: ['Deutsch', 'Englisch (UK)', 'Englisch (Us)', 'Mandarin', 'Arabisch'],
+			placeholder: 'Bitte auswählen',
+			key: 'language',
+			required: true
+		},
+		{
+			label: 'Verhältnis zum Kind',
+			key: 'relationship',
+			items: [
+				'Kind',
+				'Enkelkind',
+				'Neffe/Nichte',
+				'Pflegekind',
+				'Adoptivkind',
+				'Betreuung extern',
+				'Betreuung zu Hause'
+			],
+			placeholder: 'Bitte auswählen',
+			required: true
+		},
+		{
+			label: 'Entwicklungsauffälligkeiten',
+			items: ['keine', 'Hörprobleme', 'Fehlsichtigkeit', 'Sprachfehler'],
+			placeholder: 'Bitte auswählen',
+			key: 'developmentalIssues',
+			required: true
+		},
 		{
 			label: 'Anmerkungen',
 			placeholder: 'Weitere Bemerkungen',
@@ -199,18 +202,19 @@
 	let childData: ChildData;
 	let verified: Boolean = false;
 	let nextpage: string | null = null;
+	let unsubscribe: Function = children.subscribe((childrenlist) => {
+		save();
+	});
 
 	// rerender page if missing values or showAlert changes
 	$: missingValues = [];
 	$: showAlert = false;
+	$: showCheckMessage = true;
 
 	// use component lifecycle to make sure data is written and read persistently
-	let unsubscribe;
+
 	onMount(async () => {
 		await load();
-		unsubscribe = children.subscribe((childrenlist) => {
-			save();
-		});
 	});
 
 	onDestroy(async () => {
@@ -224,12 +228,25 @@
 	<AlertMessage
 		title="Fehler"
 		message="Bitte füllen Sie mindestens die benötigten Felder (hervorgehoben) aus."
-		lastpage="/childLand/childDataInput"
+		lastpage="/childLand/childDataInput/"
 		infopage="/info"
 		infotitle="Was passiert mit den Daten"
 		onclick={() => {
 			showAlert = false;
 			missingValues = [];
+		}}
+	/>
+{/if}
+
+{#if showCheckMessage}
+	<AlertMessage
+		title="Bevor es weitergeht"
+		message="Bitte überprüfen sie ihre eingaben nochmals genau bevor sie weiter gehen"
+		lastpage="/childLand/childDataInput"
+		infopage="/"
+		infotitle="Was passiert mit den Daten?"
+		onclick={() => {
+			showCheckMessage = false;
 		}}
 	/>
 {/if}
@@ -249,14 +266,29 @@
 			{#if element.props.label}
 				<Label class="font-semibold text-gray-700 dark:text-gray-400">{element.props.label}</Label>
 			{/if}
-			<svelte:component
-				this={element.component}
-				class={missingValues[i] && element.props['required'] === true
-					? 'bg-primary-600 text-white dark:bg-primary-600'
-					: ''}
-				bind:value={element.value}
-				{...element.props}
-			/>
+
+			{#if element.props.key === 'image'}
+				<svelte:component
+					this={element.component}
+					class={missingValues[i] && element.props['required'] === true
+						? 'bg-primary-600 text-white dark:bg-primary-600'
+						: ''}
+					{...element.props}
+					on:change={(event) => {
+						console.log('event: ', event.target.files[0]);
+						element.value = event.target.files[0];
+					}}
+				/>
+			{:else}
+				<svelte:component
+					this={element.component}
+					class={missingValues[i] && element.props['required'] === true
+						? 'bg-primary-600 text-white dark:bg-primary-600'
+						: ''}
+					bind:value={element.value}
+					{...element.props}
+				/>
+			{/if}
 		{/each}
 
 		<Button

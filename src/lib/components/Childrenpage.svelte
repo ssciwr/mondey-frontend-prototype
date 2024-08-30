@@ -51,13 +51,7 @@
 <script lang="ts">
 	import CardDisplay from '$lib/components/DataDisplay/CardDisplay.svelte';
 	import GalleryDisplay from '$lib/components/DataDisplay/GalleryDisplay.svelte';
-	import {
-		addUser,
-		fetchChildrenDataforUser,
-		load,
-		save,
-		type ChildData
-	} from '$lib/stores/childrenStore';
+	import { fetchChildrenDataforUser, load, save, type ChildData } from '$lib/stores/childrenStore';
 	import { Heading } from 'flowbite-svelte';
 	import { onDestroy, onMount } from 'svelte';
 	// create data and
@@ -71,7 +65,8 @@
 		}
 
 		// Update the store with the value from localStorage
-		let rawdata = [];
+		let rawdata: unknown = [];
+
 		try {
 			rawdata = await fetchChildrenDataforUser('dummyUser');
 		} catch (error) {
@@ -83,7 +78,6 @@
 
 	let data: ChildData[] = [];
 	let loading = true;
-	const userID = 'dummyUser';
 
 	// this fetches dummy child data for the dummy user whenever the component is mounted into the dom
 	// it is conceptualized as emulating an API call that would normally fetch this from the server.
