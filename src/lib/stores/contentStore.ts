@@ -1,5 +1,4 @@
-import { get, writable } from 'svelte/store';
-
+import { basicStore } from './basicStore';
 // types. Create some interfaces to define the structure of the content and make clear what will be expected from API calls
 interface MilestoneDef {
 	name: string;
@@ -18,27 +17,7 @@ interface ContentList {
 	[name: string]: ContentNode;
 }
 
-const contentlist: ContentList = {};
-
-// README: perhaps put this into a derived store that is a map of keys to content nodes. This way we can have a single
-// store that has an object which stores the content.
-const content = writable(contentlist);
-
-/**
- * Retrieve content from the store
- * @param key identifier for the content to fetch
- * @returns content element corresponding to the key
- */
-async function fetchContent(key: string) {
-	// later: fetch stuff from server and write to store. For now, get from dummy data in store
-	const contentData = get(content);
-
-	if (!(key in contentData)) {
-		throw new Error('No such key in the contentstore');
-	}
-
-	return contentData[key];
-}
+class ContentStore extends basicStore<ContentList> {}
 
 /**
  * Create some dummy data to test the store
@@ -141,15 +120,6 @@ async function createDummyData() {
 			next: null
 		}
 	};
-
-	content.set(dummySurveys);
 }
 
-export {
-	content,
-	createDummyData,
-	fetchContent,
-	type ContentList,
-	type ContentNode,
-	type MilestoneDef
-};
+export { ContentStore, createDummyData, type ContentList, type ContentNode, type MilestoneDef };
