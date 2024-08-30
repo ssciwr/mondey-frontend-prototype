@@ -72,10 +72,6 @@
 			await goto(nextpage as string);
 		} else {
 			showAlert = true;
-			const firstError = missingValues.findIndex((value) => value === true);
-			if (missingValues[firstError] === true) {
-				refs[firstError].focus();
-			}
 		}
 	}
 
@@ -89,7 +85,7 @@
 		}, {});
 
 		const test = Object.entries(childData).every((kv) =>
-			required[kv[0]] ? kv[1] !== undefined && kv[1] !== null : true
+			required[kv[0]] ? kv[1] !== undefined && kv[1] !== null && kv[1] !== '' : true
 		);
 
 		if (test) {
@@ -230,19 +226,7 @@
 		await save();
 		unsubscribe();
 	});
-
-	console.log(
-		' value: ',
-		data.map((d) => d.value)
-	);
 </script>
-
-{#each data as element, i}
-	<p>index: {i}</p>
-	<p>missing: {missingValues[i]}</p>
-	<p>name: {element.props.label}</p>
-	<p>value: {element.value}</p>
-{/each}
 
 <!-- Show big alert message when something is missing -->
 {#if showAlert}
@@ -315,6 +299,13 @@
 					class={missingValues[i] && element.props['required'] === true
 						? 'bg-primary-600 text-white dark:bg-primary-600'
 						: ''}
+					on:change={(event) => {
+						if (missingValues[i]) {
+							if (element.value !== undefined && element.value !== null && element.value !== '') {
+								missingValues[i] = false;
+							}
+						}
+					}}
 					bind:value={element.value}
 					{...element.props}
 				/>
