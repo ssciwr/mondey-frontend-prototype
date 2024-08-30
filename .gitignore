@@ -23,6 +23,5 @@ vite.config.ts.timestamp-*
 # packaging
 package-lock.json
 
-
-# extension data 
+# vscode extensions 
 .VSCodeCounter

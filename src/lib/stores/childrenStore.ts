@@ -1,3 +1,4 @@
+import { browser } from '$app/environment';
 import { get, writable } from 'svelte/store';
 
 // README: this API is experimental and not by any means a final design
@@ -44,11 +45,42 @@ interface ChildrenList {
 }
 
 // the store itself: README: TODO: Consider creating a derived store for maps that exposes some key-value retrieval functionality
-const childrenlist: ChildrenList = {};
-
+let childrenlist = {};
 const children = writable(childrenlist);
 
-// addX and removeX are helper functions and can probably be removed once we have a proper backend
+async function clear() {
+	if (browser) {
+		localStorage.clear();
+	}
+}
+
+async function load() {
+	if (browser) {
+		const stored = localStorage.getItem('children');
+		childrenlist = stored ? JSON.parse(stored) : {};
+	}
+	children.set(childrenlist);
+}
+
+async function save() {
+	if (browser) {
+		localStorage.setItem('children', JSON.stringify(get(children)));
+	}
+}
+
+/**
+ * Generate a dummy child id code
+ * @param childname name of the child
+ * @returns child id code string made up of ascii code numbers in string form
+ */
+export function generateChildID(childname: string): string {
+	return childname
+		.split('')
+		.map((char) => char.charCodeAt(0))
+		.reduce((acc, num) => acc + num.toString(), '')
+		.toLowerCase();
+}
+
 /**
  * Add a new user with an empty children store
  * @param usertoken the token of the user to add
@@ -59,7 +91,7 @@ async function addUser(usertoken: string) {
 			throw new Error(`User token ${usertoken} already exists`);
 		}
 
-		childrenlist[usertoken] = {};
+		childrenlist[usertoken as keyof typeof childrenlist] = {};
 
 		return childrenlist;
 	});
@@ -79,7 +111,7 @@ async function addChildData(usertoken: string, childtoken: string, data: ChildDa
 			throw new Error(`User token ${usertoken} not found`);
 		}
 
-		if (childtoken in childrenlist[usertoken]) {
+		if (childtoken in childrenlist[usertoken as keyof typeof childrenlist]) {
 			throw new Error(`Child token ${childtoken} already exists for user token ${usertoken}`);
 		}
 
@@ -105,11 +137,12 @@ async function addChildObservation(
 			throw new Error(`User token ${usertoken} not found`);
 		}
 
-		if (!(childtoken in childrenlist[usertoken])) {
+		if (!(childtoken in childrenlist[usertoken as keyof typeof childrenlist])) {
 			throw new Error(`Child token ${childtoken} does not exist for user token ${usertoken}`);
 		}
 
-		childrenlist[usertoken][childtoken].observationData = observationData;
+		childrenlist[usertoken as keyof typeof childrenlist][childtoken].observationData =
+			observationData;
 
 		return childrenlist;
 	});
@@ -128,11 +161,11 @@ async function removeChildData(usertoken: string, childtoken: string) {
 			throw new Error(`User token ${usertoken} not found`);
 		}
 
-		if (!(childtoken in childrenlist[usertoken])) {
+		if (!(childtoken in childrenlist[usertoken as keyof typeof childrenlist])) {
 			throw new Error(`Child token ${childtoken} not found for user token ${usertoken}`);
 		}
 
-		delete childrenlist[usertoken][childtoken];
+		delete childrenlist[usertoken as keyof typeof childrenlist][childtoken];
 
 		return childrenlist;
 	});
@@ -152,11 +185,11 @@ async function fetchChildData(usertoken: string, childtoken: string) {
 		throw new Error('No such user in the childrenstore');
 	}
 
-	if (!(childtoken in contentData[usertoken as keyof ChildrenList])) {
+	if (!(childtoken in contentData[usertoken as keyof typeof childrenlist])) {
 		throw new Error('No such child in the childrenstore for user ' + usertoken);
 	}
 
-	return contentData[usertoken as keyof ChildrenList][childtoken].childData;
+	return contentData[usertoken as keyof typeof childrenlist][childtoken].childData;
 }
 
 /**
@@ -173,11 +206,11 @@ async function fetchObservationData(usertoken: string, childtoken: string) {
 		throw new Error('No such user in the childrenstore');
 	}
 
-	if (!(childtoken in contentData[usertoken as keyof ChildrenList])) {
+	if (!(childtoken in contentData[usertoken as keyof typeof contentData])) {
 		throw new Error('No such child in the childrenstore for user ' + usertoken);
 	}
 
-	return contentData[usertoken as keyof ChildrenList][childtoken].observationData;
+	return contentData[usertoken as keyof typeof contentData][childtoken].observationData;
 }
 
 /**
@@ -193,9 +226,9 @@ async function fetchChildrenDataforUser(usertoken: string) {
 	}
 
 	// sort them alphabetically
-	return Object.keys(contentData[usertoken])
+	return Object.keys(contentData[usertoken as keyof typeof contentData])
 		.map((child) => {
-			return contentData[usertoken][child].childData;
+			return contentData[usertoken as keyof typeof contentData][child].childData;
 		})
 		.sort((a, b) => a.name.localeCompare(b.name));
 }
@@ -206,16 +239,14 @@ async function fetchChildrenDataforUser(usertoken: string) {
  * @returns A list of tuples, where the first element is the child identifier and the second element is the observation data of the child
  */
 async function fetchObservationDataForUser(usertoken: string) {
-	console.log('fetching observation data for user', usertoken);
 	const contentData = get(children);
-	console.log(contentData);
 
 	if (!(usertoken in contentData)) {
 		throw new Error('No such user in the childrenstore');
 	}
 
-	return Object.keys(contentData[usertoken]).map((child) => {
-		return [child, contentData[usertoken][child].observationData];
+	return Object.keys(contentData[usertoken as keyof typeof contentData]).map((child) => {
+		return [child, contentData[usertoken as keyof typeof contentData][child].observationData];
 	});
 }
 
@@ -242,17 +273,7 @@ function chooseRandom(values: string[]) {
 	return values[getRandomInt(values.length)];
 }
 
-/**
- * create dummy data for the children store. This will later be
- */
-async function createDummyData() {
-	if ('dummyUser' in childrenlist) {
-		return;
-	}
-	// add user
-	await addUser('dummyUser');
-
-	// create data
+async function createDummySummary() {
 	const values = ['good', 'warn', 'bad'];
 	const dates = [
 		'05-11-2017',
@@ -282,7 +303,11 @@ async function createDummyData() {
 		summary.push(element);
 	}
 
+	return summary;
+}
+async function createDummyCurrent() {
 	const current: { [survey: string]: { name: string; status: string }[] } = {};
+	const surveys: string[] = ['surveyA', 'surveyB', 'surveyC', 'surveyD', 'surveyE'];
 
 	const milestones = ['milestoneA', 'milestoneB', 'milestoneC', 'milestoneD', 'milestoneE'];
 	const completionValues = ['done', 'open', 'incomplete'];
@@ -296,105 +321,24 @@ async function createDummyData() {
 			});
 		}
 	}
-
-	await addChildData('dummyUser', 'childAnna', {
-		name: 'Anna',
-		id: 'childAnna',
-		user: 'dummyUser',
-		image: 'child_avatar.png',
-		info: 'Anna child that is doing good and developing according to their age.. Click to view more.'
-	});
-	await addChildObservation('dummyUser', 'childAnna', {
-		id: 'childAnna',
-		user: 'dummyUser',
-		summary: summary,
-		current: current
-	});
-
-	await addChildData('dummyUser', 'childBen', {
-		name: 'Ben',
-		id: 'childBen',
-		user: 'dummyUser',
-		image: 'child_avatar.png',
-		info: 'Ben child that is doing good and developing according to their age.. Click to view more.'
-	});
-	await addChildObservation('dummyUser', 'childBen', {
-		id: 'childAnna',
-		user: 'dummyUser',
-		summary: summary,
-		current: current
-	});
-
-	await addChildData('dummyUser', 'childC', {
-		name: 'C',
-		id: 'childC',
-		user: 'dummyUser',
-		image: 'children.png',
-		info: 'C child that is doing good and developing according to their age. Click to view more.'
-	});
-	await addChildObservation('dummyUser', 'childC', {
-		id: 'childAnna',
-		user: 'dummyUser',
-		summary: summary,
-		current: current
-	});
-
-	await addChildData('dummyUser', 'childDora', {
-		name: 'Dora',
-		id: 'childDora',
-		user: 'dummyUser',
-		image: 'children.png',
-		info: 'Dora child that is doing good and developing according to their age.. Click to view more.'
-	});
-	await addChildObservation('dummyUser', 'childDora', {
-		id: 'childAnna',
-		user: 'dummyUser',
-		summary: summary,
-		current: current
-	});
-
-	await addChildData('dummyUser', 'childE', {
-		name: 'E',
-		id: 'childE',
-		user: 'dummyUser',
-		image: 'children.png',
-		info: 'E child that is doing good and developing according to their age.. Click to view more.'
-	});
-	await addChildObservation('dummyUser', 'childE', {
-		id: 'childAnna',
-		user: 'dummyUser',
-		summary: summary,
-		current: current
-	});
-
-	await addChildData('dummyUser', 'childF', {
-		name: 'F',
-		id: 'childF',
-		user: 'dummyUser',
-		image: 'children.png',
-		info: 'F child that is doing good and developing according to their age.. Click to view more.'
-	});
-	await addChildObservation('dummyUser', 'childF', {
-		id: 'childAnna',
-		user: 'dummyUser',
-		summary: summary,
-		current: current
-	});
+	return current;
 }
-
-// <--
 
 export {
 	addChildData,
 	addChildObservation,
 	addUser,
 	children,
-	createDummyData,
+	clear,
+	createDummyCurrent,
+	createDummySummary,
 	fetchChildData,
 	fetchChildrenDataforUser,
 	fetchObservationData,
 	fetchObservationDataForUser,
+	load,
 	removeChildData,
+	save,
 	type ChildData,
 	type ChildObject,
 	type ChildrenList,

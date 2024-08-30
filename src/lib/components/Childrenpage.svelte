@@ -51,29 +51,40 @@
 <script lang="ts">
 	import CardDisplay from '$lib/components/DataDisplay/CardDisplay.svelte';
 	import GalleryDisplay from '$lib/components/DataDisplay/GalleryDisplay.svelte';
-	import {
-		createDummyData,
-		fetchChildrenDataforUser,
-		type ChildData
-	} from '$lib/stores/childrenStore';
+	import { fetchChildrenDataforUser, load, save, type ChildData } from '$lib/stores/childrenStore';
 	import { Heading } from 'flowbite-svelte';
-	import { onMount } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 	// create data and
-
-	let data: ChildData[] = [];
-	let loading = true;
 
 	async function init() {
 		loading = true;
-		await createDummyData();
-		let rawdata = await fetchChildrenDataforUser('dummyUser');
+		try {
+			await load();
+		} catch (error) {
+			console.log('Error loading data: ', error);
+		}
+
+		// Update the store with the value from localStorage
+		let rawdata: unknown = [];
+
+		try {
+			rawdata = await fetchChildrenDataforUser('dummyUser');
+		} catch (error) {
+			console.log('some error occured: ', error);
+		}
 		data = convertData(rawdata);
 		loading = false;
 	}
 
+	let data: ChildData[] = [];
+	let loading = true;
+
 	// this fetches dummy child data for the dummy user whenever the component is mounted into the dom
 	// it is conceptualized as emulating an API call that would normally fetch this from the server.
 	onMount(init);
+	onDestroy(async () => {
+		save();
+	});
 </script>
 
 <Heading tag="h1" class="mb-2" color="text-gray-700 dark:text-gray-400">Übersicht</Heading>
