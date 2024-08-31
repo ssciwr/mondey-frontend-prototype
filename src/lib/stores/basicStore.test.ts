@@ -18,14 +18,14 @@ describe('normal functionality', () => {
 		expect(users.get()).toEqual(dummyUsers);
 	});
 
-	it.only('data', async () => {
+	it('data', async () => {
 		const userstore = new BasicStore('user', 'thing');
 		userstore.set(dummyUsers);
 
 		expect(userstore.get()).toEqual(dummyUsers);
 	});
 
-	it.only('successful user addition', async () => {
+	it('successful user addition', async () => {
 		users.set(dummyUsers);
 		users.add('anotherUser', { name: 'B', role: 'admin', id: 'idB' });
 		expect(users.get()['anotherUser']).toEqual({ name: 'B', role: 'admin', id: 'idB' });

@@ -120,7 +120,7 @@ describe('normal functionality', () => {
 		}
 	});
 
-	it.only('should throw when removing with nonexistant user or nonexisting child key', async () => {
+	it('should throw when removing with nonexistant user or nonexisting child key', async () => {
 		reset();
 		try {
 			await children.removeChildData('x', 'childA');
@@ -140,7 +140,7 @@ describe('normal functionality', () => {
 		expect(await children.fetchObservationData('alpha', 'childfoo')).toEqual(mockObservationData);
 	});
 
-	it.only('should fetch child data', async () => {
+	it('should fetch child data', async () => {
 		reset();
 		expect(await children.fetchChildData('alpha', 'childfoo')).toEqual({
 			name: 'foo',
@@ -167,7 +167,7 @@ describe('normal functionality', () => {
 		}
 	});
 
-	it.only('should fetch list of childrendata', async () => {
+	it('should fetch list of childrendata', async () => {
 		reset();
 		const data = await children.fetchChildrenDataforUser('alpha');
 
