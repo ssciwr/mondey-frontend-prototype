@@ -20,6 +20,17 @@ class basicStore<T extends Record<string, unknown>> {
 		this.key = key;
 	}
 
+	public get() {
+		return get(this.store);
+	}
+	/**
+	 *
+	 * @param data
+	 */
+	public set(data: T): void {
+		this.store.set(data);
+	}
+
 	/**
 	 *
 	 * @param userID

@@ -49,7 +49,7 @@ interface ChildrenList {
 	};
 }
 
-class ChildStore extends basicStore<ChildrenList> {
+class ChildrenStore extends basicStore<ChildrenList> {
 	/**
 	 *
 	 * @param name
@@ -57,7 +57,6 @@ class ChildStore extends basicStore<ChildrenList> {
 	constructor(name: string) {
 		super(name, 'children');
 	}
-
 	/**
 	 *
 	 * @param userID
@@ -323,7 +322,7 @@ async function createDummyCurrent() {
 }
 
 export {
-	ChildStore,
+	ChildrenStore,
 	createDummyCurrent,
 	createDummySummary,
 	type ChildData,
