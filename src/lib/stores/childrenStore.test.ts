@@ -1,5 +1,5 @@
+import { ChildrenStore, type ChildObject, type ObservationData } from '$lib/stores/childrenStore';
 import { describe, expect, it } from 'vitest';
-import { ChildrenStore, type ChildObject, type ObservationData } from './childrenStore';
 
 describe('normal functionality', () => {
 	const mockObservationData: ObservationData = {

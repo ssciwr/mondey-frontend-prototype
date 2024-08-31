@@ -1,4 +1,4 @@
-import { BasicStore } from '$lib/stores/BasicStore';
+import { BasicStore } from '$lib/stores/basicStore';
 
 interface UserData {
 	name: string;

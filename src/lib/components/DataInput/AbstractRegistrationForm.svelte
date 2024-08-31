@@ -1,6 +1,6 @@
 <script>
+	import AbstractDataInput from '$lib/components/DataInput/AbstractDataInput.svelte';
 	import { Card, Heading } from 'flowbite-svelte';
-	import AbstractDataInput from './AbstractDataInput.svelte';
 	export let props = [];
 	export let heading = null;
 	export let buttons = null;

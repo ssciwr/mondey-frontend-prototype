@@ -1,5 +1,5 @@
+import { BasicStore } from '$lib/stores/basicStore';
 import { get } from 'svelte/store';
-import { BasicStore } from './BasicStore';
 // README: this API is experimental and not by any means a final design
 
 // Types: create interfaces for the elements that are stored and are expected to be returned from the 'backend' (or its mockup at the moment)

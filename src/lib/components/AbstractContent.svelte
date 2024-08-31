@@ -3,7 +3,7 @@
 
 	import { CaretLeftSolid, CaretRightSolid, LightbulbSolid } from 'flowbite-svelte-icons';
 	// logo
-	import BottomNavElement from './Navigation/BottomNavElement.svelte';
+	import BottomNavElement from '$lib/components/Navigation/BottomNavElement.svelte';
 
 	// variables for showing or hiding elements
 	export let showBottomNavbar = true;
