@@ -119,15 +119,6 @@ class BasicStore<T extends Record<string, unknown>> {
 		}
 		this.store.set(data as T);
 	}
-
-	/**
-	 *
-	 */
-	public async clear(): Promise<void> {
-		if (browser) {
-			localStorage.clear();
-		}
-	}
 }
 
 export { BasicStore };

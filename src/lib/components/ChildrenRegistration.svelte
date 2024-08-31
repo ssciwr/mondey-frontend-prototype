@@ -58,8 +58,8 @@
 		const verified = await verifyInput();
 		if (verified) {
 			const childID = generateChildID(childData.name);
-			await addChildData(userID, childID, childData);
-			await addChildObservation(userID, childID, {
+			await children.addChildData(userID, childID, childData);
+			await children.addChildObservation(userID, childID, {
 				user: userID,
 				id: childID,
 				summary: await createDummySummary(),

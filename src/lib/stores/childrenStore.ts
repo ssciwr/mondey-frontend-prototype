@@ -58,7 +58,7 @@ class ChildrenStore extends BasicStore<ChildrenList> {
 	 */
 	constructor(name: string = 'children') {
 		if (ChildrenStore._instance) {
-			return ChildrenStore._instance;
+			throw new Error("Singleton classes can't be instantiated more than once.");
 		} else {
 			super(name, 'children');
 			ChildrenStore._instance = this;

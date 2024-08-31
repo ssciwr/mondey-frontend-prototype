@@ -22,7 +22,7 @@ class ContentStore extends BasicStore<ContentList> {
 
 	constructor(name: string = 'content') {
 		if (ContentStore._instance) {
-			return ContentStore._instance;
+			throw new Error("Singleton classes can't be instantiated more than once.");
 		} else {
 			super(name, 'content');
 			ContentStore._instance = this;
