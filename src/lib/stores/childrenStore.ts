@@ -50,12 +50,19 @@ interface ChildrenList {
 }
 
 class ChildrenStore extends BasicStore<ChildrenList> {
+	static _instance: ChildrenStore;
+
 	/**
 	 *
 	 * @param name
 	 */
 	constructor(name: string = 'children') {
-		super(name, 'children');
+		if (ChildrenStore._instance) {
+			return ChildrenStore._instance;
+		} else {
+			super(name, 'children');
+			ChildrenStore._instance = this;
+		}
 	}
 	/**
 	 *

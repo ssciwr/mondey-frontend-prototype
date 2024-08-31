@@ -18,8 +18,15 @@ interface ContentList {
 }
 
 class ContentStore extends BasicStore<ContentList> {
+	static _instance: ContentStore;
+
 	constructor(name: string = 'content') {
-		super(name, 'content');
+		if (ContentStore._instance) {
+			return ContentStore._instance;
+		} else {
+			super(name, 'content');
+			ContentStore._instance = this;
+		}
 	}
 }
 
