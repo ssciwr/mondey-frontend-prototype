@@ -1,4 +1,4 @@
-import { basicStore } from '$lib/stores/basicStore';
+import { BasicStore } from '$lib/stores/BasicStore';
 
 interface UserData {
 	name: string;
@@ -14,7 +14,7 @@ interface UserList {
 /**
  *
  */
-class UserStore extends basicStore<UserList> {
+class UserStore extends BasicStore<UserList> {
 	constructor(name: string = 'users') {
 		super(name, 'users');
 	}

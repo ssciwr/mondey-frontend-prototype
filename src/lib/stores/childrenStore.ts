@@ -1,5 +1,5 @@
 import { get } from 'svelte/store';
-import { basicStore } from './basicStore';
+import { BasicStore } from './BasicStore';
 // README: this API is experimental and not by any means a final design
 
 // Types: create interfaces for the elements that are stored and are expected to be returned from the 'backend' (or its mockup at the moment)
@@ -49,7 +49,7 @@ interface ChildrenList {
 	};
 }
 
-class ChildrenStore extends basicStore<ChildrenList> {
+class ChildrenStore extends BasicStore<ChildrenList> {
 	/**
 	 *
 	 * @param name

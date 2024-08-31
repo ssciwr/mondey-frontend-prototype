@@ -4,7 +4,7 @@ import { get, writable, type Writable } from 'svelte/store';
 /**
  *
  */
-class basicStore<T extends Record<string, unknown>> {
+class BasicStore<T extends Record<string, unknown>> {
 	protected store: Writable<T>;
 	protected key: string;
 	protected name: string;
@@ -95,7 +95,7 @@ class basicStore<T extends Record<string, unknown>> {
 	}
 
 	/**
-	 *
+	 * save the data contained int he store to localstorage
 	 */
 	public async save(): Promise<void> {
 		if (browser) {
@@ -126,4 +126,4 @@ class basicStore<T extends Record<string, unknown>> {
 	}
 }
 
-export { basicStore };
+export { BasicStore };

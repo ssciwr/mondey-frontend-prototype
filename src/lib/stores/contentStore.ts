@@ -1,4 +1,4 @@
-import { basicStore } from './basicStore';
+import { BasicStore } from './BasicStore';
 // types. Create some interfaces to define the structure of the content and make clear what will be expected from API calls
 interface MilestoneDef {
 	name: string;
@@ -17,7 +17,7 @@ interface ContentList {
 	[name: string]: ContentNode;
 }
 
-class ContentStore extends basicStore<ContentList> {}
+class ContentStore extends BasicStore<ContentList> {}
 
 /**
  * Create some dummy data to test the store

@@ -58,7 +58,7 @@ describe('normal functionality', () => {
 				childfoo: mockChildData3
 			}
 		});
-	
+	}
 
 	it('should add child successfully', async () => {
 		reset();
