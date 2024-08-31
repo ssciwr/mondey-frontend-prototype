@@ -120,6 +120,8 @@ async function createDummyData() {
 			next: null
 		}
 	};
+
+	return dummySurveys;
 }
 
 export { ContentStore, createDummyData, type ContentList, type ContentNode, type MilestoneDef };

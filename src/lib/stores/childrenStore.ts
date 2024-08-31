@@ -32,11 +32,17 @@ interface ChildData {
 	[key: string]: unknown;
 }
 
+/**
+ *
+ */
 interface ChildObject {
 	childData: ChildData;
 	observationData: ObservationData | null;
 }
 
+/**
+ *
+ */
 interface ChildrenList {
 	[usertoken: string]: {
 		[childtoken: string]: ChildObject;
@@ -44,14 +50,27 @@ interface ChildrenList {
 }
 
 class ChildStore extends basicStore<ChildrenList> {
+	/**
+	 *
+	 * @param name
+	 */
 	constructor(name: string) {
 		super(name, 'children');
 	}
 
+	/**
+	 *
+	 * @param userID
+	 * @returns
+	 */
 	public async addUser(userID: string): Promise<void> {
 		return this.add(userID, {});
 	}
 
+	/**
+	 *
+	 * @param userID
+	 */
 	public async removeUser(userID: string): Promise<void> {
 		this.remove(userID);
 	}
@@ -247,6 +266,10 @@ function chooseRandom(values: string[]) {
 	return values[getRandomInt(values.length)];
 }
 
+/**
+ *
+ * @returns
+ */
 async function createDummySummary() {
 	const values = ['good', 'warn', 'bad'];
 	const dates = [

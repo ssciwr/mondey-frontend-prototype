@@ -11,6 +11,9 @@ interface UserList {
 	[userID: string]: UserData;
 }
 
+/**
+ *
+ */
 class UserStore extends basicStore<UserList> {
 	constructor(name: string = 'users') {
 		super(name, 'users');
