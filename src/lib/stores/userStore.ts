@@ -19,7 +19,7 @@ class UserStore extends BasicStore<UserList> {
 
 	constructor(name: string = 'users') {
 		if (UserStore._instance) {
-			throw new Error("Singleton classes can't be instantiated more than once.");
+			throw new Error('Singleton classes cannot be instantiated more than once.');
 		} else {
 			super(name, 'users');
 			UserStore._instance = this;

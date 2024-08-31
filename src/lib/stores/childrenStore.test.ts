@@ -1,4 +1,9 @@
-import { ChildrenStore, type ChildObject, type ObservationData } from '$lib/stores/childrenStore';
+import {
+	children,
+	ChildrenStore,
+	type ChildObject,
+	type ObservationData
+} from '$lib/stores/childrenStore';
 import { describe, expect, it } from 'vitest';
 
 describe('normal functionality', () => {
@@ -46,8 +51,6 @@ describe('normal functionality', () => {
 		observationData: mockObservationData2
 	};
 
-	const children = new ChildrenStore('dummy');
-
 	function reset() {
 		children.set({
 			alpha: {
@@ -59,6 +62,14 @@ describe('normal functionality', () => {
 			}
 		});
 	}
+
+	it('test singleton pattern', () => {
+		try {
+			const other = new ChildrenStore();
+		} catch (error) {
+			expect(error.message).toEqual('Singleton classes cannot be instantiated more than once.');
+		}
+	});
 
 	it('should add child successfully', async () => {
 		reset();
