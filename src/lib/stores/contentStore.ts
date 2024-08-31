@@ -17,7 +17,11 @@ interface ContentList {
 	[name: string]: ContentNode;
 }
 
-class ContentStore extends BasicStore<ContentList> {}
+class ContentStore extends BasicStore<ContentList> {
+	constructor(name: string = 'content') {
+		super(name, 'content');
+	}
+}
 
 /**
  * Create some dummy data to test the store
@@ -124,4 +128,13 @@ async function createDummyData() {
 	return dummySurveys;
 }
 
-export { ContentStore, createDummyData, type ContentList, type ContentNode, type MilestoneDef };
+const content = new ContentStore();
+
+export {
+	content,
+	ContentStore,
+	createDummyData,
+	type ContentList,
+	type ContentNode,
+	type MilestoneDef
+};

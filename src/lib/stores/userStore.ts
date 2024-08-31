@@ -12,12 +12,12 @@ interface UserList {
 }
 
 /**
- *
+ * UserStore Derived class for Users from basicStore.
  */
 class UserStore extends BasicStore<UserList> {
 	constructor(name: string = 'users') {
 		super(name, 'users');
 	}
 }
-
-export { UserStore, type UserData, type UserList };
+const users = new UserStore();
+export { users, UserStore, type UserData, type UserList };

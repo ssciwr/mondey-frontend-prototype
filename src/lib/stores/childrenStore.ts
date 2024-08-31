@@ -54,7 +54,7 @@ class ChildrenStore extends BasicStore<ChildrenList> {
 	 *
 	 * @param name
 	 */
-	constructor(name: string) {
+	constructor(name: string = 'children') {
 		super(name, 'children');
 	}
 	/**
@@ -320,8 +320,10 @@ async function createDummyCurrent() {
 	}
 	return current;
 }
+const children = new ChildrenStore();
 
 export {
+	children,
 	ChildrenStore,
 	createDummyCurrent,
 	createDummySummary,

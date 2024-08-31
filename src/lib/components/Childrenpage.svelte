@@ -51,7 +51,7 @@
 <script lang="ts">
 	import CardDisplay from '$lib/components/DataDisplay/CardDisplay.svelte';
 	import GalleryDisplay from '$lib/components/DataDisplay/GalleryDisplay.svelte';
-	import { fetchChildrenDataforUser, load, save, type ChildData } from '$lib/stores/childrenStore';
+	import { children, type ChildData } from '$lib/stores/childrenStore';
 	import { Heading } from 'flowbite-svelte';
 	import { onDestroy, onMount } from 'svelte';
 	// create data and
@@ -59,7 +59,7 @@
 	async function init() {
 		loading = true;
 		try {
-			await load();
+			await children.load();
 		} catch (error) {
 			console.log('Error loading data: ', error);
 		}
@@ -68,7 +68,7 @@
 		let rawdata: unknown = [];
 
 		try {
-			rawdata = await fetchChildrenDataforUser('dummyUser');
+			rawdata = await children.fetchChildrenDataforUser('dummyUser');
 		} catch (error) {
 			console.log('some error occured: ', error);
 		}
@@ -83,7 +83,7 @@
 	// it is conceptualized as emulating an API call that would normally fetch this from the server.
 	onMount(init);
 	onDestroy(async () => {
-		save();
+		children.save();
 	});
 </script>
 

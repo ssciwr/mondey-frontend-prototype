@@ -1,5 +1,5 @@
 import { browser } from '$app/environment';
-import { get, writable, type Writable } from 'svelte/store';
+import { get, type Subscriber, writable, type Writable } from 'svelte/store';
 
 /**
  *
@@ -22,6 +22,10 @@ class BasicStore<T extends Record<string, unknown>> {
 
 	public get() {
 		return get(this.store);
+	}
+
+	public subscribe(subscriber: Subscriber<T>): unknown {
+		return this.store.subscribe(subscriber);
 	}
 	/**
 	 *
