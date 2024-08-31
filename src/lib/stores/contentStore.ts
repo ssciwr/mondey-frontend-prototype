@@ -1,4 +1,4 @@
-import { BasicStore } from './BasicStore';
+import { BasicStore } from '$lib/stores/basicStore';
 // types. Create some interfaces to define the structure of the content and make clear what will be expected from API calls
 interface MilestoneDef {
 	name: string;
