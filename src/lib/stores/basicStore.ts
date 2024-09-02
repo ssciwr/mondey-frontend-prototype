@@ -89,7 +89,7 @@ class BasicStore<T extends Record<string, unknown>> {
 	 * @param userID
 	 * @returns
 	 */
-	public async fetch(userID: string): Promise<unknown> {
+	public fetch(userID: string): Promise<unknown> {
 		const data = get(this.store);
 
 		if (!(userID in data)) {
