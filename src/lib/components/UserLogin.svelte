@@ -6,7 +6,7 @@
 	import NavigationButtons from '$lib/components/Navigation/NavigationButtons.svelte';
 	import { createDummyUser, users, type UserData } from '$lib/stores/userStore';
 	import { Card, Heading } from 'flowbite-svelte';
-	import { onMount } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 
 	// functionality
 
@@ -15,9 +15,12 @@
 	 * the userstore that has been precreated. What fetchWithCredentials does currently will later go into the backend
 	 */
 	async function validateCredentials() {
+		for (let i = 0; i < credentials.length; ++i) {
+			credentialsValid[i] = credentials[i] !== '';
+		}
 		const user = await users.fetchWithCredentials(credentials[uid], credentials[pid]);
 
-		if (!user) {
+		if (!user || user === null) {
 			showAlert = true;
 		} else {
 			userID = user.id;
@@ -26,6 +29,8 @@
 			} else {
 				localStorage.removeItem('currentUser');
 			}
+			await users.setLoggedIn(userID);
+			await users.save();
 			goto('/childrengallery/');
 		}
 	}
@@ -57,9 +62,12 @@
 
 	const uid = 0;
 	const pid = 1;
+	let alertMessage = 'Benutzerkennung oder Passwort sind falsch';
 
 	let userID: string;
 	$: credentials = ['', ''];
+	$: credentialsValid = [true, true];
+
 	let remember: boolean = false;
 	let showAlert: boolean = false;
 	const heading = 'Einloggen';
@@ -67,6 +75,7 @@
 	// check if credentials are stored
 	onMount(async () => {
 		// make dummyUser if not already there
+		users.load();
 		if (!users.get()['dummyUser123']) {
 			createDummyUser();
 		}
@@ -82,45 +91,62 @@
 			remember = true;
 		}
 	});
+
+	onDestroy(async () => {
+		await users.save();
+	});
 </script>
 
 {#if showAlert}
 	<AlertMessage
 		title={'Fehler'}
-		message={'Benutzerkennung oder Passwort sind falsch'}
+		message={alertMessage}
 		lastpage="/userLand/userLogin"
 		onclick={() => {
 			showAlert = false;
+			credentialsValid = [true, true];
 		}}
 	/>
 {/if}
 
-<div class="container m-1 mx-auto w-full max-w-xl">
-	<Card class="container m-1 mx-auto mb-6 w-full max-w-xl pb-6">
-		{#if heading}
-			<Heading
-				tag="h3"
-				class="m-1 mb-3 p-1 text-center font-bold tracking-tight text-gray-700 dark:text-gray-400"
-				>{heading}</Heading
-			>
-		{/if}
+{#if users.get()['loggedIn'] && users.get()['loggedIn'] !== null}
+	<AlertMessage
+		title={'Fehler'}
+		message={`Sie sind bereits angemeldet. Melden sie sich zuerst ab um den Account zu wechseln.`}
+		lastpage="/"
+		onclick={() => {
+			showAlert = false;
+			credentialsValid = [true, true];
+		}}
+	/>
+{:else}
+	<div class="container m-1 mx-auto w-full max-w-xl">
+		<Card class="container m-1 mx-auto mb-6 w-full max-w-xl pb-6">
+			{#if heading}
+				<Heading
+					tag="h3"
+					class="m-1 mb-3 p-1 text-center font-bold tracking-tight text-gray-700 dark:text-gray-400"
+					>{heading}</Heading
+				>
+			{/if}
 
-		<form class="m-1 m-3 mx-auto w-full flex-col space-y-6">
-			{#each data as element, i}
-				<Input {element} bind:value={credentials[i]} />
-			{/each}
-		</form>
+			<form class="m-1 m-3 mx-auto w-full flex-col space-y-6">
+				{#each data as element, i}
+					<Input {element} bind:value={credentials[i]} valid={credentialsValid[i]} />
+				{/each}
+			</form>
 
-		<UserLoginUtil cls="p-6 mb-3" bind:checked={remember} />
+			<UserLoginUtil cls="p-6 mb-3" bind:checked={remember} />
 
-		<NavigationButtons {buttons} onclick={validateCredentials} />
-	</Card>
+			<NavigationButtons {buttons} onclick={validateCredentials} />
+		</Card>
 
-	<span class="container mx-auto w-full text-gray-700 dark:text-gray-400">Not registered?</span>
-	<a
-		href="/userLand/userRegistration"
-		class="text-primary-700 hover:underline dark:text-primary-500"
-	>
-		Create account
-	</a>
-</div>
+		<span class="container mx-auto w-full text-gray-700 dark:text-gray-400">Not registered?</span>
+		<a
+			href="/userLand/userRegistration"
+			class="text-primary-700 hover:underline dark:text-primary-500"
+		>
+			Create account
+		</a>
+	</div>
+{/if}
