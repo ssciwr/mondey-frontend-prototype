@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { Input, type InputType, Label } from 'flowbite-svelte';
+
 	interface Element {
 		name: String;
 		type: InputType | String | undefined;
@@ -9,10 +10,10 @@
 	}
 
 	export let value: unknown;
-
 	export let element: Element;
 	export let cls: String = '';
 	export let valid: Boolean = true;
+
 	export function validate(value: unknown): void {
 		if (value !== undefined && value !== null && value !== '') {
 			valid = true;
@@ -20,6 +21,7 @@
 			valid = false;
 		}
 	}
+
 	// do the validation of the input internally here or at least allow for a function to be passed
 </script>
 
@@ -35,6 +37,6 @@
 	type={element.type}
 	bind:value
 	on:change={(event) => {
-		validate(event.target);
+		validate(event.srcElement.value);
 	}}
 />
