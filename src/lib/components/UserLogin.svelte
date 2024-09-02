@@ -10,7 +10,6 @@
 			name: 'Benutzerkennung',
 			placeholder: 'Benutzerkennung',
 			label: 'Benutzerkennung',
-			value: '',
 			required: true
 		},
 		{
@@ -18,7 +17,6 @@
 			name: 'Passwort',
 			placeholder: 'Passwort',
 			label: 'Passwort',
-			value: '',
 			required: true
 		}
 	];
@@ -30,6 +28,10 @@
 		}
 	];
 
+	let username = '';
+	let password = '';
+	let credentials = [username, password];
+	let remember: Boolean = false;
 	const heading = 'Einloggen';
 </script>
 
@@ -45,7 +47,7 @@
 
 		<form class="m-1 m-3 mx-auto w-full flex-col space-y-6">
 			{#each data as element, i}
-				<Input {element} />
+				<Input {element} bind:value={credentials[i]} />
 			{/each}
 		</form>
 
@@ -53,6 +55,7 @@
 
 		<NavigationButtons {buttons} />
 	</Card>
+
 	<span class="container mx-auto w-full text-gray-700 dark:text-gray-400">Not registered?</span>
 	<a
 		href="/userLand/userRegistration"

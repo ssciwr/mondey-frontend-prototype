@@ -3,11 +3,12 @@
 	interface Element {
 		name: String;
 		type: InputType | String | undefined;
-		value: unknown;
 		placeholder: String;
 		required: Boolean;
 		label: String | undefined;
 	}
+
+	export let value: unknown;
 
 	export let element: Element;
 	export let cls: String = '';
@@ -32,7 +33,7 @@
 		: '') + cls}
 	placeholder={element.placeholder}
 	type={element.type}
-	bind:value={element.value}
+	bind:value
 	on:change={(event) => {
 		validate(event.target);
 	}}
