@@ -1,16 +1,18 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import UserLoginUtil from '$lib/components//UserLoginUtil.svelte';
 	import AlertMessage from '$lib/components/AlertMessage.svelte';
 	import Input from '$lib/components/DataInput/Input.svelte';
 	import NavigationButtons from '$lib/components/Navigation/NavigationButtons.svelte';
-	import { users } from '$lib/stores/userStore';
+	import { createDummyUser, users, type UserData } from '$lib/stores/userStore';
 	import { Card, Heading } from 'flowbite-svelte';
+	import { onMount } from 'svelte';
 
 	// functionality
 
 	/**
 	 * This currently immitates the behavior of a login system by fetching data from
-	 * the userstore that has been precreated.
+	 * the userstore that has been precreated. What fetchWithCredentials does currently will later go into the backend
 	 */
 	async function validateCredentials() {
 		const user = await users.fetchWithCredentials(credentials[uid], credentials[pid]);
@@ -19,6 +21,12 @@
 			showAlert = true;
 		} else {
 			userID = user.id;
+			if (remember) {
+				localStorage.setItem('currentUser', JSON.stringify(userID));
+			} else {
+				localStorage.removeItem('currentUser');
+			}
+			goto('/childrengallery/');
 		}
 	}
 
@@ -50,11 +58,30 @@
 	const uid = 0;
 	const pid = 1;
 
-	let userID: string | undefined;
-	let credentials = ['', ''];
+	let userID: string;
+	$: credentials = ['', ''];
 	let remember: boolean = false;
 	let showAlert: boolean = false;
 	const heading = 'Einloggen';
+
+	// check if credentials are stored
+	onMount(async () => {
+		// make dummyUser if not already there
+		if (!users.get()['dummyUser123']) {
+			createDummyUser();
+		}
+
+		// check if credentials are saved
+		const savedUID = JSON.parse(localStorage.getItem('currentUser'));
+
+		if (savedUID) {
+			userID = savedUID;
+
+			const user: UserData = (await users.fetch(userID)) as UserData;
+			credentials = [user.name, user.password];
+			remember = true;
+		}
+	});
 </script>
 
 {#if showAlert}
@@ -66,10 +93,6 @@
 			showAlert = false;
 		}}
 	/>
-{/if}
-
-{#if userID}
-	{userID}
 {/if}
 
 <div class="container m-1 mx-auto w-full max-w-xl">

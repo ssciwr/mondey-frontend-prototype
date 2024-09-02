@@ -39,9 +39,9 @@ class UserStore extends BasicStore<UserList> {
 
 const users = new UserStore();
 
-async function createDummyUser() {
-	await users.add('1', {
-		name: 'dummyUser',
+async function createDummyUser(name: string = 'dummyUser') {
+	await users.add('dummyUser123', {
+		name: name,
 		id: 'dummyUser123',
 		role: 'admin',
 		password: '123'
