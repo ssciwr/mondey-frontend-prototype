@@ -15,6 +15,8 @@
 	 * the userstore that has been precreated. What fetchWithCredentials does currently will later go into the backend
 	 */
 	async function validateCredentials() {
+		// FIXME: this should not be set here but in the child component. However, indication of something missing should
+		// not happen immediatelly in the first round of entry, so this code here defers it until the first hit of the login button.
 		for (let i = 0; i < credentials.length; ++i) {
 			credentialsValid[i] = credentials[i] !== '';
 		}
@@ -22,6 +24,7 @@
 
 		if (!user || user === null) {
 			showAlert = true;
+			credentialsValid = [false, false];
 		} else {
 			userID = user.id;
 			if (remember) {
@@ -66,7 +69,7 @@
 
 	let userID: string;
 	$: credentials = ['', ''];
-	$: credentialsValid = [true, true];
+	$: credentialsValid = [false, false];
 
 	let remember: boolean = false;
 	let showAlert: boolean = false;
