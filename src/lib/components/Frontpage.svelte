@@ -86,7 +86,9 @@
 		}
 
 		try {
-			await children.addUser('dummyUser');
+			if (!children.get()['dummyUser123']) {
+				await children.addUser('dummyUser123');
+			}
 		} catch (error) {
 			console.log('error in frontpage: ', error);
 		}
