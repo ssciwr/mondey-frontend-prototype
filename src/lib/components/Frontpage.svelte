@@ -4,7 +4,7 @@
 	import CardDisplay from '$lib/components//DataDisplay/CardDisplay.svelte';
 	import GalleryDisplay from '$lib/components/DataDisplay/GalleryDisplay.svelte';
 	import { children } from '$lib/stores/childrenStore';
-	import { users } from '$lib/stores/userStore';
+	import { createDummyUser, users } from '$lib/stores/userStore';
 
 	import { onMount } from 'svelte';
 
@@ -79,8 +79,13 @@
 		}
 
 		try {
+			await createDummyUser();
+		} catch (error) {
+			console.log('error in frontpage: ', error);
+		}
+
+		try {
 			await children.addUser('dummyUser');
-			await users.addUser('dummyUser');
 		} catch (error) {
 			console.log('error in frontpage: ', error);
 		}

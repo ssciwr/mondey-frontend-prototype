@@ -4,6 +4,7 @@ interface UserData {
 	name: string;
 	id: string;
 	role: string;
+	password: string;
 	[key: string]: unknown;
 }
 
@@ -26,5 +27,16 @@ class UserStore extends BasicStore<UserList> {
 		}
 	}
 }
+
 const users = new UserStore();
-export { users, UserStore, type UserData, type UserList };
+
+async function createDummyUser() {
+	await users.add('1', {
+		name: 'John Doe',
+		id: '1',
+		role: 'admin',
+		password: '123'
+	});
+}
+
+export { createDummyUser, users, UserStore, type UserData, type UserList };
