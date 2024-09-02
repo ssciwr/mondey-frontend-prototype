@@ -2,7 +2,7 @@
 	import { Input, type InputType, Label } from 'flowbite-svelte';
 	interface Element {
 		name: String;
-		type: InputType | String;
+		type: InputType | String | undefined;
 		value: unknown;
 		placeholder: String;
 		required: Boolean;
@@ -11,7 +11,15 @@
 
 	export let element: Element;
 	export let cls: String = '';
-	export let missing: Boolean = false;
+	export let valid: Boolean = true;
+	export function validate(value: unknown): void {
+		if (value !== undefined && value !== null && value !== '') {
+			valid = true;
+		} else {
+			valid = false;
+		}
+	}
+	// do the validation of the input internally here or at least allow for a function to be passed
 </script>
 
 {#if element.label}
@@ -19,17 +27,13 @@
 {/if}
 
 <Input
-	class={(missing && element.required === true
+	class={(!valid && element.required === true
 		? 'bg-primary-600 text-white dark:bg-primary-600'
 		: '') + cls}
 	placeholder={element.placeholder}
 	type={element.type}
 	bind:value={element.value}
 	on:change={(event) => {
-		if (missing) {
-			if (element.value !== undefined && element.value !== null && element.value !== '') {
-				missing = false;
-			}
-		}
+		validate(event.target);
 	}}
 />
