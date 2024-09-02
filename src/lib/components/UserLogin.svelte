@@ -1,9 +1,28 @@
 <script lang="ts">
 	import UserLoginUtil from '$lib/components//UserLoginUtil.svelte';
+	import AlertMessage from '$lib/components/AlertMessage.svelte';
 	import Input from '$lib/components/DataInput/Input.svelte';
 	import NavigationButtons from '$lib/components/Navigation/NavigationButtons.svelte';
+	import { users } from '$lib/stores/userStore';
 	import { Card, Heading } from 'flowbite-svelte';
 
+	// functionality
+
+	/**
+	 * This currently immitates the behavior of a login system by fetching data from
+	 * the userstore that has been precreated.
+	 */
+	async function validateCredentials() {
+		const user = await users.fetchWithCredentials(credentials[uid], credentials[pid]);
+
+		if (!user) {
+			showAlert = true;
+		} else {
+			userID = user.id;
+		}
+	}
+
+	// data and variables
 	let data = [
 		{
 			type: 'text',
@@ -24,16 +43,34 @@
 	const buttons = [
 		{
 			label: 'Login',
-			href: '/'
+			href: null
 		}
 	];
 
-	let username = '';
-	let password = '';
-	let credentials = [username, password];
-	let remember: Boolean = false;
+	const uid = 0;
+	const pid = 1;
+
+	let userID: string | undefined;
+	let credentials = ['', ''];
+	let remember: boolean = false;
+	let showAlert: boolean = false;
 	const heading = 'Einloggen';
 </script>
+
+{#if showAlert}
+	<AlertMessage
+		title={'Fehler'}
+		message={'Benutzerkennung oder Passwort sind falsch'}
+		lastpage="/userLand/userLogin"
+		onclick={() => {
+			showAlert = false;
+		}}
+	/>
+{/if}
+
+{#if userID}
+	{userID}
+{/if}
 
 <div class="container m-1 mx-auto w-full max-w-xl">
 	<Card class="container m-1 mx-auto mb-6 w-full max-w-xl pb-6">
@@ -51,9 +88,9 @@
 			{/each}
 		</form>
 
-		<UserLoginUtil cls="p-6 mb-3" />
+		<UserLoginUtil cls="p-6 mb-3" bind:checked={remember} />
 
-		<NavigationButtons {buttons} />
+		<NavigationButtons {buttons} onclick={validateCredentials} />
 	</Card>
 
 	<span class="container mx-auto w-full text-gray-700 dark:text-gray-400">Not registered?</span>

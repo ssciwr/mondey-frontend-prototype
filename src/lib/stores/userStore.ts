@@ -26,14 +26,23 @@ class UserStore extends BasicStore<UserList> {
 			UserStore._instance = this;
 		}
 	}
+
+	public async fetchWithCredentials(
+		username: string,
+		userpw: string
+	): Promise<UserData | undefined> {
+		return Object.values(this.get()).find((userdata) => {
+			return userdata.name === username && userdata.password === userpw;
+		});
+	}
 }
 
 const users = new UserStore();
 
 async function createDummyUser() {
 	await users.add('1', {
-		name: 'John Doe',
-		id: '1',
+		name: 'dummyUser',
+		id: 'dummyUser123',
 		role: 'admin',
 		password: '123'
 	});
