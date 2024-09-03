@@ -1,11 +1,13 @@
 <script>
 	import { Tooltip } from 'flowbite-svelte';
-	export let tooltip;
+	export let tooltip = null;
 </script>
 
 <div class="functional-icon-container">
 	<slot></slot>
-	<Tooltip arrow={false}>{tooltip}</Tooltip>
+	{#if tooltip}
+		<Tooltip arrow={false}>{tooltip}</Tooltip>
+	{/if}
 </div>
 
 <style>

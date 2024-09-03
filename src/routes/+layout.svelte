@@ -1,7 +1,8 @@
-<script>
+<script lang="ts">
 	import logo_dark from '$lib/assets/mondey_dark.svg';
 	import logo_light from '$lib/assets/mondey_light.svg';
 	import FunctionalIcon from '$lib/components/Navigation/FunctionalIcon.svelte';
+	import UserProfile from '$lib/components/UserProfile.svelte';
 	import { Avatar, DarkMode, Navbar, NavBrand, NavHamburger, NavLi, NavUl } from 'flowbite-svelte';
 	import { MoonSolid, SunSolid } from 'flowbite-svelte-icons';
 	import '../app.css';
@@ -26,9 +27,10 @@
 			</DarkMode>
 		</FunctionalIcon>
 
-		<FunctionalIcon tooltip={'Registrieren oder einloggen'}>
-			<Avatar rounded class="apply-icon-style" href={'/userLand/userLogin'} />
+		<FunctionalIcon>
+			<Avatar rounded class="apply-icon-style" id="avatar" />
 		</FunctionalIcon>
+		<UserProfile triggeredBy="#avatar" />
 	</NavUl>
 </Navbar>
 

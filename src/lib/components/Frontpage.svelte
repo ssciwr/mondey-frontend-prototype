@@ -4,7 +4,7 @@
 	import CardDisplay from '$lib/components//DataDisplay/CardDisplay.svelte';
 	import GalleryDisplay from '$lib/components/DataDisplay/GalleryDisplay.svelte';
 	import { children } from '$lib/stores/childrenStore';
-	import { users } from '$lib/stores/userStore';
+	import { createDummyUser, users } from '$lib/stores/userStore';
 
 	import { onMount } from 'svelte';
 
@@ -71,16 +71,17 @@
 	const props = {};
 
 	onMount(async () => {
-		// delete old data first, then add new user and save it to disk
 		try {
-			localStorage.clear();
+			await createDummyUser();
+			await users.setLoggedIn(null);
 		} catch (error) {
 			console.log('error in frontpage: ', error);
 		}
 
 		try {
-			await children.addUser('dummyUser');
-			await users.addUser('dummyUser');
+			if (!children.get()['dummyUser123']) {
+				await children.addUser('dummyUser123');
+			}
 		} catch (error) {
 			console.log('error in frontpage: ', error);
 		}

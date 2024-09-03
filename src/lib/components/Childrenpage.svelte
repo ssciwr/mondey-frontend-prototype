@@ -52,23 +52,27 @@
 	import CardDisplay from '$lib/components/DataDisplay/CardDisplay.svelte';
 	import GalleryDisplay from '$lib/components/DataDisplay/GalleryDisplay.svelte';
 	import { children, type ChildData } from '$lib/stores/childrenStore';
+	import { users } from '$lib/stores/userStore';
 	import { Heading } from 'flowbite-svelte';
 	import { onDestroy, onMount } from 'svelte';
 	// create data and
 
 	async function init() {
 		loading = true;
+		users.load();
 		try {
 			await children.load();
 		} catch (error) {
 			console.log('Error loading data: ', error);
 		}
 
+		const loggedIn = users.get()['loggedIn'];
+
 		// Update the store with the value from localStorage
 		let rawdata: unknown = [];
 
 		try {
-			rawdata = await children.fetchChildrenDataforUser('dummyUser');
+			rawdata = await children.fetchChildrenDataforUser(loggedIn);
 		} catch (error) {
 			console.log('some error occured: ', error);
 		}

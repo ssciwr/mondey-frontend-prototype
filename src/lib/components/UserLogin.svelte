@@ -1,68 +1,154 @@
-<script>
-	import AbstractRegistrationForm from '$lib/components/DataInput/AbstractRegistrationForm.svelte';
-	import UserLoginUtil from '$lib/components/UserLoginUtil.svelte';
-	import { Input } from 'flowbite-svelte';
+<script lang="ts">
+	import { goto } from '$app/navigation';
+	import UserLoginUtil from '$lib/components//UserLoginUtil.svelte';
+	import AlertMessage from '$lib/components/AlertMessage.svelte';
+	import Input from '$lib/components/DataInput/Input.svelte';
+	import NavigationButtons from '$lib/components/Navigation/NavigationButtons.svelte';
+	import { createDummyUser, users, type UserData } from '$lib/stores/userStore';
+	import { Card, Heading } from 'flowbite-svelte';
+	import { onDestroy, onMount } from 'svelte';
 
-	export let role = 'user';
+	// functionality
 
+	/**
+	 * This currently immitates the behavior of a login system by fetching data from
+	 * the userstore that has been precreated. What fetchWithCredentials does currently will later go into the backend
+	 */
+	async function validateCredentials() {
+		// FIXME: this should not be set here but in the child component. However, indication of something missing should
+		// not happen immediatelly in the first round of entry, so this code here defers it until the first hit of the login button.
+		for (let i = 0; i < credentials.length; ++i) {
+			credentialsValid[i] = credentials[i] !== '';
+		}
+		const user = await users.fetchWithCredentials(credentials[uid], credentials[pid]);
+
+		if (!user || user === null) {
+			showAlert = true;
+			credentialsValid = [false, false];
+		} else {
+			userID = user.id;
+			if (remember) {
+				localStorage.setItem('currentUser', JSON.stringify(userID));
+			} else {
+				localStorage.removeItem('currentUser');
+			}
+			await users.setLoggedIn(userID);
+			await users.save();
+			goto('/childrengallery/');
+		}
+	}
+
+	// data and variables
 	let data = [
 		{
-			itemComponent: Input,
-			componentProps: {
-				type: 'text',
-				name: 'Benutzerkennung',
-				placeholder: 'Benutzerkennung',
-				label: 'Benutzerkennung',
-				value: '',
-				required: true
-			}
+			type: 'text',
+			name: 'Benutzerkennung',
+			placeholder: 'Benutzerkennung',
+			label: 'Benutzerkennung',
+			required: true
 		},
 		{
-			itemComponent: Input,
-			componentProps: {
-				type: 'password',
-				name: 'Passwort',
-				placeholder: 'Passwort',
-				label: 'Passwort',
-				value: '',
-				required: true
-			}
-		},
-		{
-			itemComponent: UserLoginUtil,
-			componentProps: {}
+			type: 'password',
+			name: 'Passwort',
+			placeholder: 'Passwort',
+			label: 'Passwort',
+			required: true
 		}
 	];
-
-	$: if (role === 'admin') {
-		data.push({
-			itemComponent: Input,
-			componentProps: {
-				type: 'text',
-				name: 'Projektcode',
-				placeholder: 'Projektcode',
-				label: 'Projektcode',
-				value: '',
-				required: true
-			}
-		});
-	}
 
 	const buttons = [
 		{
 			label: 'Login',
-			href: '/'
+			href: null
 		}
 	];
+
+	const uid = 0;
+	const pid = 1;
+	let alertMessage = 'Benutzerkennung oder Passwort sind falsch';
+
+	let userID: string;
+	$: credentials = ['', ''];
+	$: credentialsValid = [false, false];
+
+	let remember: boolean = false;
+	let showAlert: boolean = false;
+	const heading = 'Einloggen';
+
+	// check if credentials are stored
+	onMount(async () => {
+		// make dummyUser if not already there
+		users.load();
+		if (!users.get()['dummyUser123']) {
+			createDummyUser();
+		}
+
+		// check if credentials are saved
+		const savedUID = JSON.parse(localStorage.getItem('currentUser'));
+		if (savedUID) {
+			userID = savedUID;
+
+			const user: UserData = (await users.fetch(userID)) as UserData;
+			credentials = [user.name, user.password];
+			remember = true;
+		}
+	});
+
+	onDestroy(async () => {
+		await users.save();
+	});
 </script>
 
-<div class="container m-1 mx-auto w-full max-w-md space-y-6">
-	<AbstractRegistrationForm heading={'Einloggen'} {buttons} props={data} />
-	<span class="text-gray-700 dark:text-gray-400">Not registered?</span>
-	<a
-		href="/userLand/userRegistration"
-		class="text-primary-700 hover:underline dark:text-primary-500"
-	>
-		Create account
-	</a>
-</div>
+{#if showAlert}
+	<AlertMessage
+		title={'Fehler'}
+		message={alertMessage}
+		lastpage="/userLand/userLogin"
+		onclick={() => {
+			showAlert = false;
+			credentialsValid = [true, true];
+		}}
+	/>
+{/if}
+
+{#if users.get()['loggedIn'] && users.get()['loggedIn'] !== null}
+	<AlertMessage
+		title={'Fehler'}
+		message={`Sie sind bereits angemeldet. Melden sie sich zuerst ab um den Account zu wechseln.`}
+		lastpage="/"
+		onclick={() => {
+			showAlert = false;
+			credentialsValid = [true, true];
+		}}
+	/>
+{:else}
+	<div class="container m-1 mx-auto w-full max-w-xl">
+		<Card class="container m-1 mx-auto mb-6 w-full max-w-xl pb-6">
+			{#if heading}
+				<Heading
+					tag="h3"
+					class="m-1 mb-3 p-1 text-center font-bold tracking-tight text-gray-700 dark:text-gray-400"
+					>{heading}</Heading
+				>
+			{/if}
+
+			<form class="m-1 m-3 mx-auto w-full flex-col space-y-6">
+				{#each data as element, i}
+					<Input {element} bind:value={credentials[i]} valid={credentialsValid[i]} />
+				{/each}
+			</form>
+
+			<UserLoginUtil cls="p-6 mb-3" bind:checked={remember} />
+
+			<NavigationButtons {buttons} onclick={validateCredentials} />
+		</Card>
+
+		<span class="container mx-auto w-full text-gray-700 dark:text-gray-400">Not registered?</span>
+		<a
+			href="/userLand/userRegistration"
+			class="text-primary-700 hover:underline dark:text-primary-500"
+		>
+			Create account
+		</a>
+	</div>
+{/if}

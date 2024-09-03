@@ -4,11 +4,12 @@ interface UserData {
 	name: string;
 	id: string;
 	role: string;
+	password: string;
 	[key: string]: unknown;
 }
 
 interface UserList {
-	[userID: string]: UserData;
+	[userID: string]: UserData | string;
 }
 
 /**
@@ -23,8 +24,49 @@ class UserStore extends BasicStore<UserList> {
 		} else {
 			super(name, 'users');
 			UserStore._instance = this;
+
+			// add a flag for login status
+			this.store.update((data) => {
+				data['loggedIn'] = null;
+				return data;
+			});
 		}
 	}
+
+	public async setLoggedIn(flag: string) {
+		this.store.update((data) => {
+			data['loggedIn'] = flag;
+			return data;
+		});
+	}
+
+	public async getLoggedIn(): Promise<string> {
+		return this.get()['loggedIn'];
+	}
+
+	public async fetchWithCredentials(
+		username: string,
+		userpw: string
+	): Promise<UserData | undefined> {
+		console.log('data: ', this.get());
+		return Object.values(this.get()).find((userdata) => {
+			if (!userdata || userdata === null) {
+			} else {
+				return userdata.name === username && userdata.password === userpw;
+			}
+		});
+	}
 }
+
 const users = new UserStore();
-export { users, UserStore, type UserData, type UserList };
+
+async function createDummyUser(name: string = 'dummyUser') {
+	await users.add('dummyUser123', {
+		name: name,
+		id: 'dummyUser123',
+		role: 'admin',
+		password: '123'
+	});
+}
+
+export { createDummyUser, users, UserStore, type UserData, type UserList };

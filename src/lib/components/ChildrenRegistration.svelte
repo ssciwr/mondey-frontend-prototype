@@ -9,6 +9,7 @@
 		generateChildID,
 		type ChildData
 	} from '$lib/stores/childrenStore';
+	import { users } from '$lib/stores/userStore';
 
 	import {
 		Button,
@@ -183,7 +184,7 @@
 	];
 
 	//  dummy user
-	export let userID = 'dummyUser';
+	export let userID = users.get()['loggedIn'];
 
 	// dummy user added to users until this page is hooked up to the user system
 
@@ -205,6 +206,7 @@
 
 	onMount(async () => {
 		await children.load();
+		await users.load();
 	});
 
 	onDestroy(async () => {

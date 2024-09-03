@@ -2,4 +2,4 @@
 	import Frontpage from '$lib/components/Frontpage.svelte';
 </script>
 
-<Frontpage getStarted={'/childrengallery'} />
+<Frontpage getStarted={'/userLand/userLogin'} />
