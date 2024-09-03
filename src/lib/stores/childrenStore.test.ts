@@ -1,17 +1,10 @@
-import { get } from 'svelte/store';
-import { describe, expect, it } from 'vitest';
 import {
-	addChildData,
-	addChildObservation,
 	children,
-	fetchChildData,
-	fetchChildrenDataforUser,
-	fetchObservationData,
-	fetchObservationDataForUser,
-	removeChildData,
+	ChildrenStore,
 	type ChildObject,
 	type ObservationData
-} from './childrenStore';
+} from '$lib/stores/childrenStore';
+import { describe, expect, it } from 'vitest';
 
 describe('normal functionality', () => {
 	const mockObservationData: ObservationData = {
@@ -70,19 +63,27 @@ describe('normal functionality', () => {
 		});
 	}
 
+	it('test singleton pattern', () => {
+		try {
+			const other = new ChildrenStore();
+		} catch (error) {
+			expect(error.message).toEqual('Singleton classes cannot be instantiated more than once.');
+		}
+	});
+
 	it('should add child successfully', async () => {
 		reset();
-		await addChildData('alpha', 'childC', mockChildData3.childData);
-		expect(get(children)['alpha']['childC'].childData).toEqual(mockChildData3.childData);
+		await children.addChildData('alpha', 'childC', mockChildData3.childData);
+		expect(children.get()['alpha']['childC'].childData).toEqual(mockChildData3.childData);
 	});
 
 	it('should add child observationdata successfully', async () => {
 		reset();
 
-		await addChildData('alpha', 'childC', mockChildData3.childData);
-		await addChildObservation('alpha', 'childC', mockChildData3.observationData);
+		await children.addChildData('alpha', 'childC', mockChildData3.childData);
+		await children.addChildObservation('alpha', 'childC', mockChildData3.observationData);
 
-		expect(get(children)['alpha']['childC'].observationData).toEqual(
+		expect(children.get()['alpha']['childC'].observationData).toEqual(
 			mockChildData3.observationData
 		);
 	});
@@ -90,7 +91,7 @@ describe('normal functionality', () => {
 	it('cannot assign observationdata when childData is missing', async () => {
 		reset();
 		try {
-			await addChildObservation('alpha', 'childC', mockChildData3.observationData);
+			await children.addChildObservation('alpha', 'childC', mockChildData3.observationData);
 		} catch (error: Error | unknown) {
 			expect((error as Error).message).toBe(
 				'Child token childC does not exist for user token alpha'
@@ -101,7 +102,7 @@ describe('normal functionality', () => {
 	it('cannot assign observationdata for unknown user', async () => {
 		reset();
 		try {
-			await addChildObservation('x', 'childC', mockChildData3.observationData);
+			await children.addChildObservation('x', 'childC', mockChildData3.observationData);
 		} catch (error: Error | unknown) {
 			expect((error as Error).message).toBe('User token x not found');
 		}
@@ -109,14 +110,14 @@ describe('normal functionality', () => {
 
 	it('should remove child successfully', async () => {
 		reset();
-		await removeChildData('beta', 'childfoo');
-		expect(get(children)['beta']['childfoo']).toEqual(undefined);
+		await children.removeChildData('beta', 'childfoo');
+		expect(children.get()['beta']['childfoo']).toEqual(undefined);
 	});
 
 	it('should throw when adding with nonexistant user or existing child key', async () => {
 		reset();
 		try {
-			await addChildData('alpha', 'childA', mockChildData3.childData);
+			await children.addChildData('alpha', 'childA', mockChildData3.childData);
 		} catch (error: Error | unknown) {
 			expect((error as Error).message).toBe(
 				'Child token childA already exists for user token alpha'
@@ -124,7 +125,7 @@ describe('normal functionality', () => {
 		}
 
 		try {
-			await addChildData('x', 'childA', mockChildData3.childData);
+			await children.addChildData('x', 'childA', mockChildData3.childData);
 		} catch (error: Error | unknown) {
 			expect((error as Error).message).toBe('User token x not found');
 		}
@@ -133,13 +134,13 @@ describe('normal functionality', () => {
 	it('should throw when removing with nonexistant user or nonexisting child key', async () => {
 		reset();
 		try {
-			await removeChildData('x', 'childA');
+			await children.removeChildData('x', 'childA');
 		} catch (error: Error | unknown) {
 			expect((error as Error).message).toBe('User token x not found');
 		}
 
 		try {
-			await removeChildData('alpha', 'notthere');
+			await children.removeChildData('alpha', 'notthere');
 		} catch (error: Error | unknown) {
 			expect((error as Error).message).toBe('Child token notthere not found for user token alpha');
 		}
@@ -147,12 +148,12 @@ describe('normal functionality', () => {
 
 	it('should fetch observation data', async () => {
 		reset();
-		expect(await fetchObservationData('alpha', 'childfoo')).toEqual(mockObservationData);
+		expect(await children.fetchObservationData('alpha', 'childfoo')).toEqual(mockObservationData);
 	});
 
 	it('should fetch child data', async () => {
 		reset();
-		expect(await fetchChildData('alpha', 'childfoo')).toEqual({
+		expect(await children.fetchChildData('alpha', 'childfoo')).toEqual({
 			name: 'foo',
 			age: 3,
 			nationality: 'turkish',
@@ -165,13 +166,13 @@ describe('normal functionality', () => {
 		reset();
 
 		try {
-			await fetchObservationData('x', 'childA');
+			await children.fetchObservationData('x', 'childA');
 		} catch (error: Error | unknown) {
 			expect((error as Error).message).toBe('No such user in the childrenstore');
 		}
 
 		try {
-			await fetchObservationData('alpha', 'unknown');
+			await children.fetchObservationData('alpha', 'unknown');
 		} catch (error: Error | unknown) {
 			expect((error as Error).message).toBe('No such child in the childrenstore for user alpha');
 		}
@@ -179,14 +180,14 @@ describe('normal functionality', () => {
 
 	it('should fetch list of childrendata', async () => {
 		reset();
-		const data = await fetchChildrenDataforUser('alpha');
+		const data = await children.fetchChildrenDataforUser('alpha');
 
 		expect(data).toEqual([mockChildData2.childData, mockChildData.childData]);
 	});
 
 	it('should fetch list of observationdata successfully', async () => {
 		reset();
-		const data = await fetchObservationDataForUser('alpha');
+		const data = await children.fetchObservationDataForUser('alpha');
 
 		expect(data).toEqual([
 			['childfoo', mockObservationData],
@@ -198,7 +199,7 @@ describe('normal functionality', () => {
 		reset();
 
 		try {
-			await fetchChildrenDataforUser('x');
+			await children.fetchChildrenDataforUser('x');
 		} catch (error: Error | unknown) {
 			expect((error as Error).message).toBe('No such user in the childrenstore');
 		}
@@ -208,7 +209,7 @@ describe('normal functionality', () => {
 		reset();
 
 		try {
-			await fetchObservationDataForUser('x');
+			await children.fetchObservationDataForUser('x');
 		} catch (error: Error | unknown) {
 			expect((error as Error).message).toBe('No such user in the childrenstore');
 		}

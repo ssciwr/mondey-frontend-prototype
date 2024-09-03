@@ -1,7 +1,7 @@
 <script>
 	import AbstractRegistrationForm from '$lib/components/DataInput/AbstractRegistrationForm.svelte';
+	import UserLoginUtil from '$lib/components/UserLoginUtil.svelte';
 	import { Input } from 'flowbite-svelte';
-	import UserLoginUtil from './UserLoginUtil.svelte';
 
 	export let role = 'user';
 

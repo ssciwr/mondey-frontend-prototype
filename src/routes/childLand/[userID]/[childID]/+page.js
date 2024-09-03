@@ -1,10 +1,13 @@
-import { fetchChildData, fetchObservationData } from '$lib/stores/childrenStore';
+import { children } from '$lib/stores/childrenStore';
 import { error } from '@sveltejs/kit';
 
 /** @type {import('./$types').PageLoad}     */
 export async function load({ params }) {
-	const observationData = await fetchObservationData(params.userID, params.childID);
-	const childData = await fetchChildData(params.userID, params.childID);
+
+	children.load();
+
+	const observationData = await children.fetchObservationData(params.userID, params.childID);
+	const childData = await children.fetchChildData(params.userID, params.childID);
 
 	if (observationData && childData) {
 		return {

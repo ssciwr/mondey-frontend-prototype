@@ -1,10 +1,10 @@
-import { createDummyData, fetchContent } from '$lib/stores/contentStore';
+import { content, createDummyData } from '$lib/stores/contentStore';
 import { error } from '@sveltejs/kit';
 
 /** @type {import('./$types').PageLoad}     */
 export async function load({ params }) {
 	createDummyData();
-	const data = await fetchContent(params.surveyName);
+	const data = await content.fetch(params.surveyName);
 	if (!data) {
 		error(404, `Survey ${params.surveyName} not found`);
 	}

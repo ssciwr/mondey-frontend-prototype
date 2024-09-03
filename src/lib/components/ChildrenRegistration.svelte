@@ -3,14 +3,10 @@
 	import AlertMessage from '$lib/components/AlertMessage.svelte';
 
 	import {
-		addChildData,
-		addChildObservation,
 		children,
 		createDummyCurrent,
 		createDummySummary,
 		generateChildID,
-		load,
-		save,
 		type ChildData
 	} from '$lib/stores/childrenStore';
 
@@ -62,8 +58,8 @@
 		const verified = await verifyInput();
 		if (verified) {
 			const childID = generateChildID(childData.name);
-			await addChildData(userID, childID, childData);
-			await addChildObservation(userID, childID, {
+			await children.addChildData(userID, childID, childData);
+			await children.addChildObservation(userID, childID, {
 				user: userID,
 				id: childID,
 				summary: await createDummySummary(),
@@ -190,25 +186,14 @@
 	export let userID = 'dummyUser';
 
 	// dummy user added to users until this page is hooked up to the user system
-	try {
-		children.update((childrenlist) => {
-			if (userID in childrenlist) {
-				throw new Error(`User token ${userID} already exists`);
-			}
-			childrenlist[userID] = {};
-			return childrenlist;
-		});
-	} catch (error) {
-		console.log('something went wrong when adding user: ', error);
-	}
 
 	// data
 	let refs: unknown[] = [];
 	let data = rawData.map(processData);
 	let childData: ChildData;
 	let nextpage: string = '/childrengallery';
-	let unsubscribe: Function = children.subscribe((childrenlist) => {
-		save();
+	let unsubscribe: unknown = children.subscribe((childrenlist) => {
+		children.save();
 	});
 
 	// rerender page if missing values or showAlert changes
@@ -219,12 +204,12 @@
 	// use component lifecycle to make sure data is written and read persistently
 
 	onMount(async () => {
-		await load();
+		await children.load();
 	});
 
 	onDestroy(async () => {
-		await save();
-		unsubscribe();
+		await children.save();
+		await (unsubscribe as Function)();
 	});
 </script>
 

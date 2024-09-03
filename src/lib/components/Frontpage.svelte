@@ -3,7 +3,9 @@
 
 	import CardDisplay from '$lib/components//DataDisplay/CardDisplay.svelte';
 	import GalleryDisplay from '$lib/components/DataDisplay/GalleryDisplay.svelte';
-	import { addUser, clear, save } from '$lib/stores/childrenStore';
+	import { children } from '$lib/stores/childrenStore';
+	import { users } from '$lib/stores/userStore';
+
 	import { onMount } from 'svelte';
 
 	export let getStarted = '';
@@ -71,19 +73,21 @@
 	onMount(async () => {
 		// delete old data first, then add new user and save it to disk
 		try {
-			await clear();
+			localStorage.clear();
 		} catch (error) {
 			console.log('error in frontpage: ', error);
 		}
 
 		try {
-			await addUser('dummyUser');
+			await children.addUser('dummyUser');
+			await users.addUser('dummyUser');
 		} catch (error) {
 			console.log('error in frontpage: ', error);
 		}
 
 		try {
-			await save();
+			await children.save();
+			await users.save();
 		} catch (error) {
 			console.log('error in frontpage: ', error);
 		}
