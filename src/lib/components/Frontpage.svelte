@@ -71,13 +71,6 @@
 	const props = {};
 
 	onMount(async () => {
-		// delete old data first, then add new user and save it to disk
-		try {
-			localStorage.clear();
-		} catch (error) {
-			console.log('error in frontpage: ', error);
-		}
-
 		try {
 			await createDummyUser();
 			await users.setLoggedIn(null);

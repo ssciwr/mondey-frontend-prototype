@@ -85,7 +85,6 @@
 
 		// check if credentials are saved
 		const savedUID = JSON.parse(localStorage.getItem('currentUser'));
-
 		if (savedUID) {
 			userID = savedUID;
 
