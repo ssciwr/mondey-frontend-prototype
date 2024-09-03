@@ -9,6 +9,12 @@ export default {
 		'./node_modules/flowbite-svelte/**/*.{html,js,svelte,ts}'
 	],
 	darkMode: 'selector',
+	safelist: [
+		'bg-green-50',
+		'bg-green-100',
+		'bg-green-200',
+		'bg-green-400',
+	],
 	theme: {
 		extend: {
 			colors: {
