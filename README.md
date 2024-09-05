@@ -6,6 +6,10 @@ The static website is automatically built and deployed to
 [ssciwr.github.io/mondey-frontend-prototype](https://ssciwr.github.io/mondey-frontend-prototype)
 on every push to the main branch using this [Github Action](.github/workflows/deploy.yml).
 
+## Component demos
+
+- [Milestone](https://ssciwr.github.io/mondey-frontend-prototype/milestone)
+
 ## Local development
 
 Initial setup to edit the website locally:

@@ -2,12 +2,16 @@
     import {P, Breadcrumb, BreadcrumbItem, AccordionItem, Accordion, Button, Checkbox} from 'flowbite-svelte';
     import {QuestionCircleSolid, ArrowRightOutline, ArrowLeftOutline} from 'flowbite-svelte-icons'
     import MilestoneButton from "$lib/components/MilestoneButton.svelte";
+    import { _ } from 'svelte-i18n';
 
     export let data;
 
     let currentMilestoneIndex: number = 0;
     let selectedAnswer: number | null = data.milestones[currentMilestoneIndex].answer;
     let autoGoToNextMilestone: boolean = false;
+
+    // note: these also need to be added to safelist in tailwind.config.ts since they are not directly used in the markup
+    const answerColors = ["green-50", "green-100", "green-200", "green-400"];
 
     // build list of possible image urls at build time to be able to dynamically use them at run time:
     const images: Record<string, string> = import.meta.glob('$lib/assets/*.jpg', {
@@ -54,11 +58,11 @@
 </script>
 
 <div class="flex flex-col bg-white border border-1 border-gray-200 rounded-lg shadow dark:border-gray-700 dark:bg-gray-800 md:max-w-5xl">
-    <div class="bg-gray-100 dark:bg-gray-600">
+    <div class="bg-gray-100 dark:bg-gray-600 rounded-lg">
         <Breadcrumb olClass="inline-flex items-center space-x-1 rtl:space-x-reverse md:space-x-3 rtl:space-x-reverse flex-wrap" navClass="m-2">
             <BreadcrumbItem href="#" home>Start</BreadcrumbItem>
             <BreadcrumbItem href="#">MEIKE</BreadcrumbItem>
-            <BreadcrumbItem href="#">Bereichübersicht</BreadcrumbItem>
+            <BreadcrumbItem href="#">{$_("milestone.milestones")}</BreadcrumbItem>
             <!-- reload below is a temporary hack for demo purposes -->
             <BreadcrumbItem href="javascript:window.location.reload(true)">{data.title}</BreadcrumbItem>
             <BreadcrumbItem>{currentMilestoneIndex + 1} / {data.milestones.length}</BreadcrumbItem>
@@ -75,7 +79,7 @@
                     <AccordionItem>
                         <span slot="header" class="text-base flex gap-2">
                             <QuestionCircleSolid class="mt-0.5"/>
-                            <span>Förderhilfen</span>
+                            <span>{$_("milestone.help")}</span>
                         </span>
                         <P>
                             {data.milestones[currentMilestoneIndex].help}
@@ -84,34 +88,24 @@
                 </Accordion>
             </div>
             <div class="flex flex-col justify-items-stretch rounded-lg m-1">
-                <MilestoneButton color="green-50" selected={selectedAnswer===0} onClick={() => {selectAnswer(0)}}
-                                 tooltip="Das Kind macht noch keine Anstalten bzw. ist noch nicht in der Lage, das Verhalten auszuführen.">
-                    Noch gar nicht
+                {#each answerColors as color, answerIndex}
+                <MilestoneButton {color} selected={selectedAnswer===answerIndex} onClick={() => {selectAnswer(answerIndex)}}
+                                 tooltip={$_(`milestone.answer${answerIndex}.description`)}>
+                    {$_(`milestone.answer${answerIndex}.text`)}
                 </MilestoneButton>
-                <MilestoneButton color="green-100" selected={selectedAnswer===1} onClick={() => {selectAnswer(1)}}
-                                 tooltip="Das Kind zeigt erste Ansätze, das Verhalten auszuführen, weicht dabei aber noch erheblich von der Beschreibung ab oder/und ist sehr unsicher.">
-                    In Ansätzen
-                </MilestoneButton>
-                <MilestoneButton color="green-200" selected={selectedAnswer===2} onClick={() => {selectAnswer(2)}}
-                                 tooltip="Das Kind beherrscht das Verhalten im Prinzip, zeigt es aber erst selten, ist dabei  noch leicht unsicher oder führt es nicht ganz sauber aus.">
-                    Weitgehend
-                </MilestoneButton>
-                <MilestoneButton color="green-400" selected={selectedAnswer===3} onClick={() => {selectAnswer(3)}}
-                                 tooltip="Das Kind zeigt das Verhalten mehrmals sicher und genau wie beschrieben.">
-                    Zuverlässig
-                </MilestoneButton>
+                {/each}
                 <div class="flex flex-row justify-center">
                     <Button color="light" disabled={currentMilestoneIndex === 0} on:click={prevMilestone} class="m-1 mt-4">
                         <ArrowLeftOutline class="w-5 h-5 me-2"/>
-                        Zurück
+                        {$_('milestone.prev')}
                     </Button>
                     <Button color="light" disabled={selectedAnswer === null} on:click={nextMilestone} class="m-1 mt-4">
-                        Weiter
+                        {$_('milestone.next')}
                         <ArrowRightOutline class="w-5 h-5 ms-2"/>
                     </Button>
                 </div>
                 <Checkbox class="m-1 justify-center" bind:checked={autoGoToNextMilestone}>
-                    <P class="text-xs">Automatisch weiter</P>
+                    <P class="text-xs">{$_("milestone.autonext")}</P>
                 </Checkbox>
             </div>
         </div>
