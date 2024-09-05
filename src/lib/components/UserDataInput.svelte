@@ -193,7 +193,7 @@
 		<form class="m-1 mx-auto w-full flex-col space-y-6">
 			{#each data as element, i}
 				{#if 'items' in element}
-					<Select {...element} bind:value={inputValues[i]} />
+					<Select {...element} bind:value={inputValues[i]} valid={!missingValues[i]} />
 				{:else}
 					<Input {element} bind:value={inputValues[i]} valid={!missingValues[i]} />
 				{/if}

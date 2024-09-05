@@ -2,7 +2,8 @@
 	import { Label, Select } from 'flowbite-svelte';
 
 	export let value: string;
-	export let valid: Boolean = true;
+	export let valid: Boolean;
+	export let cls: String = '';
 
 	export function validate(value: unknown): void {
 		if (value !== undefined && value !== null && value !== '') {
@@ -20,7 +21,9 @@
 <div>
 	<Select
 		size="lg"
-		class="mb-3 font-normal leading-tight text-gray-700 dark:text-gray-400"
+		class={(!valid && $$props.required === true
+			? 'border-6 border-primary-600 text-white dark:border-primary-600'
+			: '') + cls}
 		items={$$props.items.map((v) => {
 			return {
 				name: String(v),
