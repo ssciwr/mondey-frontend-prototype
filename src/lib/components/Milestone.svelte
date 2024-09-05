@@ -1,6 +1,6 @@
 <script lang="ts">
     import {P, Breadcrumb, BreadcrumbItem, AccordionItem, Accordion, Button, Checkbox} from 'flowbite-svelte';
-    import {QuestionCircleSolid, ArrowRightOutline, HomeOutline} from 'flowbite-svelte-icons'
+    import {QuestionCircleSolid, ArrowRightOutline, ArrowLeftOutline} from 'flowbite-svelte-icons'
     import MilestoneButton from "$lib/components/MilestoneButton.svelte";
 
     export let data;
@@ -16,10 +16,13 @@
         import: 'default'
     });
 
-    function firstMilestone() {
-        console.log("firstMilestone: clearing selected answer, setting current index to 0");
-        selectedAnswer = null;
-        currentMilestoneIndex = 0;
+    function prevMilestone() {
+        if (currentMilestoneIndex === 0) {
+            console.log("prevMilestone: Already at first milestone, ignoring");
+        }
+        currentMilestoneIndex -= 1;
+        console.log(`prevMilestone: currentMilestoneIndex = ${currentMilestoneIndex}`);
+        selectedAnswer = data.milestones[currentMilestoneIndex].answer;
     }
 
     function nextMilestone() {
@@ -31,7 +34,7 @@
         // todo: API call to submit answer?
         if (currentMilestoneIndex + 1 == data.milestones.length) {
             console.log(`nextMilestone: Last milestone complete`)
-            // todo: redirect to bereichuebersicht?
+            // todo: redirect to bereichuebersicht? or go to next set of milestones?
             return;
         }
         currentMilestoneIndex += 1;
@@ -97,11 +100,17 @@
                                  tooltip="Das Kind zeigt das Verhalten mehrmals sicher und genau wie beschrieben.">
                     Zuverlässig
                 </MilestoneButton>
-                <Button color="light" disabled={selectedAnswer === null} on:click={nextMilestone} class="m-1 mt-4">
-                    Weiter
-                    <ArrowRightOutline class="w-5 h-5 ms-2"/>
-                </Button>
-                <Checkbox class="m-1" bind:checked={autoGoToNextMilestone}>
+                <div class="flex flex-row justify-center">
+                    <Button color="light" disabled={currentMilestoneIndex === 0} on:click={prevMilestone} class="m-1 mt-4">
+                        <ArrowLeftOutline class="w-5 h-5 me-2"/>
+                        Zurück
+                    </Button>
+                    <Button color="light" disabled={selectedAnswer === null} on:click={nextMilestone} class="m-1 mt-4">
+                        Weiter
+                        <ArrowRightOutline class="w-5 h-5 ms-2"/>
+                    </Button>
+                </div>
+                <Checkbox class="m-1 justify-center" bind:checked={autoGoToNextMilestone}>
                     <P class="text-xs">Automatisch weiter</P>
                 </Checkbox>
             </div>

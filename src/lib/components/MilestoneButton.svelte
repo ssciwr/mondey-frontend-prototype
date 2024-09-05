@@ -4,7 +4,7 @@
     export let selected: boolean = false;
     export let color: string = 'white-900';
     export let tooltip: string = '';
-    export let onClick: () => {};
+    export let onClick: () => void;
 
     let bg_color = `bg-${color}`;
 </script>
