@@ -13,6 +13,10 @@
 		if (!users.get()['dummyUser123']) {
 			createDummyUser();
 		}
+
+		if (users.get()['tobeRegistered']) {
+			users.remove('tobeRegistered');
+		}
 	});
 
 	onDestroy(async () => {
@@ -27,21 +31,52 @@
 		missingValues[3] = inputValues[3] === null || missingValues[2];
 	}
 
-	function reroute(): void {
+	async function reroute(): void {
 		validate();
+
 		if (
 			missingValues.every((v) => {
-				v === false;
+				return v === false;
 			})
 		) {
 			// README: userID is username+password just as a placeholder
-			users.add(inputValues[0] + inputValues[1], {
+
+			if (users.get()['tobeRegistered']) {
+				console.log('removing user ', 'tobeRegistered');
+				await users.remove('tobeRegistered');
+			}
+
+			let userdata = {
 				name: inputValues[0],
-				id: inputValues[0] + inputValues[1],
+				id: inputValues[0] + inputValues[2], // README: without the backend, userID is emulated as username + password
 				role: 'user',
 				password: inputValues[2]
-			});
-			users.save();
+			};
+
+			// README: temporary logic to avoid multiple users with the same id
+			// needs to be handled server side later
+			let index = 2;
+			while (userdata.id in users.get()) {
+				console.log('adding index to avoid multiple users', index);
+				userdata.id = inputValues[0] + inputValues[2] + String(index);
+				index += 1;
+			}
+
+			try {
+				await users.add('toBeRegistered', userdata);
+			} catch (error) {
+				showAlert = true;
+				alertMessage = 'Fehler bei Registrierung' + error;
+			}
+
+			try {
+				await users.save();
+			} catch (error) {
+				showAlert = true;
+				alertMessage = 'Fehler bei Registrierung' + error;
+			}
+
+			showAlert = false;
 			goto('/userLand/userDataInput');
 		} else {
 			showAlert = true;
@@ -81,13 +116,13 @@
 
 	const heading = 'Als neuer Benutzer registrieren';
 	let showAlert: boolean = false;
-	let showCheckMessage: boolean = false;
+	let alertMessage: string = 'Bitte füllen Sie die benötigten Felder (hervorgehoben) aus.';
 	let missingValues: boolean[] = [false, false, false, false];
 	let inputValues: (string | null)[] = [null, null, null, null];
 
 	const buttons = [
 		{
-			label: 'Registrieren',
+			label: 'Weiter',
 			onclick: reroute
 		}
 	];
@@ -97,7 +132,7 @@
 {#if showAlert}
 	<AlertMessage
 		title="Fehler"
-		message="Bitte füllen Sie die benötigten Felder (hervorgehoben) aus."
+		message={alertMessage}
 		infopage="/info"
 		infotitle="Was passiert mit den Daten"
 		onclick={() => {
