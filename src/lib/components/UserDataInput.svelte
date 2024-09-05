@@ -61,6 +61,8 @@
 			if (userAddSuccess) {
 				await users.setLoggedIn(toBeRegistered.id); // set newly registered user as logged in
 
+				await children.save();
+
 				await users.save();
 
 				goto('/childrengallery');
