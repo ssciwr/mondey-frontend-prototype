@@ -59,7 +59,8 @@
 	const buttons = [
 		{
 			label: 'Login',
-			href: null
+			href: null,
+			onclick: validateCredentials
 		}
 	];
 
@@ -140,7 +141,7 @@
 
 			<UserLoginUtil cls="p-6 mb-3" bind:checked={remember} />
 
-			<NavigationButtons {buttons} onclick={validateCredentials} />
+			<NavigationButtons {buttons} />
 		</Card>
 
 		<span class="container mx-auto w-full text-gray-700 dark:text-gray-400">Not registered?</span>
