@@ -1,6 +1,16 @@
 <script lang="ts">
 	import { Label, Select } from 'flowbite-svelte';
+
 	export let value: string;
+	export let valid: Boolean = true;
+
+	export function validate(value: unknown): void {
+		if (value !== undefined && value !== null && value !== '') {
+			valid = true;
+		} else {
+			valid = false;
+		}
+	}
 </script>
 
 {#if $$props.label}
@@ -19,5 +29,8 @@
 		})}
 		placeholder={$$props.about}
 		bind:value
+		on:change={(event) => {
+			validate(event.srcElement.value);
+		}}
 	/>
 </div>
