@@ -34,6 +34,7 @@ class UserStore extends BasicStore<UserList> {
 	}
 
 	public async setLoggedIn(flag: string) {
+		console.log('set login to: ', flag);
 		this.store.update((data) => {
 			data['loggedIn'] = flag;
 			return data;
@@ -41,17 +42,20 @@ class UserStore extends BasicStore<UserList> {
 	}
 
 	public async getLoggedIn(): Promise<string> {
+		console.log('trying to get login');
 		return this.get()['loggedIn'];
 	}
 
 	public async fetchWithCredentials(
 		username: string,
 		userpw: string
-	): Promise<UserData | undefined> {
+	): Promise<UserData | string | undefined> {
+		console.log('Fetching with credentials', username);
 		return Object.values(this.get()).find((userdata) => {
-			if (!userdata || userdata === null) {
-			} else {
+			if (userdata && userdata !== null) {
 				return userdata.name === username && userdata.password === userpw;
+			} else {
+				return false;
 			}
 		});
 	}
@@ -60,12 +64,22 @@ class UserStore extends BasicStore<UserList> {
 const users = new UserStore();
 
 async function createDummyUser(name: string = 'dummyUser') {
-	await users.add('dummyUser123', {
+	console.log('Creating dummy user');
+	const h = await hash('123');
+	await users.add('dummyUser' + h, {
 		name: name,
-		id: 'dummyUser123',
+		id: 'dummyUser' + h,
 		role: 'admin',
-		password: '123'
+		password: h
 	});
 }
 
-export { createDummyUser, users, UserStore, type UserData, type UserList };
+async function hash(input: string): string {
+	console.log('hash input');
+	const encoder = new TextEncoder();
+	const data = encoder.encode(input);
+	const hash = await crypto.subtle.digest('SHA-256', data);
+	return String(hash);
+}
+
+export { createDummyUser, hash, users, UserStore, type UserData, type UserList };

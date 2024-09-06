@@ -4,7 +4,7 @@
 	import AlertMessage from '$lib/components/AlertMessage.svelte';
 	import Input from '$lib/components/DataInput/Input.svelte';
 	import NavigationButtons from '$lib/components/Navigation/NavigationButtons.svelte';
-	import { createDummyUser, users, type UserData } from '$lib/stores/userStore';
+	import { hash, users, type UserData } from '$lib/stores/userStore';
 	import { Card, Heading } from 'flowbite-svelte';
 	import { onDestroy, onMount } from 'svelte';
 
@@ -15,12 +15,12 @@
 	 * the userstore that has been precreated. What fetchWithCredentials does currently will later go into the backend
 	 */
 	async function validateCredentials() {
-		// FIXME: this should not be set here but in the child component. However, indication of something missing should
+		// README: this should not be set here but in the child component. However, indication of something missing should
 		// not happen immediatelly in the first round of entry, so this code here defers it until the first hit of the login button.
 		for (let i = 0; i < credentials.length; ++i) {
 			credentialsValid[i] = credentials[i] !== '';
 		}
-		const user = await users.fetchWithCredentials(credentials[uid], credentials[pid]);
+		const user = await users.fetchWithCredentials(credentials[uid], await hash(credentials[pid]));
 
 		if (!user || user === null) {
 			showAlert = true;
@@ -34,7 +34,7 @@
 			}
 			await users.setLoggedIn(userID);
 			await users.save();
-			goto('/childrengallery/');
+			goto('/userLand/userDataInput/');
 		}
 	}
 
@@ -80,9 +80,6 @@
 	onMount(async () => {
 		// make dummyUser if not already there
 		users.load();
-		if (!users.get()['dummyUser123']) {
-			createDummyUser();
-		}
 
 		// check if credentials are saved
 		const savedUID = JSON.parse(localStorage.getItem('currentUser'));

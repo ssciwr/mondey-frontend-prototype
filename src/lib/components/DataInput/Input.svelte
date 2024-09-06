@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { Input, type InputType, Label } from 'flowbite-svelte';
-
 	interface Element {
 		name: String;
 		type: InputType | String | undefined;
@@ -22,6 +21,8 @@
 		}
 	}
 
+	export let onBlur = (event: Event) => {};
+
 	// do the validation of the input internally here or at least allow for a function to be passed
 </script>
 
@@ -39,4 +40,5 @@
 	on:change={(event) => {
 		validate(event.srcElement.value);
 	}}
+	on:blur={onBlur}
 />

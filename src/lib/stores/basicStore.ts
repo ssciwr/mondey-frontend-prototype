@@ -42,7 +42,7 @@ class BasicStore<T extends Record<string, unknown>> {
 	 */
 	public async add(userID: string, element: unknown): Promise<void> {
 		console.log(`adding ${userID}`);
-		console.log(`registered users: ${Object.keys(get(this.store))}`);
+		console.log(`  registered users: ${Object.keys(get(this.store))}`);
 		if (userID in get(this.store)) {
 			throw new Error(`User ${userID} already exist`);
 		}

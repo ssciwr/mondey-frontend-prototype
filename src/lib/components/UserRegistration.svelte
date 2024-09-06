@@ -4,16 +4,13 @@
 	import Input from '$lib/components/DataInput/Input.svelte';
 	import NavigationButtons from '$lib/components/Navigation/NavigationButtons.svelte';
 	import { children } from '$lib/stores/childrenStore';
-	import { createDummyUser, users } from '$lib/stores/userStore';
+	import { hash, users } from '$lib/stores/userStore';
 	import { Card, Heading } from 'flowbite-svelte';
 	import { onDestroy, onMount } from 'svelte';
 
 	onMount(async () => {
 		// make dummyUser if not already there
 		users.load();
-		if (!users.get()['dummyUser123']) {
-			createDummyUser();
-		}
 	});
 
 	onDestroy(async () => {
@@ -24,7 +21,7 @@
 		const mailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 		missingValues[0] = inputValues[0] === null || inputValues[0] === ''; // username
 		missingValues[1] = inputValues[1] === null || mailRegex.test(inputValues[1]) === false; // email
-		missingValues[2] = inputValues[2] === null || inputValues[2] !== inputValues[3]; // password
+		missingValues[2] = passwd == null || passwd !== passwdTest; // password
 		missingValues[3] = inputValues[3] === null || missingValues[2];
 	}
 
@@ -37,14 +34,14 @@
 			})
 		) {
 			// README: userID is username+password just as a placeholder
-			const userID = inputValues[0] + inputValues[2];
+			const userID = inputValues[0] + passwd;
 			let userAddSuccess: boolean = true;
 
 			let userdata = {
 				name: inputValues[0],
 				id: userID, // README: without the backend, userID is emulated as username + password
 				role: 'user',
-				password: inputValues[2]
+				password: passwd
 			};
 
 			try {
@@ -93,7 +90,6 @@
 				}
 			}
 			showAlert = false;
-			registrationSuccess = true;
 			goto('/');
 		} else {
 			showAlert = true;
@@ -120,24 +116,30 @@
 			name: 'Passwort',
 			type: 'password',
 			placeholder: 'Passwort',
-			required: true
+			required: true,
+			onBlur: async (event: Event) => {
+				passwd = await hash(event.srcElement.value);
+			}
 		},
 		{
 			label: 'Passwort wiederholen',
 			name: 'Passwort wiederholen',
 			type: 'password',
 			placeholder: 'Passwort wiederholen',
-			required: true
+			required: true,
+			onBlur: async (event: Event) => {
+				passwdTest = await hash(event.srcElement.value);
+			}
 		}
 	];
 
 	const heading = 'Als neuer Benutzer registrieren';
 	let showAlert: boolean = false;
-	let registrationSuccess: boolean = false;
 	let alertMessage: string = 'Bitte füllen Sie die benötigten Felder (hervorgehoben) aus.';
 	let missingValues: boolean[] = [false, false, false, false];
 	let inputValues: (string | null)[] = [null, null, null, null];
-
+	let passwd = '';
+	let passwdTest = '';
 	const buttons = [
 		{
 			label: 'Registrieren',
@@ -173,7 +175,12 @@
 
 		<form class="m-1 mx-auto w-full flex-col space-y-6">
 			{#each data as element, i}
-				<Input {element} bind:value={inputValues[i]} valid={!missingValues[i]} />
+				<Input
+					{element}
+					bind:value={inputValues[i]}
+					valid={!missingValues[i]}
+					onBlur={element.onBlur}
+				/>
 			{/each}
 		</form>
 		<NavigationButtons {buttons} />
