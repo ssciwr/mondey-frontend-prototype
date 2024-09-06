@@ -30,7 +30,7 @@
 				active
 				items={[
 					{ name: 'Übersicht', href: '/childrengallery', current: true },
-					{ name: 'Profil', href: '/' }
+					{ name: 'Profil', href: '/userLand/userDataInput' }
 				]}
 				let:item
 			>

@@ -4,14 +4,14 @@
 	import Input from '$lib/components/DataInput/Input.svelte';
 	import Select from '$lib/components/DataInput/Select.svelte';
 	import NavigationButtons from '$lib/components/Navigation/NavigationButtons.svelte';
-	import { children } from '$lib/stores/childrenStore';
-	import { users } from '$lib/stores/userStore';
+	import { users, type UserData } from '$lib/stores/userStore';
 	import { Card, Heading } from 'flowbite-svelte';
 	import { onDestroy, onMount } from 'svelte';
 
 	onMount(() => {
 		users.load();
-		toBeRegistered = users.get()['toBeRegistered'];
+		const userID = users.get()['loggedIn'] as string;
+		userData = users.get()[userID];
 	});
 
 	onDestroy(() => {
@@ -24,49 +24,9 @@
 
 		if (missingValues.every((v) => v === false)) {
 			for (let i = 0; i < inputValues.length; ++i) {
-				toBeRegistered[data[i].name] = inputValues[i];
+				userData[data[i].name] = inputValues[i];
 			}
-
-			let userAddSuccess: boolean = true;
-
-			// attempt at error handling
-			try {
-				await children.addUser(toBeRegistered.id);
-			} catch (error) {
-				showAlert = true;
-				alertMessage = 'Fehler bei Registrierung: ' + error;
-				userAddSuccess = false;
-			}
-
-			if (userAddSuccess) {
-				try {
-					await users.add(toBeRegistered.id, toBeRegistered);
-				} catch (error) {
-					showAlert = true;
-					alertMessage = 'Fehler bei Registrierung: ' + error;
-					userAddSuccess = false;
-				}
-			}
-
-			if (userAddSuccess) {
-				try {
-					await users.remove('toBeRegistered');
-				} catch (error) {
-					showAlert = true;
-					alertMessage = 'Fehler bei Registrierung: ' + error;
-					userAddSuccess = false;
-				}
-			}
-
-			if (userAddSuccess) {
-				await users.setLoggedIn(toBeRegistered.id); // set newly registered user as logged in
-
-				await children.save();
-
-				await users.save();
-
-				goto('/childrengallery');
-			}
+			goto('/childrengallery');
 		} else {
 			showAlert = true;
 		}
@@ -74,13 +34,13 @@
 
 	// this stuff here will become backend calls in the end because that is where the data this page will be filled with
 	// will come from. Hence, they are not put into a separate library or anything
-	function intervalRange(size, startAt = 0, step = 1) {
+	function intervalRange(size: number, startAt: number = 0, step: number = 1) {
 		return [...Array(size).keys()].map(
 			(i) => String(i * step + startAt) + '-' + String((i + 1) * step + startAt)
 		);
 	}
 
-	function numericalRange(size, startAt = 0, step = 1) {
+	function numericalRange(size: number, startAt: number = 0, step: number = 1) {
 		return [...Array(size).keys()].map((i) => i * step + startAt);
 	}
 
@@ -150,7 +110,7 @@
 		}
 	];
 
-	let toBeRegistered: Object = {};
+	let userData: UserData = {};
 
 	let inputValues = data.map(() => null);
 

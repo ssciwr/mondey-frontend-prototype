@@ -41,11 +41,13 @@ class BasicStore<T extends Record<string, unknown>> {
 	 * @param element
 	 */
 	public async add(userID: string, element: unknown): Promise<void> {
-		this.store.update((data: T) => {
-			if (userID in data) {
-				throw new Error(`User ${userID} already exist`);
-			}
+		console.log(`adding ${userID}`);
+		console.log(`registered users: ${Object.keys(get(this.store))}`);
+		if (userID in get(this.store)) {
+			throw new Error(`User ${userID} already exist`);
+		}
 
+		this.store.update((data: T) => {
 			data[userID as keyof T] = element as T[keyof T];
 
 			return data;
@@ -58,11 +60,10 @@ class BasicStore<T extends Record<string, unknown>> {
 	 * @param element
 	 */
 	public async update(userID: string, element: unknown): Promise<void> {
+		if (!(userID in get(this.store))) {
+			throw new Error(`User ${userID} doesn't exist`);
+		}
 		this.store.update((data) => {
-			if (!(userID in data)) {
-				throw new Error(`User ${userID} doesn't exist`);
-			}
-
 			data[userID as keyof T] = element as T[keyof T];
 			return data;
 		});
@@ -73,11 +74,11 @@ class BasicStore<T extends Record<string, unknown>> {
 	 * @param userID
 	 */
 	public async remove(userID: string): Promise<void> {
-		this.store.update((data) => {
-			if (!(userID in data)) {
-				throw new Error(`User ${userID} doesn't exist`);
-			}
+		if (!(userID in get(this.store))) {
+			throw new Error(`User ${userID} doesn't exist`);
+		}
 
+		this.store.update((data) => {
 			delete data[userID];
 
 			return data;

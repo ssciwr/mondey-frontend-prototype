@@ -48,7 +48,6 @@ class UserStore extends BasicStore<UserList> {
 		username: string,
 		userpw: string
 	): Promise<UserData | undefined> {
-		console.log('data: ', this.get());
 		return Object.values(this.get()).find((userdata) => {
 			if (!userdata || userdata === null) {
 			} else {

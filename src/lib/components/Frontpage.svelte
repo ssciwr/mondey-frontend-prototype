@@ -72,8 +72,10 @@
 
 	onMount(async () => {
 		try {
-			await createDummyUser();
-			await users.setLoggedIn(null);
+			if (!users.get()['dummyUser123']) {
+				await createDummyUser();
+				await users.setLoggedIn(null);
+			}
 		} catch (error) {
 			console.log('error in frontpage: ', error);
 		}

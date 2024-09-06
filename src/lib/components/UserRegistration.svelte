@@ -3,6 +3,7 @@
 	import AlertMessage from '$lib/components/AlertMessage.svelte';
 	import Input from '$lib/components/DataInput/Input.svelte';
 	import NavigationButtons from '$lib/components/Navigation/NavigationButtons.svelte';
+	import { children } from '$lib/stores/childrenStore';
 	import { createDummyUser, users } from '$lib/stores/userStore';
 	import { Card, Heading } from 'flowbite-svelte';
 	import { onDestroy, onMount } from 'svelte';
@@ -12,10 +13,6 @@
 		users.load();
 		if (!users.get()['dummyUser123']) {
 			createDummyUser();
-		}
-
-		if (users.get()['tobeRegistered']) {
-			users.remove('tobeRegistered');
 		}
 	});
 
@@ -31,7 +28,7 @@
 		missingValues[3] = inputValues[3] === null || missingValues[2];
 	}
 
-	async function reroute(): void {
+	async function reroute(): Promise<void> {
 		validate();
 
 		if (
@@ -40,44 +37,64 @@
 			})
 		) {
 			// README: userID is username+password just as a placeholder
-
-			if (users.get()['tobeRegistered']) {
-				console.log('removing user ', 'tobeRegistered');
-				await users.remove('tobeRegistered');
-			}
+			const userID = inputValues[0] + inputValues[2];
+			let userAddSuccess: boolean = true;
 
 			let userdata = {
 				name: inputValues[0],
-				id: inputValues[0] + inputValues[2], // README: without the backend, userID is emulated as username + password
+				id: userID, // README: without the backend, userID is emulated as username + password
 				role: 'user',
 				password: inputValues[2]
 			};
 
-			// README: temporary logic to avoid multiple users with the same id
-			// needs to be handled server side later
-			let index = 2;
-			while (userdata.id in users.get()) {
-				console.log('adding index to avoid multiple users', index);
-				userdata.id = inputValues[0] + inputValues[2] + String(index);
-				index += 1;
-			}
-
 			try {
-				await users.add('toBeRegistered', userdata);
+				await users.add(userID, userdata);
 			} catch (error) {
+				userAddSuccess = false;
 				showAlert = true;
 				alertMessage = 'Fehler bei Registrierung' + error;
 			}
 
 			try {
-				await users.save();
+				await children.addUser(userID);
 			} catch (error) {
 				showAlert = true;
-				alertMessage = 'Fehler bei Registrierung' + error;
+				alertMessage = 'Fehler bei Registrierung: ' + error;
+				userAddSuccess = false;
 			}
 
+			if (userAddSuccess) {
+				try {
+					await users.save();
+				} catch (error) {
+					showAlert = true;
+					alertMessage = 'Fehler bei Registrierung' + error;
+					userAddSuccess = false;
+				}
+			}
+
+			if (userAddSuccess) {
+				try {
+					await children.save();
+				} catch (error) {
+					showAlert = true;
+					alertMessage = 'Fehler bei Registrierung' + error;
+					userAddSuccess = false;
+				}
+			}
+
+			if (userAddSuccess) {
+				try {
+					await users.setLoggedIn(userID); // set newly registered user as logged in
+				} catch (error) {
+					showAlert = true;
+					alertMessage = 'Fehler bei Registrierung' + error;
+					userAddSuccess = false;
+				}
+			}
 			showAlert = false;
-			goto('/userLand/userDataInput');
+			registrationSuccess = true;
+			goto('/');
 		} else {
 			showAlert = true;
 		}
@@ -116,13 +133,14 @@
 
 	const heading = 'Als neuer Benutzer registrieren';
 	let showAlert: boolean = false;
+	let registrationSuccess: boolean = false;
 	let alertMessage: string = 'Bitte füllen Sie die benötigten Felder (hervorgehoben) aus.';
 	let missingValues: boolean[] = [false, false, false, false];
 	let inputValues: (string | null)[] = [null, null, null, null];
 
 	const buttons = [
 		{
-			label: 'Weiter',
+			label: 'Registrieren',
 			onclick: reroute
 		}
 	];
