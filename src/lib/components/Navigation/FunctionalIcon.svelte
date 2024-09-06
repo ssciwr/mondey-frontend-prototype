@@ -1,6 +1,6 @@
-<script>
+<script lang="ts">
 	import { Tooltip } from 'flowbite-svelte';
-	export let tooltip = null;
+	export let tooltip: string | null = null;
 </script>
 
 <div class="functional-icon-container">
