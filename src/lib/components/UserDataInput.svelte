@@ -4,7 +4,7 @@
 	import Input from '$lib/components/DataInput/Input.svelte';
 	import Select from '$lib/components/DataInput/Select.svelte';
 	import NavigationButtons from '$lib/components/Navigation/NavigationButtons.svelte';
-	import { users, type UserData } from '$lib/stores/userStore';
+	import { users } from '$lib/stores/userStore';
 	import { Card, Heading } from 'flowbite-svelte';
 	import { onDestroy, onMount } from 'svelte';
 
@@ -12,6 +12,15 @@
 		users.load();
 		const userID = users.get()['loggedIn'] as string;
 		userData = users.get()[userID];
+		inputValues = [
+			userData['Geburtsjahr'] ? userData['Geburtsjahr'] : null,
+			userData['Geschlecht'] ? userData['Geschlecht'] : null,
+			userData['Höchster Bildungsabschluss'] ? userData['Höchster Bildungsabschluss'] : null,
+			userData['Arbeitszeit/Woche'] ? userData['Arbeitszeit/Woche'] : null,
+			userData['Familieneinkommen/Jahr'] ? userData['Familieneinkommen/Jahr'] : null,
+			userData['Beruf'] ? userData['Beruf'] : null
+		];
+		buttons[0].label = 'Fertig';
 	});
 
 	onDestroy(() => {
@@ -52,7 +61,6 @@
 			name: 'Geburtsjahr',
 			items: numericalRange(100, 1920),
 			about: 'Wählen sie ihr Geburtsjahr aus',
-			selected: 1988,
 			label: 'Geburtsjahr',
 			required: true
 		},
@@ -60,7 +68,6 @@
 			name: 'Geschlecht',
 			items: ['männlich', 'weiblich', 'divers'],
 			about: 'Wählen sie ihr Geschlecht aus',
-			selected: 'weiblich',
 			label: 'Geschlecht',
 			required: true
 		},
@@ -76,7 +83,6 @@
 				'Promotion'
 			],
 			about: 'Wählen sie ihren höchsten Bildungsabschluss aus',
-			selected: 'Realschulabschluss',
 			required: true,
 			label: 'Höchster Bildungsabschluss'
 		},
@@ -86,7 +92,6 @@
 			items: intervalRange(13, 0, 5),
 			about:
 				'Wählen sie ihre Arbeitszeit pro Woche aus. Wählen sie die Zahl, die dem tatsächlichen Wert am nächsten kommt.',
-			selected: '35-40',
 			label: 'Arbeitszeit/Woche',
 			required: true
 		},
@@ -95,7 +100,6 @@
 			items: intervalRange(23, 0, 5000),
 			about:
 				'Wählen sie ihre Jahreseinkommen aus. Wählen sie die Zahl, die dem tatsächlichen Wert am nächsten kommt.',
-			selected: '50000-55000',
 			label: 'Familieneinkommen/Jahr',
 			required: true
 		},
@@ -110,7 +114,7 @@
 		}
 	];
 
-	let userData: UserData = {};
+	let userData: object = {};
 
 	let inputValues = data.map(() => null);
 
