@@ -78,8 +78,9 @@ async function hash(input: string): string {
 	console.log('hash input');
 	const encoder = new TextEncoder();
 	const data = encoder.encode(input);
-	const hash = await crypto.subtle.digest('SHA-256', data);
-	return String(hash);
+	const hashArray = Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', data)));
+	const hash = hashArray.map((b) => b.toString(16).padStart(2, '0')).join('');
+	return hash;
 }
 
 export { createDummyUser, hash, users, UserStore, type UserData, type UserList };
