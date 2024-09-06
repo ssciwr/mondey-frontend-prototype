@@ -22,7 +22,7 @@
 	<Select
 		size="lg"
 		class={(!valid && $$props.required === true
-			? 'border-6 border-primary-600 text-white dark:border-primary-600'
+			? 'border-6 border-primary-600 dark:border-primary-600'
 			: '') + cls}
 		items={$$props.items.map((v) => {
 			return {
