@@ -58,7 +58,7 @@
 </script>
 
 <div class="flex flex-col bg-white border border-1 border-gray-200 rounded-lg shadow dark:border-gray-700 dark:bg-gray-800 md:max-w-5xl">
-    <div class="bg-gray-100 dark:bg-gray-600 rounded-lg">
+    <div class="bg-gray-100 dark:bg-gray-600 rounded-t-lg">
         <Breadcrumb olClass="inline-flex items-center space-x-1 rtl:space-x-reverse md:space-x-3 rtl:space-x-reverse flex-wrap" navClass="m-2">
             <BreadcrumbItem href="#" home>Start</BreadcrumbItem>
             <BreadcrumbItem href="#">MEIKE</BreadcrumbItem>
