@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { base } from '$app/paths';
 	import AlertMessage from '$lib/components/AlertMessage.svelte';
 
 	import {
@@ -192,7 +193,7 @@
 	let refs: unknown[] = [];
 	let data = rawData.map(processData);
 	let childData: ChildData;
-	let nextpage: string = '/childrengallery';
+	let nextpage: string = `${base}/childrengallery`;
 	let unsubscribe: unknown = children.subscribe((childrenlist) => {
 		children.save();
 	});
@@ -220,8 +221,8 @@
 	<AlertMessage
 		title="Fehler"
 		message="Bitte füllen Sie mindestens die benötigten Felder (hervorgehoben) aus."
-		lastpage="/childLand/childDataInput/"
-		infopage="/info"
+		lastpage="{base}/childLand/childDataInput/"
+		infopage="{base}/info"
 		infotitle="Was passiert mit den Daten"
 		onclick={() => {
 			showAlert = false;
@@ -234,8 +235,8 @@
 	<AlertMessage
 		title="Bevor es weitergeht"
 		message="Bitte überprüfen sie ihre eingaben nochmals genau bevor sie weiter gehen"
-		lastpage="/childLand/childDataInput"
-		infopage="/"
+		lastpage="{base}/childLand/childDataInput"
+		infopage="{base}"
 		infotitle="Was passiert mit den Daten?"
 		onclick={() => {
 			showCheckMessage = false;

@@ -7,6 +7,7 @@
 	import { hash, users, type UserData } from '$lib/stores/userStore';
 	import { Card, Heading } from 'flowbite-svelte';
 	import { onDestroy, onMount } from 'svelte';
+	import {base} from "$app/paths";
 
 	// functionality
 
@@ -34,7 +35,7 @@
 			}
 			await users.setLoggedIn(userID);
 			await users.save();
-			goto('/userLand/userDataInput/');
+			goto(`${base}/userLand/userDataInput/`);
 		}
 	}
 
@@ -101,7 +102,7 @@
 	<AlertMessage
 		title={'Fehler'}
 		message={alertMessage}
-		lastpage="/userLand/userLogin"
+		lastpage={`${base}/userLand/userLogin`}
 		onclick={() => {
 			showAlert = false;
 			credentialsValid = [true, true];
@@ -113,7 +114,7 @@
 	<AlertMessage
 		title={'Fehler'}
 		message={`Sie sind bereits angemeldet. Melden sie sich zuerst ab um den Account zu wechseln.`}
-		lastpage="/"
+		lastpage={`${base}`}
 		onclick={() => {
 			showAlert = false;
 			credentialsValid = [true, true];
@@ -143,7 +144,7 @@
 
 		<span class="container mx-auto w-full text-gray-700 dark:text-gray-400">Not registered?</span>
 		<a
-			href="/userLand/userRegistration"
+			href={`${base}/userLand/userRegistration`}
 			class="text-primary-700 hover:underline dark:text-primary-500"
 		>
 			Create account

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { base } from '$app/paths';
 	import { goto } from '$app/navigation';
 	import AlertMessage from '$lib/components/AlertMessage.svelte';
 	import Input from '$lib/components/DataInput/Input.svelte';
@@ -137,7 +138,7 @@
 	<AlertMessage
 		title="Fehler"
 		message={alertMessage}
-		infopage="/info"
+		infopage="{base}/info"
 		infotitle="Was passiert mit den Daten"
 		onclick={() => {
 			showAlert = false;

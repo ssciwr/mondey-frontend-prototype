@@ -2,6 +2,7 @@
 	import { users } from '$lib/stores/userStore';
 	import { Button, Heading, Listgroup, Popover } from 'flowbite-svelte';
 	import { onDestroy } from 'svelte';
+	import {base} from "$app/paths";
 
 	export let triggeredBy = '';
 	let loggedIn: string | null = users.get()['loggedIn'];
@@ -29,19 +30,19 @@
 			<Listgroup
 				active
 				items={[
-					{ name: 'Übersicht', href: '/childrengallery', current: true },
-					{ name: 'Profil', href: '/userLand/userDataInput' }
+					{ name: 'Übersicht', href: `${base}/childrengallery`, current: true },
+					{ name: 'Profil', href: `${base}/userLand/userDataInput` }
 				]}
 				let:item
 			>
 				{item.name}
 			</Listgroup>
-			<Button href="/" on:click={logout}>Logout</Button>
+			<Button href="{base}" on:click={logout}>Logout</Button>
 		</div>
 	{:else}
 		<div class="mx-auto mb-6 flex flex-col items-center justify-center space-y-6">
 			<Heading tag="h3">Willkommen!</Heading>
-			<Button href="/userLand/userLogin">Einloggen oder Registrieren</Button>
+			<Button href="{base}/userLand/userLogin">Einloggen oder Registrieren</Button>
 		</div>
 	{/if}
 </Popover>
