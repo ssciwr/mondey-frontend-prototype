@@ -91,7 +91,7 @@
 				}
 			}
 			showAlert = false;
-			goto('/');
+			goto(base);
 		} else {
 			showAlert = true;
 		}
