@@ -8,19 +8,20 @@
 	import { Avatar, DarkMode, Navbar, NavBrand, NavHamburger, NavLi, NavUl } from 'flowbite-svelte';
 	import { MoonSolid, SunSolid } from 'flowbite-svelte-icons';
 	import '../app.css';
+	import { base } from '$app/paths';
 </script>
 
 <Navbar>
-	<NavBrand href="/">
+	<NavBrand href="{base}">
 		<img src={logo_light} class="block h-16 dark:hidden" alt="MONDEY Logo" />
 		<img src={logo_dark} class="hidden h-16 dark:block" alt="MONDEY Logo" />
 	</NavBrand>
 	<NavHamburger />
 	<NavUl ulClass="flex space-x-4 text-lg ">
-		<NavLi href="/" active={true}>Home</NavLi>
-		<NavLi href="/">Aktuelles</NavLi>
-		<NavLi href="/">Downloads</NavLi>
-		<NavLi href="/">Kontakt</NavLi>
+		<NavLi href="{base}" active={true}>Home</NavLi>
+		<NavLi href="{base}">Aktuelles</NavLi>
+		<NavLi href="{base}">Downloads</NavLi>
+		<NavLi href="{base}">Kontakt</NavLi>
 
 		<FunctionalIcon tooltip={'Darkmode ein- oder ausschalten'}>
 			<DarkMode class="apply-icon-style">

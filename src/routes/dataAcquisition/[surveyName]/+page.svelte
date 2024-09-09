@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { base } from '$app/paths';
 	import AbstractContent from '$lib/components/AbstractContent.svelte';
 	import AbstractDataInput from '$lib/components/DataInput/AbstractDataInput.svelte';
 	import Select from '$lib/components/DataInput/Select.svelte';
@@ -27,12 +28,12 @@
 	$: data_to_display = convertData($$props.data.data.milestones);
 	$: next =
 		$$props.data.data.next !== null
-			? `/dataAcquisition/${$$props.data.data.next}`
+			? `${base}/dataAcquisition/${$$props.data.data.next}`
 			: '/surveyfeedback';
 
 	$: last =
 		$$props.data.data.last !== null
-			? `/dataAcquisition/${$$props.data.data.last}`
+			? `${base}/dataAcquisition/${$$props.data.data.last}`
 			: '/childrengallery';
 </script>
 

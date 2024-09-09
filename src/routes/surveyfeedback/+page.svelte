@@ -1,4 +1,5 @@
 <script>
+	import { base } from '$app/paths';
 	import AbstractContent from '$lib/components/AbstractContent.svelte';
 	import TableDisplay from '$lib/components/DataDisplay/TableDisplay.svelte';
 
@@ -22,9 +23,9 @@
 
 <AbstractContent
 	showBottomNavbar={true}
-	lastpage="/dataAcquisition/surveyC"
-	nextpage="/"
-	infopage="/info"
+	lastpage="{base}/dataAcquisition/surveyC"
+	nextpage="{base}"
+	infopage="{base}/info"
 >
 	<TableDisplay
 		data={data_to_display}

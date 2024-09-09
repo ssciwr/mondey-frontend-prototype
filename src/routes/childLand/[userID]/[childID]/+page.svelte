@@ -1,4 +1,5 @@
 <script>
+	import { base } from '$app/paths';
 	import AbstractContent from '$lib/components/AbstractContent.svelte';
 	import TableDisplay from '$lib/components/DataDisplay/TableDisplay.svelte';
 
@@ -20,8 +21,8 @@
 
 <AbstractContent
 	lastpage="/childrengallery"
-	nextpage={`/dataAcquisition/${'surveyA'}`}
-	infopage="/info"
+	nextpage={`${base}/dataAcquisition/${'surveyA'}`}
+	infopage="{base}/info"
 >
 	<TableDisplay
 		{caption}
