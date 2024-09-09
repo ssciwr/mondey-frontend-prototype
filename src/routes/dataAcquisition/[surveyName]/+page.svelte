@@ -1,7 +1,7 @@
 <script lang="ts">
 	import AbstractContent from '$lib/components/AbstractContent.svelte';
 	import AbstractDataInput from '$lib/components/DataInput/AbstractDataInput.svelte';
-	import AbstractDropdownItem from '$lib/components/DataInput/AbstractDropdownItem.svelte';
+	import Select from '$lib/components/DataInput/Select.svelte';
 	import { type MilestoneDef } from '$lib/stores/contentStore';
 
 	/**
@@ -11,7 +11,7 @@
 	function convertData(milestoneData: MilestoneDef[]) {
 		return milestoneData.map((milestone) => {
 			return {
-				itemComponent: AbstractDropdownItem,
+				itemComponent: Select,
 				componentProps: milestone
 			};
 		});
