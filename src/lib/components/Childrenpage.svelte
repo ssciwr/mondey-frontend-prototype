@@ -1,12 +1,13 @@
 
 <script context="module">
+	import { base } from '$app/paths';
 	export function convertData(rawdata) {
 		let data = rawdata.map((item) => {
 			return {
 				header: item.name,
 				summary: item.info,
 				image: item.image,
-				href: `/childLand/${item.user}/${item.id}`
+				href: `${base}/childLand/${item.user}/${item.id}`
 			};
 		});
 
@@ -14,7 +15,7 @@
 		data.unshift({
 			header: 'Neu',
 			summary: 'Ein neues Kind anmelden',
-			href: '/childLand/childDataInput'
+			href: `${base}/childLand/childDataInput`
 		});
 		return data;
 	}
