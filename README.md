@@ -15,10 +15,11 @@ on every push to the main branch using this [Github Action](.github/workflows/de
 Initial setup to edit the website locally:
 
 - install [pnpm](https://pnpm.io/installation), e.g. `curl -fsSL https://get.pnpm.io/install.sh | sh -`
-- clone the repo
-- install node dependencies, e.g. `pnpm install`
+- clone the repo, e.g. `git clone https://github.com/ssciwr/mondey-frontend-prototype.git`
+- go to the top level of the repository, e.g. `cd mondey-frontend-prototype`
+- install the node dependencies, e.g. `pnpm install`
 
-To start a dev server:
+To start a development server:
 
 - `pnpm run dev`
 
