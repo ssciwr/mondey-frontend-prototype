@@ -1,12 +1,20 @@
 name: Build and deploy to gh-pages
-
-on: push
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
-  build:
+  build-frontend:
     permissions:
       contents: write
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./frontend
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -16,16 +24,17 @@ jobs:
         with:
           node-version: 22
           cache: 'pnpm'
+          cache-dependency-path: frontend/pnpm-lock.yaml
       - run: pnpm install
       - run: pnpm run build
         env:
           BASE_PATH: '/${{ github.event.repository.name }}'
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: 'build/'
-  deploy:
+          path: 'frontend/build/'
+  deploy-frontend:
     if: github.ref == 'refs/heads/main'
-    needs: build
+    needs: build-frontend
     permissions:
       pages: write
       id-token: write
