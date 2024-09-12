@@ -21,7 +21,7 @@ repos:
     rev: v1.11.1
     hooks:
       - id: mypy
-        additional_dependencies: []
+        additional_dependencies: ["sqlmodel"]
         args:
           [
             --ignore-missing-imports,
@@ -33,4 +33,3 @@ repos:
     rev: "v1.7.1"
     hooks:
       - id: actionlint
-
