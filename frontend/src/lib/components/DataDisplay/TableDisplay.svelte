@@ -38,6 +38,7 @@
 
 	// exported variables
 	export let data = [];
+	export let links = []; // separate datastructure because it is specific to the point in the fronted where it is used but is static once defined. data comes from the backend and is not knowable until it's fetched.
 	export let caption = '';
 	const legendcaption = 'Meaning of indicators';
 
@@ -57,6 +58,8 @@
 
 	// make the placeholdertext for the searchbar dynamic
 	const placeholderText = makePlaceholderText(data, searchableColumns);
+
+	console.log('links: ', links);
 </script>
 
 <TableSearch
@@ -65,12 +68,18 @@
 	hoverable={true}
 	striped={true}
 >
-	<TableHeader {caption} columns={Object.keys(data[0])} />
+	<TableHeader {caption} columns={Object.keys(data[0])} links={filteredItems.map((item) => {})} />
 	<TableBody tableBodyClass="divide-y">
-		{#each filteredItems as item}
+		{#each filteredItems as item, idx}
 			<TableBodyRow>
 				{#each Object.entries(item) as pair}
-					<TableCell key={pair[0]} value={pair[1]} {statusIndicator} {statusColumns} />
+					<TableCell
+						key={pair[0]}
+						value={pair[1]}
+						{statusIndicator}
+						{statusColumns}
+						href={links[idx][pair[0]]}
+					/>
 				{/each}
 			</TableBodyRow>
 		{/each}

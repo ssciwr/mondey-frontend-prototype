@@ -5,11 +5,23 @@
 	export let statusIndicator;
 	export let statusColumns;
 	export let key;
-	export let href: string = null;
+	export let href: string = '';
 </script>
 
 {#if statusColumns.includes(key)}
-	<TableBodyCell class={statusIndicator[value]}><a {href}>{value}</a></TableBodyCell>
+	<TableBodyCell class={statusIndicator[value]}>
+		{#if href !== ''}
+			<a {href}>{value}</a>
+		{:else}
+			{value}
+		{/if}
+	</TableBodyCell>
 {:else}
-	<TableBodyCell><a {href}>{value}</a></TableBodyCell>
+	<TableBodyCell>
+		{#if href !== ''}
+			<a {href}>{value}</a>
+		{:else}
+			{value}
+		{/if}
+	</TableBodyCell>
 {/if}
