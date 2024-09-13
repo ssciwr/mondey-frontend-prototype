@@ -6,10 +6,8 @@ LABEL org.opencontainers.image.licenses=MIT
 
 WORKDIR /app
 
-COPY ./requirements.txt .
+COPY . .
 
-RUN pip install --no-cache-dir --upgrade -r requirements.txt
-
-COPY ./app .
+RUN pip install .
 
 CMD ["fastapi", "run", "app/main.py", "--proxy-headers", "--port", "80"]

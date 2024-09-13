@@ -1,13 +1,11 @@
-# mondey backend
+# MONDEY backend
 
-The FastAPI backend for mondey.
+The MONDEY backend is a FastAPI application that provides a RESTful API for the MONDEY project.
 
 ## Installation
 
-Create a virtual environment with Python and activate it, then install the dependencies
-
 ```pycon
-pip install -r requirements.txt
+pip install -e .[tests]
 ```
 
 ## Use
