@@ -1,7 +1,6 @@
 <script context="module">
 	export function filterItems(data, searchTerm, searchableColumns) {
 		// toString here for generality
-
 		return data.filter((item) =>
 			searchableColumns.some((column) => item[column]?.toString().includes(searchTerm))
 		);
@@ -28,27 +27,26 @@
 	}
 </script>
 
-<script>
-	// @ts-nocheck
-
+<script lang="ts">
 	import { TableBody, TableBodyRow, TableSearch } from 'flowbite-svelte';
 
 	import TableCell from '$lib/components/DataDisplay/TableElements/TableCell.svelte';
 	import TableHeader from '$lib/components/DataDisplay/TableElements/TableHeader.svelte';
 
 	// exported variables
-	export let data = [];
+	export let data: object[] = [];
+	export let celllinks: object[] = []; // separate datastructure because it is specific to the point in the fronted where it is used but is static once defined. data comes from the backend and is not knowable until it's fetched.
+	export let headerlinks: string[] = [];
 	export let caption = '';
+	export let statusColumns: string[] = [];
+	export let searchableColumns: string[] = [];
 	const legendcaption = 'Meaning of indicators';
 
 	export let statusIndicator = {
-		good: 'bg-green-500',
-		bad: 'bg-red-500',
-		warn: 'bg-yellow-500'
+		good: 'bg-green',
+		bad: 'bg-red',
+		warn: 'bg-yellow'
 	};
-
-	export let statusColumns = [];
-	export let searchableColumns = [];
 
 	// reactive statements
 	let searchTerm = '';
@@ -65,12 +63,18 @@
 	hoverable={true}
 	striped={true}
 >
-	<TableHeader {caption} columns={Object.keys(data[0])} />
+	<TableHeader {caption} columns={Object.keys(data[0])} links={headerlinks} />
 	<TableBody tableBodyClass="divide-y">
-		{#each filteredItems as item}
+		{#each filteredItems as item, i}
 			<TableBodyRow>
-				{#each Object.entries(item) as pair}
-					<TableCell key={pair[0]} value={pair[1]} {statusIndicator} {statusColumns} />
+				{#each Object.entries(item) as pair, j}
+					<TableCell
+						key={pair[0]}
+						value={pair[1]}
+						{statusIndicator}
+						{statusColumns}
+						href={celllinks[i] ? celllinks[i][j] : ''}
+					/>
 				{/each}
 			</TableBodyRow>
 		{/each}
