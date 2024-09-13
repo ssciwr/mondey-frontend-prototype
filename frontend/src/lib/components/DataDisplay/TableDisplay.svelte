@@ -39,6 +39,7 @@
 	// exported variables
 	export let data = [];
 	export let links = []; // separate datastructure because it is specific to the point in the fronted where it is used but is static once defined. data comes from the backend and is not knowable until it's fetched.
+	export let headerlinks = [];
 	export let caption = '';
 	const legendcaption = 'Meaning of indicators';
 
@@ -68,7 +69,7 @@
 	hoverable={true}
 	striped={true}
 >
-	<TableHeader {caption} columns={Object.keys(data[0])} links={filteredItems.map((item) => {})} />
+	<TableHeader {caption} columns={Object.keys(data[0])} links={headerlinks} />
 	<TableBody tableBodyClass="divide-y">
 		{#each filteredItems as item, idx}
 			<TableBodyRow>
