@@ -9,7 +9,7 @@
 </script>
 
 {#if statusColumns.includes(key)}
-	<TableBodyCell class={statusIndicator[value]}>
+	<TableBodyCell class={'hover:opacity-80 ' + statusIndicator[value]}>
 		{#if href !== ''}
 			<a {href}>{value}</a>
 		{:else}
@@ -17,7 +17,7 @@
 		{/if}
 	</TableBodyCell>
 {:else}
-	<TableBodyCell>
+	<TableBodyCell class="hover:opacity-80">
 		{#if href !== ''}
 			<a {href}>{value}</a>
 		{:else}
