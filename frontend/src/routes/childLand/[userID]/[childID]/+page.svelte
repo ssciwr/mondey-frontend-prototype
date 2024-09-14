@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { base } from '$app/paths';
 	import TableDisplay from '$lib/components/DataDisplay/TableDisplay.svelte';
 	import { children } from '$lib/stores/childrenStore';
 	import { onMount } from 'svelte';
@@ -12,7 +13,7 @@
 			if (k === 'name') {
 				return null;
 			} else {
-				return '/milestone'; // TODO: this would lead to a page where the actual data is loaded for the survey
+				return `${base}/milestone`; // TODO: this would lead to a page where the actual data is loaded for the survey
 			}
 		});
 	});
@@ -21,7 +22,7 @@
 		if (k === 'name') {
 			return null;
 		} else {
-			return '/surveyfeedback'; // TODO: this would lead to a page where the actual data is loaded for the survey
+			return `${base}/surveyfeedback`; // TODO: this would lead to a page where the actual data is loaded for the survey
 		}
 	});
 
