@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { base } from '$app/paths';
 	import { goto } from '$app/navigation';
+	import { base } from '$app/paths';
 	import AlertMessage from '$lib/components/AlertMessage.svelte';
 	import Input from '$lib/components/DataInput/Input.svelte';
 	import NavigationButtons from '$lib/components/Navigation/NavigationButtons.svelte';
@@ -91,7 +91,7 @@
 				}
 			}
 			showAlert = false;
-			goto(base);
+			goto(`${base}/${'userLand/userDataInput'}`);
 		} else {
 			showAlert = true;
 		}

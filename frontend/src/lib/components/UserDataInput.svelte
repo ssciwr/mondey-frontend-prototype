@@ -32,7 +32,7 @@
 		{
 			name: 'Geburtsjahr',
 			items: numericalRange(100, 1920, 1, true),
-			about: 'Wählen sie ihr Geburtsjahr aus',
+			placeholder: 'Wählen sie ihr Geburtsjahr aus',
 			label: 'Geburtsjahr',
 			required: true
 		},
@@ -41,7 +41,7 @@
 			items: ['männlich', 'weiblich', 'divers'].map((v) => {
 				return { name: String(v), value: v };
 			}),
-			about: 'Wählen sie ihr Geschlecht aus',
+			placeholder: 'Wählen sie ihr Geschlecht aus',
 			label: 'Geschlecht',
 			required: true
 		},
@@ -58,7 +58,7 @@
 			].map((v) => {
 				return { name: String(v), value: v };
 			}),
-			about: 'Wählen sie ihren höchsten Bildungsabschluss aus',
+			placeholder: 'Wählen sie ihren höchsten Bildungsabschluss aus',
 			required: true,
 			label: 'Höchster Bildungsabschluss'
 		},
@@ -66,7 +66,7 @@
 		{
 			name: 'Arbeitszeit/Woche',
 			items: intervalRange(13, 0, 5, true),
-			about:
+			placeholder:
 				'Wählen sie ihre Arbeitszeit pro Woche aus. Wählen sie die Zahl, die dem tatsächlichen Wert am nächsten kommt.',
 			label: 'Arbeitszeit/Woche',
 			required: true
@@ -74,7 +74,7 @@
 		{
 			name: 'Familieneinkommen/Jahr',
 			items: intervalRange(23, 0, 5000, true),
-			about:
+			placeholder:
 				'Wählen sie ihre Jahreseinkommen aus. Wählen sie die Zahl, die dem tatsächlichen Wert am nächsten kommt.',
 			label: 'Familieneinkommen/Jahr',
 			required: true
@@ -83,7 +83,6 @@
 		{
 			name: 'Beruf',
 			type: 'text',
-			about: 'Geben sie ihren Beruf an',
 			placeholder: 'Geben sie ihren Beruf an',
 			label: 'Beruf',
 			required: true
@@ -158,6 +157,7 @@
 			onclick: acceptData
 		}
 	];
+
 </script>
 
 <!-- Show big alert message when something is missing -->
@@ -187,11 +187,9 @@
 		<form class="m-1 mx-auto w-full flex-col space-y-6">
 			{#each data as element, i}
 				<DataInput
-					component={'items' in element ? Input : Select}
+					component={'items' in element ? Select : Input}
 					bind:value={inputValues[i]}
-					checkValid={() => {
-						return !missingValues[i];
-					}}
+					label={element.label}
 					properties={'items' in element
 						? {
 								items: element.items,
