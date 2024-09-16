@@ -1,4 +1,13 @@
-<script lang="ts" context="module">
+<script lang="ts">
+	import { goto } from '$app/navigation';
+	import { base } from '$app/paths';
+	import AlertMessage from '$lib/components/AlertMessage.svelte';
+	import DataInput from '$lib/components/DataInput/DataInput.svelte';
+	import NavigationButtons from '$lib/components/Navigation/NavigationButtons.svelte';
+	import { users, type UserData } from '$lib/stores/userStore';
+	import { Card, Heading, Input, Select } from 'flowbite-svelte';
+	import { onDestroy, onMount } from 'svelte';
+
 	// this stuff here will become backend calls in the end because that is where the data this page will be filled with
 	// will come from. Hence, they are not put into a separate library or anything
 	function intervalRange(size: number, startAt: number = 0, step: number = 1, asItems = false) {
@@ -26,6 +35,27 @@
 			return values;
 		}
 	}
+
+	let userData: UserData;
+
+	onMount(() => {
+		users.load();
+		const userID = users.get()['loggedIn'] as string;
+		userData = users.get()[userID] as UserData;
+		inputValues = [
+			userData['Geburtsjahr'] ? userData['Geburtsjahr'] : null,
+			userData['Geschlecht'] ? userData['Geschlecht'] : null,
+			userData['Höchster Bildungsabschluss'] ? userData['Höchster Bildungsabschluss'] : null,
+			userData['Arbeitszeit/Woche'] ? userData['Arbeitszeit/Woche'] : null,
+			userData['Familieneinkommen/Jahr'] ? userData['Familieneinkommen/Jahr'] : null,
+			userData['Beruf'] ? userData['Beruf'] : null
+		];
+		buttons[0].label = 'Fertig';
+	});
+
+	onDestroy(() => {
+		users.save();
+	});
 
 	// this can, but does not have to, come from a database later.
 	const data = [
@@ -115,41 +145,11 @@
 			}
 		}
 	];
-</script>
-
-<script lang="ts">
-	import { goto } from '$app/navigation';
-	import { base } from '$app/paths';
-	import AlertMessage from '$lib/components/AlertMessage.svelte';
-	import DataInput from '$lib/components/DataInput/DataInput.svelte';
-	import NavigationButtons from '$lib/components/Navigation/NavigationButtons.svelte';
-	import { users, type UserData } from '$lib/stores/userStore';
-	import { Card, Heading, Input, Select } from 'flowbite-svelte';
-	import { onDestroy, onMount } from 'svelte';
-
-	onMount(() => {
-		users.load();
-		const userID = users.get()['loggedIn'] as string;
-		userData = users.get()[userID] as UserData;
-		inputValues = [
-			userData['Geburtsjahr'] ? userData['Geburtsjahr'] : null,
-			userData['Geschlecht'] ? userData['Geschlecht'] : null,
-			userData['Höchster Bildungsabschluss'] ? userData['Höchster Bildungsabschluss'] : null,
-			userData['Arbeitszeit/Woche'] ? userData['Arbeitszeit/Woche'] : null,
-			userData['Familieneinkommen/Jahr'] ? userData['Familieneinkommen/Jahr'] : null,
-			userData['Beruf'] ? userData['Beruf'] : null
-		];
-		buttons[0].label = 'Fertig';
-	});
-
-	onDestroy(() => {
-		users.save();
-	});
 
 	// validation / data acceptance
 
 	function validate(): boolean {
-		missingValues = inputValues.map((v) => v === '' || v === null);
+		missingValues = data.map((element) => element.value === '' || element.value === null);
 		return missingValues.every((v) => v === false);
 	}
 
@@ -157,8 +157,8 @@
 		const valid = validate();
 
 		if (valid) {
-			for (let i = 0; i < inputValues.length; ++i) {
-				(userData as UserData)[data[i].name] = inputValues[i];
+			for (let i = 0; i < data.length; ++i) {
+				(userData as UserData)[data[i].name] = data[i].value;
 			}
 			users.save();
 			goto('/childrengallery');
@@ -168,10 +168,6 @@
 	}
 
 	const heading = 'Benutzerdaten eingeben';
-
-	let userData: UserData;
-
-	let inputValues = data.map(() => null);
 
 	let missingValues = data.map(() => false);
 
