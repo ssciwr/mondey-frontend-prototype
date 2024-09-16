@@ -1,4 +1,32 @@
-<script lang="ts" context="module">
+<script lang="ts">
+	import { goto } from '$app/navigation';
+	import { base } from '$app/paths';
+	import AlertMessage from '$lib/components/AlertMessage.svelte';
+	import DataInput from '$lib/components/DataInput/DataInput.svelte';
+
+	import {
+		children,
+		createDummyCurrent,
+		createDummySummary,
+		generateChildID,
+		type ChildData
+	} from '$lib/stores/childrenStore';
+
+	import { hash, users } from '$lib/stores/userStore';
+
+	import {
+		Button,
+		Card,
+		Fileupload,
+		Heading,
+		Input,
+		MultiSelect,
+		Select,
+		Textarea
+	} from 'flowbite-svelte';
+
+	import { onDestroy, onMount } from 'svelte';
+
 	// this can be supplied from the database
 	export let data = [
 		{
@@ -30,7 +58,7 @@
 			value: null,
 			props: {
 				label: 'Frühgeburt',
-				items: ['0-2 Monate', '2-4 Monate', '4-6 Monate'].map((v) => {
+				items: ['nein', '0-2 Monate', '2-4 Monate', '4-6 Monate'].map((v) => {
 					return { name: String(v), value: v };
 				}),
 				placeholder: 'Bitte auswählen',
@@ -133,36 +161,6 @@
 			}
 		}
 	];
-</script>
-
-<script lang="ts">
-	import { goto } from '$app/navigation';
-	import { base } from '$app/paths';
-	import AlertMessage from '$lib/components/AlertMessage.svelte';
-	import DataInput from '$lib/components/DataInput/DataInput.svelte';
-
-	import {
-		children,
-		createDummyCurrent,
-		createDummySummary,
-		generateChildID,
-		type ChildData
-	} from '$lib/stores/childrenStore';
-
-	import { users } from '$lib/stores/userStore';
-
-	import {
-		Button,
-		Card,
-		Fileupload,
-		Heading,
-		Input,
-		MultiSelect,
-		Select,
-		Textarea
-	} from 'flowbite-svelte';
-
-	import { onDestroy, onMount } from 'svelte';
 
 	// event handlers and verification function
 	export async function submitData() {
@@ -213,12 +211,8 @@
 	}
 
 	// data to display -> will later be fetched from the server
-	export let heading = 'Neues Kind registrieren';
-
-	//  dummy user
-	export let userID = users.get()['loggedIn'];
-
-	// dummy user added to users until this page is hooked up to the user system
+	const heading = 'Neues Kind registrieren';
+	const userID = users.get()['loggedIn'];
 
 	// data
 	let refs: unknown[] = [];
@@ -239,6 +233,13 @@
 	onMount(async () => {
 		await children.load();
 		await users.load();
+
+		// README: temporary fix because the linking is broken atm
+		const h = await hash('123');
+
+		if (!children.get()['dummyUser' + h]) {
+			await children.addUser('dummyUser' + h);
+		}
 	});
 
 	onDestroy(async () => {
