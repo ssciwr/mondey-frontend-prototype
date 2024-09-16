@@ -35,26 +35,54 @@
 			return values;
 		}
 	}
+	function validate(): boolean {
+		missingValues = data.map((element) => element.value === '' || element.value === null);
+		return missingValues.every((v) => v === false);
+	}
+
+	function acceptData() {
+		const valid = validate();
+		if (valid) {
+			for (let i = 0; i < data.length; ++i) {
+				(userData as UserData)[data[i].props.name] = data[i].value;
+			}
+			users.save();
+			goto('/childrengallery');
+		} else {
+			showAlert = true;
+		}
+	}
 
 	let userData: UserData;
 
-	onMount(() => {
-		users.load();
+	onMount(async () => {
+		await users.load();
 		const userID = users.get()['loggedIn'] as string;
 		userData = users.get()[userID] as UserData;
-		inputValues = [
-			userData['Geburtsjahr'] ? userData['Geburtsjahr'] : null,
-			userData['Geschlecht'] ? userData['Geschlecht'] : null,
-			userData['Höchster Bildungsabschluss'] ? userData['Höchster Bildungsabschluss'] : null,
-			userData['Arbeitszeit/Woche'] ? userData['Arbeitszeit/Woche'] : null,
-			userData['Familieneinkommen/Jahr'] ? userData['Familieneinkommen/Jahr'] : null,
-			userData['Beruf'] ? userData['Beruf'] : null
+
+		// initialize data values to stuff that is there already if
+		// data has been supplied already for that user.
+
+		const keys = [
+			'Geburtsjahr',
+			'Geschlecht',
+			'Höchster Bildungsabschluss',
+			'Arbeitszeit/Woche',
+			'Familieneinkommen/Jahr',
+			'Beruf'
 		];
+
+		for (let i = 0; i < data.length; ++i) {
+			if (userData[keys[i]]) {
+				data[i]['value'] = userData[keys[i]];
+			}
+		}
+
 		buttons[0].label = 'Fertig';
 	});
 
-	onDestroy(() => {
-		users.save();
+	onDestroy(async () => {
+		await users.save();
 	});
 
 	// this can, but does not have to, come from a database later.
@@ -148,25 +176,6 @@
 
 	// validation / data acceptance
 
-	function validate(): boolean {
-		missingValues = data.map((element) => element.value === '' || element.value === null);
-		return missingValues.every((v) => v === false);
-	}
-
-	function acceptData() {
-		const valid = validate();
-
-		if (valid) {
-			for (let i = 0; i < data.length; ++i) {
-				(userData as UserData)[data[i].name] = data[i].value;
-			}
-			users.save();
-			goto('/childrengallery');
-		} else {
-			showAlert = true;
-		}
-	}
-
 	const heading = 'Benutzerdaten eingeben';
 
 	let missingValues = data.map(() => false);
@@ -209,6 +218,7 @@
 
 		<form class="m-1 mx-auto w-full flex-col space-y-6">
 			{#each data as element, i}
+				{console.log('element: ', element)}
 				<DataInput
 					component={element.component}
 					bind:value={element.value}
