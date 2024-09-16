@@ -47,6 +47,14 @@
 		}
 	}
 
+	function checkShowTextfield(basicInput: any) {
+		if (basicInput instanceof Array) {
+			return basicInput.includes(textTrigger);
+		} else {
+			return basicInput === textTrigger;
+		}
+	}
+
 	// // reactive statement that makes sure 'valid' updates the page
 	$: valid = value !== undefined && value !== null && value !== '' && checkValid();
 	$: highlight =
@@ -54,7 +62,7 @@
 			? 'border-primary-600 dark:border-primary-600 border-2'
 			: '';
 
-	$: showTextField = basicInput && textTrigger ? basicInput.includes(textTrigger) : false;
+	$: showTextField = basicInput && textTrigger ? checkShowTextfield(basicInput) : false;
 	$: value = basicInput;
 </script>
 
