@@ -2,11 +2,11 @@
 	import { goto } from '$app/navigation';
 	import { base } from '$app/paths';
 	import AlertMessage from '$lib/components/AlertMessage.svelte';
-	import Input from '$lib/components/DataInput/Input.svelte';
+	import DataInput from '$lib/components/DataInput/DataInput.svelte';
 	import NavigationButtons from '$lib/components/Navigation/NavigationButtons.svelte';
 	import { children } from '$lib/stores/childrenStore';
 	import { hash, users } from '$lib/stores/userStore';
-	import { Card, Heading } from 'flowbite-svelte';
+	import { Card, Heading, Input } from 'flowbite-svelte';
 	import { onDestroy, onMount } from 'svelte';
 
 	onMount(async () => {
@@ -176,11 +176,11 @@
 
 		<form class="m-1 mx-auto w-full flex-col space-y-6">
 			{#each data as element, i}
-				<Input
-					{element}
+				<DataInput
+					component={Input}
+					properties={element}
 					bind:value={inputValues[i]}
-					valid={!missingValues[i]}
-					onBlur={element.onBlur}
+					eventHandlers={{ 'on:blur': element.onBlur }}
 				/>
 			{/each}
 		</form>
