@@ -31,6 +31,6 @@
 	{statusIndicator}
 	{caption}
 	{celllinks}
-	statusColumns="{['status']},"
+	statusColumns={['status']}
 	searchableColumns={['status']}
 />
