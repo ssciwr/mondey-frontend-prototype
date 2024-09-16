@@ -15,6 +15,7 @@ Thumbs.db
 .env.*
 !.env.example
 !.env.test
+*/.svelte-kit
 
 # Vite
 vite.config.js.timestamp-*
@@ -44,7 +45,6 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
 lib64/
 parts/
 sdist/

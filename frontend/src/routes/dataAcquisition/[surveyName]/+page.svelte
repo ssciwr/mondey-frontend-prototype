@@ -22,7 +22,6 @@
 	// this should make sure that each time the page is rerouted to another instance of itself,
 	// the data is updated correctly and the new content is shown.
 	let x = null;
-	$: console.log($$props.data.data.next, $$props.data.data.last);
 	$: heading = $$props.data.surveyName;
 	$: description = $$props.data.data.description;
 	$: data_to_display = convertData($$props.data.data.milestones);

@@ -1,8 +1,6 @@
 <script>
 	import { base } from '$app/paths';
-	import AbstractContent from '$lib/components/AbstractContent.svelte';
 	import TableDisplay from '$lib/components/DataDisplay/TableDisplay.svelte';
-
 	const data_to_display = [
 		{ name: 'milestoneA', status: 'done' },
 		{ name: 'milestoneB', status: 'open' },
@@ -10,6 +8,11 @@
 		{ name: 'milestoneD', status: 'incomplete' },
 		{ name: 'milestoneE', status: 'done' }
 	];
+
+	const celllinks = data_to_display.map((element) => {
+		let link = [null, `${base}/milestone`]; // TODO: this should lead to the respective survey itself
+		return link;
+	});
 
 	const statusIndicator = {
 		done: 'bg-green-500',
@@ -21,17 +24,11 @@
 		'This is an overview over which milestones for the current survey have been completed';
 </script>
 
-<AbstractContent
-	showBottomNavbar={true}
-	lastpage="{base}/dataAcquisition/surveyC"
-	nextpage="{base}"
-	infopage="{base}/info"
->
-	<TableDisplay
-		data={data_to_display}
-		{statusIndicator}
-		{caption}
-		statusColumns="{['status']},"
-		searchableColumns={['name']}
-	/>
-</AbstractContent>
+<TableDisplay
+	data={data_to_display}
+	{statusIndicator}
+	{caption}
+	{celllinks}
+	statusColumns={['status']}
+	searchableColumns={['status']}
+/>

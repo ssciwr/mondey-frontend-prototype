@@ -3,9 +3,7 @@ import { error } from '@sveltejs/kit';
 
 /** @type {import('./$types').PageLoad}     */
 export async function load({ params }) {
-
-	children.load();
-
+	await children.load();
 	const observationData = await children.fetchObservationData(params.userID, params.childID);
 	const childData = await children.fetchChildData(params.userID, params.childID);
 
