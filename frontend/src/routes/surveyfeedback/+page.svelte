@@ -23,8 +23,8 @@
 
 <AbstractContent
 	showBottomNavbar={true}
-	lastpage="{base}/dataAcquisition/surveyC"
-	nextpage="{base}"
+	lastpage={`${base}/milestone`}
+	nextpage={base}
 	infopage="{base}/info"
 >
 	<TableDisplay

@@ -19,11 +19,7 @@
 	const statusColumns = Object.keys(data_to_display[0]).filter((key) => key !== 'name');
 </script>
 
-<AbstractContent
-	lastpage="/childrengallery"
-	nextpage={`${base}/dataAcquisition/${'surveyA'}`}
-	infopage="{base}/info"
->
+<AbstractContent lastpage="/childrengallery" nextpage={`${base}/milestone`} infopage="{base}/info">
 	<TableDisplay
 		{caption}
 		data={data_to_display}
