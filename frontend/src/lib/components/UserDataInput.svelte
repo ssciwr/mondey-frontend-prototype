@@ -40,13 +40,16 @@
 		return missingValues.every((v) => v === false);
 	}
 
-	function acceptData() {
+	async function acceptData() {
 		const valid = validate();
 		if (valid) {
 			for (let i = 0; i < data.length; ++i) {
 				(userData as UserData)[data[i].props.name] = data[i].value;
 			}
-			users.save();
+			if (userID) {
+				await users.update(userID, userData);
+			}
+			await users.save();
 			goto('/childrengallery');
 		} else {
 			showAlert = true;
@@ -54,10 +57,11 @@
 	}
 
 	let userData: UserData;
+	let userID: string;
 
 	onMount(async () => {
 		await users.load();
-		const userID = users.get()['loggedIn'] as string;
+		userID = users.get()['loggedIn'] as string;
 		userData = users.get()[userID] as UserData;
 
 		// initialize data values to stuff that is there already if
@@ -218,7 +222,6 @@
 
 		<form class="m-1 mx-auto w-full flex-col space-y-6">
 			{#each data as element, i}
-				{console.log('element: ', element)}
 				<DataInput
 					component={element.component}
 					bind:value={element.value}
