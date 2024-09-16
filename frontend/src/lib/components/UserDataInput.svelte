@@ -30,62 +30,89 @@
 	// this can, but does not have to, come from a database later.
 	const data = [
 		{
-			name: 'Geburtsjahr',
-			items: numericalRange(100, 1920, 1, true),
-			placeholder: 'Wählen sie ihr Geburtsjahr aus',
-			label: 'Geburtsjahr',
-			required: true
+			component: Select,
+			value: null,
+			props: {
+				name: 'Geburtsjahr',
+				items: numericalRange(100, 1960, 1, true),
+				placeholder: 'Bitte auswählen',
+				label: 'Geburtsjahr',
+				required: true
+			}
 		},
 		{
-			name: 'Geschlecht',
-			items: ['männlich', 'weiblich', 'divers'].map((v) => {
-				return { name: String(v), value: v };
-			}),
-			placeholder: 'Wählen sie ihr Geschlecht aus',
-			label: 'Geschlecht',
-			required: true
+			component: Select,
+			value: null,
+			props: {
+				name: 'Geschlecht',
+				items: ['männlich', 'weiblich', 'divers', 'Andere'].map((v) => {
+					return { name: String(v), value: v };
+				}),
+				placeholder: 'Bitte auswählen',
+				label: 'Geschlecht',
+				required: true,
+				textTrigger: 'Andere'
+			}
 		},
 		{
-			name: 'Höchster Bildungsabschluss',
-			items: [
-				'kein Schulabschluss',
-				'Hauptschulabschluss',
-				'Realschulabschluss',
-				'Abitur',
-				'Bachelor',
-				'Master',
-				'Promotion'
-			].map((v) => {
-				return { name: String(v), value: v };
-			}),
-			placeholder: 'Wählen sie ihren höchsten Bildungsabschluss aus',
-			required: true,
-			label: 'Höchster Bildungsabschluss'
-		},
-
-		{
-			name: 'Arbeitszeit/Woche',
-			items: intervalRange(13, 0, 5, true),
-			placeholder:
-				'Wählen sie ihre Arbeitszeit pro Woche aus. Wählen sie die Zahl, die dem tatsächlichen Wert am nächsten kommt.',
-			label: 'Arbeitszeit/Woche',
-			required: true
-		},
-		{
-			name: 'Familieneinkommen/Jahr',
-			items: intervalRange(23, 0, 5000, true),
-			placeholder:
-				'Wählen sie ihre Jahreseinkommen aus. Wählen sie die Zahl, die dem tatsächlichen Wert am nächsten kommt.',
-			label: 'Familieneinkommen/Jahr',
-			required: true
+			component: Select,
+			value: null,
+			props: {
+				name: 'Höchster Bildungsabschluss',
+				items: [
+					'kein Schulabschluss',
+					'Hauptschulabschluss',
+					'Realschulabschluss',
+					'Abitur',
+					'Bachelor',
+					'Master',
+					'Promotion',
+					'Anderer'
+				].map((v) => {
+					return { name: String(v), value: v };
+				}),
+				placeholder: 'Bitte auswählen',
+				required: true,
+				label: 'Höchster Bildungsabschluss',
+				textTrigger: 'Anderer'
+			}
 		},
 
 		{
-			name: 'Beruf',
-			type: 'text',
-			placeholder: 'Geben sie ihren Beruf an',
-			label: 'Beruf',
-			required: true
+			component: Select,
+			value: null,
+			props: {
+				name: 'Arbeitszeit/Woche',
+				items: intervalRange(13, 0, 5, true),
+				placeholder: 'Bitte auswählen',
+				label: 'Arbeitszeit/Woche',
+				required: true,
+				textTrigger: 'Andere'
+			}
+		},
+		{
+			component: Select,
+			value: null,
+			props: {
+				name: 'Familieneinkommen/Jahr',
+				items: intervalRange(23, 0, 5000, true),
+				placeholder: 'Bitte auswählen',
+				label: 'Familieneinkommen/Jahr',
+				required: true,
+				textTrigger: 'Anderes'
+			}
+		},
+
+		{
+			component: Input,
+			value: null,
+			props: {
+				name: 'Beruf',
+				type: 'text',
+				placeholder: 'Geben sie ihren Beruf an',
+				label: 'Beruf',
+				required: true
+			}
 		}
 	];
 </script>
@@ -187,15 +214,11 @@
 		<form class="m-1 mx-auto w-full flex-col space-y-6">
 			{#each data as element, i}
 				<DataInput
-					component={'items' in element ? Select : Input}
-					bind:value={inputValues[i]}
-					label={element.label}
-					properties={'items' in element
-						? {
-								items: element.items,
-								required: element.required
-							}
-						: { required: element.required }}
+					component={element.component}
+					bind:value={element.value}
+					label={element.props.label}
+					properties={element.props}
+					textTrigger={element.props.textTrigger}
 				/>
 			{/each}
 		</form>

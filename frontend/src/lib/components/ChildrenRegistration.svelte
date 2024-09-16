@@ -303,15 +303,20 @@
 					bind:this={refs[i]}
 					properties={element.props}
 					label={element.props.label}
-					on:change={(event) => {
-						if (!(event.target === null)) {
-							const image = event.target.files[0];
-							// use https://svelte.dev/repl/b17c13d4f1bb40799ccf09e0841ddd90?version=4.2.19
-							let reader = new FileReader();
-							reader.readAsDataURL(image);
-							reader.onload = (e) => {
-								element.value = e.target.result;
-							};
+					eventHandlers={{
+						...element?.eventHandlers,
+						...{
+							'on:change': (event) => {
+								if (!(event.target === null)) {
+									const image = event.target.files[0];
+									// use https://svelte.dev/repl/b17c13d4f1bb40799ccf09e0841ddd90?version=4.2.19
+									let reader = new FileReader();
+									reader.readAsDataURL(image);
+									reader.onload = (e) => {
+										element.value = e.target.result;
+									};
+								}
+							}
 						}
 					}}
 				/>
@@ -320,13 +325,6 @@
 					component={element.component}
 					properties={element.props}
 					label={element.props.label}
-					on:change={(event) => {
-						if (missingValues[i]) {
-							if (element.value !== undefined && element.value !== null && element.value !== '') {
-								missingValues[i] = false;
-							}
-						}
-					}}
 					textTrigger={element.props.textTrigger}
 					bind:value={element.value}
 				/>
