@@ -1,4 +1,8 @@
 <script lang="ts">
+	// README: wrt event handlers: in svelte 5 there is a better solution to this, but since we don´t have this yet and
+	// the svelte 4 solution requires a lot of boilerplate code (https://github.com/sveltejs/svelte/issues/2837#issuecomment-1848225140)
+	// currently there are some hardcoded event handlers
+
 	import { Label } from 'flowbite-svelte';
 
 	// public variables
