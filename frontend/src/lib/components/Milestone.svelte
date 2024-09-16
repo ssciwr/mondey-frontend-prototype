@@ -1,6 +1,6 @@
 <script lang="ts">
     import {P, Breadcrumb, BreadcrumbItem, AccordionItem, Accordion, Button, Checkbox} from 'flowbite-svelte';
-    import {QuestionCircleSolid, ArrowRightOutline, ArrowLeftOutline} from 'flowbite-svelte-icons'
+    import {QuestionCircleSolid, InfoCircleSolid, ArrowRightOutline, ArrowLeftOutline} from 'flowbite-svelte-icons'
     import MilestoneButton from "$lib/components/MilestoneButton.svelte";
     import { _ } from 'svelte-i18n';
 
@@ -73,6 +73,15 @@
                 <h2 class="mb-2 text-2xl font-bold text-gray-700 dark:text-gray-400">{data.milestones[currentMilestoneIndex].title}</h2>
                 <P>{data.milestones[currentMilestoneIndex].desc}</P>
                 <Accordion flush>
+                    <AccordionItem>
+                        <span slot="header" class="text-base flex gap-2">
+                            <InfoCircleSolid class="mt-0.5"/>
+                            <span>{$_("milestone.observation")}</span>
+                        </span>
+                        <P>
+                            {data.milestones[currentMilestoneIndex].observation}
+                        </P>
+                    </AccordionItem>
                     <AccordionItem>
                         <span slot="header" class="text-base flex gap-2">
                             <QuestionCircleSolid class="mt-0.5"/>
