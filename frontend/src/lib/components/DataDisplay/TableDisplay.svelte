@@ -66,7 +66,7 @@
 						value={pair[1]}
 						{statusIndicator}
 						{statusColumns}
-						href={celllinks[i] ? celllinks[i][j] : ''}
+						href={celllinks?.[i]?.[j] || ''}
 					/>
 				{/each}
 			</TableBodyRow>
