@@ -133,6 +133,7 @@
 			for (let i = 0; i < inputValues.length; ++i) {
 				(userData as UserData)[data[i].name] = inputValues[i];
 			}
+			users.save();
 			goto('/childrengallery');
 		} else {
 			showAlert = true;
@@ -157,7 +158,6 @@
 			onclick: acceptData
 		}
 	];
-
 </script>
 
 <!-- Show big alert message when something is missing -->
