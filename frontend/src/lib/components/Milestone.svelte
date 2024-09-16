@@ -1,6 +1,6 @@
 <script lang="ts">
     import {P, Breadcrumb, BreadcrumbItem, AccordionItem, Accordion, Button, Checkbox} from 'flowbite-svelte';
-    import {QuestionCircleSolid, ArrowRightOutline, ArrowLeftOutline} from 'flowbite-svelte-icons'
+    import {QuestionCircleSolid, InfoCircleSolid, ArrowRightOutline, ArrowLeftOutline} from 'flowbite-svelte-icons'
     import MilestoneButton from "$lib/components/MilestoneButton.svelte";
     import { _ } from 'svelte-i18n';
 
@@ -9,9 +9,6 @@
     let currentMilestoneIndex: number = 0;
     let selectedAnswer: number | null = data.milestones[currentMilestoneIndex].answer;
     let autoGoToNextMilestone: boolean = false;
-
-    // note: these also need to be added to safelist in tailwind.config.ts since they are not directly used in the markup
-    const answerColors = ["green-50", "green-100", "green-200", "green-400"];
 
     // build list of possible image urls at build time to be able to dynamically use them at run time:
     const images: Record<string, string> = import.meta.glob('$lib/assets/*.jpg', {
@@ -78,6 +75,15 @@
                 <Accordion flush>
                     <AccordionItem>
                         <span slot="header" class="text-base flex gap-2">
+                            <InfoCircleSolid class="mt-0.5"/>
+                            <span>{$_("milestone.observation")}</span>
+                        </span>
+                        <P>
+                            {data.milestones[currentMilestoneIndex].observation}
+                        </P>
+                    </AccordionItem>
+                    <AccordionItem>
+                        <span slot="header" class="text-base flex gap-2">
                             <QuestionCircleSolid class="mt-0.5"/>
                             <span>{$_("milestone.help")}</span>
                         </span>
@@ -88,8 +94,8 @@
                 </Accordion>
             </div>
             <div class="flex flex-col justify-items-stretch rounded-lg m-1">
-                {#each answerColors as color, answerIndex}
-                <MilestoneButton {color} selected={selectedAnswer===answerIndex} onClick={() => {selectAnswer(answerIndex)}}
+                {#each [0,1,2,3] as answerIndex}
+                <MilestoneButton index={answerIndex} selected={selectedAnswer===answerIndex} onClick={() => {selectAnswer(answerIndex)}}
                                  tooltip={$_(`milestone.answer${answerIndex}.description`)}>
                     {$_(`milestone.answer${answerIndex}.text`)}
                 </MilestoneButton>

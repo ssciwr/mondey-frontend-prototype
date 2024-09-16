@@ -2,11 +2,11 @@
     import {Tooltip} from 'flowbite-svelte';
 
     export let selected: boolean = false;
-    export let color: string = 'white-900';
+    export let index: number;
     export let tooltip: string = '';
     export let onClick: () => void;
 
-    let bg_color = `bg-${color}`;
+    let bg_color = `bg-milestone-answer-${index}`;
 </script>
 
 <button type="button" on:click={onClick}

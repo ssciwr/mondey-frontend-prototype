@@ -9,12 +9,13 @@ export default {
 		'./node_modules/flowbite-svelte/**/*.{html,js,svelte,ts}'
 	],
 	darkMode: 'selector',
+	// ensure svelte compiler doesn't optimize these away if it doesn't realise we are using them
 	safelist: [
-		'bg-green-50',
-		'bg-green-100',
-		'bg-green-200',
-		'bg-green-400',
-	],
+               'bg-milestone-answer-0',
+               'bg-milestone-answer-1',
+               'bg-milestone-answer-2',
+               'bg-milestone-answer-3',
+       ],
 	theme: {
 		extend: {
 			colors: {
@@ -30,6 +31,12 @@ export default {
 					700: '#EB4F27',
 					800: '#CC4522',
 					900: '#A5371B'
+				},
+				'milestone-answer': {
+					0: '#f0fdf4',
+					1: '#dcfce7',
+					2: '#bbf7d0',
+					3: '#4ade80'
 				}
 			},
             fontSize: {
