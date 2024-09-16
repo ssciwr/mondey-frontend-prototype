@@ -40,7 +40,7 @@
 				replaceValue(toupdate, textTrigger, additionalInput);
 				return toupdate;
 			} else {
-				return additionalInput;
+				return additionalInput as typeof basicInput;
 			}
 		} else {
 			return toupdate;
