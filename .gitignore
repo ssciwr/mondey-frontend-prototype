@@ -3,8 +3,8 @@ node_modules
 # Output
 .output
 .vercel
-/.svelte-kit
 /build
+.svelte-kit
 
 # OS
 .DS_Store
@@ -20,7 +20,6 @@ Thumbs.db
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 
-.svelte-kit/
 
 # packaging
 package-lock.json
