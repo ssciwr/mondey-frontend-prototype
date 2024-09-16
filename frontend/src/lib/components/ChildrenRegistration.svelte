@@ -1,7 +1,145 @@
+<script lang="ts" context="module">
+	// this can be supplied from the database
+	export let data = [
+		{
+			component: Input,
+			value: null,
+			props: {
+				type: 'text',
+
+				label: 'Name',
+				placeholder: 'Bitte eintragen',
+				key: 'name',
+				required: true
+			}
+		},
+		{
+			component: Input,
+			value: null,
+			props: {
+				type: 'date',
+
+				label: 'Geburtsdatum',
+				placeholder: 'Bitte eintragen',
+				key: 'dateOfBirth',
+				required: true
+			}
+		},
+		{
+			component: Select,
+			value: null,
+			props: {
+				label: 'Frühgeburt',
+				items: ['0-2 Monate', '2-4 Monate', '4-6 Monate'].map((v) => {
+					return { name: String(v), value: v };
+				}),
+				placeholder: 'Bitte auswählen',
+				key: 'bornEarly',
+				required: true
+			}
+		},
+		{
+			component: Select,
+			value: null,
+			props: {
+				label: 'Geschlecht',
+				items: ['männlich', 'weiblich'].map((v) => {
+					return { name: String(v), value: v };
+				}),
+				placeholder: 'Bitte auswählen',
+				key: 'gender',
+				required: true
+			}
+		},
+		{
+			component: MultiSelect,
+			value: [],
+			props: {
+				label: 'Nationalität',
+				items: ['Deutschland', 'Grossbritannien', 'USA', 'China'].map((v) => {
+					return { name: String(v), value: v };
+				}),
+				placeholder: 'Bitte auswählen',
+				key: 'nationality',
+				required: true
+			}
+		},
+		{
+			component: MultiSelect,
+			value: [],
+			props: {
+				label: 'Sprache',
+				items: ['Deutsch', 'Englisch (UK)', 'Englisch (Us)', 'Mandarin', 'Arabisch'].map((v) => {
+					return { name: String(v), value: v };
+				}),
+				placeholder: 'Bitte auswählen',
+				key: 'language',
+				required: true
+			}
+		},
+		{
+			component: Select,
+			value: null,
+			props: {
+				label: 'Verhältnis zum Kind',
+				key: 'relationship',
+				items: [
+					'Kind',
+					'Enkelkind',
+					'Neffe/Nichte',
+					'Pflegekind',
+					'Adoptivkind',
+					'Betreuung extern',
+					'Betreuung zu Hause'
+				].map((v) => {
+					return { name: String(v), value: v };
+				}),
+				placeholder: 'Bitte auswählen',
+				required: true
+			}
+		},
+		{
+			component: MultiSelect,
+			value: [],
+			props: {
+				label: 'Entwicklungsauffälligkeiten',
+				items: ['keine', 'Hörprobleme', 'Fehlsichtigkeit', 'Sprachfehler', 'Andere'].map((v) => {
+					return { name: String(v), value: v };
+				}),
+				placeholder: 'Bitte auswählen',
+				key: 'developmentalIssues',
+				required: true
+			}
+		},
+		{
+			component: Textarea,
+			value: null,
+			props: {
+				label: 'Anmerkungen',
+				placeholder: 'Weitere Bemerkungen',
+				key: 'remarks',
+				required: false
+			}
+		},
+		{
+			component: Fileupload,
+			value: null,
+			props: {
+				label: 'Foto',
+				placeholder: 'Bitte wählen sie ein Bild aus falls gewünscht',
+				key: 'image',
+				required: false,
+				accept: ['png', 'jpg', 'svg', 'webp']
+			}
+		}
+	];
+</script>
+
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { base } from '$app/paths';
 	import AlertMessage from '$lib/components/AlertMessage.svelte';
+	import DataInput from '$lib/components/DataInput/DataInput.svelte';
 
 	import {
 		children,
@@ -10,6 +148,7 @@
 		generateChildID,
 		type ChildData
 	} from '$lib/stores/childrenStore';
+
 	import { users } from '$lib/stores/userStore';
 
 	import {
@@ -18,43 +157,13 @@
 		Fileupload,
 		Heading,
 		Input,
-		Label,
+		MultiSelect,
 		Select,
 		Textarea
 	} from 'flowbite-svelte';
 
 	import { onDestroy, onMount } from 'svelte';
 
-	// data processing functions
-	export function processData(element: any) {
-		let component = null;
-		if (element.items) {
-			element.items = element.items.map((item: String) => ({
-				name: item,
-				value: item
-			}));
-
-			component = Select;
-		} else if (element.key === 'remarks') {
-			component = Textarea;
-		} else if (element.key === 'image') {
-			component = Fileupload;
-			element.accept = ['.jpg', '.png', '.webp'];
-		} else {
-			component = Input;
-			let type = 'text';
-			if (element.label.toLowerCase().includes('datum')) {
-				type = 'date';
-			}
-			element['type'] = type;
-		}
-
-		return {
-			component: component,
-			props: element,
-			value: undefined
-		};
-	}
 	// event handlers and verification function
 	export async function submitData() {
 		const verified = await verifyInput();
@@ -73,7 +182,7 @@
 		}
 	}
 
-	export async function verifyInput(): Promise<Boolean> {
+	async function verifyInput(): Promise<Boolean> {
 		let required: { [key: string]: Boolean } = {};
 
 		childData = data.reduce((dict: any, curr) => {
@@ -106,84 +215,6 @@
 	// data to display -> will later be fetched from the server
 	export let heading = 'Neues Kind registrieren';
 
-	// this can be supplied from the database
-	export let rawData = [
-		{
-			label: 'Name',
-			placeholder: 'Bitte eintragen',
-			key: 'name',
-			required: true
-		},
-		{
-			label: 'Geburtsdatum',
-			placeholder: 'Bitte eintragen',
-			key: 'dateOfBirth',
-			required: true
-		},
-		{
-			label: 'Frühgeburt',
-			items: ['ja', 'nein'],
-			placeholder: 'Bitte auswählen',
-			key: 'bornEarly',
-			required: true
-		},
-		{
-			label: 'Geschlecht',
-			items: ['männlich', 'weiblich'],
-			placeholder: 'Bitte auswählen',
-			key: 'gender',
-			required: true
-		},
-		{
-			label: 'Nationalität',
-			items: ['Deutschland', 'Grossbritannien', 'USA', 'China'],
-			placeholder: 'Bitte auswählen',
-			key: 'nationality',
-			required: true
-		},
-		{
-			label: 'Sprache',
-			items: ['Deutsch', 'Englisch (UK)', 'Englisch (Us)', 'Mandarin', 'Arabisch'],
-			placeholder: 'Bitte auswählen',
-			key: 'language',
-			required: true
-		},
-		{
-			label: 'Verhältnis zum Kind',
-			key: 'relationship',
-			items: [
-				'Kind',
-				'Enkelkind',
-				'Neffe/Nichte',
-				'Pflegekind',
-				'Adoptivkind',
-				'Betreuung extern',
-				'Betreuung zu Hause'
-			],
-			placeholder: 'Bitte auswählen',
-			required: true
-		},
-		{
-			label: 'Entwicklungsauffälligkeiten',
-			items: ['keine', 'Hörprobleme', 'Fehlsichtigkeit', 'Sprachfehler'],
-			placeholder: 'Bitte auswählen',
-			key: 'developmentalIssues',
-			required: true
-		},
-		{
-			label: 'Anmerkungen',
-			placeholder: 'Weitere Bemerkungen',
-			key: 'remarks',
-			required: false
-		},
-		{
-			label: 'Foto',
-			placeholder: 'Bitte wählen sie ein Bild aus falls gewünscht',
-			key: 'image',
-			required: false
-		}
-	];
-
 	//  dummy user
 	export let userID = users.get()['loggedIn'];
 
@@ -191,7 +222,7 @@
 
 	// data
 	let refs: unknown[] = [];
-	let data = rawData.map(processData);
+	// let data = rawData.map(processData);
 	let childData: ChildData;
 	let nextpage: string = `${base}/childrengallery`;
 	let unsubscribe: unknown = children.subscribe((childrenlist) => {
@@ -236,7 +267,7 @@
 		title="Bevor es weitergeht"
 		message="Bitte überprüfen sie ihre eingaben nochmals genau bevor sie weiter gehen"
 		lastpage="{base}/childLand/childDataInput"
-		infopage="{base}"
+		infopage={base}
 		infotitle="Was passiert mit den Daten?"
 		onclick={() => {
 			showCheckMessage = false;
@@ -256,18 +287,12 @@
 
 	<form class="m-1 mx-auto w-full flex-col space-y-6">
 		{#each data as element, i}
-			{#if element.props.label}
-				<Label class="font-semibold text-gray-700 dark:text-gray-400">{element.props.label}</Label>
-			{/if}
-
 			{#if element.props.key === 'image'}
-				<svelte:component
-					this={element.component}
+				<DataInput
+					component={element.component}
 					bind:this={refs[i]}
-					class={missingValues[i] && element.props['required'] === true
-						? 'bg-primary-600 text-white dark:bg-primary-600'
-						: ''}
-					{...element.props}
+					properties={element.props}
+					label={element.props.label}
 					on:change={(event) => {
 						if (!(event.target === null)) {
 							const image = event.target.files[0];
@@ -281,11 +306,10 @@
 					}}
 				/>
 			{:else}
-				<svelte:component
-					this={element.component}
-					class={missingValues[i] && element.props['required'] === true
-						? 'bg-primary-600 text-white dark:bg-primary-600'
-						: ''}
+				<DataInput
+					component={element.component}
+					properties={element.props}
+					label={element.props.label}
 					on:change={(event) => {
 						if (missingValues[i]) {
 							if (element.value !== undefined && element.value !== null && element.value !== '') {
@@ -294,13 +318,12 @@
 						}
 					}}
 					bind:value={element.value}
-					{...element.props}
 				/>
 			{/if}
 		{/each}
 
 		<Button
-			class="w-full rounded-lg bg-primary-700 px-4 py-2 font-semibold text-white hover:bg-primary-800"
+			class="bg-primary-700 hover:bg-primary-800 w-full rounded-lg px-4 py-2 font-semibold text-white"
 			on:click={submitData}
 			>{'Kind hinzufügen'}
 		</Button>
