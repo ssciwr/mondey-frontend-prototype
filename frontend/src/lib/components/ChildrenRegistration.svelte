@@ -84,12 +84,13 @@
 			value: [],
 			props: {
 				label: 'Nationalität',
-				items: ['Deutschland', 'Grossbritannien', 'USA', 'China'].map((v) => {
+				items: ['Andere', 'Deutschland', 'Grossbritannien', 'USA', 'China'].map((v) => {
 					return { name: String(v), value: v };
 				}),
 				placeholder: 'Bitte auswählen',
 				key: 'nationality',
-				required: true
+				required: true,
+				textTrigger: 'Andere'
 			}
 		},
 		{
@@ -97,12 +98,15 @@
 			value: [],
 			props: {
 				label: 'Sprache',
-				items: ['Deutsch', 'Englisch (UK)', 'Englisch (Us)', 'Mandarin', 'Arabisch'].map((v) => {
-					return { name: String(v), value: v };
-				}),
+				items: ['Andere', 'Deutsch', 'Englisch (UK)', 'Englisch (Us)', 'Mandarin', 'Arabisch'].map(
+					(v) => {
+						return { name: String(v), value: v };
+					}
+				),
 				placeholder: 'Bitte auswählen',
 				key: 'language',
-				required: true
+				required: true,
+				textTrigger: 'Andere'
 			}
 		},
 		{
@@ -112,6 +116,7 @@
 				label: 'Verhältnis zum Kind',
 				key: 'relationship',
 				items: [
+					'Andere',
 					'Kind',
 					'Enkelkind',
 					'Neffe/Nichte',
@@ -123,7 +128,8 @@
 					return { name: String(v), value: v };
 				}),
 				placeholder: 'Bitte auswählen',
-				required: true
+				required: true,
+				textTrigger: 'Andere'
 			}
 		},
 		{
@@ -136,7 +142,8 @@
 				}),
 				placeholder: 'Bitte auswählen',
 				key: 'developmentalIssues',
-				required: true
+				required: true,
+				textTrigger: 'Andere'
 			}
 		},
 		{
@@ -174,6 +181,8 @@
 				summary: await createDummySummary(),
 				current: await createDummyCurrent()
 			});
+
+			console.log(childData);
 			await goto(nextpage as string);
 		} else {
 			showAlert = true;
@@ -318,6 +327,7 @@
 							}
 						}
 					}}
+					textTrigger={element.props.textTrigger}
 					bind:value={element.value}
 				/>
 			{/if}
