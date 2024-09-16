@@ -35,26 +35,19 @@
 
 	// exported variables
 	export let data: object[] = [];
-	export let celllinks: object[] = []; // separate datastructure because it is specific to the point in the fronted where it is used but is static once defined. data comes from the backend and is not knowable until it's fetched.
-	export let headerlinks: string[] = [];
+	export let celllinks: string[][] = []; // separate datastructure because it is specific to the point in the fronted where it is used but is static once defined.
 	export let caption = '';
 	export let statusColumns: string[] = [];
 	export let searchableColumns: string[] = [];
-	const legendcaption = 'Meaning of indicators';
-
-	export let statusIndicator = {
-		good: 'bg-green',
-		bad: 'bg-red',
-		warn: 'bg-yellow'
-	};
-
-	// reactive statements
-	let searchTerm = '';
-
-	$: filteredItems = filterItems(data, searchTerm, searchableColumns);
+	export let statusIndicator;
+	export let headerlinks: string[] = [];
 
 	// make the placeholdertext for the searchbar dynamic
 	const placeholderText = makePlaceholderText(data, searchableColumns);
+	let searchTerm = '';
+
+	// reactive statements
+	$: filteredItems = filterItems(data, searchTerm, searchableColumns);
 </script>
 
 <TableSearch
@@ -65,9 +58,9 @@
 >
 	<TableHeader {caption} columns={Object.keys(data[0])} links={headerlinks} />
 	<TableBody tableBodyClass="divide-y">
-		{#each filteredItems as item, i}
+		{#each filteredItems as row, i}
 			<TableBodyRow>
-				{#each Object.entries(item) as pair, j}
+				{#each Object.entries(row) as pair, j}
 					<TableCell
 						key={pair[0]}
 						value={pair[1]}

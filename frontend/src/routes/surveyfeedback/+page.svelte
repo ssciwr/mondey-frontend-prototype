@@ -1,6 +1,6 @@
 <script>
+	import { base } from '$app/paths';
 	import TableDisplay from '$lib/components/DataDisplay/TableDisplay.svelte';
-
 	const data_to_display = [
 		{ name: 'milestoneA', status: 'done' },
 		{ name: 'milestoneB', status: 'open' },
@@ -10,7 +10,7 @@
 	];
 
 	const celllinks = data_to_display.map((element) => {
-		let link = [null, '/milestone']; // TODO: this should lead to the respective survey itself
+		let link = [null, `${base}/milestone`]; // TODO: this should lead to the respective survey itself
 		return link;
 	});
 
@@ -22,8 +22,6 @@
 
 	const caption =
 		'This is an overview over which milestones for the current survey have been completed';
-
-	console.log('celllinks in surveyfeedback', celllinks);
 </script>
 
 <TableDisplay
