@@ -1,5 +1,5 @@
 <script>
-	import { Button, Card } from 'flowbite-svelte';
+	import { Button, Card, Progressbar } from 'flowbite-svelte';
 	import { ArrowRightOutline } from 'flowbite-svelte-icons';
 	export let data = {
 		header: undefined,
@@ -41,5 +41,15 @@
 		<Button href={data.href} class="w-fit" {...styleProps.button}
 			>{data.button} <ArrowRightOutline class="ms-2 h-6 w-6 text-white" /></Button
 		>
+	{/if}
+
+	{#if data.progress}
+		<Progressbar
+			labelInside
+			progress={100 * data.progress}
+			size="h-2.5"
+			animate={true}
+			divClass=""
+		/>
 	{/if}
 </Card>
