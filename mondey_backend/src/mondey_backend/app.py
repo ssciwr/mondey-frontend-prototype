@@ -17,6 +17,8 @@ from .models import MilestoneCreate
 from .models import MilestoneGroup
 from .models import MilestoneGroupCreate
 from .models import MilestoneGroupPublic
+from .models import MilestoneGroupText
+from .models import MilestoneGroupTextCreate
 from .models import MilestoneGroupUpdate
 from .models import MilestonePublic
 from .models import MilestoneUpdate
@@ -63,7 +65,9 @@ def read_milestone(
 ):
     milestone = session.get(Milestone, milestone_id)
     if not milestone:
-        raise HTTPException(status_code=404, detail="milestone not found")
+        raise HTTPException(
+            status_code=404, detail=f"Milestone with id {milestone_id} not found"
+        )
     return milestone
 
 
@@ -100,23 +104,26 @@ def delete_milestone(
 @app.post("/milestone-groups/", response_model=MilestoneGroupPublic)
 def create_milestone_group(
     session: Annotated[Session, Depends(get_session)],
-    milestone_group: MilestoneGroupCreate,
+    group: MilestoneGroupCreate,
+    text: list[MilestoneGroupTextCreate],
 ):
-    db_milestone_group = MilestoneGroup.model_validate(milestone_group)
+    db_milestone_group = MilestoneGroup.model_validate(group)
     session.add(db_milestone_group)
     session.commit()
     session.refresh(db_milestone_group)
+    for t in text:
+        db_t = MilestoneGroupText.model_validate(
+            t, update={"group_id": db_milestone_group.id}
+        )
+        session.add(db_t)
+    session.commit()
     return db_milestone_group
 
 
 @app.get("/milestone-groups/", response_model=list[MilestoneGroupPublic])
-def read_milestone_groups(
-    session: Annotated[Session, Depends(get_session)],
-    offset: int = 0,
-    limit: int = Query(default=100, le=100),
-):
+def read_milestone_groups(session: Annotated[Session, Depends(get_session)]):
     milestone_groups = session.exec(
-        select(MilestoneGroup).offset(offset).limit(limit)
+        select(MilestoneGroup).order_by(MilestoneGroup.order)
     ).all()
     return milestone_groups
 

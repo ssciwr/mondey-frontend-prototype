@@ -12,9 +12,12 @@ from sqlmodel.pool import StaticPool
 
 @pytest.fixture
 def session():
-    # use new in-memory SQLite database for each test
+    # use a new in-memory SQLite database for each test
     engine = create_engine(
-        "sqlite://", connect_args={"check_same_thread": False}, poolclass=StaticPool
+        "sqlite://",
+        connect_args={"check_same_thread": False},
+        poolclass=StaticPool,
+        echo=True,
     )
     SQLModel.metadata.create_all(engine)
     with Session(engine) as session:
