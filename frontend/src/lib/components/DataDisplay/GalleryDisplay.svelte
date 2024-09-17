@@ -37,7 +37,7 @@
 {/if}
 
 {#if withSearch}
-	<form class="flex gap-2">
+	<form class="mt-4 flex gap-2">
 		<Search size="md" placeholder={'Durchsuchen'} bind:value={searchTerm} />
 		<Button class="!p-2.5">
 			<SearchOutline class="h-6 w-6" />
@@ -45,7 +45,7 @@
 	</form>
 {/if}
 
-<Gallery class="grid-cols-1 justify-center gap-8 md:grid-cols-2">
+<Gallery class="grid grid-cols-1 justify-center gap-8 p-4 md:grid-cols-2">
 	{#each filteredItems as item, index}
 		<svelte:component this={itemComponent} data={item} styleProps={componentProps[index]} />
 	{/each}

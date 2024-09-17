@@ -15,7 +15,7 @@
 	}
 </script>
 
-<div class="flex flex-col border-gray-100 md:rounded-t-lg dark:bg-gray-600">
+<div class="flex flex-col border border-gray-100 md:rounded-t-lg">
 	<Breadcrumps data={breadcrumpdata} />
 	<p class="text-lg text-gray-700 dark:text-gray-400">
 		Wählen sie ein Kind zur Beobachtung aus oder legen melden sie ein neues Kind an.
