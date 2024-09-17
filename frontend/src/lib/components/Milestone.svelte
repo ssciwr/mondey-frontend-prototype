@@ -11,11 +11,17 @@
     let autoGoToNextMilestone: boolean = false;
 
     // build list of possible image urls at build time to be able to dynamically use them at run time:
-    const images: Record<string, string> = import.meta.glob('$lib/assets/*.jpg', {
+    const img_urls: Record<string, string> = import.meta.glob('$lib/assets/*.jpg', {
         eager: true,
         query: '?url',
         import: 'default'
     });
+
+    let currentImageIndex:number = 0;
+    const imageInterval = 5000;
+    setInterval(() => {
+        currentImageIndex = (currentImageIndex + 1) % data.milestones[currentMilestoneIndex].imgs.length;
+    }, imageInterval);
 
     function prevMilestone() {
         if (currentMilestoneIndex === 0) {
@@ -54,8 +60,8 @@
 
 </script>
 
-<div class="flex flex-col bg-white border border-1 border-gray-200 rounded-lg shadow dark:border-gray-700 dark:bg-gray-800 md:max-w-5xl">
-    <div class="bg-gray-100 dark:bg-gray-600 rounded-t-lg">
+<div class="flex flex-col bg-white border border-1 border-gray-200 md:rounded-lg shadow dark:border-gray-700 dark:bg-gray-800 md:max-w-7xl">
+    <div class="bg-gray-100 dark:bg-gray-600 md:rounded-t-lg">
         <Breadcrumb olClass="inline-flex items-center space-x-1 rtl:space-x-reverse md:space-x-3 rtl:space-x-reverse flex-wrap" navClass="m-2">
             <BreadcrumbItem href="#" home>Start</BreadcrumbItem>
             <BreadcrumbItem href="#">MEIKE</BreadcrumbItem>
@@ -67,8 +73,13 @@
     </div>
     <div>
         <div class="w-full flex flex-col md:flex-row">
-            <img class="object-cover h-48 md:h-96 md:rounded-bl-lg w-full md:w-64 lg:w-96"
-                 src={images[`/src/lib/assets/${data.milestones[currentMilestoneIndex].img}`]} alt="">
+            <div>
+            {#each data.milestones[currentMilestoneIndex].imgs as img, imgIndex}
+                <img class={`absolute object-cover h-48 md:h-96 md:rounded-bl-lg w-full md:w-48 lg:w-72 xl:w-96 transition duration-1000 ease-in-out ${imgIndex===currentImageIndex ? 'opacity-100' : 'opacity-0'}`}
+                     src={img_urls[`/src/lib/assets/${img}`]} alt="">
+            {/each}
+                <div class="h-48 md:h-96 md:rounded-bl-lg w-full md:w-48 lg:w-72 xl:w-96"></div>
+            </div>
             <div class="m-2 md:m-4">
                 <h2 class="mb-2 text-2xl font-bold text-gray-700 dark:text-gray-400">{data.milestones[currentMilestoneIndex].title}</h2>
                 <P>{data.milestones[currentMilestoneIndex].desc}</P>

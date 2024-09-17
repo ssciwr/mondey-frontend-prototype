@@ -41,7 +41,7 @@
 </Navbar>
 
 <div
-	class="mx-[max(10vw,2rem)] my-[max(2vw,2rem)] flex-auto items-center justify-center overflow-y-auto pb-20"
+	class="md:mx-[max(10vw,2rem)] md:my-[max(2vw,2rem)] flex-auto items-center justify-center overflow-y-auto pb-20"
 >
 	<slot></slot>
 </div>
