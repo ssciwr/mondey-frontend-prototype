@@ -228,6 +228,8 @@
 					label={element.props.label}
 					properties={element.props}
 					textTrigger={element.props.textTrigger}
+					showTextField={element.value !== null &&
+						element.props.items?.some((item) => item.value === element.value) === false}
 				/>
 			{/each}
 		</form>
