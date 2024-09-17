@@ -22,35 +22,66 @@
 			header: 'Grobmotorik',
 			summary: 'something something',
 			image: null,
-			href: `{$_("milestone.milestones")}`
+			href: `{$_("milestone.milestones")}`,
+			progress: 0.75
 		},
 		{
 			header: 'Feinmotorik',
 			summary: 'something something',
 			image: null,
-			href: `{$_("milestone.milestones")}`
+			href: `{$_("milestone.milestones")}`,
+			progress: 1.0
 		},
 		{
 			header: 'Geistige Grundfunktionen',
 			summary: 'something something',
 			image: null,
-			href: `{$_("milestone.milestones")}`
+			href: `{$_("milestone.milestones")}`,
+			progress: 1.0
 		},
 		{
-			header: 'Höhere Denkfuntkionen',
+			header: 'Höhere Denkfunktionen',
 			summary: 'something something',
 			image: null,
-			href: `{$_("milestone.milestones")}`
+			href: `{$_("milestone.milestones")}`,
+			progress: 1.0
 		},
 		{
 			header: 'Sprache',
 			summary: 'how much noise the child makes',
 			image: null,
-			href: `{$_("milestone.milestones")}`
+			href: `{$_("milestone.milestones")}`,
+			progress: 0.5
+		},
+		{
+			header: 'Soziale Entwicklung',
+			summary: 'something something',
+			image: null,
+			href: `{$_("milestone.milestones")}`,
+			progress: 0.3
+		},
+		{
+			header: 'Selbstregulation',
+			summary: 'something something',
+			image: null,
+			href: `{$_("milestone.milestones")}`,
+			progress: 0.6
+		},
+		{
+			header: 'Emotionen',
+			summary: 'something something',
+			image: null,
+			href: `{$_("milestone.milestones")}`,
+			progress: 0.9
+		},
+		{
+			header: 'Vorläuferfertigkeiten Schule',
+			summary: 'something something',
+			image: null,
+			href: `{$_("milestone.milestones")}`,
+			progress: 0.3
 		}
 	];
-
-	export let heading = '';
 </script>
 
 <div class="flex items-center justify-center">

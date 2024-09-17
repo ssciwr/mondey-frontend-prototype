@@ -6,7 +6,8 @@
 		summary: undefined,
 		button: undefined,
 		href: undefined,
-		image: undefined
+		image: undefined,
+		progress: undefined
 	};
 
 	export let styleProps = {
@@ -27,18 +28,12 @@
 	{...styleProps.card}
 >
 	{#if data.header}
-		<h5
-			class="mb-2 text-2xl font-bold tracking-tight text-gray-700 dark:text-white"
-			{...styleProps.header}
-		>
+		<h5 class="mb-2 text-2xl font-bold tracking-tight" {...styleProps.header}>
 			{data.header}
 		</h5>
 	{/if}
 	{#if data.summary}
-		<p
-			class="mb-3 flex font-normal leading-tight text-gray-700 dark:text-gray-400"
-			{...styleProps.summary}
-		>
+		<p class=" mb-3 flex font-normal leading-tight" {...styleProps.summary}>
 			{data.summary}
 		</p>
 	{/if}

@@ -8,12 +8,12 @@
 	}
 </script>
 
-<script>
+<script lang="ts">
 	import { Button, Gallery, Heading, Search } from 'flowbite-svelte';
 	import { SearchOutline } from 'flowbite-svelte-icons';
 
 	export let data;
-	export let header = null;
+	export let header: string | null = null;
 	export let itemComponent;
 	export let withSearch = true;
 	export let searchableCol = '';
@@ -29,9 +29,9 @@
 	{#if header !== null}
 		<Heading
 			tag="h1"
-			class="mb-2  tracking-tight "
+			class="m-2 mt-4 flex w-full gap-2 p-2 tracking-tight "
 			customSize="text-2xl"
-			color="text-gray-900 dark:text-white"
+			color="text-gray-800 dark:text-white"
 		>
 			{header}
 		</Heading>
@@ -41,12 +41,14 @@
 		<form class="m-2 mt-4 flex w-full gap-2 p-2">
 			<Search size="md" placeholder={'Durchsuchen'} bind:value={searchTerm} />
 			<Button class="!p-2.5">
-				<SearchOutline class="h-6 w-6" />
+				<SearchOutline class=" h-6 w-6" />
 			</Button>
 		</form>
 	{/if}
 
-	<Gallery class="grid w-full grid-cols-1 justify-center gap-8 p-4 md:grid-cols-2">
+	<Gallery
+		class="grid w-full grid-cols-1 justify-center gap-8 p-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+	>
 		{#each filteredItems as item, index}
 			<svelte:component this={itemComponent} data={item} styleProps={componentProps[index]} />
 		{/each}
