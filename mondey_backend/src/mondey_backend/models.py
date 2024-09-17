@@ -21,25 +21,25 @@ def fixed_length_string_field(max_length: int, **kwargs) -> Field:
     return Field(max_length=max_length, sa_type=String(max_length), **kwargs)
 
 
-class MilestoneGroupText(SQLModel, table=True):
+class MilestoneGroupTextBase(SQLModel):
+    title: str
+    desc: str
+
+
+class MilestoneGroupText(MilestoneGroupTextBase, table=True):
     id: int | None = Field(default=None, primary_key=True)
     group_id: int | None = Field(
         default=None, foreign_key="milestonegroup.id", index=True
     )
     lang: str = fixed_length_string_field(2, index=True)
-    title: str
-    desc: str
 
 
-class MilestoneGroupTextCreate(SQLModel):
-    lang: str
-    title: str
-    desc: str
+class MilestoneGroupTextCreate(MilestoneGroupTextBase):
+    lang: str = fixed_length_string_field(2, index=True)
 
 
-class MilestoneGroupTextPublic(SQLModel):
-    title: str
-    desc: str
+class MilestoneGroupTextPublic(MilestoneGroupTextBase):
+    pass
 
 
 class MilestoneGroupBase(SQLModel):
@@ -65,6 +65,12 @@ class MilestoneGroupPublic(MilestoneGroupBase):
     id: int
     text: dict[str, MilestoneGroupTextPublic] = {}
     milestones: list[MilestonePublic] = []
+
+
+class MilestoneGroupAdmin(MilestoneGroupBase):
+    id: int
+    text: dict[str, MilestoneGroupText] = {}
+    milestones: list[Milestone] = []
 
 
 class MilestoneGroupUpdate(SQLModel):

@@ -15,6 +15,7 @@ from .database import engine
 from .models import Milestone
 from .models import MilestoneCreate
 from .models import MilestoneGroup
+from .models import MilestoneGroupAdmin
 from .models import MilestoneGroupCreate
 from .models import MilestoneGroupPublic
 from .models import MilestoneGroupText
@@ -111,17 +112,25 @@ def create_milestone_group(
     session.add(db_milestone_group)
     session.commit()
     session.refresh(db_milestone_group)
-    for t in text:
-        db_t = MilestoneGroupText.model_validate(
-            t, update={"group_id": db_milestone_group.id}
+    for milestone_group_text in text:
+        db_milestone_group_text = MilestoneGroupText.model_validate(
+            milestone_group_text, update={"group_id": db_milestone_group.id}
         )
-        session.add(db_t)
+        session.add(db_milestone_group_text)
     session.commit()
     return db_milestone_group
 
 
 @app.get("/milestone-groups/", response_model=list[MilestoneGroupPublic])
-def read_milestone_groups(session: Annotated[Session, Depends(get_session)]):
+def get_milestone_groups(session: Annotated[Session, Depends(get_session)]):
+    milestone_groups = session.exec(
+        select(MilestoneGroup).order_by(MilestoneGroup.order)
+    ).all()
+    return milestone_groups
+
+
+@app.get("/admin/milestone-groups/", response_model=list[MilestoneGroupAdmin])
+def get_admin_milestone_groups(session: Annotated[Session, Depends(get_session)]):
     milestone_groups = session.exec(
         select(MilestoneGroup).order_by(MilestoneGroup.order)
     ).all()
