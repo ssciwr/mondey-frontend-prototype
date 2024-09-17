@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { base } from '$app/paths';
 	import { goto } from '$app/navigation';
+	import { base } from '$app/paths';
 	import AlertMessage from '$lib/components/AlertMessage.svelte';
-	import Input from '$lib/components/DataInput/Input.svelte';
+	import DataInput from '$lib/components/DataInput/DataInput.svelte';
 	import NavigationButtons from '$lib/components/Navigation/NavigationButtons.svelte';
 	import { children } from '$lib/stores/childrenStore';
 	import { hash, users } from '$lib/stores/userStore';
-	import { Card, Heading } from 'flowbite-svelte';
+	import { Card, Heading, Input } from 'flowbite-svelte';
 	import { onDestroy, onMount } from 'svelte';
 
 	onMount(async () => {
@@ -22,7 +22,7 @@
 		const mailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 		missingValues[0] = inputValues[0] === null || inputValues[0] === ''; // username
 		missingValues[1] = inputValues[1] === null || mailRegex.test(inputValues[1]) === false; // email
-		missingValues[2] = passwd == null || passwd !== passwdTest; // password
+		missingValues[2] = inputValues[2] === null || inputValues[2] === ''; // password
 		missingValues[3] = inputValues[3] === null || missingValues[2];
 	}
 
@@ -37,6 +37,12 @@
 			// README: userID is username+password just as a placeholder
 			const userID = inputValues[0] + passwd;
 			let userAddSuccess: boolean = true;
+
+			if (passwd !== passwdTest) {
+				userAddSuccess = false;
+				alertMessage = 'Passwörter sind nicht identisch';
+				showAlert = true;
+			}
 
 			let userdata = {
 				name: inputValues[0],
@@ -90,8 +96,11 @@
 					userAddSuccess = false;
 				}
 			}
-			showAlert = false;
-			goto(base);
+
+			if (userAddSuccess) {
+				showAlert = false;
+				goto(`${base}/${'userLand/userDataInput'}`);
+			}
 		} else {
 			showAlert = true;
 		}
@@ -103,14 +112,20 @@
 			name: 'Benutzername',
 			type: 'text',
 			placeholder: 'Wählen sie einen beliebigen Benutzernamen',
-			required: true
+			required: true,
+			checkValid: () => {
+				return true;
+			}
 		},
 		{
 			label: 'E-Mail',
 			name: 'E-Mail',
 			type: 'email',
 			placeholder: 'E-Mail',
-			required: true
+			required: true,
+			checkValid: () => {
+				return true;
+			}
 		},
 		{
 			label: 'Passwort',
@@ -120,6 +135,9 @@
 			required: true,
 			onBlur: async (event: Event) => {
 				passwd = await hash(event.srcElement.value);
+			},
+			checkValid: () => {
+				return passwd !== '' && passwd !== null && passwd !== undefined && passwd === passwdTest;
 			}
 		},
 		{
@@ -130,6 +148,9 @@
 			required: true,
 			onBlur: async (event: Event) => {
 				passwdTest = await hash(event.srcElement.value);
+			},
+			checkValid: () => {
+				return passwd !== '' && passwd !== null && passwd !== undefined && passwd === passwdTest;
 			}
 		}
 	];
@@ -176,11 +197,12 @@
 
 		<form class="m-1 mx-auto w-full flex-col space-y-6">
 			{#each data as element, i}
-				<Input
-					{element}
+				<DataInput
+					component={Input}
+					properties={element}
 					bind:value={inputValues[i]}
-					valid={!missingValues[i]}
-					onBlur={element.onBlur}
+					eventHandlers={{ 'on:blur': element.onBlur }}
+					checkValid={element.checkValid}
 				/>
 			{/each}
 		</form>

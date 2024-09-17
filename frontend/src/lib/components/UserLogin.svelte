@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { base } from '$app/paths';
 	import UserLoginUtil from '$lib/components//UserLoginUtil.svelte';
 	import AlertMessage from '$lib/components/AlertMessage.svelte';
-	import Input from '$lib/components/DataInput/Input.svelte';
+	import DataInput from '$lib/components/DataInput/DataInput.svelte';
 	import NavigationButtons from '$lib/components/Navigation/NavigationButtons.svelte';
 	import { hash, users, type UserData } from '$lib/stores/userStore';
-	import { Card, Heading } from 'flowbite-svelte';
+	import { Card, Heading, Input } from 'flowbite-svelte';
 	import { onDestroy, onMount } from 'svelte';
-	import {base} from "$app/paths";
 
 	// functionality
 
@@ -133,7 +133,12 @@
 
 			<form class="m-1 m-3 mx-auto w-full flex-col space-y-6">
 				{#each data as element, i}
-					<Input {element} bind:value={credentials[i]} valid={credentialsValid[i]} />
+					<DataInput
+						component={Input}
+						bind:value={credentials[i]}
+						properties={element}
+						label={element.label}
+					/>
 				{/each}
 			</form>
 
@@ -145,7 +150,7 @@
 		<span class="container mx-auto w-full text-gray-700 dark:text-gray-400">Not registered?</span>
 		<a
 			href={`${base}/userLand/userRegistration`}
-			class="text-primary-700 hover:underline dark:text-primary-500"
+			class="text-primary-700 dark:text-primary-500 hover:underline"
 		>
 			Create account
 		</a>
