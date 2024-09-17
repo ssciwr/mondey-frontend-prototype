@@ -4,26 +4,28 @@
 	// currently there are some hardcoded event handlers
 
 	import { Label, Textarea } from 'flowbite-svelte';
-	import { onMount } from 'svelte';
+	import { beforeUpdate } from 'svelte';
 
-	// component lifecycle. Sets the textfield value to the held value if showtextfield is set to true externally
-	onMount(() => {
-		if (showTextField === true) {
+	// lifecycle
+	beforeUpdate(() => {
+		if (showTextField && value !== null) {
 			additionalInput = value;
 		}
 	});
 
-	// public variables
+	// variables
 	export let component: any;
 	export let value: any = null;
 	export let label: string | null = null;
 	export let componentClass: string = '';
 	export let textTrigger: string = 'noAdditionalText';
 	export let showTextField: boolean = false;
-	let additionalInput: any;
+	let additionalInput: any = value;
 
-	// properties and event handlers
+	// data to display and event handlers for dynamcis.
 	export let properties: any = {};
+	// README: This structure is not necessary here,
+	// but will be useful later in svelte5
 	export let eventHandlers: { [key: string]: (event: Event) => void | Promise<void> } = {};
 
 	// custom valid checker that can optionally be supplied
@@ -31,8 +33,7 @@
 		return true;
 	};
 
-	// internal variables and functionality
-
+	// internal functionality for managing additional information given via textfield
 	function replaceValue(arrayvalue: any[], target: any, element: any): void {
 		for (let i = 0; i < arrayvalue.length; i++) {
 			if (arrayvalue[i] === target && element) {
@@ -54,22 +55,19 @@
 		}
 	}
 
-	function checkShowTextfield(v: any) {
-		// showTextField needs to stay true once it has been set once.
+	// functionality for showing the textfield when the trigger is selected
+	function checkShowTextfield(v: any, trigger: string) {
 		if (v instanceof Array) {
-			console.log('  ', showTextField, v, textTrigger, v.includes(textTrigger));
-			return showTextField || v.includes(textTrigger);
+			return v.includes(trigger);
 		} else {
-			console.log('  ', showTextField, v, textTrigger, v === textTrigger);
-			return showTextField || v === textTrigger;
+			return v === trigger;
 		}
 	}
 
-	// // reactive statement that makes sure 'valid' updates the page
+	// reactive statement that makes sure 'valid' updates the page
 	$: valid = value !== undefined && value !== null && value !== '' && checkValid();
 	$: highlight = !valid && properties.required === true;
-	$: showTextField = checkShowTextfield(value);
-	$: console.log('value: ', value, 'showtextfield: ', showTextField, properties.name);
+	$: showTextField = showTextField || checkShowTextfield(value, textTrigger);
 </script>
 
 {#if label}
@@ -89,11 +87,12 @@
 		on:click={eventHandlers['on:click']}
 	/>
 
-	{showTextField}
 	{#if showTextField === true}
 		<Textarea
 			bind:value={additionalInput}
-			on:blur={(value = updateValue(value, additionalInput))}
+			on:blur={() => {
+				value = updateValue(value, additionalInput);
+			}}
 		/>
 	{/if}
 </div>
