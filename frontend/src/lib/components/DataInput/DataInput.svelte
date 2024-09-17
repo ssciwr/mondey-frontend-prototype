@@ -4,14 +4,6 @@
 	// currently there are some hardcoded event handlers
 
 	import { Label, Textarea } from 'flowbite-svelte';
-	import { beforeUpdate } from 'svelte';
-
-	// lifecycle
-	beforeUpdate(() => {
-		if (showTextField && value !== null) {
-			additionalInput = value;
-		}
-	});
 
 	// variables
 	export let component: any;
@@ -69,6 +61,17 @@
 	$: valid = value !== undefined && value !== null && value !== '' && checkValid();
 	$: highlight = !valid && properties.required === true;
 	$: showTextField = showTextField || checkShowTextfield(value, textTrigger);
+	$: console.log('v: ', value, 'aI: ', additionalInput);
+	// Flag to track initialization
+	let initialized = false;
+
+	// Reactive statement to initialize additionalInput based on value
+	$: {
+		if (!initialized && value !== null) {
+			additionalInput = value;
+			initialized = true;
+		}
+	}
 </script>
 
 {#if label}

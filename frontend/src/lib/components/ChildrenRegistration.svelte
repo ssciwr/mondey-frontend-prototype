@@ -116,7 +116,7 @@
 				label: 'Verhältnis zum Kind',
 				key: 'relationship',
 				items: [
-					'Andere',
+					'Anderes',
 					'Kind',
 					'Enkelkind',
 					'Neffe/Nichte',
@@ -129,7 +129,7 @@
 				}),
 				placeholder: 'Bitte auswählen',
 				required: true,
-				textTrigger: 'Andere'
+				textTrigger: 'Anderes'
 			}
 		},
 		{
