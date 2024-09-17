@@ -21,7 +21,8 @@
 
 	// dynamic statements
 	let searchTerm = '';
-	$: filteredItems = filterDataByColumn(data, searchableCol, searchTerm);
+	$: filteredItems =
+		withSearch === true ? filterDataByColumn(data, searchableCol, searchTerm) : data;
 </script>
 
 {#if header !== null}
