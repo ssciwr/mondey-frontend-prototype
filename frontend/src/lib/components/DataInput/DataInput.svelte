@@ -61,7 +61,6 @@
 	$: valid = value !== undefined && value !== null && value !== '' && checkValid();
 	$: highlight = !valid && properties.required === true;
 	$: showTextField = showTextField || checkShowTextfield(value, textTrigger);
-	$: console.log('v: ', value, 'aI: ', additionalInput);
 	// Flag to track initialization
 	let initialized = false;
 
