@@ -24,8 +24,9 @@
 
 	// data to display and event handlers for dynamcis.
 	export let properties: any = {};
-	// README: This structure is not necessary here,
-	// but will be useful later in svelte5
+
+	// README: This structure is not necessary here yet, as the events could be exposed directly,
+	// but will afais be useful later in svelte5
 	export let eventHandlers: { [key: string]: (event: Event) => void | Promise<void> } = {};
 
 	// custom valid checker that can optionally be supplied
