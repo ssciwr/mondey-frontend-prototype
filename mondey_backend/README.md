@@ -10,13 +10,13 @@ pip install -e .[tests]
 
 ## Use
 
-To start a local development server for testing purposes:
+To start a local dev server for testing purposes:
 
 ```bash
-fastapi dev
+uvicorn mondey_backend:app --reload
 ```
 
-The swagger UI will be available at [http://localhost:8000/docs](http://localhost:8000/docs).
+The swagger UI will then be available at [http://localhost:8000/docs](http://localhost:8000/docs).
 
 ## Tests
 
