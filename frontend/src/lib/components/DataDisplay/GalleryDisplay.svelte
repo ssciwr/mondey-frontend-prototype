@@ -25,28 +25,30 @@
 		withSearch === true ? filterDataByColumn(data, searchableCol, searchTerm) : data;
 </script>
 
-{#if header !== null}
-	<Heading
-		tag="h1"
-		class="mb-2  tracking-tight "
-		customSize="text-2xl"
-		color="text-gray-900 dark:text-white"
-	>
-		{header}
-	</Heading>
-{/if}
+<div class="mx-auto max-w-7xl p-4">
+	{#if header !== null}
+		<Heading
+			tag="h1"
+			class="mb-2  tracking-tight "
+			customSize="text-2xl"
+			color="text-gray-900 dark:text-white"
+		>
+			{header}
+		</Heading>
+	{/if}
 
-{#if withSearch}
-	<form class="mt-4 flex gap-2">
-		<Search size="md" placeholder={'Durchsuchen'} bind:value={searchTerm} />
-		<Button class="!p-2.5">
-			<SearchOutline class="h-6 w-6" />
-		</Button>
-	</form>
-{/if}
+	{#if withSearch}
+		<form class="m-2 mt-4 flex w-full gap-2 p-2">
+			<Search size="md" placeholder={'Durchsuchen'} bind:value={searchTerm} />
+			<Button class="!p-2.5">
+				<SearchOutline class="h-6 w-6" />
+			</Button>
+		</form>
+	{/if}
 
-<Gallery class="grid grid-cols-1 justify-center gap-8 p-4 md:grid-cols-2">
-	{#each filteredItems as item, index}
-		<svelte:component this={itemComponent} data={item} styleProps={componentProps[index]} />
-	{/each}
-</Gallery>
+	<Gallery class="grid w-full grid-cols-1 justify-center gap-8 p-4 md:grid-cols-2">
+		{#each filteredItems as item, index}
+			<svelte:component this={itemComponent} data={item} styleProps={componentProps[index]} />
+		{/each}
+	</Gallery>
+</div>
