@@ -1,0 +1,53 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "mondey_backend"
+description = "MONDEY backend"
+readme = "README.md"
+license = { text = "NONE" }
+authors = [{ name = "SSC", email = "ssc@iwr.uni-heidelberg.de" }]
+requires-python = ">=3.10"
+dependencies = [
+    "fastapi[standard]",
+    "uvicorn",
+    "sqlmodel",
+]
+dynamic = ["version"]
+
+[project.optional-dependencies]
+tests = [
+    "pytest",
+    "pytest-randomly",
+]
+
+[tool.hatch.version]
+path = "src/mondey_backend/__init__.py"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+log_cli = "true"
+log_cli_level = "DEBUG"
+
+[tool.ruff.lint]
+select = [
+    # pycodestyle
+    "E",
+    # Pyflakes
+    "F",
+    # pyupgrade
+    "UP",
+    # flake8-bugbear
+    "B",
+    # flake8-simplify
+    "SIM",
+    # isort
+    "I",
+    # numpy 2.0 support
+    "NPY201",
+]
+ignore = ["E501"]
+
+[tool.ruff.lint.isort]
+force-single-line = true
