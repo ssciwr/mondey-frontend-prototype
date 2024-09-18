@@ -77,7 +77,6 @@
 
 		<GalleryDisplay
 			data={rawdata}
-			desc={null}
 			itemComponent={CardDisplay}
 			componentProps={rawdata.map((item) => {
 				return {
