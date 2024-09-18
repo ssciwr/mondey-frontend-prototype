@@ -8,24 +8,6 @@
 	import { Card, Heading, Input, Select } from 'flowbite-svelte';
 	import { onDestroy, onMount } from 'svelte';
 
-	onMount(() => {
-		users.load();
-		const userID = users.get()['loggedIn'] as string;
-		userData = users.get()[userID] as UserData;
-		inputValues = [
-			userData['Geburtsjahr'] ? userData['Geburtsjahr'] : null,
-			userData['Geschlecht'] ? userData['Geschlecht'] : null,
-			userData['Höchster Bildungsabschluss'] ? userData['Höchster Bildungsabschluss'] : null,
-			userData['Arbeitszeit/Woche'] ? userData['Arbeitszeit/Woche'] : null,
-			userData['Familieneinkommen/Jahr'] ? userData['Familieneinkommen/Jahr'] : null,
-			userData['Beruf'] ? userData['Beruf'] : null
-		];
-		buttons[0].label = 'Fertig';
-	});
-
-	onDestroy(() => {
-		users.save();
-	});
 	// this stuff here will become backend calls in the end because that is where the data this page will be filled with
 	// will come from. Hence, they are not put into a separate library or anything
 	function intervalRange(size: number, startAt: number = 0, step: number = 1, asItems = false) {
@@ -53,94 +35,152 @@
 			return values;
 		}
 	}
-
-	// this can, but does not have to, come from a database later.
-	const data = [
-		{
-			name: 'Geburtsjahr',
-			items: numericalRange(100, 1920, 1, true),
-			placeholder: 'Wählen sie ihr Geburtsjahr aus',
-			label: 'Geburtsjahr',
-			required: true
-		},
-		{
-			name: 'Geschlecht',
-			items: ['männlich', 'weiblich', 'divers'].map((v) => {
-				return { name: String(v), value: v };
-			}),
-			placeholder: 'Wählen sie ihr Geschlecht aus',
-			label: 'Geschlecht',
-			required: true
-		},
-		{
-			name: 'Höchster Bildungsabschluss',
-			items: [
-				'kein Schulabschluss',
-				'Hauptschulabschluss',
-				'Realschulabschluss',
-				'Abitur',
-				'Bachelor',
-				'Master',
-				'Promotion'
-			].map((v) => {
-				return { name: String(v), value: v };
-			}),
-			placeholder: 'Wählen sie ihren höchsten Bildungsabschluss aus',
-			required: true,
-			label: 'Höchster Bildungsabschluss'
-		},
-
-		{
-			name: 'Arbeitszeit/Woche',
-			items: intervalRange(13, 0, 5, true),
-			placeholder:
-				'Wählen sie ihre Arbeitszeit pro Woche aus. Wählen sie die Zahl, die dem tatsächlichen Wert am nächsten kommt.',
-			label: 'Arbeitszeit/Woche',
-			required: true
-		},
-		{
-			name: 'Familieneinkommen/Jahr',
-			items: intervalRange(23, 0, 5000, true),
-			placeholder:
-				'Wählen sie ihre Jahreseinkommen aus. Wählen sie die Zahl, die dem tatsächlichen Wert am nächsten kommt.',
-			label: 'Familieneinkommen/Jahr',
-			required: true
-		},
-
-		{
-			name: 'Beruf',
-			type: 'text',
-			placeholder: 'Geben sie ihren Beruf an',
-			label: 'Beruf',
-			required: true
-		}
-	];
-	// validation / data acceptance
-
 	function validate(): boolean {
-		missingValues = inputValues.map((v) => v === '' || v === null);
+		missingValues = data.map((element) => element.value === '' || element.value === null);
 		return missingValues.every((v) => v === false);
 	}
 
-	function acceptData() {
+	async function acceptData() {
 		const valid = validate();
-
 		if (valid) {
-			for (let i = 0; i < inputValues.length; ++i) {
-				(userData as UserData)[data[i].name] = inputValues[i];
+			for (let i = 0; i < data.length; ++i) {
+				(userData as UserData)[data[i].props.name] = data[i].value;
 			}
-			users.save();
+			if (userID) {
+				await users.update(userID, userData);
+			}
+			await users.save();
 			goto('/childrengallery');
 		} else {
 			showAlert = true;
 		}
 	}
 
-	const heading = 'Benutzerdaten eingeben';
-
 	let userData: UserData;
+	let userID: string;
 
-	let inputValues = data.map(() => null);
+	onMount(async () => {
+		await users.load();
+		userID = users.get()['loggedIn'] as string;
+		userData = users.get()[userID] as UserData;
+
+		// initialize data values to stuff that is there already if
+		// data has been supplied already for that user.
+
+		const keys = [
+			'Geburtsjahr',
+			'Geschlecht',
+			'Höchster Bildungsabschluss',
+			'Arbeitszeit/Woche',
+			'Familieneinkommen/Jahr',
+			'Beruf'
+		];
+
+		for (let i = 0; i < data.length; ++i) {
+			if (userData[keys[i]]) {
+				data[i]['value'] = userData[keys[i]];
+			}
+		}
+
+		buttons[0].label = 'Fertig';
+	});
+
+	onDestroy(async () => {
+		await users.save();
+	});
+
+	// this can, but does not have to, come from a database later.
+	const data = [
+		{
+			component: Select,
+			value: null,
+			props: {
+				name: 'Geburtsjahr',
+				items: numericalRange(100, 1960, 1, true),
+				placeholder: 'Bitte auswählen',
+				label: 'Geburtsjahr',
+				required: true
+			}
+		},
+		{
+			component: Select,
+			value: null,
+			props: {
+				name: 'Geschlecht',
+				items: ['männlich', 'weiblich', 'divers', 'Andere'].map((v) => {
+					return { name: String(v), value: v };
+				}),
+				placeholder: 'Bitte auswählen',
+				label: 'Geschlecht',
+				required: true,
+				textTrigger: 'Andere'
+			}
+		},
+		{
+			component: Select,
+			value: null,
+			props: {
+				name: 'Höchster Bildungsabschluss',
+				items: [
+					'kein Schulabschluss',
+					'Hauptschulabschluss',
+					'Realschulabschluss',
+					'Abitur',
+					'Bachelor',
+					'Master',
+					'Promotion',
+					'Anderer'
+				].map((v) => {
+					return { name: String(v), value: v };
+				}),
+				placeholder: 'Bitte auswählen',
+				required: true,
+				label: 'Höchster Bildungsabschluss',
+				textTrigger: 'Anderer'
+			}
+		},
+
+		{
+			component: Select,
+			value: null,
+			props: {
+				name: 'Arbeitszeit/Woche',
+				items: intervalRange(13, 0, 5, true),
+				placeholder: 'Bitte auswählen',
+				label: 'Arbeitszeit/Woche',
+				required: true,
+				textTrigger: 'Andere'
+			}
+		},
+		{
+			component: Select,
+			value: null,
+			props: {
+				name: 'Familieneinkommen/Jahr',
+				items: intervalRange(23, 0, 5000, true),
+				placeholder: 'Bitte auswählen',
+				label: 'Familieneinkommen/Jahr',
+				required: true,
+				textTrigger: 'Anderes'
+			}
+		},
+
+		{
+			component: Input,
+			value: null,
+			props: {
+				name: 'Beruf',
+				type: 'text',
+				placeholder: 'Geben sie ihren Beruf an',
+				label: 'Beruf',
+				required: true
+			}
+		}
+	];
+
+	// validation / data acceptance
+
+	const heading = 'Benutzerdaten eingeben';
 
 	let missingValues = data.map(() => false);
 
@@ -183,15 +223,13 @@
 		<form class="m-1 mx-auto w-full flex-col space-y-6">
 			{#each data as element, i}
 				<DataInput
-					component={'items' in element ? Select : Input}
-					bind:value={inputValues[i]}
-					label={element.label}
-					properties={'items' in element
-						? {
-								items: element.items,
-								required: element.required
-							}
-						: { required: element.required }}
+					component={element.component}
+					bind:value={element.value}
+					label={element.props.label}
+					properties={element.props}
+					textTrigger={element.props.textTrigger}
+					showTextField={element.value !== null &&
+						element.props.items?.some((item) => item.value === element.value) === false}
 				/>
 			{/each}
 		</form>
