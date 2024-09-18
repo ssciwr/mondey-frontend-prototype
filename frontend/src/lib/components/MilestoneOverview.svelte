@@ -14,13 +14,12 @@
 		} else {
 			return data.filter((item) => {
 				// button label contains info about completion status => use for search
-				return item.header.includes(key) || item.button.toLowerCase().includes(key.toLowerCase());
+				return (
+					item.header.toLowerCase().includes(key.toLowerCase()) ||
+					item.button.toLowerCase().includes(key.toLowerCase())
+				);
 			});
 		}
-	}
-
-	function sortData(data: object[]): object[] {
-		return data;
 	}
 
 	// FIXME: this must go eventually. Either must happen in the backend or there
@@ -92,6 +91,7 @@
 			})}
 			searchPlaceHolder={'Nach Status (Fertig/Noch nicht bearbeitet) oder Titel durchsuchen'}
 			withSearch={true}
+			{filterData}
 		/>
 	</div>
 </div>

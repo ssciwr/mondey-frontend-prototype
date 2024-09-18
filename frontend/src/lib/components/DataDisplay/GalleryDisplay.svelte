@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { Gallery, Heading, Search } from 'flowbite-svelte';
 
-	export function filterData(data, col, searchTerm) {
+	export let filterData = (data, col, searchTerm) => {
 		if (searchTerm === '') {
 			return data;
 		} else {
 			return data.filter((item) => item[col].toLowerCase().includes(searchTerm.toLowerCase()));
 		}
-	}
+	};
 
 	export let data;
 	export let header: string | null = null;
