@@ -4,7 +4,7 @@
 	import imgHead from '$lib/assets/baby2.jpg';
 
 	import MilestoneGroup from '$lib/components/MilestoneGroup.svelte';
-	const breadcrumpdata: any[] = [
+	const breadcrumbdata: any[] = [
 		{
 			href: `${base}/userLand/userDataInput`,
 			label: 'Benutzer'
@@ -95,5 +95,5 @@
 </script>
 
 <div class="flex items-center justify-center">
-	<MilestoneGroup {breadcrumpdata} {milestonedata} />
+	<MilestoneGroup {breadcrumbdata} {milestonedata} />
 </div>
