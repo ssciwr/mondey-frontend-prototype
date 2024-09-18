@@ -4,7 +4,7 @@
 	import imgHead from '$lib/assets/baby2.jpg';
 
 	import MilestoneGroup from '$lib/components/MilestoneGroup.svelte';
-	let breadcrumpdata: any[] = [
+	const breadcrumpdata: any[] = [
 		{
 			href: `${base}/userLand/userDataInput`,
 			label: 'Benutzer'
@@ -24,7 +24,7 @@
 	];
 
 	// this is a list of data that can be fetched by the component later.
-	let milestonedata: any[] = [
+	const milestonedata: any[] = [
 		{
 			header: 'Grobmotorik',
 			summary: 'something something',
