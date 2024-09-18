@@ -1,15 +1,13 @@
-<script context="module">
-	export function filterDataByColumn(data, col, searchTerm) {
+<script lang="ts">
+	import { Gallery, Heading, Search } from 'flowbite-svelte';
+
+	export function filterData(data, col, searchTerm) {
 		if (searchTerm === '') {
 			return data;
 		} else {
 			return data.filter((item) => item[col].toLowerCase().includes(searchTerm.toLowerCase()));
 		}
 	}
-</script>
-
-<script lang="ts">
-	import { Gallery, Heading, Search } from 'flowbite-svelte';
 
 	export let data;
 	export let header: string | null = null;
@@ -17,14 +15,14 @@
 	export let withSearch = true;
 	export let searchableCol = '';
 	export let componentProps;
+	export let searchPlaceHolder = 'Durchsuchen';
 
 	// dynamic statements
 	let searchTerm = '';
-	$: filteredItems =
-		withSearch === true ? filterDataByColumn(data, searchableCol, searchTerm) : data;
+	$: filteredItems = withSearch === true ? filterData(data, searchableCol, searchTerm) : data;
 </script>
 
-<div class="mx-auto max-w-7xl p-4">
+<div class="mx-auto p-4">
 	{#if header !== null}
 		<Heading
 			tag="h1"
@@ -38,7 +36,7 @@
 
 	{#if withSearch}
 		<form class="m-2 mt-4 flex w-full gap-2 p-2">
-			<Search size="md" placeholder={'Durchsuchen'} bind:value={searchTerm} />
+			<Search size="md" placeholder={searchPlaceHolder} bind:value={searchTerm} />
 		</form>
 	{/if}
 
