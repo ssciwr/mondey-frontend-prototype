@@ -1,0 +1,51 @@
+from __future__ import annotations
+
+from fastapi import APIRouter
+from fastapi import HTTPException
+from sqlmodel import col
+from sqlmodel import select
+
+from mondey_backend.models.milestones import Milestone
+from mondey_backend.models.milestones import MilestoneGroup
+from mondey_backend.models.milestones import MilestoneGroupPublic
+from mondey_backend.models.milestones import MilestonePublic
+
+from ..dependencies import SessionDep
+
+router = APIRouter(tags=["milestones"])
+
+
+@router.get("/milestones/", response_model=list[MilestonePublic])
+def get_milestones(
+    session: SessionDep,
+):
+    milestones = session.exec(select(Milestone).order_by(col(Milestone.order))).all()
+    return milestones
+
+
+@router.get("/milestones/{milestone_id}", response_model=MilestonePublic)
+def read_milestone(session: SessionDep, milestone_id: int):
+    milestone = session.get(Milestone, milestone_id)
+    if not milestone:
+        raise HTTPException(
+            status_code=404, detail=f"Milestone with id {milestone_id} not found"
+        )
+    return milestone
+
+
+@router.get("/milestone-groups/", response_model=list[MilestoneGroupPublic])
+def get_milestone_groups(session: SessionDep):
+    milestone_groups = session.exec(
+        select(MilestoneGroup).order_by(col(MilestoneGroup.order))
+    ).all()
+    return milestone_groups
+
+
+@router.get(
+    "/milestone-groups/{milestone_group_id}", response_model=MilestoneGroupPublic
+)
+def read_milestone_group(session: SessionDep, milestone_group_id: int):
+    milestone_group = session.get(MilestoneGroup, milestone_group_id)
+    if not milestone_group:
+        raise HTTPException(status_code=404, detail="milestone_group not found")
+    return milestone_group
