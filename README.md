@@ -9,3 +9,4 @@ on every push to the main branch using this [Github Action](.github/workflows/de
 ## Component demos
 
 - [Milestone](https://ssciwr.github.io/mondey-frontend-prototype/milestone)
+- [Milestonegroup](https://ssciwr.github.io/mondey-frontend-prototype/milestonegroup)
