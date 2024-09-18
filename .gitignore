@@ -163,3 +163,6 @@ dmypy.json
 # ide
 .vscode
 .idea
+
+# sqlite
+*.db

@@ -84,12 +84,13 @@
 			value: [],
 			props: {
 				label: 'Nationalität',
-				items: ['Deutschland', 'Grossbritannien', 'USA', 'China'].map((v) => {
+				items: ['Andere', 'Deutschland', 'Grossbritannien', 'USA', 'China'].map((v) => {
 					return { name: String(v), value: v };
 				}),
 				placeholder: 'Bitte auswählen',
 				key: 'nationality',
-				required: true
+				required: true,
+				textTrigger: 'Andere'
 			}
 		},
 		{
@@ -97,12 +98,15 @@
 			value: [],
 			props: {
 				label: 'Sprache',
-				items: ['Deutsch', 'Englisch (UK)', 'Englisch (Us)', 'Mandarin', 'Arabisch'].map((v) => {
-					return { name: String(v), value: v };
-				}),
+				items: ['Andere', 'Deutsch', 'Englisch (UK)', 'Englisch (Us)', 'Mandarin', 'Arabisch'].map(
+					(v) => {
+						return { name: String(v), value: v };
+					}
+				),
 				placeholder: 'Bitte auswählen',
 				key: 'language',
-				required: true
+				required: true,
+				textTrigger: 'Andere'
 			}
 		},
 		{
@@ -112,6 +116,7 @@
 				label: 'Verhältnis zum Kind',
 				key: 'relationship',
 				items: [
+					'Anderes',
 					'Kind',
 					'Enkelkind',
 					'Neffe/Nichte',
@@ -123,7 +128,8 @@
 					return { name: String(v), value: v };
 				}),
 				placeholder: 'Bitte auswählen',
-				required: true
+				required: true,
+				textTrigger: 'Anderes'
 			}
 		},
 		{
@@ -136,7 +142,8 @@
 				}),
 				placeholder: 'Bitte auswählen',
 				key: 'developmentalIssues',
-				required: true
+				required: true,
+				textTrigger: 'Andere'
 			}
 		},
 		{
@@ -174,6 +181,8 @@
 				summary: await createDummySummary(),
 				current: await createDummyCurrent()
 			});
+
+			console.log(childData);
 			await goto(nextpage as string);
 		} else {
 			showAlert = true;
@@ -294,15 +303,20 @@
 					bind:this={refs[i]}
 					properties={element.props}
 					label={element.props.label}
-					on:change={(event) => {
-						if (!(event.target === null)) {
-							const image = event.target.files[0];
-							// use https://svelte.dev/repl/b17c13d4f1bb40799ccf09e0841ddd90?version=4.2.19
-							let reader = new FileReader();
-							reader.readAsDataURL(image);
-							reader.onload = (e) => {
-								element.value = e.target.result;
-							};
+					eventHandlers={{
+						...element?.eventHandlers,
+						...{
+							'on:change': (event) => {
+								if (!(event.target === null)) {
+									const image = event.target.files[0];
+									// use https://svelte.dev/repl/b17c13d4f1bb40799ccf09e0841ddd90?version=4.2.19
+									let reader = new FileReader();
+									reader.readAsDataURL(image);
+									reader.onload = (e) => {
+										element.value = e.target.result;
+									};
+								}
+							}
 						}
 					}}
 				/>
@@ -311,13 +325,7 @@
 					component={element.component}
 					properties={element.props}
 					label={element.props.label}
-					on:change={(event) => {
-						if (missingValues[i]) {
-							if (element.value !== undefined && element.value !== null && element.value !== '') {
-								missingValues[i] = false;
-							}
-						}
-					}}
+					textTrigger={element.props.textTrigger}
 					bind:value={element.value}
 				/>
 			{/if}
