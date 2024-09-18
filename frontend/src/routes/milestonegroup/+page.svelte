@@ -29,7 +29,7 @@
 			header: 'Grobmotorik',
 			summary: 'something something',
 			image: imgJump,
-			href: `${base}/milestone`,
+			href: `${base}/milestoneoverview`,
 			progress: 0.75
 		},
 		{
@@ -37,28 +37,28 @@
 			summary:
 				'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt',
 			image: null,
-			href: `${base}/milestone`,
+			href: `${base}/milestoneoverview`,
 			progress: 1.0
 		},
 		{
 			header: 'Geistige Grundfunktionen',
 			summary: 'something something',
 			image: imgHead,
-			href: `${base}/milestone`,
+			href: `${base}/milestoneoverview`,
 			progress: 1.0
 		},
 		{
 			header: 'Höhere Denkfunktionen',
 			summary: 'something something',
 			image: null,
-			href: `${base}/milestone`,
+			href: `${base}/milestoneoverview`,
 			progress: 1.0
 		},
 		{
 			header: 'Sprache',
 			summary: 'how much noise the child makes',
 			image: null,
-			href: `${base}/milestone`,
+			href: `${base}/milestoneoverview`,
 			progress: 0.5
 		},
 		{
@@ -66,21 +66,21 @@
 			summary:
 				'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit.',
 			image: imgHead,
-			href: `${base}/milestone`,
+			href: `${base}/milestoneoverview`,
 			progress: 0.3
 		},
 		{
 			header: 'Selbstregulation',
 			summary: 'something something',
 			image: null,
-			href: `${base}/milestone`,
+			href: `${base}/milestoneoverview`,
 			progress: 0.6
 		},
 		{
 			header: 'Emotionen',
 			summary: 'something something',
 			image: null,
-			href: `${base}/milestone`,
+			href: `${base}/milestoneoverview`,
 			progress: 0.9
 		},
 		{
@@ -88,7 +88,7 @@
 			summary:
 				'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit.',
 			image: null,
-			href: `${base}/milestone`,
+			href: `${base}/milestoneoverview`,
 			progress: 0.3
 		}
 	];

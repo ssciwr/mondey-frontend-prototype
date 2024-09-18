@@ -1,5 +1,5 @@
 <script>
-	import { Button, Card, Progressbar } from 'flowbite-svelte';
+	import { Button, Card, Progressbar, Tooltip } from 'flowbite-svelte';
 	import { ArrowRightOutline } from 'flowbite-svelte-icons';
 	export let data = {
 		header: undefined,
@@ -24,8 +24,8 @@
 	imgClass="max-md:hidden object-scale-down"
 	href={data.button ? null : data.href}
 	class={data.button
-		? 'm-2 max-w-prose text-gray-700 dark:text-white'
-		: 'hover:transition-color m-2 max-w-prose cursor-pointer text-gray-700 hover:bg-gray-300 dark:text-white dark:hover:bg-gray-600 '}
+		? 'm-2 max-w-prose items-center  text-gray-700 dark:text-white'
+		: 'hover:transition-color m-2 max-w-prose cursor-pointer items-center text-gray-700 hover:bg-gray-300 dark:text-white dark:hover:bg-gray-600 '}
 	{...styleProps.card}
 >
 	{#if data.header}
@@ -40,8 +40,15 @@
 	{/if}
 	{#if data.button}
 		<Button href={data.href} class="w-fit" {...styleProps.button}
-			>{data.button} <ArrowRightOutline class="ms-2 h-6 w-6 text-white" /></Button
-		>
+			>{data.button}
+
+			{#if data.buttonIcon}
+				<svelte:component this={data.buttonIcon} class="ms-2 h-6 w-6 text-white" />
+			{:else}
+				<ArrowRightOutline class="ms-2 h-6 w-6 text-white" />
+			{/if}
+		</Button>
+		<Tooltip>Fortfahren</Tooltip>
 	{/if}
 
 	{#if data.progress}
