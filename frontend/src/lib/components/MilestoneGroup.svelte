@@ -5,17 +5,24 @@
 	export let breadcrumpdata: any[] = [];
 	export let milestonedata: any[] = [];
 
-	// FIXME:styling has no business being here.
+	// FIXME:styling has no business being here... not sure where to put it though given thatparts of it are data dependent
 	export function createStyle(data) {
-		return data.map((item) => ({
-			card: {
-				horizontal: item.image ? true : false,
-				class:
-					'm-2 max-w-prose hover:bg-primary-600 hover:text-white dark:hover:bg-primary-700 dark:text-white text-gray-700'
-			},
-			header: null,
-			summary: null
-		}));
+		return data.map((item) => {
+			return {
+				card: {
+					class: 'm-2 max-w-prose dark:text-white text-gray-700 '
+				},
+				header: null,
+				summary: null,
+				progress: {
+					labelInsideClass: 'h-4 rounded-full text-xs text-center text-white',
+					size: 'h-4',
+					divClass: `h-full rounded-full w-${100 * item.progress}`,
+					color: 'primary',
+					completeColor: 'green'
+				}
+			};
+		});
 	}
 </script>
 

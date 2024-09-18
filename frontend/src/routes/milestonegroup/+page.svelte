@@ -14,7 +14,7 @@
 			label: 'Kinderübersicht'
 		},
 		{
-			href: '`',
+			href: '#',
 			label: 'Meike'
 		},
 		{
@@ -23,6 +23,7 @@
 		}
 	];
 
+	// this is a list of data that can be fetched by the component later.
 	let milestonedata: any[] = [
 		{
 			header: 'Grobmotorik',
