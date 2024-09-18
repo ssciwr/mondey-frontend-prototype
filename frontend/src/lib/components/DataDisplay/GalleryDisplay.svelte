@@ -9,8 +9,7 @@
 </script>
 
 <script lang="ts">
-	import { Button, Gallery, Heading, Search } from 'flowbite-svelte';
-	import { SearchOutline } from 'flowbite-svelte-icons';
+	import { Gallery, Heading, Search } from 'flowbite-svelte';
 
 	export let data;
 	export let header: string | null = null;
@@ -40,9 +39,6 @@
 	{#if withSearch}
 		<form class="m-2 mt-4 flex w-full gap-2 p-2">
 			<Search size="md" placeholder={'Durchsuchen'} bind:value={searchTerm} />
-			<Button class="!p-2.5">
-				<SearchOutline class=" h-6 w-6" />
-			</Button>
 		</form>
 	{/if}
 
