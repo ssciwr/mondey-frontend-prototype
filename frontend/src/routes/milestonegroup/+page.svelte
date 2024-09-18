@@ -1,18 +1,24 @@
 <script lang="ts">
 	import { base } from '$app/paths';
-	import MilestoneGroup from '$lib/components/MilestoneGroup.svelte';
+	import imgJump from '$lib/assets/baby0.jpg';
+	import imgHead from '$lib/assets/baby2.jpg';
 
+	import MilestoneGroup from '$lib/components/MilestoneGroup.svelte';
 	let breadcrumpdata: any[] = [
 		{
-			href: `${base}/childrengallery/`,
-			label: 'Übersicht'
+			href: `${base}/userLand/userDataInput`,
+			label: 'Benutzer'
 		},
 		{
-			href: '#',
+			href: `${base}/childrengallery`,
+			label: 'Kinderübersicht'
+		},
+		{
+			href: '`',
 			label: 'Meike'
 		},
 		{
-			href: '#',
+			href: `${base}/milestonegroup`,
 			label: 'Bereichsübersicht'
 		}
 	];
@@ -21,64 +27,67 @@
 		{
 			header: 'Grobmotorik',
 			summary: 'something something',
-			image: null,
-			href: `{$_("milestone.milestones")}`,
+			image: imgJump,
+			href: `${base}/milestone`,
 			progress: 0.75
 		},
 		{
 			header: 'Feinmotorik',
-			summary: 'something something',
+			summary:
+				'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt',
 			image: null,
-			href: `{$_("milestone.milestones")}`,
+			href: `${base}/milestone`,
 			progress: 1.0
 		},
 		{
 			header: 'Geistige Grundfunktionen',
 			summary: 'something something',
-			image: null,
-			href: `{$_("milestone.milestones")}`,
+			image: imgHead,
+			href: `${base}/milestone`,
 			progress: 1.0
 		},
 		{
 			header: 'Höhere Denkfunktionen',
 			summary: 'something something',
 			image: null,
-			href: `{$_("milestone.milestones")}`,
+			href: `${base}/milestone`,
 			progress: 1.0
 		},
 		{
 			header: 'Sprache',
 			summary: 'how much noise the child makes',
 			image: null,
-			href: `{$_("milestone.milestones")}`,
+			href: `${base}/milestone`,
 			progress: 0.5
 		},
 		{
 			header: 'Soziale Entwicklung',
-			summary: 'something something',
-			image: null,
-			href: `{$_("milestone.milestones")}`,
+			summary:
+				'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit.',
+			image: imgHead,
+			href: `${base}/milestone`,
 			progress: 0.3
 		},
 		{
 			header: 'Selbstregulation',
 			summary: 'something something',
 			image: null,
-			href: `{$_("milestone.milestones")}`,
+			href: `${base}/milestone`,
 			progress: 0.6
 		},
 		{
 			header: 'Emotionen',
 			summary: 'something something',
 			image: null,
-			href: `{$_("milestone.milestones")}`,
+			href: `${base}/milestone`,
 			progress: 0.9
 		},
 		{
 			header: 'Vorläuferfertigkeiten Schule',
-			summary: 'something something',
+			summary:
+				'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit.',
 			image: null,
-			href: `{$_("milestone.milestones")}`,
+			href: `${base}/milestone`,
 			progress: 0.3
 		}
 	];
