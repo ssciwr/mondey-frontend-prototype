@@ -143,7 +143,10 @@ def read_milestone_group(
 ):
     milestone_group = session.get(MilestoneGroup, milestone_group_id)
     if not milestone_group:
-        raise HTTPException(status_code=404, detail="milestone_group not found")
+        raise HTTPException(
+            status_code=404,
+            detail=f"MilestoneGroup with id {milestone_group_id} not found",
+        )
     return milestone_group
 
 
