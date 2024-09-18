@@ -14,7 +14,8 @@
 		card: {},
 		header: {},
 		summary: {},
-		button: {}
+		button: {},
+		progress: {}
 	};
 </script>
 
@@ -23,8 +24,8 @@
 	imgClass="max-md:hidden object-scale-down"
 	href={data.button ? null : data.href}
 	class={data.button
-		? 'm-2 max-w-prose'
-		: 'hover:transition-color m-2 max-w-prose cursor-pointer hover:bg-gray-300 dark:hover:bg-gray-600'}
+		? 'm-2 max-w-prose text-gray-700 dark:text-white'
+		: 'hover:transition-color m-2 max-w-prose cursor-pointer text-gray-700 hover:bg-gray-300 dark:text-white dark:hover:bg-gray-600 '}
 	{...styleProps.card}
 >
 	{#if data.header}
@@ -46,10 +47,12 @@
 	{#if data.progress}
 		<Progressbar
 			labelInside
-			progress={100 * data.progress}
-			size="h-2.5"
+			progress={String(100 * data.progress)}
 			animate={true}
-			divClass=""
+			color={data.progress === 1 ? styleProps.progress?.completeColor : styleProps.progress?.color}
+			size={styleProps.progress?.size}
+			divClass={styleProps?.progress.divClass}
+			labelInsideClass={styleProps.progress?.labelInsideClass}
 		/>
 	{/if}
 </Card>
