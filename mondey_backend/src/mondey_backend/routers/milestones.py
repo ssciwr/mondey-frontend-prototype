@@ -24,7 +24,7 @@ def get_milestones(
 
 
 @router.get("/milestones/{milestone_id}", response_model=MilestonePublic)
-def read_milestone(session: SessionDep, milestone_id: int):
+def get_milestone(session: SessionDep, milestone_id: int):
     milestone = session.get(Milestone, milestone_id)
     if not milestone:
         raise HTTPException(
@@ -44,7 +44,7 @@ def get_milestone_groups(session: SessionDep):
 @router.get(
     "/milestone-groups/{milestone_group_id}", response_model=MilestoneGroupPublic
 )
-def read_milestone_group(session: SessionDep, milestone_group_id: int):
+def get_milestone_group(session: SessionDep, milestone_group_id: int):
     milestone_group = session.get(MilestoneGroup, milestone_group_id)
     if not milestone_group:
         raise HTTPException(status_code=404, detail="milestone_group not found")

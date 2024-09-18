@@ -10,7 +10,8 @@ from sqlmodel import SQLModel
 from .utils import back_populates
 from .utils import fixed_length_string_field
 
-# Note: models with relationships are defined in the same file to avoid the weird hacks required to make relationships work across files
+# Note: models with relationships are defined in the same file to
+# avoid the weird hacks required to make relationships work across files
 
 
 ## MilestoneGroupText
@@ -154,3 +155,15 @@ class MilestoneImagePublic(MilestoneImageBase):
 
 class MilestoneImageCreate(MilestoneImageBase):
     pass
+
+
+## MilestoneAnswer
+
+
+# class MilestoneAnswer(SQLModel, table=True):
+#     milestone_id: int | None = Field(default=None, foreign_key="milestone.id")
+#     user_id: int | None = Field(default=None, foreign_key="user.id")
+#     created_at: datetime.datetime = Field(
+#         default_factory=datetime.datetime.now,
+#     )
+#     answer: int
