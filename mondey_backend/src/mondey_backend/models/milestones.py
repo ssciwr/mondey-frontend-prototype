@@ -13,6 +13,9 @@ from .utils import fixed_length_string_field
 # Note: models with relationships are defined in the same file to avoid the weird hacks required to make relationships work across files
 
 
+## MilestoneGroupText
+
+
 class MilestoneGroupTextBase(SQLModel):
     title: str
     desc: str
@@ -32,6 +35,9 @@ class MilestoneGroupTextCreate(MilestoneGroupTextBase):
 
 class MilestoneGroupTextPublic(MilestoneGroupTextBase):
     pass
+
+
+## MilestoneGroup
 
 
 class MilestoneGroupBase(SQLModel):
@@ -71,11 +77,36 @@ class MilestoneGroupUpdate(SQLModel):
     image: str | None = None
 
 
-class MilestoneBase(SQLModel):
+## MilestoneText
+
+
+class MilestoneTextBase(SQLModel):
     name: str
     desc: str
     observation: str
     help: str
+
+
+class MilestoneText(MilestoneTextBase, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    milestone_id: int | None = Field(
+        default=None, foreign_key="milestone.id", index=True
+    )
+    lang: str = fixed_length_string_field(2, index=True)
+
+
+class MilestoneTextCreate(MilestoneTextBase):
+    lang: str = fixed_length_string_field(2, index=True)
+
+
+class MilestoneTextPublic(MilestoneTextBase):
+    pass
+
+
+## Milestone
+
+
+class MilestoneBase(SQLModel):
     order: int
     group_id: int | None = Field(default=None, foreign_key="milestonegroup.id")
 
@@ -103,6 +134,9 @@ class MilestoneUpdate(SQLModel):
     group_id: int | None = None
 
 
+## MilestoneImage
+
+
 class MilestoneImageBase(SQLModel):
     image: str
     milestone_id: int | None = Field(default=None, foreign_key="milestone.id")
@@ -118,5 +152,5 @@ class MilestoneImagePublic(MilestoneImageBase):
     id: int
 
 
-class MilestoneImageCreate(MilestoneBase):
+class MilestoneImageCreate(MilestoneImageBase):
     pass
