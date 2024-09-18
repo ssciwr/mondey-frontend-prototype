@@ -3,17 +3,18 @@
 	import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
 	import CardDisplay from '$lib/components/DataDisplay/CardDisplay.svelte';
 	import GalleryDisplay from '$lib/components/DataDisplay/GalleryDisplay.svelte';
+	import { Hr } from 'flowbite-svelte';
 	import { CheckCircleSolid, ExclamationCircleSolid } from 'flowbite-svelte-icons';
 
-	import { Heading, Progressbar, Search } from 'flowbite-svelte';
+	import { Heading, Progressbar } from 'flowbite-svelte';
 
-	function filterData(data: object[], key: string): object[] {
+	function filterData(data: object[], dummy: any, key: string): object[] {
 		if (key === '') {
 			return data;
 		} else {
 			return data.filter((item) => {
 				// button label contains info about completion status => use for search
-				return item.header.includes(key) || item.button.includes(key);
+				return item.header.includes(key) || item.button.toLowerCase().includes(key.toLowerCase());
 			});
 		}
 	}
@@ -38,25 +39,28 @@
 
 	export let breadcrumbdata: object[] = [];
 	export let data: object[] = [];
-	export let searchTerm: string = '';
 	export let progress: number;
 	export let title: string;
 	export let desc: string;
 
 	const rawdata = convertData(data); // FIXME: this step should not be here
-	$: filteredItems = sortData(filterData(rawdata, searchTerm));
 </script>
 
-<div class="flex flex-col border border-gray-200 md:rounded-t-lg dark:border-gray-700">
+<div class="mx-auto flex flex-col border border-gray-200 p-4 md:rounded-t-lg dark:border-gray-700">
 	<Breadcrumbs data={breadcrumbdata} />
-	<div class="grid gap-y-8 p-4">
+	<div class="grid gap-y-4 p-4">
 		<Heading
 			tag="h1"
 			class="m-1 mb-3 p-1 px-6 font-bold tracking-tight text-gray-700 dark:text-white"
 			>{title}</Heading
 		>
 		<p class="px-6 text-gray-700 dark:text-white">{desc}</p>
+
 		<div class="px-6">
+			<div class="text-xl text-gray-700 dark:text-white">
+				<Hr classHr="my-8 w-full">Grad der Fertigstellung</Hr>
+			</div>
+
 			<Progressbar
 				labelInsideClass="h-6 rounded-full text-md text-center text-white"
 				size="h-6"
@@ -67,28 +71,27 @@
 				animate={true}
 			/>
 		</div>
-		<div class="px-6">
-			<Search
-				size="md"
-				placeholder={'Nach Status oder Titel durchsuchen'}
-				bind:value={searchTerm}
-			/>
+
+		<div class="px-6 text-xl text-gray-700 dark:text-white">
+			<Hr classHr="my-8 w-full">Einzelne Meilensteine</Hr>
 		</div>
 
 		<GalleryDisplay
-			data={filteredItems}
+			data={rawdata}
+			desc={null}
 			itemComponent={CardDisplay}
-			componentProps={filteredItems.map((item) => {
+			componentProps={rawdata.map((item) => {
 				return {
 					card: {
-						class: 'm-2 max-w-prose dark:text-white text-gray-700 '
+						class: 'm-2 max-w-prose dark:text-white text-gray-700'
 					},
 					button: {
 						color: item.button === 'Fertig' ? 'green' : 'primary'
 					}
 				};
 			})}
-			withSearch={false}
+			searchPlaceHolder={'Nach Status (Fertig/Noch nicht bearbeitet) oder Titel durchsuchen'}
+			withSearch={true}
 		/>
 	</div>
 </div>
