@@ -12,8 +12,8 @@ from fastapi_users.authentication import BearerTransport
 from fastapi_users.authentication import JWTStrategy
 from fastapi_users.db import SQLAlchemyUserDatabase
 
-from .db import User
-from .db import get_user_db
+from .databases.users import User
+from .databases.users import get_user_db
 
 SECRET = "SECRET"
 

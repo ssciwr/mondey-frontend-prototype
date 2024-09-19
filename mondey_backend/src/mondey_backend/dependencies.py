@@ -5,11 +5,11 @@ from typing import Annotated
 from fastapi import Depends
 from sqlmodel import Session
 
-from .database import engine
+from .databases.milestones import engine as milestones_engine
 
 
 def get_session():
-    with Session(engine) as session:
+    with Session(milestones_engine) as session:
         yield session
 
 

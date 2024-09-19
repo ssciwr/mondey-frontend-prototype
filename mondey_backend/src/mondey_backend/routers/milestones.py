@@ -5,12 +5,11 @@ from fastapi import HTTPException
 from sqlmodel import col
 from sqlmodel import select
 
-from mondey_backend.models.milestones import Milestone
-from mondey_backend.models.milestones import MilestoneGroup
-from mondey_backend.models.milestones import MilestoneGroupPublic
-from mondey_backend.models.milestones import MilestonePublic
-
 from ..dependencies import SessionDep
+from ..models.milestones import Milestone
+from ..models.milestones import MilestoneGroup
+from ..models.milestones import MilestoneGroupPublic
+from ..models.milestones import MilestonePublic
 
 router = APIRouter(tags=["milestones"])
 

@@ -5,19 +5,18 @@ from fastapi import HTTPException
 from sqlmodel import col
 from sqlmodel import select
 
-from mondey_backend.models.milestones import Milestone
-from mondey_backend.models.milestones import MilestoneCreate
-from mondey_backend.models.milestones import MilestoneGroup
-from mondey_backend.models.milestones import MilestoneGroupAdmin
-from mondey_backend.models.milestones import MilestoneGroupCreate
-from mondey_backend.models.milestones import MilestoneGroupPublic
-from mondey_backend.models.milestones import MilestoneGroupText
-from mondey_backend.models.milestones import MilestoneGroupTextCreate
-from mondey_backend.models.milestones import MilestoneGroupUpdate
-from mondey_backend.models.milestones import MilestonePublic
-from mondey_backend.models.milestones import MilestoneUpdate
-
 from ..dependencies import SessionDep
+from ..models.milestones import Milestone
+from ..models.milestones import MilestoneCreate
+from ..models.milestones import MilestoneGroup
+from ..models.milestones import MilestoneGroupAdmin
+from ..models.milestones import MilestoneGroupCreate
+from ..models.milestones import MilestoneGroupPublic
+from ..models.milestones import MilestoneGroupText
+from ..models.milestones import MilestoneGroupTextCreate
+from ..models.milestones import MilestoneGroupUpdate
+from ..models.milestones import MilestonePublic
+from ..models.milestones import MilestoneUpdate
 
 router = APIRouter(prefix="/admin", tags=["admin"])
 

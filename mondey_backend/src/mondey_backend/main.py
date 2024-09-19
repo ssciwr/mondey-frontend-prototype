@@ -8,52 +8,28 @@ import uvicorn
 from fastapi import Depends
 from fastapi import FastAPI
 
-from .database import create_database
-from .db import User
-from .db import create_db_and_tables
+from .databases.milestones import create_database
+from .databases.users import User
+from .databases.users import create_user_db_and_tables
 from .routers import admin
+from .routers import auth
 from .routers import milestones
-from .schemas import UserCreate
-from .schemas import UserRead
-from .schemas import UserUpdate
-from .users import auth_backend
+from .routers import users
 from .users import current_active_user
-from .users import fastapi_users
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     create_database()
-    await create_db_and_tables()
+    await create_user_db_and_tables()
     yield
 
 
 app = FastAPI(lifespan=lifespan, title="MONDEY API")
 app.include_router(milestones.router)
 app.include_router(admin.router)
-app.include_router(
-    fastapi_users.get_auth_router(auth_backend), prefix="/auth/jwt", tags=["auth"]
-)
-app.include_router(
-    fastapi_users.get_register_router(UserRead, UserCreate),
-    prefix="/auth",
-    tags=["auth"],
-)
-app.include_router(
-    fastapi_users.get_reset_password_router(),
-    prefix="/auth",
-    tags=["auth"],
-)
-app.include_router(
-    fastapi_users.get_verify_router(UserRead),
-    prefix="/auth",
-    tags=["auth"],
-)
-app.include_router(
-    fastapi_users.get_users_router(UserRead, UserUpdate),
-    prefix="/users",
-    tags=["users"],
-)
+app.include_router(users.router)
+app.include_router(auth.router)
 
 
 @app.get("/authenticated-route")

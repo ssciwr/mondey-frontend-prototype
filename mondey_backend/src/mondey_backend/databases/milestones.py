@@ -3,7 +3,7 @@ from __future__ import annotations
 from sqlmodel import SQLModel
 from sqlmodel import create_engine
 
-from . import MONDEY_DATABASE_PATH
+from mondey_backend import MONDEY_DATABASE_PATH
 
 engine = create_engine(
     f"sqlite:///{MONDEY_DATABASE_PATH}/mondey.db",
