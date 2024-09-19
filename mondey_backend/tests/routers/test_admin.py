@@ -1,7 +1,7 @@
 from fastapi.testclient import TestClient
 
 
-def test_post_milestone_groups(client: TestClient):
+def test_post_milestone_groups(admin_client: TestClient):
     data = {
         "group": {"image": None},
         "text": [
@@ -9,10 +9,10 @@ def test_post_milestone_groups(client: TestClient):
             {"lang": "de", "title": "title2", "desc": "desc2"},
         ],
     }
-    response = client.post("/admin/milestone-groups/", json=data)
+    response = admin_client.post("/admin/milestone-groups/", json=data)
     assert response.status_code == 200
     assert response.json() == {
-        "id": 1,
+        "id": 3,
         "order": 0,
         "image": None,
         "text": {
@@ -23,8 +23,8 @@ def test_post_milestone_groups(client: TestClient):
     }
 
 
-def test_get_milestone_groups(client_with_db: TestClient):
-    response = client_with_db.get("/admin/milestone-groups/")
+def test_get_milestone_groups(admin_client: TestClient):
+    response = admin_client.get("/admin/milestone-groups/")
     assert response.status_code == 200
     assert len(response.json()) == 2
     group1, group2 = response.json()
@@ -57,13 +57,18 @@ def test_get_milestone_groups(client_with_db: TestClient):
     }
 
 
-def test_admin_delete_milestone_group(client_with_db: TestClient):
-    assert client_with_db.get("/milestone-groups/2").status_code == 200
-    response = client_with_db.delete("/admin/milestone-groups/2")
+def test_admin_delete_milestone_group(admin_client: TestClient):
+    assert admin_client.get("/milestone-groups/2").status_code == 200
+    response = admin_client.delete("/admin/milestone-groups/2")
     assert response.status_code == 200
-    assert client_with_db.get("/milestone-groups/2").status_code == 404
+    assert admin_client.get("/milestone-groups/2").status_code == 404
 
 
-def test_admin_delete_milestone_group_invalid_id(client_with_db: TestClient):
-    response = client_with_db.delete("/admin/milestone-groups/692")
+def test_admin_delete_milestone_group_invalid_group_id(admin_client: TestClient):
+    response = admin_client.delete("/admin/milestone-groups/692")
     assert response.status_code == 404
+
+
+def test_admin_delete_milestone_group_invalid_admin_user(user_client: TestClient):
+    response = user_client.delete("/admin/milestone-groups/2")
+    assert response.status_code == 401

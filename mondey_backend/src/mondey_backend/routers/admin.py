@@ -5,6 +5,7 @@ from fastapi import HTTPException
 from sqlmodel import col
 from sqlmodel import select
 
+from ..dependencies import AdminDep
 from ..dependencies import SessionDep
 from ..models.milestones import Milestone
 from ..models.milestones import MilestoneCreate
@@ -18,7 +19,7 @@ from ..models.milestones import MilestoneGroupUpdate
 from ..models.milestones import MilestonePublic
 from ..models.milestones import MilestoneUpdate
 
-router = APIRouter(prefix="/admin", tags=["admin"])
+router = APIRouter(prefix="/admin", tags=["admin"], dependencies=[AdminDep])
 
 
 @router.post("/milestones/", response_model=MilestonePublic)

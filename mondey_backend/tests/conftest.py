@@ -2,10 +2,13 @@ from __future__ import annotations
 
 import pytest
 from fastapi.testclient import TestClient
+from mondey_backend.dependencies import current_active_superuser
+from mondey_backend.dependencies import current_active_user
 from mondey_backend.dependencies import get_session
 from mondey_backend.main import app
 from mondey_backend.models.milestones import MilestoneGroup
 from mondey_backend.models.milestones import MilestoneGroupText
+from mondey_backend.models.users import UserRead
 from sqlmodel import Session
 from sqlmodel import SQLModel
 from sqlmodel import create_engine
@@ -19,45 +22,57 @@ def session():
         "sqlite://",
         connect_args={"check_same_thread": False},
         poolclass=StaticPool,
-        echo=True,
+        echo=False,
     )
     SQLModel.metadata.create_all(engine)
     with Session(engine) as session:
+        # add some test data to the database
+        session.add(MilestoneGroup(order=2, image=None))
+        session.add(MilestoneGroupText(group_id=1, lang="de", title="t1", desc="d1"))
+        session.add(MilestoneGroupText(group_id=1, lang="en", title="t2", desc="d2"))
+        session.add(MilestoneGroup(order=1, image=None))
+        session.add(MilestoneGroupText(group_id=2, lang="de", title="t3", desc="d3"))
+        session.add(MilestoneGroupText(group_id=2, lang="en", title="t4", desc="d4"))
+        session.add(MilestoneGroupText(group_id=2, lang="fr", title="t5", desc="d5"))
+        session.commit()
         yield session
 
 
 @pytest.fixture
-def session_with_db(session: Session):
-    session.add(MilestoneGroup(order=2, image=None))
-    session.add(MilestoneGroupText(group_id=1, lang="de", title="t1", desc="d1"))
-    session.add(MilestoneGroupText(group_id=1, lang="en", title="t2", desc="d2"))
-    session.add(MilestoneGroup(order=1, image=None))
-    session.add(MilestoneGroupText(group_id=2, lang="de", title="t3", desc="d3"))
-    session.add(MilestoneGroupText(group_id=2, lang="en", title="t4", desc="d4"))
-    session.add(MilestoneGroupText(group_id=2, lang="fr", title="t5", desc="d5"))
-    session.commit()
-    return session
+def admin():
+    UserRead(
+        id=1,
+        email="admin@mondey.de",
+        is_active=True,
+        is_superuser=True,
+        is_verified=True,
+    )
 
 
 @pytest.fixture
-def client(session: Session):
-    def get_session_override():
-        return session
+def user():
+    UserRead(
+        id=2,
+        email="user@mondey.de",
+        is_active=True,
+        is_superuser=False,
+        is_verified=True,
+    )
 
-    app.dependency_overrides[get_session] = get_session_override
 
+@pytest.fixture
+def user_client(session: Session, user: UserRead):
+    app.dependency_overrides[get_session] = lambda: session
+    app.dependency_overrides[current_active_user] = lambda: user
     client = TestClient(app)
     yield client
     app.dependency_overrides.clear()
 
 
 @pytest.fixture
-def client_with_db(session_with_db: Session):
-    def get_session_override():
-        return session_with_db
-
-    app.dependency_overrides[get_session] = get_session_override
-
-    client_with_db = TestClient(app)
-    yield client_with_db
+def admin_client(session: Session, admin: UserRead):
+    app.dependency_overrides[get_session] = lambda: session
+    app.dependency_overrides[current_active_superuser] = lambda: admin
+    client = TestClient(app)
+    yield client
     app.dependency_overrides.clear()

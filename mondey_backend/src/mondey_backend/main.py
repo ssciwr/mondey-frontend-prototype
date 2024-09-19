@@ -1,21 +1,18 @@
 from __future__ import annotations
 
 from contextlib import asynccontextmanager
-from typing import Annotated
 
 import click
 import uvicorn
-from fastapi import Depends
 from fastapi import FastAPI
 
 from .databases.milestones import create_database
-from .databases.users import User
 from .databases.users import create_user_db_and_tables
+from .dependencies import CurrentActiveUserDep
 from .routers import admin
 from .routers import auth
 from .routers import milestones
 from .routers import users
-from .users import current_active_user
 
 
 @asynccontextmanager
@@ -33,7 +30,7 @@ app.include_router(auth.router)
 
 
 @app.get("/authenticated-route")
-async def authenticated_route(user: Annotated[User, Depends(current_active_user)]):
+async def authenticated_route(user: CurrentActiveUserDep):
     return {"message": f"Hello {user.email}!"}
 
 
