@@ -63,7 +63,7 @@
 			<Progressbar
 				labelInsideClass="h-6 rounded-full text-md text-center text-white"
 				size="h-6"
-				divClass={`h-full rounded-full w-${100 * progress}`}
+				divClass={`mb-2 mt-2 h-full rounded-full w-${100 * progress}`}
 				labelInside
 				color={progress === 1 ? 'green' : 'primary'}
 				progress={String(100 * progress)}

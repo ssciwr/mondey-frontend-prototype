@@ -35,7 +35,7 @@
 	{/if}
 
 	{#if withSearch}
-		<form class="m-2 mt-4 flex w-full gap-2 p-2">
+		<form class="m-2 w-full p-4">
 			<Search size="md" placeholder={searchPlaceHolder} bind:value={searchTerm} />
 		</form>
 	{/if}
