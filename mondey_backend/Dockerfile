@@ -10,4 +10,4 @@ COPY . .
 
 RUN pip install .
 
-CMD ["uvicorn", "mondey_backend:app", "--host", "0.0.0.0", "--port", "80", "--proxy-headers"]
+CMD ["mondey-backend", "--host", "0.0.0.0", "--port", "80", "--log-level", "info"]

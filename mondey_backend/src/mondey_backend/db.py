@@ -14,7 +14,7 @@ from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 
-DATABASE_URL = "sqlite+aiosqlite:///./test.db"
+from . import MONDEY_DATABASE_PATH
 
 
 class Base(DeclarativeBase):
@@ -25,7 +25,7 @@ class User(SQLAlchemyBaseUserTable[int], Base):
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
 
 
-engine = create_async_engine(DATABASE_URL)
+engine = create_async_engine(f"sqlite+aiosqlite:///{MONDEY_DATABASE_PATH}/users.db")
 async_session_maker = async_sessionmaker(engine, expire_on_commit=False)
 
 

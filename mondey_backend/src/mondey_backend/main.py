@@ -3,6 +3,7 @@ from __future__ import annotations
 from contextlib import asynccontextmanager
 from typing import Annotated
 
+import click
 import uvicorn
 from fastapi import Depends
 from fastapi import FastAPI
@@ -60,5 +61,39 @@ async def authenticated_route(user: Annotated[User, Depends(current_active_user)
     return {"message": f"Hello {user.email}!"}
 
 
+@click.command()
+@click.option("--host", default="localhost", show_default=True)
+@click.option("--port", default=8000, show_default=True)
+@click.option(
+    "--reload",
+    is_flag=True,
+    help="Enable auto-reload for local development",
+    default=False,
+    show_default=True,
+)
+@click.option(
+    "--log-level",
+    default="info",
+    type=click.Choice(
+        ["trace", "debug", "info", "warning", "error", "critical"], case_sensitive=False
+    ),
+    help="Log level",
+    show_default=True,
+    show_choices=True,
+)
+@click.option(
+    "--workers", help="Number of worker processes", default=1, show_default=True
+)
+def main(host: str, port: int, reload: bool, log_level: str, workers: int):
+    uvicorn.run(
+        "mondey_backend.main:app",
+        host=host,
+        port=port,
+        reload=reload,
+        log_level=log_level,
+        workers=workers,
+    )
+
+
 if __name__ == "__main__":
-    uvicorn.run("main:app", host="0.0.0.0", log_level="info")
+    main()

@@ -24,6 +24,9 @@ tests = [
     "pytest-randomly",
 ]
 
+[project.scripts]
+mondey-backend = "mondey_backend.main:main"
+
 [tool.hatch.version]
 path = "src/mondey_backend/__init__.py"
 

@@ -1,5 +1,3 @@
 __version__ = "0.1.0"
 
-from .main import app
-
-__all__ = ["app"]
+MONDEY_DATABASE_PATH = "./mondey_db"
