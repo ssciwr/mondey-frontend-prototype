@@ -1,11 +1,9 @@
 from __future__ import annotations
 
-import uuid
-
 from fastapi_users import schemas
 
 
-class UserRead(schemas.BaseUser[uuid.UUID]):
+class UserRead(schemas.BaseUser[int]):
     pass
 
 
