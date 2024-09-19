@@ -35,7 +35,7 @@
 			}
 			await users.setLoggedIn(userID);
 			await users.save();
-			goto(`${base}/userLand/userLangingpage/`);
+			goto(`${base}/userLand/userLandingpage/`);
 		}
 	}
 

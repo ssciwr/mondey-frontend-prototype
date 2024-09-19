@@ -1,8 +1,8 @@
 <script lang="ts">
+	import { base } from '$app/paths';
 	import { users } from '$lib/stores/userStore';
 	import { Button, Heading, Listgroup, Popover } from 'flowbite-svelte';
 	import { onDestroy } from 'svelte';
-	import {base} from "$app/paths";
 
 	export let triggeredBy = '';
 	let loggedIn: string | null = users.get()['loggedIn'];
@@ -30,14 +30,14 @@
 			<Listgroup
 				active
 				items={[
-					{ name: 'Übersicht', href: `${base}/childrengallery`, current: true },
+					{ name: 'Übersicht', href: `${base}/userLand/userLandingpage`, current: true },
 					{ name: 'Profil', href: `${base}/userLand/userDataInput` }
 				]}
 				let:item
 			>
 				{item.name}
 			</Listgroup>
-			<Button href="{base}" on:click={logout}>Logout</Button>
+			<Button href={base} on:click={logout}>Logout</Button>
 		</div>
 	{:else}
 		<div class="mx-auto mb-6 flex flex-col items-center justify-center space-y-6">
