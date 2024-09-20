@@ -70,4 +70,4 @@
 	const progress = 0.5;
 </script>
 
-<MilestoneOverview {breadcrumbdata} {data} {progress} {title} {desc} />
+<MilestoneOverview {breadcrumbdata} {data} />

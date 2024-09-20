@@ -3,10 +3,7 @@
 	import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
 	import CardDisplay from '$lib/components/DataDisplay/CardDisplay.svelte';
 	import GalleryDisplay from '$lib/components/DataDisplay/GalleryDisplay.svelte';
-	import { Hr } from 'flowbite-svelte';
 	import { CheckCircleSolid, ExclamationCircleSolid } from 'flowbite-svelte-icons';
-
-	import { Heading, Progressbar } from 'flowbite-svelte';
 
 	function filterData(data: object[], dummy: any, key: string): object[] {
 		if (key === '') {
@@ -14,77 +11,43 @@
 		} else {
 			return data.filter((item) => {
 				// button label contains info about completion status => use for search
-				return (
-					item.header.toLowerCase().includes(key.toLowerCase()) ||
-					item.button.toLowerCase().includes(key.toLowerCase())
-				);
+				return item.header.toLowerCase().includes(key.toLowerCase());
 			});
 		}
 	}
 
 	// FIXME: this must go eventually. Either must happen in the backend or there
-	// should be some other way to deal with it
+	// should be in a refactored version of the card component
 	function convertData(data: object[]): object[] {
 		return data.map((item) => {
 			return {
 				header: item.title,
-				summary: item.desc,
 				href: `${base}/milestone`, // hardcoded link for the moment
-				button: item.answer !== null ? 'Fertig' : 'Noch nicht beantwortet',
-				buttonIcon: item.answer !== null ? CheckCircleSolid : ExclamationCircleSolid
+				complete: item.answer === null,
+				auxilliary: item.answer !== null ? CheckCircleSolid : ExclamationCircleSolid
 			};
 		});
 	}
 
 	export let breadcrumbdata: object[] = [];
 	export let data: object[] = [];
-	export let progress: number;
-	export let title: string;
-	export let desc: string;
-
-	const rawdata = convertData(data); // FIXME: this step should not be here
+	const rawdata = convertData(data); // FIXME: this step should not be here and will be handeled backend-side
 </script>
 
 <div class="mx-auto flex flex-col border border-gray-200 p-4 md:rounded-t-lg dark:border-gray-700">
 	<Breadcrumbs data={breadcrumbdata} />
 	<div class="grid gap-y-4 p-4">
-		<Heading
-			tag="h1"
-			class="m-1 mb-3 p-1 px-6 font-bold tracking-tight text-gray-700 dark:text-white"
-			>{title}</Heading
-		>
-		<p class="px-6 text-gray-700 dark:text-white">{desc}</p>
-
-		<div class="px-6">
-			<div class="text-xl text-gray-700 dark:text-white">
-				<Hr classHr="my-8 w-full">Grad der Fertigstellung</Hr>
-			</div>
-
-			<Progressbar
-				labelInsideClass="h-6 rounded-full text-md text-center text-white"
-				size="h-6"
-				divClass={`mb-2 mt-2 h-full rounded-full w-${100 * progress}`}
-				labelInside
-				color={progress === 1 ? 'green' : 'primary'}
-				progress={String(100 * progress)}
-				animate={true}
-			/>
-		</div>
-
-		<div class="px-6 text-xl text-gray-700 dark:text-white">
-			<Hr classHr="my-8 w-full">Einzelne Meilensteine</Hr>
-		</div>
-
 		<GalleryDisplay
 			data={rawdata}
 			itemComponent={CardDisplay}
 			componentProps={rawdata.map((item) => {
 				return {
 					card: {
-						class: 'm-2 max-w-prose dark:text-white text-gray-700'
+						class: `${item.complete ? 'text-gray-700 hover:bg-gray-100 hover:bg-green' : 'text-white bg-primary-700 bg-opacity-100 hover:bg-green'}`
 					},
-					button: {
-						color: item.button === 'Fertig' ? 'green' : 'primary'
+
+					auxilliary: {
+						class: 'w-14 h-14 '
 					}
 				};
 			})}
