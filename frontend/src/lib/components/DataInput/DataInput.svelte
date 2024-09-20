@@ -12,7 +12,7 @@
 	export let componentClass: string = '';
 	export let textTrigger: string = 'noAdditionalText';
 	export let showTextField: boolean = false;
-	let additionalInput: any = value;
+	export let additionalInput: any = value;
 
 	// data to display and event handlers for dynamcis.
 	export let properties: any = {};
@@ -25,28 +25,6 @@
 	export let checkValid = () => {
 		return true;
 	};
-
-	// internal functionality for managing additional information given via textfield
-	function replaceValue(arrayvalue: any[], target: any, element: any): void {
-		for (let i = 0; i < arrayvalue.length; i++) {
-			if (arrayvalue[i] === target && element) {
-				arrayvalue[i] = element;
-			}
-		}
-	}
-
-	function updateValue(toupdate: any, additionalInput: string): any {
-		if (showTextField) {
-			if (toupdate instanceof Array) {
-				replaceValue(toupdate, textTrigger, additionalInput);
-				return toupdate;
-			} else {
-				return additionalInput as typeof value;
-			}
-		} else {
-			return toupdate;
-		}
-	}
 
 	// functionality for showing the textfield when the trigger is selected
 	function checkShowTextfield(v: any, trigger: string) {
@@ -61,16 +39,6 @@
 	$: valid = value !== undefined && value !== null && value !== '' && checkValid();
 	$: highlight = !valid && properties.required === true;
 	$: showTextField = showTextField || checkShowTextfield(value, textTrigger);
-	// Flag to track initialization
-	let initialized = false;
-
-	// Reactive statement to initialize additionalInput based on value
-	$: {
-		if (!initialized && value !== null) {
-			additionalInput = value;
-			initialized = true;
-		}
-	}
 </script>
 
 {#if label}
@@ -91,11 +59,6 @@
 	/>
 
 	{#if showTextField === true}
-		<Textarea
-			bind:value={additionalInput}
-			on:blur={() => {
-				value = updateValue(value, additionalInput);
-			}}
-		/>
+		<Textarea bind:value={additionalInput} />
 	{/if}
 </div>

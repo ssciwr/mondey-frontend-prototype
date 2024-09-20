@@ -21,7 +21,7 @@
 
 	export let value: any;
 	export let unique: boolean = false;
-	let selected = $$props.items.map(() => false);
+	let selected = $$props.items.map((element: any) => element.value === value);
 </script>
 
 <div
