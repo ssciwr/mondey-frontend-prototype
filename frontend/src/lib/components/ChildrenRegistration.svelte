@@ -332,7 +332,7 @@
 		{/each}
 
 		<Button
-			class="bg-primary-700 hover:bg-primary-800 w-full rounded-lg px-4 py-2 font-semibold text-white"
+			class="w-full rounded-lg bg-primary-700 px-4 py-2 font-semibold text-white hover:bg-primary-800"
 			on:click={submitData}
 			>{'Kind hinzufügen'}
 		</Button>

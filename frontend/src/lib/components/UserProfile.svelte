@@ -2,7 +2,7 @@
 	import { users } from '$lib/stores/userStore';
 	import { Button, Heading, Listgroup, Popover } from 'flowbite-svelte';
 	import { onDestroy } from 'svelte';
-	import {base} from "$app/paths";
+	import { base } from '$app/paths';
 
 	export let triggeredBy = '';
 	let loggedIn: string | null = users.get()['loggedIn'];
@@ -37,7 +37,7 @@
 			>
 				{item.name}
 			</Listgroup>
-			<Button href="{base}" on:click={logout}>Logout</Button>
+			<Button href={base} on:click={logout}>Logout</Button>
 		</div>
 	{:else}
 		<div class="mx-auto mb-6 flex flex-col items-center justify-center space-y-6">
