@@ -5,7 +5,7 @@
 
 	async function getMilestoneGroups() {
 		try {
-			const res = await fetch('http://localhost:8000/admin/milestone-groups/', {
+			const res = await fetch(`${import.meta.env.VITE_MONDEY_API_URL}/admin/milestone-groups/`, {
 				method: 'GET',
 				credentials: 'include',
 				headers: {
@@ -36,7 +36,7 @@
 				<span slot="header">
 					<div class="flex flex-row flex-wrap items-center">
 						<img
-							src={`http://localhost:8000/static/milestone_group_${milestoneGroup.id}.jpg`}
+							src={`${import.meta.env.VITE_MONDEY_API_URL}/static/milestone_group_${milestoneGroup.id}.jpg`}
 							width="100"
 							height="100"
 							alt={milestoneGroup.text.de.title}

@@ -13,16 +13,30 @@ pip install -e .[tests]
 To start a local development server:
 
 ```bash
-mondey-backend --reload
+mondey-backend
 ```
 
-To see the available options (which all just forward to uvicorn options of the same name):
+This will start the backend on [http://localhost:8000](http://localhost:8000),
+which includes a redoc UI for exploring the API and a swagger UI for interacting with it:
+
+- [http://localhost:8000/redoc](http://localhost:8000/redoc)
+- [http://localhost:8000/docs](http://localhost:8000/docs)
+
+## Admin user
+
+The first admin user can only be created by modifying the database directly.
+After you have registered a user using the swagger UI, you can promote them to an admin user with e.g.:
 
 ```bash
-mondey-backend --help
+sqlite3 users.db
+sqlite> UPDATE user SET is_superuser = 1 WHERE email = 'youremail@yourdomain.com';
 ```
 
-The swagger UI will then be available at [http://localhost:8000/docs](http://localhost:8000/docs).
+## Configuration
+
+The backend can be configured using environment variables,
+which can be set in a `.env` file in the working directory where you start the backend.
+Default settings for local development are included in [.env](.env).
 
 ## Tests
 

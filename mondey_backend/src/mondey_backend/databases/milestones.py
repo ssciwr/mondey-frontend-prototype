@@ -3,10 +3,10 @@ from __future__ import annotations
 from sqlmodel import SQLModel
 from sqlmodel import create_engine
 
-from mondey_backend import MONDEY_DATABASE_PATH
+from ..settings import app_settings
 
 engine = create_engine(
-    f"sqlite:///{MONDEY_DATABASE_PATH}/mondey.db",
+    f"sqlite:///{app_settings.MILESTONE_DATABASE_PATH}",
     connect_args={"check_same_thread": False},
 )
 
