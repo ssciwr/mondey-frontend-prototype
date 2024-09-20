@@ -12,16 +12,16 @@
 </script>
 
 <Navbar>
-	<NavBrand href="{base}">
+	<NavBrand href={base}>
 		<img src={logo_light} class="block h-16 dark:hidden" alt="MONDEY Logo" />
 		<img src={logo_dark} class="hidden h-16 dark:block" alt="MONDEY Logo" />
 	</NavBrand>
 	<NavHamburger />
 	<NavUl ulClass="flex space-x-4 text-lg ">
-		<NavLi href="{base}" active={true}>Home</NavLi>
-		<NavLi href="{base}">Aktuelles</NavLi>
-		<NavLi href="{base}">Downloads</NavLi>
-		<NavLi href="{base}">Kontakt</NavLi>
+		<NavLi href={base} active={true}>Home</NavLi>
+		<NavLi href={base}>Aktuelles</NavLi>
+		<NavLi href={base}>Downloads</NavLi>
+		<NavLi href={base}>Kontakt</NavLi>
 
 		<FunctionalIcon tooltip={'Darkmode ein- oder ausschalten'}>
 			<DarkMode class="apply-icon-style">
@@ -36,12 +36,11 @@
 		<UserProfile triggeredBy="#avatar" />
 
 		<LocaleChooser />
-
 	</NavUl>
 </Navbar>
 
 <div
-	class="md:mx-[max(10vw,2rem)] md:my-[max(2vw,2rem)] flex-auto items-center justify-center overflow-y-auto pb-20"
+	class="flex-auto items-center justify-center overflow-y-auto pb-20 md:mx-[max(10vw,2rem)] md:my-[max(2vw,2rem)]"
 >
 	<slot></slot>
 </div>

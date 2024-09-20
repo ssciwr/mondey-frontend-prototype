@@ -1,26 +1,26 @@
 {
-  "milestone": {
-    "answer0": {
-      "text": "Not yet",
-      "description": "The child does not yet make any attempt or is not yet able to carry out the behavior."
-    },
-    "answer1": {
-      "text": "Partially",
-      "description": "The child shows first attempts to perform the behavior, but still deviates considerably from the description and/or is very insecure."
-    },
-    "answer2": {
-      "text": "Mostly",
-      "description": "The child has mastered the behavior in principle, but rarely shows it, is still slightly unsure, or does not carry it out completely correctly."
-    },
-    "answer3": {
-      "text": "Reliably",
-      "description": "The child demonstrates the behavior several times safely and exactly as described."
-    },
-    "milestones": "Milestones",
-    "observation": "Observation notes",
-    "help": "More information",
-    "next": "Next",
-    "prev": "Back",
-    "autonext" : "Continue automatically"
-  }
+	"milestone": {
+		"answer0": {
+			"text": "Not yet",
+			"description": "The child does not yet make any attempt or is not yet able to carry out the behavior."
+		},
+		"answer1": {
+			"text": "Partially",
+			"description": "The child shows first attempts to perform the behavior, but still deviates considerably from the description and/or is very insecure."
+		},
+		"answer2": {
+			"text": "Mostly",
+			"description": "The child has mastered the behavior in principle, but rarely shows it, is still slightly unsure, or does not carry it out completely correctly."
+		},
+		"answer3": {
+			"text": "Reliably",
+			"description": "The child demonstrates the behavior several times safely and exactly as described."
+		},
+		"milestones": "Milestones",
+		"observation": "Observation notes",
+		"help": "More information",
+		"next": "Next",
+		"prev": "Back",
+		"autonext": "Continue automatically"
+	}
 }

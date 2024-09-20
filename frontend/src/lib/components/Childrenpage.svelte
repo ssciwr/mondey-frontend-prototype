@@ -1,4 +1,3 @@
-
 <script context="module">
 	import { base } from '$app/paths';
 	export function convertData(rawdata) {
