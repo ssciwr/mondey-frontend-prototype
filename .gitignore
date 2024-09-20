@@ -166,3 +166,6 @@ dmypy.json
 
 # sqlite
 *.db
+
+# static images
+mondey_backend/static/*.jpg

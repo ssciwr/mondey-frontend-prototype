@@ -5,6 +5,8 @@ from contextlib import asynccontextmanager
 import click
 import uvicorn
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
 from .databases.milestones import create_database
 from .databases.users import create_user_db_and_tables
@@ -27,6 +29,15 @@ app.include_router(milestones.router)
 app.include_router(admin.router)
 app.include_router(users.router)
 app.include_router(auth.router)
+app.mount("/static", StaticFiles(directory="static"), name="static")
+# temporary CORS settings for local development
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.get("/authenticated-route")

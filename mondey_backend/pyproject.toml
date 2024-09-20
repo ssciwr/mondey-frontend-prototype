@@ -15,6 +15,7 @@ dependencies = [
     "uvicorn",
     "sqlmodel",
     "aiosqlite",
+    "python-multipart",
 ]
 dynamic = ["version"]
 

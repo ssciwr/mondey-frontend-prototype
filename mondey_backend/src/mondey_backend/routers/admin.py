@@ -1,7 +1,10 @@
 from __future__ import annotations
 
+import logging
+
 from fastapi import APIRouter
 from fastapi import HTTPException
+from fastapi import UploadFile
 from sqlmodel import col
 from sqlmodel import select
 
@@ -72,6 +75,7 @@ def create_milestone_group(
     group: MilestoneGroupCreate,
     text: list[MilestoneGroupTextCreate],
 ):
+    logging.critical(f"{group}")
     db_milestone_group = MilestoneGroup.model_validate(group)
     session.add(db_milestone_group)
     session.commit()
@@ -112,3 +116,23 @@ def delete_milestone_group(session: SessionDep, milestone_group_id: int):
     session.delete(milestone_group)
     session.commit()
     return {"ok": True}
+
+
+@router.post("/upload-milestone-group-image/{milestone_group_id}")
+async def upload_milestone_group_image(
+    session: SessionDep, milestone_group_id: int, file: UploadFile
+):
+    milestone_group = session.get(MilestoneGroup, milestone_group_id)
+    filename = f"static/milestone_group_{milestone_group_id}.jpg"
+    if not milestone_group:
+        raise HTTPException(status_code=404, detail="milestone_group not found")
+    try:
+        contents = file.file.read()
+        with open(filename, "wb") as f:
+            f.write(contents)
+    except Exception as e:
+        logging.exception(e)
+        raise HTTPException(status_code=404, detail="Error uploading file") from e
+    finally:
+        file.file.close()
+    return {"filename": filename}
