@@ -30,7 +30,7 @@
 	<Breadcrumbs data={breadcrumbdata} />
 	<div class="grid gap-y-8">
 		<GalleryDisplay
-			data={milestonedata}
+			data={milestonedata.sort((a, b) => a.progress - b.progress)}
 			itemComponent={CardDisplay}
 			searchableCol={'header'}
 			componentProps={createStyle(milestonedata)}
