@@ -1,15 +1,13 @@
-<script context="module">
-	export function filterDataByColumn(data, col, searchTerm) {
+<script lang="ts">
+	import { Gallery, Heading, Search } from 'flowbite-svelte';
+
+	export let filterData = (data, col, searchTerm) => {
 		if (searchTerm === '') {
 			return data;
 		} else {
 			return data.filter((item) => item[col].toLowerCase().includes(searchTerm.toLowerCase()));
 		}
-	}
-</script>
-
-<script lang="ts">
-	import { Gallery, Heading, Search } from 'flowbite-svelte';
+	};
 
 	export let data;
 	export let header: string | null = null;
@@ -17,14 +15,20 @@
 	export let withSearch = true;
 	export let searchableCol = '';
 	export let componentProps;
+	export let searchPlaceHolder = 'Durchsuchen';
 
 	// dynamic statements
 	let searchTerm = '';
-	$: filteredItems =
-		withSearch === true ? filterDataByColumn(data, searchableCol, searchTerm) : data;
+	$: filteredItems = withSearch === true ? filterData(data, searchableCol, searchTerm) : data;
+
+	// Create a new array of componentProps that matches the filtered data
+	$: filteredComponentProps = filteredItems.map((item) => {
+		const index = data.indexOf(item);
+		return componentProps[index];
+	});
 </script>
 
-<div class="mx-auto max-w-7xl p-4">
+<div class="mx-auto p-4">
 	{#if header !== null}
 		<Heading
 			tag="h1"
@@ -37,8 +41,8 @@
 	{/if}
 
 	{#if withSearch}
-		<form class="m-2 mt-4 flex w-full gap-2 p-2">
-			<Search size="md" placeholder={'Durchsuchen'} bind:value={searchTerm} />
+		<form class="m-2 w-full p-4">
+			<Search size="md" placeholder={searchPlaceHolder} bind:value={searchTerm} />
 		</form>
 	{/if}
 
@@ -46,7 +50,11 @@
 		class="grid w-full grid-cols-1 justify-center gap-8 p-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
 	>
 		{#each filteredItems as item, index}
-			<svelte:component this={itemComponent} data={item} styleProps={componentProps[index]} />
+			<svelte:component
+				this={itemComponent}
+				data={item}
+				styleProps={filteredComponentProps[index]}
+			/>
 		{/each}
 	</Gallery>
 </div>
