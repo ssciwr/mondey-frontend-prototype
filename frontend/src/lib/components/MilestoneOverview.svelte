@@ -11,7 +11,13 @@
 		} else {
 			return data.filter((item) => {
 				// button label contains info about completion status => use for search
-				return item.header.toLowerCase().includes(key.toLowerCase());
+				if (key === completeKey) {
+					return item.complete === true;
+				} else if (key === incompleteKey) {
+					return item.complete === false;
+				} else {
+					return item.header.toLowerCase().includes(key.toLowerCase());
+				}
 			});
 		}
 	}
@@ -23,15 +29,17 @@
 			return {
 				header: item.title,
 				href: `${base}/milestone`, // hardcoded link for the moment
-				complete: item.answer === null,
+				complete: item.answer !== null,
 				auxilliary: item.answer !== null ? CheckCircleSolid : ExclamationCircleSolid
 			};
 		});
 	}
 
+	const completeKey = 'fertig';
+	const incompleteKey = 'unfertig';
 	export let breadcrumbdata: object[] = [];
 	export let data: object[] = [];
-	const rawdata = convertData(data); // FIXME: this step should not be here and will be handeled backend-side
+	const rawdata = convertData(data).sort((a, b) => a.complete - b.complete); // FIXME: the convert step should not be here and will be handeled backend-side
 </script>
 
 <div class="mx-auto flex flex-col border border-gray-200 p-4 md:rounded-t-lg dark:border-gray-700">
@@ -43,15 +51,16 @@
 			componentProps={rawdata.map((item) => {
 				return {
 					card: {
-						class: `${item.complete ? 'text-gray-700 hover:bg-gray-100 hover:bg-green' : 'text-white bg-primary-700 bg-opacity-100 hover:bg-green'}`
+						class: 'text-gray-700 hover:bg-gray-100'
 					},
 
 					auxilliary: {
-						class: 'w-14 h-14 '
+						class: 'w-14 h-14',
+						color: item.complete === true ? '#4ade80' : '#EB4F27'
 					}
 				};
 			})}
-			searchPlaceHolder={'Nach Status (Fertig/Noch nicht bearbeitet) oder Titel durchsuchen'}
+			searchPlaceHolder={`Nach Status (${completeKey}/${incompleteKey}) oder Titel durchsuchen`}
 			withSearch={true}
 			{filterData}
 		/>

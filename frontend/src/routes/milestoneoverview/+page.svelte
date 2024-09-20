@@ -33,7 +33,7 @@
 				'Beobachten Sie, ob das Kind spontan oder nach Aufforderung von einer Treppenstufe oder einem ähnlich hohen Absatz springt! Es sollte tatsächlich mit beiden Beinen gleichzeitig losspringen, sich nirgends festhalten und beim Landen nicht mit der Hand abfangen. Sie sollten es beim Springen auch nicht an die Hand nehmen müssen. Wurde dieses Verhalten mehrmals sicher ausgeführt, gilt der Meilenstein zuverlässig gekonnt.  Ist das Kind noch leicht unsicher, springt meist mit beiden Beinen versetzt los, oder berührt beim Landen mit der Hand den Boden, ist das Verhalten weitgehend gekonnt. Wagt es den Sprung nur, wenn man seine Hand hält und/oder führt es den Sprung noch unsauber aus, ist das Verhalten in Ansätzen gekonnt. In allen anderen Fällen gilt der Meilenstein als noch nicht gekonnt.',
 			help: 'Beim Treppengehen im Haus, beim Spazierengehen oder auf dem Spielplatz bieten sich vielfältige Gelegenheiten, Kinder zum Springen von einem Absatz (z.B. einem höheren Bordstein. einem Holzstamm, oder einem Stein) zu ermutigen. Machen Sie Ihrem Kind die Bewegung vor oder führen Sie sie gemeinsam mit dem Kind durch. Nehmen Sie das Kind dafür zunächst bei an die Hand. Später können sie die Hand immer lockerer mitführen und die Eigenbewegung des Kindes nur noch passiv begleiten. So kann das Kind am besten selbst herausfinden, wie es seine Arme einsetzen muss, um Schwung zu holen und beim Landen das Gleichgewicht zu finden. Ist das Springen an der Hand sicher, lösen Sie die Hand ganz und stellen Sie sich gegenüber dem Kind hin, damit es weiß, dass es im Notfall aufgefangen wird.',
 			imgs: ['baby0.jpg', 'baby1.jpg', 'baby2.jpg'],
-			answer: null
+			answer: 'Vollständig gekonnt'
 		},
 		{
 			number: 2,
@@ -51,7 +51,7 @@
 			observation: 'Hier kommt der Beobachtungshilfetext hin',
 			help: 'Hier kommt der Förderhilfetext hin',
 			imgs: ['baby2.jpg'],
-			answer: null
+			answer: 'In Ansätzen gekonnt'
 		},
 		{
 			number: 4,

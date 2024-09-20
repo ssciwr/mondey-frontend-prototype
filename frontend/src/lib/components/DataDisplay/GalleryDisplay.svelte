@@ -20,6 +20,12 @@
 	// dynamic statements
 	let searchTerm = '';
 	$: filteredItems = withSearch === true ? filterData(data, searchableCol, searchTerm) : data;
+
+	// Create a new array of componentProps that matches the filtered data
+	$: filteredComponentProps = filteredItems.map((item) => {
+		const index = data.indexOf(item);
+		return componentProps[index];
+	});
 </script>
 
 <div class="mx-auto p-4">
@@ -41,10 +47,14 @@
 	{/if}
 
 	<Gallery
-		class="grid w-full grid-cols-2 justify-center gap-8 p-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4"
+		class="grid w-full grid-cols-1 justify-center gap-8 p-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
 	>
 		{#each filteredItems as item, index}
-			<svelte:component this={itemComponent} data={item} styleProps={componentProps[index]} />
+			<svelte:component
+				this={itemComponent}
+				data={item}
+				styleProps={filteredComponentProps[index]}
+			/>
 		{/each}
 	</Gallery>
 </div>

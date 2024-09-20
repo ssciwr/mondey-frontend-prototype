@@ -35,7 +35,6 @@
 			searchableCol={'header'}
 			componentProps={createStyle(milestonedata)}
 			withSearch={true}
-			header={'Bereichsübersicht'}
 		/>
 	</div>
 </div>

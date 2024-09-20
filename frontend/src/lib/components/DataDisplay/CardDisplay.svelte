@@ -62,4 +62,11 @@
 			labelInsideClass={styleProps.progress?.labelInsideClass}
 		/>
 	{/if}
+
+	<!-- This will be generalized to replace button and progressbar later  -->
+	{#if data.auxilliary}
+		<div class="mb-4 mt-auto flex w-full justify-center">
+			<svelte:component this={data.auxilliary} {...styleProps.auxilliary} />
+		</div>
+	{/if}
 </Card>
