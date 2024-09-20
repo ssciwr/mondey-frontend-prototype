@@ -13,7 +13,8 @@
             isLoggedIn.set(true);
         }
     }
-    updateIsLoggedIn();
+    // commented out for now to avoid breaking github pages build
+    // updateIsLoggedIn();
 
     let isLoggedInValue: boolean;
     const unsubscribe = isLoggedIn.subscribe((value) => {

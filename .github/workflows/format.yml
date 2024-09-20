@@ -28,6 +28,6 @@ jobs:
       - uses: EndBug/add-and-commit@v9
         with:
           add: "*"
-          author_name: "SSC format Bot"
-          author_email: "ssc@iwr.uni-heidelberg.de"
+          author_name: "github-actions[bot]"
+          author_email: "github-actions[bot]@users.noreply.github.com"
           message: "pnpm format"
