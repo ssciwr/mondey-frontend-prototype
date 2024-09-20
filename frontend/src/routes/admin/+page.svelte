@@ -1,6 +1,7 @@
 <script lang="ts">
     import {isLoggedIn} from '$lib/stores/adminStore';
     import MilestoneGroup from '$lib/components/Admin/MilestoneGroup.svelte';
+    import MilestoneGroups from '$lib/components/Admin/MilestoneGroups.svelte';
     import Login from '$lib/components/Admin/Login.svelte'
 
     async function updateIsLoggedIn(){
@@ -21,10 +22,11 @@
 
 </script>
 
-<div class="flex flex-col justify-center items-center">
+<div class="flex flex-col justify-center items-center w-full">
     {#if !isLoggedInValue}
         <Login/>
     {:else}
+        <MilestoneGroups/>
         <MilestoneGroup/>
     {/if}
 </div>
