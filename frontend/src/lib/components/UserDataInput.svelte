@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { base } from '$app/paths';
+	import CheckboxList from '$lib/components//DataInput/CheckboxList.svelte';
 	import AlertMessage from '$lib/components/AlertMessage.svelte';
 	import DataInput from '$lib/components/DataInput/DataInput.svelte';
 	import NavigationButtons from '$lib/components/Navigation/NavigationButtons.svelte';
@@ -103,22 +104,23 @@
 			}
 		},
 		{
-			component: Select,
+			component: CheckboxList,
 			value: null,
 			props: {
 				name: 'Geschlecht',
 				items: ['männlich', 'weiblich', 'divers', 'Andere'].map((v) => {
-					return { name: String(v), value: v };
+					return { label: String(v), value: v };
 				}),
 				placeholder: 'Bitte auswählen',
 				label: 'Geschlecht',
 				required: true,
-				textTrigger: 'Andere'
+				textTrigger: 'Andere',
+				unique: true
 			}
 		},
 		{
-			component: Select,
-			value: null,
+			component: CheckboxList,
+			value: [],
 			props: {
 				name: 'Höchster Bildungsabschluss',
 				items: [
@@ -131,15 +133,15 @@
 					'Promotion',
 					'Anderer'
 				].map((v) => {
-					return { name: String(v), value: v };
+					return { label: String(v), value: v };
 				}),
 				placeholder: 'Bitte auswählen',
 				required: true,
 				label: 'Höchster Bildungsabschluss',
-				textTrigger: 'Anderer'
+				textTrigger: 'Anderer',
+				unique: true
 			}
 		},
-
 		{
 			component: Select,
 			value: null,
@@ -164,7 +166,6 @@
 				textTrigger: 'Anderes'
 			}
 		},
-
 		{
 			component: Input,
 			value: null,
@@ -228,7 +229,9 @@
 					label={element.props.label}
 					properties={element.props}
 					textTrigger={element.props.textTrigger}
-					showTextField={element.value !== null &&
+					showTextField={(Array.isArray(element.value)
+						? element.value.length > 1
+						: element.value !== null) &&
 						element.props.items?.some((item) => item.value === element.value) === false}
 				/>
 			{/each}
