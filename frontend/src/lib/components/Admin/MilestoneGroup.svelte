@@ -21,29 +21,27 @@
         };
     }
 
-    const headers = {
-        "Content-Type": "application/json",
-        'Accept': 'application/json',
-        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwiYXVkIjpbImZhc3RhcGktdXNlcnM6YXV0aCJdLCJleHAiOjE3MjY4Mzc0NTB9.c7EXT2sgaPLXGk2RXTBd0fbr-0o_zJmsoEH-_5HtiMM'
-    };
-
     async function postMilestoneGroup() {
         console.log(milestoneGroupData)
         try {
             const res_milestone_group = await fetch('http://localhost:8000/admin/milestone-groups/', {
                 method: 'POST',
-                headers: headers,
+                credentials: 'include',
+                headers: {
+                    "Content-Type": "application/json",
+                    'Accept': 'application/json',
+                },
                 body: JSON.stringify(milestoneGroupData)
             })
             const new_milestone_group = await res_milestone_group.json()
             console.log(new_milestone_group)
             result = JSON.stringify(new_milestone_group)
             if (files) {
-                var formData = new FormData();
+                let formData = new FormData();
                 formData.append('file', files[0]);
                 const res_milestone_group_image = await fetch(`http://localhost:8000/admin/upload-milestone-group-image/${new_milestone_group.id}`, {
                     method: 'POST',
-                    headers: {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwiYXVkIjpbImZhc3RhcGktdXNlcnM6YXV0aCJdLCJleHAiOjE3MjY4Mzc0NTB9.c7EXT2sgaPLXGk2RXTBd0fbr-0o_zJmsoEH-_5HtiMM'},
+                    credentials: 'include',
                     body: formData
                 })
                 const new_milestone_group_image = await res_milestone_group_image.json()
