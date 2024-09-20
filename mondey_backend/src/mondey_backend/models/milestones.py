@@ -72,10 +72,8 @@ class MilestoneGroupAdmin(MilestoneGroupBase):
     milestones: list[Milestone] = []
 
 
-class MilestoneGroupUpdate(SQLModel):
-    name: str | None = None
-    desc: str | None = None
-    image: str | None = None
+class MilestoneGroupUpdate(MilestoneGroupBase):
+    pass
 
 
 ## MilestoneText

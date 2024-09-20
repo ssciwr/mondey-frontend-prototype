@@ -12,7 +12,6 @@ from ..models.milestones import MilestoneCreate
 from ..models.milestones import MilestoneGroup
 from ..models.milestones import MilestoneGroupAdmin
 from ..models.milestones import MilestoneGroupCreate
-from ..models.milestones import MilestoneGroupPublic
 from ..models.milestones import MilestoneGroupText
 from ..models.milestones import MilestoneGroupTextCreate
 from ..models.milestones import MilestoneGroupUpdate
@@ -59,7 +58,15 @@ def delete_milestone(session: SessionDep, milestone_id: int):
     return {"ok": True}
 
 
-@router.post("/milestone-groups/", response_model=MilestoneGroupPublic)
+@router.get("/milestone-groups/", response_model=list[MilestoneGroupAdmin])
+def get_milestone_groups(session: SessionDep):
+    milestone_groups = session.exec(
+        select(MilestoneGroup).order_by(col(MilestoneGroup.order))
+    ).all()
+    return milestone_groups
+
+
+@router.post("/milestone-groups/", response_model=MilestoneGroupAdmin)
 def create_milestone_group(
     session: SessionDep,
     group: MilestoneGroupCreate,
@@ -78,16 +85,8 @@ def create_milestone_group(
     return db_milestone_group
 
 
-@router.get("/milestone-groups/", response_model=list[MilestoneGroupAdmin])
-def get_admin_milestone_groups(session: SessionDep):
-    milestone_groups = session.exec(
-        select(MilestoneGroup).order_by(col(MilestoneGroup.order))
-    ).all()
-    return milestone_groups
-
-
 @router.patch(
-    "/milestone-groups/{milestone_group_id}", response_model=MilestoneGroupPublic
+    "/milestone-groups/{milestone_group_id}", response_model=MilestoneGroupAdmin
 )
 def update_milestone_group(
     session: SessionDep,
@@ -97,8 +96,7 @@ def update_milestone_group(
     db_milestone_group = session.get(MilestoneGroup, milestone_group_id)
     if not db_milestone_group:
         raise HTTPException(status_code=404, detail="milestone_group not found")
-    milestone_group_data = milestone_group.model_dump(exclude_unset=True)
-    for key, value in milestone_group_data.items():
+    for key, value in milestone_group.model_dump().items():
         setattr(db_milestone_group, key, value)
     session.add(db_milestone_group)
     session.commit()
