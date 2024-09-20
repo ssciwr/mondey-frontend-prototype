@@ -5,6 +5,23 @@
 	export let breadcrumbdata: any[] = [];
 	export let milestonedata: any[] = [];
 
+	function filterData(data: object[], dummy: any, key: string): object[] {
+		if (key === '') {
+			return data;
+		} else {
+			return data.filter((item) => {
+				// button label contains info about completion status => use for search
+				if (key === completeKey) {
+					return item.progress === 1;
+				} else if (key === incompleteKey) {
+					return item.progress < 1;
+				} else {
+					return item.header.toLowerCase().includes(key.toLowerCase());
+				}
+			});
+		}
+	}
+
 	// FIXME:styling has no business being here... not sure where to put it though given thatparts of it are data dependent
 	export function createStyle(data) {
 		return data.map((item) => {
@@ -24,6 +41,9 @@
 			};
 		});
 	}
+
+	const completeKey = 'fertig';
+	const incompleteKey = 'unfertig';
 </script>
 
 <div class="flex flex-col border border-gray-200 md:rounded-t-lg dark:border-gray-700">
@@ -34,7 +54,9 @@
 			itemComponent={CardDisplay}
 			searchableCol={'header'}
 			componentProps={createStyle(milestonedata)}
+			searchPlaceHolder={`Nach Status (${completeKey}/${incompleteKey}) oder Titel durchsuchen`}
 			withSearch={true}
+			{filterData}
 		/>
 	</div>
 </div>
