@@ -22,5 +22,9 @@
 		"next": "Weiter",
 		"prev": "Zurück",
 		"autonext": "Automatisch weiter"
+	},
+	"admin": {
+		"languages": "Sprachen",
+		"milestonegroups": "Meilensteingruppen"
 	}
 }
