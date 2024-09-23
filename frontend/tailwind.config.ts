@@ -33,10 +33,10 @@ export default {
 					900: '#A5371B'
 				},
 				'milestone-answer': {
-					0: '#f0fdf4',
-					1: '#dcfce7',
-					2: '#bbf7d0',
-					3: '#4ade80'
+					0: '#f2e8cf',
+					1: '#cdd993',
+					2: '#a7c957',
+					3: '#6a994e'
 				}
 			},
 			fontSize: {
