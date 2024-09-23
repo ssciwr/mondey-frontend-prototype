@@ -12,7 +12,7 @@
 	export let componentClass: string = '';
 	export let textTrigger: string = 'noAdditionalText';
 	export let showTextField: boolean = false;
-	export let additionalInput: any = null;
+	export let additionalInput: any;
 
 	// data to display and event handlers for dynamcis.
 	export let properties: any = {};
@@ -39,7 +39,9 @@
 	$: valid = value !== undefined && value !== null && value !== '' && checkValid();
 	$: highlight = !valid && properties.required === true;
 	$: showTextField = checkShowTextfield(value);
-	$: value !== textTrigger ? (additionalInput = null) : additionalInput;
+	// $: checkShowTextfield(value) ? (additionalInput = null) : additionalInput;
+	$: console.log('value: ', label, ': ', value);
+	$: console.log('additional:', additionalInput);
 </script>
 
 {#if label}
@@ -50,7 +52,7 @@
 	<svelte:component
 		this={component}
 		class={highlight
-			? 'border-2 border-primary-600 dark:border-primary-600' + componentClass
+			? 'border-primary-600 dark:border-primary-600 border-2' + componentClass
 			: componentClass}
 		bind:value
 		{...properties}
