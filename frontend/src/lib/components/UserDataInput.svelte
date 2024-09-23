@@ -1,41 +1,13 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { base } from '$app/paths';
-	import CheckboxList from '$lib/components//DataInput/CheckboxList.svelte';
 	import AlertMessage from '$lib/components/AlertMessage.svelte';
 	import DataInput from '$lib/components/DataInput/DataInput.svelte';
 	import NavigationButtons from '$lib/components/Navigation/NavigationButtons.svelte';
 	import { users, type UserData } from '$lib/stores/userStore';
-	import { Card, Heading, Input, Select } from 'flowbite-svelte';
-	import { onDestroy, onMount } from 'svelte';
+	import { Card, Heading } from 'flowbite-svelte';
+	import { afterUpdate, onDestroy, onMount } from 'svelte';
 
-	// this stuff here will become backend calls in the end because that is where the data this page will be filled with
-	// will come from. Hence, they are not put into a separate library or anything
-	function intervalRange(size: number, startAt: number = 0, step: number = 1, asItems = false) {
-		let values = [...Array(size).keys()].map(
-			(i) => String(i * step + startAt) + '-' + String((i + 1) * step + startAt)
-		);
-
-		if (asItems) {
-			return values.map((v) => {
-				return { name: String(v), value: v };
-			});
-		} else {
-			return values;
-		}
-	}
-
-	function numericalRange(size: number, startAt: number = 0, step: number = 1, asItems = false) {
-		let values = [...Array(size).keys()].map((i) => i * step + startAt);
-
-		if (asItems) {
-			return values.map((v) => {
-				return { name: String(v), value: v };
-			});
-		} else {
-			return values;
-		}
-	}
 	function validate(): boolean {
 		missingValues = data.map((element) => element.value === '' || element.value === null);
 		return missingValues.every((v) => v === false);
@@ -45,7 +17,9 @@
 		const valid = validate();
 		if (valid) {
 			for (let i = 0; i < data.length; ++i) {
-				(userData as UserData)[data[i].props.name] = data[i].value;
+				(userData as UserData)[data[i].props.name] = {};
+				(userData as UserData)[data[i].props.name]['value'] = data[i].value;
+				(userData as UserData)[data[i].props.name]['additionalValue'] = data[i].additionalValue;
 			}
 			if (userID) {
 				await users.update(userID, userData);
@@ -60,14 +34,14 @@
 	let userData: UserData;
 	let userID: string;
 
-	onMount(async () => {
-		await users.load();
+	onMount(() => {
+		users.load();
 		userID = users.get()['loggedIn'] as string;
 		userData = users.get()[userID] as UserData;
 
 		// initialize data values to stuff that is there already if
 		// data has been supplied already for that user.
-
+		console.log('load data');
 		const keys = [
 			'Geburtsjahr',
 			'Geschlecht',
@@ -79,7 +53,8 @@
 
 		for (let i = 0; i < data.length; ++i) {
 			if (userData[keys[i]]) {
-				data[i]['value'] = userData[keys[i]];
+				data[i]['value'] = userData[keys[i]].value;
+				data[i]['additionalValue'] = userData[keys[i]].additionalValue;
 			}
 		}
 
@@ -87,97 +62,15 @@
 	});
 
 	onDestroy(async () => {
-		await users.save();
+		users.save();
+	});
+
+	afterUpdate(async () => {
+		users.save();
 	});
 
 	// this can, but does not have to, come from a database later.
-	const data = [
-		{
-			component: Select,
-			value: null,
-			props: {
-				name: 'Geburtsjahr',
-				items: numericalRange(100, 1960, 1, true),
-				placeholder: 'Bitte auswählen',
-				label: 'Geburtsjahr',
-				required: true
-			}
-		},
-		{
-			component: CheckboxList,
-			value: null,
-			props: {
-				name: 'Geschlecht',
-				items: ['männlich', 'weiblich', 'divers', 'Andere'].map((v) => {
-					return { label: String(v), value: v };
-				}),
-				placeholder: 'Bitte auswählen',
-				label: 'Geschlecht',
-				required: true,
-				textTrigger: 'Andere',
-				unique: true
-			}
-		},
-		{
-			component: CheckboxList,
-			value: [],
-			props: {
-				name: 'Höchster Bildungsabschluss',
-				items: [
-					'kein Schulabschluss',
-					'Hauptschulabschluss',
-					'Realschulabschluss',
-					'Abitur',
-					'Bachelor',
-					'Master',
-					'Promotion',
-					'Anderer'
-				].map((v) => {
-					return { label: String(v), value: v };
-				}),
-				placeholder: 'Bitte auswählen',
-				required: true,
-				label: 'Höchster Bildungsabschluss',
-				textTrigger: 'Anderer',
-				unique: true
-			}
-		},
-		{
-			component: Select,
-			value: null,
-			props: {
-				name: 'Arbeitszeit/Woche',
-				items: intervalRange(13, 0, 5, true),
-				placeholder: 'Bitte auswählen',
-				label: 'Arbeitszeit/Woche',
-				required: true,
-				textTrigger: 'Andere'
-			}
-		},
-		{
-			component: Select,
-			value: null,
-			props: {
-				name: 'Familieneinkommen/Jahr',
-				items: intervalRange(23, 0, 5000, true),
-				placeholder: 'Bitte auswählen',
-				label: 'Familieneinkommen/Jahr',
-				required: true,
-				textTrigger: 'Anderes'
-			}
-		},
-		{
-			component: Input,
-			value: null,
-			props: {
-				name: 'Beruf',
-				type: 'text',
-				placeholder: 'Geben sie ihren Beruf an',
-				label: 'Beruf',
-				required: true
-			}
-		}
-	];
+	export let data: any[];
 
 	// validation / data acceptance
 
@@ -226,6 +119,7 @@
 				<DataInput
 					component={element.component}
 					bind:value={element.value}
+					bind:additionalInput={element.additionalValue}
 					label={element.props.label}
 					properties={element.props}
 					textTrigger={element.props.textTrigger}
