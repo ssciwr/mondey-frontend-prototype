@@ -29,10 +29,8 @@
 	// functionality for showing the textfield when the trigger is selected
 	function checkShowTextfield(v: any): boolean {
 		if (v instanceof Array) {
-			console.log(' test array: ', v.includes(textTrigger));
 			return v.includes(textTrigger);
 		} else {
-			console.log(' test other: ', v === textTrigger);
 			return v === textTrigger;
 		}
 	}
@@ -41,8 +39,7 @@
 	$: valid = value !== undefined && value !== null && value !== '' && checkValid();
 	$: highlight = !valid && properties.required === true;
 	$: showTextField = checkShowTextfield(value);
-	$: console.log('DataInput value', value);
-	$: console.log('DataInput showTextField', showTextField);
+	$: value !== textTrigger ? (additionalInput = null) : additionalInput;
 </script>
 
 {#if label}
@@ -53,7 +50,7 @@
 	<svelte:component
 		this={component}
 		class={highlight
-			? 'border-2 border-primary-600 dark:border-primary-600' + componentClass
+			? 'border-primary-600 dark:border-primary-600 border-2' + componentClass
 			: componentClass}
 		bind:value
 		{...properties}

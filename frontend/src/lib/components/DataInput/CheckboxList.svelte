@@ -5,6 +5,8 @@
 	export let unique: boolean = false;
 
 	let selected: boolean[] = $$props.items.map((e) => false);
+
+	console.log('properties: ', $$props);
 </script>
 
 <div class="flex flex grid w-full auto-cols-auto grid-flow-col flex-col">
@@ -31,7 +33,7 @@
 						value.push($$props.items[index].value);
 						value = [...new Set(value)];
 					} else {
-						value = value.filter((v) => v !== $$props.itmes[index].value);
+						value = value.filter((v) => v !== $$props.items[index].value);
 					}
 				}
 			}}

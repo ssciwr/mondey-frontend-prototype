@@ -34,14 +34,13 @@
 	let userData: UserData;
 	let userID: string;
 
-	onMount(() => {
-		users.load();
+	onMount(async () => {
+		await users.load();
 		userID = users.get()['loggedIn'] as string;
 		userData = users.get()[userID] as UserData;
 
 		// initialize data values to stuff that is there already if
 		// data has been supplied already for that user.
-		console.log('load data');
 		const keys = [
 			'Geburtsjahr',
 			'Geschlecht',
@@ -57,6 +56,8 @@
 				data[i]['additionalValue'] = userData[keys[i]].additionalValue;
 			}
 		}
+
+		console.log('data', data);
 
 		buttons[0].label = 'Fertig';
 	});
