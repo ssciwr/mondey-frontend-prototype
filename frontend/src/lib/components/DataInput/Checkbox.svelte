@@ -17,6 +17,6 @@
 		type="checkbox"
 		bind:checked
 		on:change={handleChange}
-		class="text-primary-700 dark:text-primary-700 rounded"
+		class="rounded text-primary-700 dark:text-primary-700"
 	/>
 </label>
