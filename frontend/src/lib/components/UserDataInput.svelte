@@ -123,10 +123,6 @@
 					label={element.props.label}
 					properties={element.props}
 					textTrigger={element.props.textTrigger}
-					showTextField={(Array.isArray(element.value)
-						? element.value.length > 1
-						: element.value !== null) &&
-						element.props.items?.some((item) => item.value === element.value) === false}
 				/>
 			{/each}
 		</form>

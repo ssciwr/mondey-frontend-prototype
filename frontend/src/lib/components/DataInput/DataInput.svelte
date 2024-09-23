@@ -7,12 +7,12 @@
 
 	// variables
 	export let component: any;
-	export let value: any = null;
-	export let label: string | null = null;
+	export let value: any;
+	export let label: string;
 	export let componentClass: string = '';
 	export let textTrigger: string = 'noAdditionalText';
 	export let showTextField: boolean = false;
-	export let additionalInput: any = value;
+	export let additionalInput: any = null;
 
 	// data to display and event handlers for dynamcis.
 	export let properties: any = {};
@@ -27,18 +27,22 @@
 	};
 
 	// functionality for showing the textfield when the trigger is selected
-	function checkShowTextfield(v: any, trigger: string) {
+	function checkShowTextfield(v: any): boolean {
 		if (v instanceof Array) {
-			return v.includes(trigger);
+			console.log(' test array: ', v.includes(textTrigger));
+			return v.includes(textTrigger);
 		} else {
-			return v === trigger;
+			console.log(' test other: ', v === textTrigger);
+			return v === textTrigger;
 		}
 	}
 
 	// reactive statement that makes sure 'valid' updates the page
 	$: valid = value !== undefined && value !== null && value !== '' && checkValid();
 	$: highlight = !valid && properties.required === true;
-	$: showTextField = showTextField || checkShowTextfield(value, textTrigger);
+	$: showTextField = checkShowTextfield(value);
+	$: console.log('DataInput value', value);
+	$: console.log('DataInput showTextField', showTextField);
 </script>
 
 {#if label}

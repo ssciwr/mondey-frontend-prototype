@@ -11,7 +11,12 @@
 	export let label: string;
 </script>
 
-<label>
+<label class="m-1 p-1 text-gray-700 dark:text-gray-400">
 	{label}
-	<input type="checkbox" bind:checked on:change={handleChange} />
+	<input
+		type="checkbox"
+		bind:checked
+		on:change={handleChange}
+		class="text-primary-700 dark:text-primary-700 rounded"
+	/>
 </label>
