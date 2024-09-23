@@ -17,13 +17,12 @@ from .databases.users import AccessToken
 from .databases.users import User
 from .databases.users import get_access_token_db
 from .databases.users import get_user_db
-
-SECRET = "SECRET"
+from .settings import app_settings
 
 
 class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
-    reset_password_token_secret = SECRET
-    verification_token_secret = SECRET
+    reset_password_token_secret = app_settings.SECRET
+    verification_token_secret = app_settings.SECRET
 
     async def on_after_register(self, user: User, request: Request | None = None):
         print(f"User {user.id} has registered.")

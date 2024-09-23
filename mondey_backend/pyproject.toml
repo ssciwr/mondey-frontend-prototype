@@ -16,6 +16,7 @@ dependencies = [
     "sqlmodel",
     "aiosqlite",
     "python-multipart",
+    "pydantic-settings",
 ]
 dynamic = ["version"]
 

@@ -1,11 +1,12 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import { isLoggedIn } from '$lib/stores/adminStore';
 	import MilestoneGroup from '$lib/components/Admin/MilestoneGroup.svelte';
 	import MilestoneGroups from '$lib/components/Admin/MilestoneGroups.svelte';
 	import Login from '$lib/components/Admin/Login.svelte';
 
 	async function updateIsLoggedIn() {
-		const res = await fetch('http://localhost:8000/users/me', {
+		const res = await fetch(`${import.meta.env.VITE_MONDEY_API_URL}/users/me`, {
 			method: 'GET',
 			credentials: 'include'
 		});
@@ -13,8 +14,10 @@
 			isLoggedIn.set(true);
 		}
 	}
-	// commented out for now to avoid breaking github pages build
-	// updateIsLoggedIn();
+
+	onMount(() => {
+		updateIsLoggedIn();
+	});
 
 	let isLoggedInValue: boolean;
 	const unsubscribe = isLoggedIn.subscribe((value) => {

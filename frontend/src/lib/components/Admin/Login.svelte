@@ -10,7 +10,7 @@
 			const formData = new FormData();
 			formData.append('username', email);
 			formData.append('password', password);
-			const res = await fetch('http://localhost:8000/auth/login', {
+			const res = await fetch(`${import.meta.env.VITE_MONDEY_API_URL}/auth/login`, {
 				method: 'POST',
 				body: formData
 			});

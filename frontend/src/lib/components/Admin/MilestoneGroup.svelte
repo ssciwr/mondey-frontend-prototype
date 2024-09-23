@@ -33,15 +33,18 @@
 	async function postMilestoneGroup() {
 		console.log(milestoneGroupData);
 		try {
-			const res_milestone_group = await fetch('http://localhost:8000/admin/milestone-groups/', {
-				method: 'POST',
-				credentials: 'include',
-				headers: {
-					'Content-Type': 'application/json',
-					Accept: 'application/json'
-				},
-				body: JSON.stringify(milestoneGroupData)
-			});
+			const res_milestone_group = await fetch(
+				`${import.meta.env.VITE_MONDEY_API_URL}/admin/milestone-groups/`,
+				{
+					method: 'POST',
+					credentials: 'include',
+					headers: {
+						'Content-Type': 'application/json',
+						Accept: 'application/json'
+					},
+					body: JSON.stringify(milestoneGroupData)
+				}
+			);
 			const new_milestone_group = await res_milestone_group.json();
 			console.log(new_milestone_group);
 			result = JSON.stringify(new_milestone_group);
@@ -49,7 +52,7 @@
 				let formData = new FormData();
 				formData.append('file', files[0]);
 				const res_milestone_group_image = await fetch(
-					`http://localhost:8000/admin/upload-milestone-group-image/${new_milestone_group.id}`,
+					`${import.meta.env.VITE_MONDEY_API_URL}/admin/upload-milestone-group-image/${new_milestone_group.id}`,
 					{
 						method: 'POST',
 						credentials: 'include',
