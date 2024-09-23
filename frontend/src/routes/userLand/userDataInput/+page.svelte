@@ -37,7 +37,7 @@
 			additionalValue: null,
 			props: {
 				name: 'Geburtsjahr',
-				items: numericalRange(100, 1960, 1, true),
+				items: numericalRange(60, 1960, 1, true),
 				placeholder: 'Bitte auswählen',
 				label: 'Geburtsjahr',
 				required: true
@@ -49,19 +49,19 @@
 			additionalValue: null,
 			props: {
 				name: 'Geschlecht',
-				items: ['männlich', 'weiblich', 'divers', 'Andere'].map((v) => {
+				items: ['männlich', 'weiblich', 'divers', 'Anderes'].map((v) => {
 					return { label: String(v), value: v };
 				}),
 				placeholder: 'Bitte auswählen',
 				label: 'Geschlecht',
 				required: true,
-				textTrigger: 'Andere',
+				textTrigger: 'Anderes',
 				unique: true,
 				selected: [false, false, false, false]
 			}
 		},
 		{
-			component: CheckboxList,
+			component: Select,
 			value: null,
 			additionalValue: null,
 			props: {
@@ -76,14 +76,12 @@
 					'Promotion',
 					'Anderer'
 				].map((v) => {
-					return { label: String(v), value: v };
+					return { name: String(v), value: v };
 				}),
 				placeholder: 'Bitte auswählen',
 				required: true,
 				label: 'Höchster Bildungsabschluss',
-				textTrigger: 'Anderer',
-				unique: true,
-				selected: [false, false, false, false, false, false, false, false]
+				textTrigger: 'Anderer'
 			}
 		},
 		{
