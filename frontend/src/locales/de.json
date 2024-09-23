@@ -1,26 +1,26 @@
 {
-  "milestone": {
-    "answer0": {
-      "text": "Noch gar nicht",
-      "description": "Das Kind macht noch keine Anstalten bzw. ist noch nicht in der Lage, das Verhalten auszuführen."
-    },
-    "answer1": {
-      "text": "In Ansätzen",
-      "description": "Das Kind zeigt erste Ansätze, das Verhalten auszuführen, weicht dabei aber noch erheblich von der Beschreibung ab oder/und ist sehr unsicher."
-    },
-    "answer2": {
-      "text": "Weitgehend",
-      "description": "Das Kind beherrscht das Verhalten im Prinzip, zeigt es aber erst selten, ist dabei  noch leicht unsicher oder führt es nicht ganz sauber aus."
-    },
-    "answer3": {
-      "text": "Zuverlässig",
-      "description": "Das Kind zeigt das Verhalten mehrmals sicher und genau wie beschrieben."
-    },
-    "milestones": "Meilensteine",
-    "observation": "Beobachtungshinweise",
-    "help": "Förderhilfen",
-    "next": "Weiter",
-    "prev": "Zurück",
-    "autonext" : "Automatisch weiter"
-  }
+	"milestone": {
+		"answer0": {
+			"text": "Noch gar nicht",
+			"description": "Das Kind macht noch keine Anstalten bzw. ist noch nicht in der Lage, das Verhalten auszuführen."
+		},
+		"answer1": {
+			"text": "In Ansätzen",
+			"description": "Das Kind zeigt erste Ansätze, das Verhalten auszuführen, weicht dabei aber noch erheblich von der Beschreibung ab oder/und ist sehr unsicher."
+		},
+		"answer2": {
+			"text": "Weitgehend",
+			"description": "Das Kind beherrscht das Verhalten im Prinzip, zeigt es aber erst selten, ist dabei  noch leicht unsicher oder führt es nicht ganz sauber aus."
+		},
+		"answer3": {
+			"text": "Zuverlässig",
+			"description": "Das Kind zeigt das Verhalten mehrmals sicher und genau wie beschrieben."
+		},
+		"milestones": "Meilensteine",
+		"observation": "Beobachtungshinweise",
+		"help": "Förderhilfen",
+		"next": "Weiter",
+		"prev": "Zurück",
+		"autonext": "Automatisch weiter"
+	}
 }

@@ -6,13 +6,23 @@
 </script>
 
 <div class="flex">
-	<button id="locale-button" class="flex-shrink-0 z-10 inline-flex items-center py-2.5 px-4 text-sm font-medium text-center text-gray-500 bg-gray-100 rounded-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600" type="button">
+	<button
+		id="locale-button"
+		class="z-10 inline-flex flex-shrink-0 items-center rounded-lg bg-gray-100 px-4 py-2.5 text-center text-sm font-medium text-gray-500 hover:bg-gray-200 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-700"
+		type="button"
+	>
 		{$locale}
-		<ChevronDownOutline class="w-6 h-6 ms-2" />
+		<ChevronDownOutline class="ms-2 h-6 w-6" />
 	</button>
 	<Dropdown triggeredBy="#locale-button" bind:open={dropdownOpen}>
 		{#each $locales as loc}
-			<DropdownItem class="flex items-center" on:click={() => {locale.set(loc); dropdownOpen = false}}>
+			<DropdownItem
+				class="flex items-center"
+				on:click={() => {
+					locale.set(loc);
+					dropdownOpen = false;
+				}}
+			>
 				{loc}
 			</DropdownItem>
 		{/each}
