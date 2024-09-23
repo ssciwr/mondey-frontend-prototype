@@ -54,10 +54,14 @@
 			if (userData[keys[i]]) {
 				data[i]['value'] = userData[keys[i]].value;
 				data[i]['additionalValue'] = userData[keys[i]].additionalValue;
+
+				if (data[i].props['selected']) {
+					data[i].props['selected'] = data[i].props.items.map((e) => {
+						return e.value === userData[keys[i]].value;
+					});
+				}
 			}
 		}
-
-		console.log('data', data);
 
 		buttons[0].label = 'Fertig';
 	});

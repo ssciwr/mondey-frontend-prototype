@@ -56,7 +56,8 @@
 				label: 'Geschlecht',
 				required: true,
 				textTrigger: 'Andere',
-				unique: true
+				unique: true,
+				selected: [false, false, false, false]
 			}
 		},
 		{
@@ -81,7 +82,8 @@
 				required: true,
 				label: 'Höchster Bildungsabschluss',
 				textTrigger: 'Anderer',
-				unique: true
+				unique: true,
+				selected: [false, false, false, false, false, false, false, false]
 			}
 		},
 		{

@@ -3,24 +3,20 @@
 
 	export let value: any;
 	export let unique: boolean = false;
-
-	let selected: boolean[] = $$props.items.map((e) => false);
-
-	console.log('properties: ', $$props);
 </script>
 
-<div class="flex flex grid w-full auto-cols-auto grid-flow-col flex-col">
+<div class="flex grid w-full auto-cols-auto grid-flow-col flex-col">
 	{#each $$props.items as item, index}
 		<Checkbox
-			bind:checked={selected[index]}
+			bind:checked={$$props.selected[index]}
 			label={item.label}
 			on:changed={() => {
 				if (unique) {
-					selected = selected.map((_, i) => {
-						return i === index && selected[index];
+					$$props.selected = $$props.selected.map((_, i) => {
+						return i === index && $$props.selected[index];
 					});
 
-					if (selected[index] === true) {
+					if ($$props.selected[index] === true) {
 						value = $$props.items[index].value;
 					} else {
 						value = null;
@@ -29,7 +25,7 @@
 					if (value instanceof Array === false) {
 						value = [];
 					}
-					if (selected[index] === true) {
+					if ($$props.selected[index] === true) {
 						value.push($$props.items[index].value);
 						value = [...new Set(value)];
 					} else {
