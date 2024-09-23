@@ -53,7 +53,7 @@
 	<svelte:component
 		this={component}
 		class={highlight
-			? 'border-primary-600 dark:border-primary-600 border-2' + componentClass
+			? 'border-2 border-primary-600 dark:border-primary-600' + componentClass
 			: componentClass}
 		bind:value
 		{...properties}
