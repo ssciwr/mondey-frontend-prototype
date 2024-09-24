@@ -210,11 +210,6 @@
 
 	// README: this is slow and quite a bit of work because a lot of text has to be searched. Kill it?
 	function searchAll(data: DataElement[], dummy: any, key: string): DataElement[] {
-		const surveyRes = searchBySurvey(data, dummy, key);
-		const statusRes = searchByStatus(data, dummy, key);
-		const milestoneRes = searchByMilestone(data, dummy, key);
-		const descrRes = searchBySurveyDescription(data, dummy, key);
-
 		return [
 			...new Set([
 				...searchBySurvey(data, dummy, key),

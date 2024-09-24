@@ -68,6 +68,98 @@
 	const desc =
 		'Hier geht es darum, zu beschreiben, wie sich das Kind fortbewegt Und seinen Körper (Rumpf, Arme, Beine) kontrollieren kann.';
 	const progress = 0.5;
+
+	interface MilestoneData {
+		header: string;
+		href: string;
+		summary: string;
+		auxilliary: string;
+		complete: boolean;
+		answer: string;
+	}
+
+	function searchStatus(data: MilestoneData[], dummy: any, key: string): MilestoneData[] {
+		if (key === '') {
+			return data;
+		} else {
+			return data.filter((item) => {
+				// button label contains info about completion status => use for search
+				if (key === 'fertig') {
+					return item.complete === true;
+				} else if (key === 'unfertig') {
+					return item.complete === false;
+				}
+			});
+		}
+	}
+
+	function searchDescription(data: MilestoneData[], dummy: any, key: string): MilestoneData[] {
+		if (key === '') {
+			return data;
+		} else {
+			return data.filter((item) => {
+				return item.summary.toLowerCase().includes(key.toLowerCase());
+			});
+		}
+	}
+
+	function searchTitle(data: MilestoneData[], dummy: any, key: string): MilestoneData[] {
+		if (key === '') {
+			return data;
+		} else {
+			return data.filter((item) => {
+				return item.header.toLowerCase().includes(key.toLowerCase());
+			});
+		}
+	}
+
+	function searchAnswer(data: MilestoneData[], dummy: any, key: string): MilestoneData[] {
+		if (key === '') {
+			return data;
+		} else {
+			return data.filter((item) => {
+				return item.answer === null ? false : item.answer.toLowerCase().includes(key.toLowerCase());
+			});
+		}
+	}
+
+	function searchAll(data: MilestoneData[], dummy: any, key: string): MilestoneData[] {
+		return [
+			...new Set([
+				...searchDescription(data, dummy, key),
+				...searchStatus(data, dummy, key),
+				...searchTitle(data, dummy, key),
+				...searchAnswer(data, dummy, key)
+			])
+		];
+	}
+	const searchData = [
+		{
+			label: 'Alle',
+			placeholder: 'Alle Kategorien durchsuchen',
+			filterFunction: searchAll
+		},
+		{
+			label: 'Status',
+			placeholder: 'Nach Status durchsuchen',
+			filterFunction: searchStatus
+		},
+		{
+			label: 'Anwort',
+			placeholder: 'Nach Antwort durchsuchen',
+			filterFunction: searchAnswer
+		},
+		{
+			label: 'Titel',
+			placeholder: 'Nach Meilenstein durchsuchen',
+			filterFunction: searchTitle
+		},
+		{
+			label: 'Beschreibung',
+			placeholder: 'Beschreibungen durchsuchen',
+			filterFunction: searchDescription
+		}
+	];
 </script>
 
-<MilestoneOverview {breadcrumbdata} {data} />
+<MilestoneOverview {breadcrumbdata} {data} {searchData} />

@@ -81,13 +81,18 @@
 					</Dropdown>
 				</div>
 				<Search
-					class="rounded-none py-2.5"
+					class="rounded-e rounded-s-none py-2.5"
 					size="md"
 					placeholder={searchPlaceHolder}
 					bind:value={searchTerm}
 				/>
 			{:else}
-				<Search size="md" placeholder={searchPlaceHolder} bind:value={searchTerm} />
+				<Search
+					size="md"
+					class="rounded py-2.5"
+					placeholder={searchPlaceHolder}
+					bind:value={searchTerm}
+				/>
 			{/if}
 		</form>
 	{/if}
