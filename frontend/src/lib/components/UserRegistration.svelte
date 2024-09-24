@@ -38,7 +38,6 @@
 			// README: userID is username+password just as a placeholder
 			const h = await hash(inputValues[2]);
 			const userID = inputValues[0] + h;
-			console.log(userID);
 			let userAddSuccess: boolean = true;
 
 			let userdata = {

@@ -48,19 +48,6 @@
 	$: valid = evalValid(value);
 	$: highlight = !valid && properties.required === true;
 	$: showTextField = checkShowTextfield(value);
-	$: console.log(
-		label,
-		' value: ',
-		value,
-		'!valid: ',
-		!valid,
-		'checkValid: ',
-		checkValid(),
-		'required: ',
-		properties.required,
-		'highlight: ',
-		highlight
-	);
 </script>
 
 {#if label}
