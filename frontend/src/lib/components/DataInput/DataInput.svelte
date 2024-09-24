@@ -40,7 +40,7 @@
 	$: highlight = !valid && properties.required === true;
 	$: showTextField = checkShowTextfield(value);
 	// $: checkShowTextfield(value) ? (additionalInput = null) : additionalInput;
-	$: console.log('value: ', label, ': ', value);
+	$: console.log('value: ', label, ': ', value, 'valid: ', valid);
 	$: console.log('additional:', additionalInput);
 </script>
 
@@ -52,7 +52,7 @@
 	<svelte:component
 		this={component}
 		class={highlight
-			? 'border-primary-600 dark:border-primary-600 border-2' + componentClass
+			? 'border-primary-600 dark:border-primary-600 rounded border-2 ' + componentClass
 			: componentClass}
 		bind:value
 		{...properties}

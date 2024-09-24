@@ -3,9 +3,10 @@
 
 	export let value: any;
 	export let unique: boolean = false;
+	console.log('class: ', $$props.class);
 </script>
 
-<div class="flex grid w-full auto-cols-auto grid-flow-col flex-col">
+<div class={'flex grid w-full auto-cols-auto grid-flow-col flex-col ' + $$props.class}>
 	{#each $$props.items as item, index}
 		<Checkbox
 			bind:checked={$$props.selected[index]}
