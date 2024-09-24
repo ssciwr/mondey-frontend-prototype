@@ -5,7 +5,7 @@
 	import DataInput from '$lib/components/DataInput/DataInput.svelte';
 	import NavigationButtons from '$lib/components/Navigation/NavigationButtons.svelte';
 	import { children } from '$lib/stores/childrenStore';
-	import { hash, users } from '$lib/stores/userStore';
+	import { users } from '$lib/stores/userStore';
 	import { Card, Heading, Input } from 'flowbite-svelte';
 	import { onDestroy, onMount } from 'svelte';
 
@@ -106,54 +106,7 @@
 		}
 	}
 
-	const data = [
-		{
-			label: 'Benutzername',
-			name: 'Benutzername',
-			type: 'text',
-			placeholder: 'Wählen sie einen beliebigen Benutzernamen',
-			required: true,
-			checkValid: () => {
-				return true;
-			}
-		},
-		{
-			label: 'E-Mail',
-			name: 'E-Mail',
-			type: 'email',
-			placeholder: 'E-Mail',
-			required: true,
-			checkValid: () => {
-				return true;
-			}
-		},
-		{
-			label: 'Passwort',
-			name: 'Passwort',
-			type: 'password',
-			placeholder: 'Passwort',
-			required: true,
-			onBlur: async (event: Event) => {
-				passwd = await hash(event.srcElement.value);
-			},
-			checkValid: () => {
-				return passwd !== '' && passwd !== null && passwd !== undefined && passwd === passwdTest;
-			}
-		},
-		{
-			label: 'Passwort wiederholen',
-			name: 'Passwort wiederholen',
-			type: 'password',
-			placeholder: 'Passwort wiederholen',
-			required: true,
-			onBlur: async (event: Event) => {
-				passwdTest = await hash(event.srcElement.value);
-			},
-			checkValid: () => {
-				return passwd !== '' && passwd !== null && passwd !== undefined && passwd === passwdTest;
-			}
-		}
-	];
+	export let data;
 
 	const heading = 'Als neuer Benutzer registrieren';
 	let showAlert: boolean = false;
