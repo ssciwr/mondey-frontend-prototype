@@ -31,7 +31,7 @@
 								'm-2 max-w-prose bg-primary-700 dark:bg-primary-600 hover:bg-primary-800 dark:hover:bg-primary-700',
 							horizontal: false
 						}
-					: { horizontal: item.image ? true : false },
+					: { horizontal: false },
 			header:
 				item.header == 'Neu'
 					? {
