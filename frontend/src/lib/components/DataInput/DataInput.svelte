@@ -8,7 +8,7 @@
 	// variables
 	export let component: any;
 	export let value: any;
-	export let label: string;
+	export let label: string = null;
 	export let componentClass: string = '';
 	export let textTrigger: string = 'noAdditionalText';
 	export let showTextField: boolean = false;

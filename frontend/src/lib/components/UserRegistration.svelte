@@ -5,7 +5,7 @@
 	import DataInput from '$lib/components/DataInput/DataInput.svelte';
 	import NavigationButtons from '$lib/components/Navigation/NavigationButtons.svelte';
 	import { children } from '$lib/stores/childrenStore';
-	import { users } from '$lib/stores/userStore';
+	import { hash, users } from '$lib/stores/userStore';
 	import { Card, Heading, Input } from 'flowbite-svelte';
 	import { onDestroy, onMount } from 'svelte';
 
@@ -22,7 +22,8 @@
 		const mailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 		missingValues[0] = inputValues[0] === null || inputValues[0] === ''; // username
 		missingValues[1] = inputValues[1] === null || mailRegex.test(inputValues[1]) === false; // email
-		missingValues[2] = inputValues[2] === null || inputValues[2] === ''; // password
+		missingValues[2] =
+			inputValues[2] === null || inputValues[2] === '' || inputValues[2] !== inputValues[3]; // password
 		missingValues[3] = inputValues[3] === null || missingValues[2];
 	}
 
@@ -35,14 +36,10 @@
 			})
 		) {
 			// README: userID is username+password just as a placeholder
-			const userID = inputValues[0] + passwd;
+			const h = await hash(inputValues[2]);
+			const userID = inputValues[0] + h;
+			console.log(userID);
 			let userAddSuccess: boolean = true;
-
-			if (passwd !== passwdTest) {
-				userAddSuccess = false;
-				alertMessage = 'Passwörter sind nicht identisch';
-				showAlert = true;
-			}
 
 			let userdata = {
 				name: inputValues[0],
