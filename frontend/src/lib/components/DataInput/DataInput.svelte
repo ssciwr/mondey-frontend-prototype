@@ -35,10 +35,32 @@
 		}
 	}
 
+	function evalValid(v: any): boolean {
+		let result = true;
+		if (Array.isArray(v)) {
+			result = v.length > 0;
+		}
+
+		return result && value !== undefined && value !== null && value !== '' && checkValid();
+	}
+
 	// reactive statement that makes sure 'valid' updates the page
-	$: valid = value !== undefined && value !== null && value !== '' && checkValid();
+	$: valid = evalValid(value);
 	$: highlight = !valid && properties.required === true;
 	$: showTextField = checkShowTextfield(value);
+	$: console.log(
+		label,
+		' value: ',
+		value,
+		'!valid: ',
+		!valid,
+		'checkValid: ',
+		checkValid(),
+		'required: ',
+		properties.required,
+		'highlight: ',
+		highlight
+	);
 </script>
 
 {#if label}
@@ -49,25 +71,13 @@
 	<svelte:component
 		this={component}
 		class={highlight
-			? 'rounded border-2 border-primary-600 dark:border-primary-600 ' + componentClass
+			? 'border-primary-600 dark:border-primary-600 rounded border-2 ' + componentClass
 			: componentClass}
 		bind:value
 		{...properties}
-		on:blur={(event) => {
-			if (eventHandlers['on:blur']) {
-				eventHandlers['on:blur'](event);
-			}
-		}}
-		on:change={(event) => {
-			if (eventHandlers['on:change']) {
-				eventHandlers['on:change'](event);
-			}
-		}}
-		on:click={(event) => {
-			if (eventHandlers['on:click']) {
-				eventHandlers['on:click'](event);
-			}
-		}}
+		on:blur={eventHandlers['on:blur']}
+		on:change={eventHandlers['on:change']}
+		on:click={eventHandlers['on:click']}
 	/>
 
 	{#if showTextField === true}

@@ -48,17 +48,19 @@
 			}
 		},
 		{
-			component: Select,
+			component: CheckboxList,
 			value: null,
 			additionalValue: null,
 			props: {
 				label: 'Geschlecht',
 				items: ['männlich', 'weiblich'].map((v) => {
-					return { name: String(v), value: v };
+					return { label: String(v), value: v };
 				}),
 				placeholder: 'Bitte auswählen',
 				key: 'gender',
-				required: true
+				required: true,
+				unique: true,
+				selected: [false, false]
 			}
 		},
 		{

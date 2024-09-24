@@ -2,7 +2,6 @@
 	import { Fileupload } from 'flowbite-svelte';
 
 	export let value;
-	console.log('props: ', $$props);
 </script>
 
 <Fileupload
