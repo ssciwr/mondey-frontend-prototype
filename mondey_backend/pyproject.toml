@@ -24,6 +24,7 @@ dynamic = ["version"]
 tests = [
     "pytest",
     "pytest-randomly",
+    "pytest-cov",
 ]
 
 [project.scripts]
