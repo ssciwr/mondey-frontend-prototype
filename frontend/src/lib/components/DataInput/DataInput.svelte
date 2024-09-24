@@ -39,9 +39,6 @@
 	$: valid = value !== undefined && value !== null && value !== '' && checkValid();
 	$: highlight = !valid && properties.required === true;
 	$: showTextField = checkShowTextfield(value);
-	// $: checkShowTextfield(value) ? (additionalInput = null) : additionalInput;
-	$: console.log('value: ', label, ': ', value, 'valid: ', valid);
-	$: console.log('additional:', additionalInput);
 </script>
 
 {#if label}
