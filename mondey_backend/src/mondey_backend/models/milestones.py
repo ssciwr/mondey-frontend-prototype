@@ -43,7 +43,6 @@ class MilestoneGroupTextPublic(MilestoneGroupTextBase):
 
 class MilestoneGroupBase(SQLModel):
     order: int = 0
-    image: str | None = None
 
 
 class MilestoneGroup(MilestoneGroupBase, table=True):

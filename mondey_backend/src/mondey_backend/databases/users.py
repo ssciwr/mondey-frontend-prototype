@@ -5,15 +5,17 @@ from typing import Annotated
 
 from fastapi import Depends
 from fastapi_users.db import SQLAlchemyUserDatabase
+from fastapi_users_db_sqlalchemy.access_token import SQLAlchemyAccessTokenDatabase
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.ext.asyncio import async_sessionmaker
 from sqlalchemy.ext.asyncio import create_async_engine
 
-from .. import MONDEY_DATABASE_PATH
+from ..models.users import AccessToken
 from ..models.users import Base
 from ..models.users import User
+from ..settings import app_settings
 
-engine = create_async_engine(f"sqlite+aiosqlite:///{MONDEY_DATABASE_PATH}/users.db")
+engine = create_async_engine(f"sqlite+aiosqlite:///{app_settings.USER_DATABASE_PATH}")
 async_session_maker = async_sessionmaker(engine, expire_on_commit=False)
 
 
@@ -29,3 +31,9 @@ async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
 
 async def get_user_db(session: Annotated[AsyncSession, Depends(get_async_session)]):
     yield SQLAlchemyUserDatabase(session, User)
+
+
+async def get_access_token_db(
+    session: Annotated[AsyncSession, Depends(get_async_session)],
+):
+    yield SQLAlchemyAccessTokenDatabase(session, AccessToken)

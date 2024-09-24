@@ -14,7 +14,6 @@ class TestMilestones:
         assert group1 == {
             "id": 2,
             "order": 1,
-            "image": None,
             "text": {
                 "de": {"title": "t3", "desc": "d3"},
                 "en": {"title": "t4", "desc": "d4"},
@@ -25,7 +24,6 @@ class TestMilestones:
         assert group2 == {
             "id": 1,
             "order": 2,
-            "image": None,
             "text": {
                 "de": {"title": "t1", "desc": "d1"},
                 "en": {"title": "t2", "desc": "d2"},
@@ -42,7 +40,6 @@ class TestMilestones:
         assert response.json() == {
             "id": 2,
             "order": 1,
-            "image": None,
             "text": {
                 "de": {"title": "t3", "desc": "d3"},
                 "en": {"title": "t4", "desc": "d4"},
