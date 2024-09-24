@@ -1,6 +1,18 @@
 from fastapi.testclient import TestClient
 
 
+def test_post_language(admin_client: TestClient):
+    response = admin_client.post("/admin/language/", json={"lang": "es"})
+    assert response.status_code == 200
+    assert response.json() == {"id": 4, "lang": "es"}
+
+
+def test_delete_language(admin_client: TestClient):
+    response = admin_client.delete("/admin/language/2")
+    assert response.status_code == 200
+    assert admin_client.get("/languages").json() == {"1": "de", "3": "fr"}
+
+
 def test_get_milestone_groups(admin_client: TestClient):
     response = admin_client.get("/admin/milestone-groups/")
     assert response.status_code == 200
@@ -10,12 +22,21 @@ def test_get_milestone_groups(admin_client: TestClient):
         "id": 2,
         "order": 1,
         "text": {
-            "de": {"id": 3, "group_id": 2, "lang": "de", "title": "t3", "desc": "d3"},
-            "en": {"id": 4, "group_id": 2, "lang": "en", "title": "t4", "desc": "d4"},
-            "fr": {
-                "id": 5,
+            "1": {
                 "group_id": 2,
-                "lang": "fr",
+                "lang_id": 1,
+                "title": "t3",
+                "desc": "d3",
+            },
+            "2": {
+                "group_id": 2,
+                "lang_id": 2,
+                "title": "t4",
+                "desc": "d4",
+            },
+            "3": {
+                "group_id": 2,
+                "lang_id": 3,
                 "title": "t5",
                 "desc": "d5",
             },
@@ -26,40 +47,47 @@ def test_get_milestone_groups(admin_client: TestClient):
         "id": 1,
         "order": 2,
         "text": {
-            "de": {"id": 1, "group_id": 1, "lang": "de", "title": "t1", "desc": "d1"},
-            "en": {"id": 2, "group_id": 1, "lang": "en", "title": "t2", "desc": "d2"},
+            "1": {
+                "group_id": 1,
+                "lang_id": 1,
+                "title": "t1",
+                "desc": "d1",
+            },
+            "2": {
+                "group_id": 1,
+                "lang_id": 2,
+                "title": "t2",
+                "desc": "d2",
+            },
         },
         "milestones": [],
     }
 
 
-def test_post_milestone_groups(admin_client: TestClient):
-    data = {
-        "group": {"order": 0},
-        "text": [
-            {"lang": "en", "title": "title1", "desc": "desc1"},
-            {"lang": "de", "title": "title2", "desc": "desc2"},
-        ],
-    }
-    response = admin_client.post("/admin/milestone-groups/", json=data)
+def test_post_milestone_group(admin_client: TestClient):
+    response = admin_client.post("/admin/milestone-group/")
     assert response.status_code == 200
     assert response.json() == {
         "id": 3,
         "order": 0,
         "text": {
-            "en": {
-                "id": 6,
-                "lang": "en",
+            "1": {
                 "group_id": 3,
-                "title": "title1",
-                "desc": "desc1",
+                "lang_id": 1,
+                "title": "",
+                "desc": "",
             },
-            "de": {
-                "id": 7,
-                "lang": "de",
+            "2": {
                 "group_id": 3,
-                "title": "title2",
-                "desc": "desc2",
+                "lang_id": 2,
+                "title": "",
+                "desc": "",
+            },
+            "3": {
+                "group_id": 3,
+                "lang_id": 3,
+                "title": "",
+                "desc": "",
             },
         },
         "milestones": [],
@@ -67,20 +95,15 @@ def test_post_milestone_groups(admin_client: TestClient):
 
 
 def test_patch_milestone_groups(admin_client: TestClient):
-    data = {
-        "order": 3,
-    }
-    response = admin_client.patch("/admin/milestone-groups/1", json=data)
+    data = admin_client.get("/admin/milestone-groups").json()[0]
+    data["order"] = 6
+    data["text"]["1"]["title"] = "asdsd"
+    data["text"]["1"]["desc"] = "12xzascdasdf"
+    data["text"]["2"]["title"] = "asqwdreqweqw"
+    data["text"]["2"]["desc"] = "th567"
+    response = admin_client.patch("/admin/milestone-group", json=data)
     assert response.status_code == 200
-    assert response.json() == {
-        "id": 1,
-        "order": 3,
-        "text": {
-            "de": {"id": 1, "group_id": 1, "lang": "de", "title": "t1", "desc": "d1"},
-            "en": {"id": 2, "group_id": 1, "lang": "en", "title": "t2", "desc": "d2"},
-        },
-        "milestones": [],
-    }
+    assert response.json() == data
 
 
 def test_admin_delete_milestone_group(admin_client: TestClient):

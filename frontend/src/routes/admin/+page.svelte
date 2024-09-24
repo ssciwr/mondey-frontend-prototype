@@ -1,9 +1,10 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import { isLoggedIn } from '$lib/stores/adminStore';
-	import MilestoneGroup from '$lib/components/Admin/MilestoneGroup.svelte';
+	import { updateLanguages } from '$lib/i18n';
+	import Languages from '$lib/components/Admin/Languages.svelte';
 	import MilestoneGroups from '$lib/components/Admin/MilestoneGroups.svelte';
 	import Login from '$lib/components/Admin/Login.svelte';
+	import { onMount } from 'svelte';
 
 	async function updateIsLoggedIn() {
 		const res = await fetch(`${import.meta.env.VITE_MONDEY_API_URL}/users/me`, {
@@ -15,21 +16,17 @@
 		}
 	}
 
-	onMount(() => {
+	onMount(async () => {
+		updateLanguages();
 		updateIsLoggedIn();
-	});
-
-	let isLoggedInValue: boolean;
-	const unsubscribe = isLoggedIn.subscribe((value) => {
-		isLoggedInValue = value;
 	});
 </script>
 
 <div class="flex w-full flex-col items-center justify-center">
-	{#if !isLoggedInValue}
+	{#if !$isLoggedIn}
 		<Login />
 	{:else}
+		<Languages />
 		<MilestoneGroups />
-		<MilestoneGroup />
 	{/if}
 </div>

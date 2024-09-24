@@ -6,12 +6,22 @@ from sqlmodel import col
 from sqlmodel import select
 
 from ..dependencies import SessionDep
+from ..models.milestones import Language
 from ..models.milestones import Milestone
 from ..models.milestones import MilestoneGroup
 from ..models.milestones import MilestoneGroupPublic
 from ..models.milestones import MilestonePublic
 
 router = APIRouter(tags=["milestones"])
+
+
+@router.get("/languages/", response_model=dict[int, str])
+def get_languages(
+    session: SessionDep,
+):
+    return {
+        language.id: language.lang for language in session.exec(select(Language)).all()
+    }
 
 
 @router.get("/milestones/", response_model=list[MilestonePublic])

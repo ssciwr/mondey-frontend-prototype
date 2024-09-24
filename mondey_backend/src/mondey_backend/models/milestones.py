@@ -14,24 +14,35 @@ from .utils import fixed_length_string_field
 # avoid the weird hacks required to make relationships work across files
 
 
+class Language(SQLModel, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    lang: str = fixed_length_string_field(2, index=True)
+
+
+class LanguageCreate(SQLModel):
+    lang: str = fixed_length_string_field(2, index=True)
+
+
 ## MilestoneGroupText
 
 
 class MilestoneGroupTextBase(SQLModel):
-    title: str
-    desc: str
+    title: str = ""
+    desc: str = ""
 
 
 class MilestoneGroupText(MilestoneGroupTextBase, table=True):
-    id: int | None = Field(default=None, primary_key=True)
     group_id: int | None = Field(
-        default=None, foreign_key="milestonegroup.id", index=True
+        default=None, foreign_key="milestonegroup.id", primary_key=True
     )
-    lang: str = fixed_length_string_field(2, index=True)
+    lang_id: int | None = Field(
+        default=None, foreign_key="language.id", primary_key=True
+    )
 
 
 class MilestoneGroupTextCreate(MilestoneGroupTextBase):
-    lang: str = fixed_length_string_field(2, index=True)
+    group_id: int
+    lang_id: int
 
 
 class MilestoneGroupTextPublic(MilestoneGroupTextBase):
@@ -41,38 +52,29 @@ class MilestoneGroupTextPublic(MilestoneGroupTextBase):
 ## MilestoneGroup
 
 
-class MilestoneGroupBase(SQLModel):
-    order: int = 0
-
-
-class MilestoneGroup(MilestoneGroupBase, table=True):
+class MilestoneGroup(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
-    text: Mapped[dict[str, MilestoneGroupText]] = Relationship(
+    order: int
+    text: Mapped[dict[int, MilestoneGroupText]] = Relationship(
         sa_relationship=relationship(
-            collection_class=attribute_keyed_dict("lang"), cascade="all, delete-orphan"
+            collection_class=attribute_keyed_dict("lang_id"),
+            cascade="all, delete-orphan",
         )
     )
     milestones: Mapped[list[Milestone]] = back_populates("group")
 
 
-class MilestoneGroupCreate(MilestoneGroupBase):
-    pass
-
-
-class MilestoneGroupPublic(MilestoneGroupBase):
+class MilestoneGroupPublic(SQLModel):
     id: int
-    text: dict[str, MilestoneGroupTextPublic] = {}
+    text: dict[int, MilestoneGroupTextPublic] = {}
     milestones: list[MilestonePublic] = []
 
 
-class MilestoneGroupAdmin(MilestoneGroupBase):
+class MilestoneGroupAdmin(SQLModel):
     id: int
-    text: dict[str, MilestoneGroupText] = {}
+    order: int
+    text: dict[int, MilestoneGroupText] = {}
     milestones: list[Milestone] = []
-
-
-class MilestoneGroupUpdate(MilestoneGroupBase):
-    pass
 
 
 ## MilestoneText
