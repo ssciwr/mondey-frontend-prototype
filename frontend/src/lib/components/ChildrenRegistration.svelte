@@ -155,7 +155,7 @@
 		{/if}
 
 		<form class="m-1 mx-auto w-full flex-col space-y-6">
-			{#each data as element, i}
+			{#each data as element}
 				<DataInput
 					component={element.component}
 					bind:value={element.value}
@@ -163,6 +163,11 @@
 					label={element.props.label}
 					properties={element.props}
 					textTrigger={element.props.textTrigger}
+					eventHandlers={{
+						'on:change': element.onchange,
+						'on:blur': element.onblur,
+						'on:click': element.onclick
+					}}
 				/>
 			{/each}
 		</form>

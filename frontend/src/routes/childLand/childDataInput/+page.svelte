@@ -1,7 +1,9 @@
 <script>
 	import ChildrenRegistration from '$lib/components/ChildrenRegistration.svelte';
 	import CheckboxList from '$lib/components/DataInput/CheckboxList.svelte';
-	import { Fileupload, Input, MultiSelect, Select, Textarea } from 'flowbite-svelte';
+	import Fileupload from '$lib/components/DataInput/Fileupload.svelte';
+
+	import { Input, MultiSelect, Select, Textarea } from 'flowbite-svelte';
 
 	const data = [
 		{

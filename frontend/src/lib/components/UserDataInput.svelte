@@ -128,6 +128,11 @@
 					label={element.props.label}
 					properties={element.props}
 					textTrigger={element.props.textTrigger}
+					eventHandlers={{
+						'on:change': element.onchange,
+						'on:blur': element.onblur,
+						'on:click': element.onclick
+					}}
 				/>
 			{/each}
 		</form>

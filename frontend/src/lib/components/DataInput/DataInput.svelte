@@ -12,7 +12,7 @@
 	export let componentClass: string = '';
 	export let textTrigger: string = 'noAdditionalText';
 	export let showTextField: boolean = false;
-	export let additionalInput: any;
+	export let additionalInput: any = null;
 
 	// data to display and event handlers for dynamcis.
 	export let properties: any = {};
@@ -49,13 +49,25 @@
 	<svelte:component
 		this={component}
 		class={highlight
-			? 'rounded border-2 border-primary-600 dark:border-primary-600 ' + componentClass
+			? 'border-primary-600 dark:border-primary-600 rounded border-2 ' + componentClass
 			: componentClass}
 		bind:value
 		{...properties}
-		on:blur={eventHandlers['on:blur']}
-		on:change={eventHandlers['on:change']}
-		on:click={eventHandlers['on:click']}
+		on:blur={(event) => {
+			if (eventHandlers['on:blur']) {
+				eventHandlers['on:blur'](event);
+			}
+		}}
+		on:change={(event) => {
+			if (eventHandlers['on:change']) {
+				eventHandlers['on:change'](event);
+			}
+		}}
+		on:click={(event) => {
+			if (eventHandlers['on:click']) {
+				eventHandlers['on:click'](event);
+			}
+		}}
 	/>
 
 	{#if showTextField === true}

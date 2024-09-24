@@ -154,7 +154,11 @@
 					component={Input}
 					properties={element}
 					bind:value={inputValues[i]}
-					eventHandlers={{ 'on:blur': element.onBlur }}
+					eventHandlers={{
+						'on:change': element.onChange,
+						'on:blur': element.onBlur,
+						'on:click': element.onClick
+					}}
 					checkValid={element.checkValid}
 				/>
 			{/each}
