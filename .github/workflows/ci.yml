@@ -25,6 +25,13 @@ jobs:
           cache-dependency-path: frontend/pnpm-lock.yaml
       - run: pnpm install
       - run: pnpm run test
+      - uses: codecov/codecov-action@v4
+        with:
+          files: ./frontend/coverage/coverage-final.json
+          name: frontend
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: true
+          verbose: true
   backend-unit-tests:
     runs-on: ubuntu-latest
     defaults:
