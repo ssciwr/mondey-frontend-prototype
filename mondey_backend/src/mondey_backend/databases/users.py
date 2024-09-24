@@ -15,7 +15,9 @@ from ..models.users import Base
 from ..models.users import User
 from ..settings import app_settings
 
-engine = create_async_engine(f"sqlite+aiosqlite:///{app_settings.USER_DATABASE_PATH}")
+engine = create_async_engine(
+    f"sqlite+aiosqlite:///{app_settings.DATABASE_PATH}/users.db"
+)
 async_session_maker = async_sessionmaker(engine, expire_on_commit=False)
 
 

@@ -27,7 +27,7 @@ async def lifespan(app: FastAPI):
 
 # ensure static files directory exists
 pathlib.Path(app_settings.STATIC_FILES_PATH).mkdir(parents=True, exist_ok=True)
-app = FastAPI(lifespan=lifespan, title="MONDEY API")
+app = FastAPI(lifespan=lifespan, title="MONDEY API", root_path="/api")
 app.include_router(milestones.router)
 app.include_router(admin.router)
 app.include_router(users.router)
