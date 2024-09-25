@@ -1,12 +1,14 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { base } from '$app/paths';
+
 	import UserLoginUtil from '$lib/components//UserLoginUtil.svelte';
 	import AlertMessage from '$lib/components/AlertMessage.svelte';
 	import DataInput from '$lib/components/DataInput/DataInput.svelte';
 	import NavigationButtons from '$lib/components/Navigation/NavigationButtons.svelte';
+
 	import { hash, users, type UserData } from '$lib/stores/userStore';
-	import { Card, Heading, Input } from 'flowbite-svelte';
+	import { Card, Heading, Input, Select } from 'flowbite-svelte';
 	import { onDestroy, onMount } from 'svelte';
 
 	// functionality
@@ -18,42 +20,80 @@
 	async function validateCredentials() {
 		// README: this should not be set here but in the child component. However, indication of something missing should
 		// not happen immediatelly in the first round of entry, so this code here defers it until the first hit of the login button.
-		for (let i = 0; i < credentials.length; ++i) {
-			credentialsValid[i] = credentials[i] !== '';
-		}
-		const user = await users.fetchWithCredentials(credentials[uid], await hash(credentials[pid]));
 
-		if (!user || user === null) {
+		for (let i = 0; i < data.length; ++i) {
+			credentialsValid[i] = data[i].value !== '' && data[i].value !== null;
+		}
+		if (
+			credentialsValid.every((v) => {
+				return v === true;
+			}) === true
+		) {
+			const user = await users.fetchWithCredentials(
+				data[0].value,
+				await hash(data[1].value),
+				data[2].value
+			);
+			console.log('userData that has been fetched: ', user);
+			if (!user || user === null) {
+				showAlert = true;
+				credentialsValid = data.map((_) => {
+					return false;
+				});
+			} else {
+				userID = user.id;
+
+				if (remember) {
+					localStorage.setItem('currentUser', JSON.stringify(userID));
+				} else {
+					localStorage.removeItem('currentUser');
+				}
+
+				await users.setLoggedIn(userID);
+
+				await users.save();
+
+				goto(`${base}/userLand/userLandingpage/`);
+			}
+		} else {
+			alertMessage = 'Bitte füllen sie alle Felder korrekt aus';
 			showAlert = true;
 			credentialsValid = [false, false];
-		} else {
-			userID = user.id;
-			if (remember) {
-				localStorage.setItem('currentUser', JSON.stringify(userID));
-			} else {
-				localStorage.removeItem('currentUser');
-			}
-			await users.setLoggedIn(userID);
-			await users.save();
-			goto(`${base}/userLand/userLandingpage/`);
 		}
 	}
 
 	// data and variables
 	let data = [
 		{
-			type: 'text',
-			name: 'Benutzerkennung',
-			placeholder: 'Benutzerkennung',
-			label: 'Benutzerkennung',
-			required: true
+			component: Input,
+			value: null,
+			props: {
+				label: 'Benutzerkennung',
+				type: 'text',
+				placeholder: 'Benutzerkennung',
+				required: true
+			}
 		},
 		{
-			type: 'password',
-			name: 'Passwort',
-			placeholder: 'Passwort',
-			label: 'Passwort',
-			required: true
+			component: Input,
+			value: null,
+			props: {
+				label: 'Passwort',
+				placeholder: 'Passwort',
+				required: true
+			}
+		},
+		{
+			component: Select,
+			value: null,
+			props: {
+				label: 'Rolle',
+				items: ['Beobachter', 'Wissenschaftler', 'Admin'].map((v) => {
+					return { name: String(v), value: v };
+				}),
+				placeholder: 'Bitte auswählen',
+				required: true
+			}
 		}
 	];
 
@@ -65,14 +105,9 @@
 		}
 	];
 
-	const uid = 0;
-	const pid = 1;
 	let alertMessage = 'Benutzerkennung oder Passwort sind falsch';
-
 	let userID: string;
-	$: credentials = ['', ''];
-	$: credentialsValid = [false, false];
-
+	let credentialsValid: boolean[] = [false, false, false];
 	let remember: boolean = false;
 	let showAlert: boolean = false;
 	const heading = 'Einloggen';
@@ -88,7 +123,8 @@
 			userID = savedUID;
 
 			const user: UserData = (await users.fetch(userID)) as UserData;
-			credentials = [user.name, user.password];
+			data[0].value = user.name;
+			data[1].value = user.password;
 			remember = true;
 		}
 	});
@@ -132,12 +168,12 @@
 			{/if}
 
 			<form class="m-1 m-3 mx-auto w-full flex-col space-y-6">
-				{#each data as element, i}
+				{#each data as element}
 					<DataInput
-						component={Input}
-						bind:value={credentials[i]}
-						properties={element}
-						label={element.label}
+						component={element.component}
+						label={element.props.label}
+						bind:value={element.value}
+						properties={element.props}
 					/>
 				{/each}
 			</form>
@@ -150,7 +186,7 @@
 		<span class="container mx-auto w-full text-gray-700 dark:text-gray-400">Not registered?</span>
 		<a
 			href={`${base}/userLand/userRegistration`}
-			class="text-primary-700 hover:underline dark:text-primary-500"
+			class="text-primary-700 dark:text-primary-500 hover:underline"
 		>
 			Create account
 		</a>
