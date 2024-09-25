@@ -24,6 +24,7 @@
 		const verified = await verifyInput();
 		if (verified) {
 			const childID = generateChildID(childData.name);
+			console.log('childData: ', childData);
 			await children.addChildData(userID, childID, childData);
 			await children.addChildObservation(userID, childID, {
 				user: userID,
@@ -44,6 +45,11 @@
 
 		childData = data.reduce((dict: any, curr) => {
 			dict[curr.props.key] = curr.value;
+
+			if (curr.additionalValue !== null) {
+				dict[curr.props.key + '_additional'] = curr.additionalValue;
+			}
+
 			required[curr.props.key] = curr.props.required;
 			return dict;
 		}, {});

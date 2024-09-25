@@ -1,5 +1,6 @@
 <script lang="ts">
-	import CheckboxList from '$lib/components/DataInput/CheckboxList.svelte';
+	import RadioList from '$lib/components/DataInput/RadioList.svelte';
+
 	import UserDataInput from '$lib/components/UserDataInput.svelte';
 	import { Input, Select } from 'flowbite-svelte';
 
@@ -44,7 +45,7 @@
 			}
 		},
 		{
-			component: CheckboxList,
+			component: RadioList,
 			value: null,
 			additionalValue: null,
 			props: {
@@ -52,12 +53,10 @@
 				items: ['männlich', 'weiblich', 'divers', 'Anderes'].map((v) => {
 					return { label: String(v), value: v };
 				}),
-				placeholder: 'Bitte auswählen',
 				label: 'Geschlecht',
 				required: true,
 				textTrigger: 'Anderes',
-				unique: true,
-				selected: [false, false, false, false]
+				selected: false
 			}
 		},
 		{

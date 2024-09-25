@@ -1,7 +1,7 @@
 <script>
 	import ChildrenRegistration from '$lib/components/ChildrenRegistration.svelte';
-	import CheckboxList from '$lib/components/DataInput/CheckboxList.svelte';
 	import Fileupload from '$lib/components/DataInput/Fileupload.svelte';
+	import RadioList from '$lib/components/DataInput/RadioList.svelte';
 
 	import { Input, MultiSelect, Select, Textarea } from 'flowbite-svelte';
 
@@ -31,7 +31,7 @@
 			}
 		},
 		{
-			component: CheckboxList,
+			component: RadioList,
 			value: null,
 			additionalValue: null,
 			props: {
@@ -48,7 +48,7 @@
 			}
 		},
 		{
-			component: CheckboxList,
+			component: RadioList,
 			value: null,
 			additionalValue: null,
 			props: {
