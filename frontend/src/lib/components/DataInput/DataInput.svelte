@@ -13,6 +13,8 @@
 	export let textTrigger: string = 'noAdditionalText';
 	export let showTextField: boolean = false;
 	let additionalInput: any = value;
+	// Flag to track initialization
+	let initialized = false;
 
 	// data to display and event handlers for dynamcis.
 	export let properties: any = {};
@@ -22,7 +24,7 @@
 	export let eventHandlers: { [key: string]: (event: Event) => void | Promise<void> } = {};
 
 	// custom valid checker that can optionally be supplied
-	export let checkValid = () => {
+	export let checkValid = (_) => {
 		return true;
 	};
 
@@ -58,11 +60,9 @@
 	}
 
 	// reactive statement that makes sure 'valid' updates the page
-	$: valid = value !== undefined && value !== null && value !== '' && checkValid();
+	$: valid = value !== undefined && value !== null && value !== '' && checkValid(value);
 	$: highlight = !valid && properties.required === true;
 	$: showTextField = showTextField || checkShowTextfield(value, textTrigger);
-	// Flag to track initialization
-	let initialized = false;
 
 	// Reactive statement to initialize additionalInput based on value
 	$: {
@@ -71,6 +71,7 @@
 			initialized = true;
 		}
 	}
+	$: console.log('highlight: ', highlight, valid, value);
 </script>
 
 {#if label}
@@ -81,7 +82,7 @@
 	<svelte:component
 		this={component}
 		class={highlight
-			? 'border-2 border-primary-600 dark:border-primary-600' + componentClass
+			? 'border-primary-600 dark:border-primary-600 border-2' + componentClass
 			: componentClass}
 		bind:value
 		{...properties}

@@ -21,44 +21,34 @@
 		// README: this should not be set here but in the child component. However, indication of something missing should
 		// not happen immediatelly in the first round of entry, so this code here defers it until the first hit of the login button.
 
-		for (let i = 0; i < data.length; ++i) {
-			credentialsValid[i] = data[i].value !== '' && data[i].value !== null;
-		}
-		if (
-			credentialsValid.every((v) => {
-				return v === true;
-			}) === true
-		) {
-			const user = await users.fetchWithCredentials(
-				data[0].value,
-				await hash(data[1].value),
-				data[2].value
-			);
-			console.log('userData that has been fetched: ', user);
-			if (!user || user === null) {
-				showAlert = true;
-				credentialsValid = data.map((_) => {
-					return false;
-				});
+		const user = await users.fetchWithCredentials(
+			data[0].value,
+			await hash(data[1].value),
+			data[2].value
+		);
+		console.log('userData that has been fetched: ', user);
+		if (user) {
+			userID = user.id;
+
+			if (remember) {
+				localStorage.setItem('currentUser', JSON.stringify(userID));
 			} else {
-				userID = user.id;
-
-				if (remember) {
-					localStorage.setItem('currentUser', JSON.stringify(userID));
-				} else {
-					localStorage.removeItem('currentUser');
-				}
-
-				await users.setLoggedIn(userID);
-
-				await users.save();
-
-				goto(`${base}/userLand/userLandingpage/`);
+				localStorage.removeItem('currentUser');
 			}
+
+			await users.setLoggedIn(userID);
+
+			await users.save();
+
+			goto(`${base}/userLand/userLandingpage/`);
 		} else {
-			alertMessage = 'Bitte füllen sie alle Felder korrekt aus';
+			console.log('bad user');
 			showAlert = true;
-			credentialsValid = [false, false];
+			data = data.map((element) => {
+				element.value = null;
+				return element;
+			});
+			console.log(data);
 		}
 	}
 
@@ -79,6 +69,7 @@
 			value: null,
 			props: {
 				label: 'Passwort',
+				type: 'password',
 				placeholder: 'Passwort',
 				required: true
 			}
@@ -105,9 +96,8 @@
 		}
 	];
 
-	let alertMessage = 'Benutzerkennung oder Passwort sind falsch';
+	let alertMessage = 'Eingaben sind falsch';
 	let userID: string;
-	let credentialsValid: boolean[] = [false, false, false];
 	let remember: boolean = false;
 	let showAlert: boolean = false;
 	const heading = 'Einloggen';
@@ -119,12 +109,15 @@
 
 		// check if credentials are saved
 		const savedUID = JSON.parse(localStorage.getItem('currentUser'));
+
 		if (savedUID) {
 			userID = savedUID;
 
 			const user: UserData = (await users.fetch(userID)) as UserData;
+
 			data[0].value = user.name;
 			data[1].value = user.password;
+			data[2].value = user.role;
 			remember = true;
 		}
 	});
@@ -132,6 +125,8 @@
 	onDestroy(async () => {
 		await users.save();
 	});
+
+	$: console.log('data: ', data);
 </script>
 
 {#if showAlert}
@@ -141,7 +136,6 @@
 		lastpage={`${base}/userLand/userLogin`}
 		onclick={() => {
 			showAlert = false;
-			credentialsValid = [true, true];
 		}}
 	/>
 {/if}
@@ -153,7 +147,6 @@
 		lastpage={`${base}`}
 		onclick={() => {
 			showAlert = false;
-			credentialsValid = [true, true];
 		}}
 	/>
 {:else}
