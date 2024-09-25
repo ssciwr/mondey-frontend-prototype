@@ -13,11 +13,15 @@
 		{
 			label: 'Alle',
 			placeholder: 'Durchsuchen',
-			filterFunction: (data: any[], col: any, searchTerm: string): any[] => {
+			filterFunction: (data: any[], searchTerm: string): any[] => {
 				if (searchTerm === '') {
 					return data;
 				} else {
-					return data.filter((item) => item[col].toLowerCase().includes(searchTerm.toLowerCase()));
+					return data.filter((item) =>
+						Object.values(item).some((element) => {
+							return element.toLowerCase().includes(searchTerm.toLowerCase());
+						})
+					);
 				}
 			}
 		}
@@ -30,7 +34,7 @@
 
 	// dynamic statements
 	let searchTerm = '';
-	$: filteredItems = withSearch === true ? filterData(data, searchableCol, searchTerm) : data;
+	$: filteredItems = withSearch === true ? filterData(data, searchTerm) : data;
 
 	// Create a new array of componentProps that matches the filtered data
 	$: filteredComponentProps = filteredItems.map((item) => {
@@ -57,7 +61,7 @@
 				<!-- after example: https://flowbite-svelte.com/docs/forms/search-input#Search_with_dropdown -->
 				<div class="relative">
 					<Button
-						class="h-full whitespace-nowrap rounded-e-none border border-e-0 border-primary-700"
+						class="border-primary-700 h-full whitespace-nowrap rounded-e-none border border-e-0"
 					>
 						{searchCategory}
 						<ChevronDownOutline class="ms-2.5 h-2.5 w-2.5" />

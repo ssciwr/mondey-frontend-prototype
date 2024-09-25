@@ -88,9 +88,10 @@
 		if (key === '') {
 			return data;
 		} else {
-			return data.filter((item) => {
-				item.header.toLowerCase().includes(key.toLowerCase());
+			const res = data.filter((item) => {
+				return item.header.toLowerCase().includes(key.toLowerCase());
 			});
+			return res;
 		}
 	}
 
@@ -98,14 +99,15 @@
 		if (key === '') {
 			return data;
 		} else {
-			return data.filter((item) => {
-				item.summary.toLowerCase().includes(key.toLowerCase());
+			const res = data.filter((item) => {
+				return item.summary.toLowerCase().includes(key.toLowerCase());
 			});
+			return res;
 		}
 	}
 
 	function searchAll(data: any[], key: string) {
-		return [...new Set(...searchName(data, key), ...searchRemarks(data, key))];
+		return [...new Set([...searchName(data, key), ...searchRemarks(data, key)])];
 	}
 
 	const searchData = [
