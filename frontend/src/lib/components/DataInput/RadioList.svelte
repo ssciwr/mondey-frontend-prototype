@@ -3,8 +3,8 @@
 	export let value: any;
 </script>
 
-<div class={'flex grid w-full auto-cols-auto grid-flow-col flex-col ' + $$props.class}>
+<div class="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
 	{#each $$props.items as item, index}
-		<Radio bind:group={value} value={item.value}>{item.label}</Radio>
+		<Radio class="mx-2" bind:group={value} value={item.value}>{item.label}</Radio>
 	{/each}
 </div>
