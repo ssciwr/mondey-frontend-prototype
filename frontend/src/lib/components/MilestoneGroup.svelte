@@ -37,7 +37,6 @@
 		<GalleryDisplay
 			data={milestonedata.sort((a, b) => a.progress - b.progress)}
 			itemComponent={CardDisplay}
-			searchableCol={'header'}
 			componentProps={createStyle(milestonedata)}
 			withSearch={true}
 			{searchData}

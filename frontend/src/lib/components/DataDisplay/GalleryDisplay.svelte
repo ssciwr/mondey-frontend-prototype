@@ -7,7 +7,6 @@
 	export let header: string | null = null;
 	export let itemComponent;
 	export let withSearch = true;
-	export let searchableCol = '';
 	export let componentProps;
 
 	export let searchData = [

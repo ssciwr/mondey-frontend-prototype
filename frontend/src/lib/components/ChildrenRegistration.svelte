@@ -183,6 +183,7 @@
 			});
 
 			console.log(childData);
+			await children.save();
 			await goto(nextpage as string);
 		} else {
 			showAlert = true;
@@ -332,7 +333,7 @@
 		{/each}
 
 		<Button
-			class="w-full rounded-lg bg-primary-700 px-4 py-2 font-semibold text-white hover:bg-primary-800"
+			class="bg-primary-700 hover:bg-primary-800 w-full rounded-lg px-4 py-2 font-semibold text-white"
 			on:click={submitData}
 			>{'Kind hinzufügen'}
 		</Button>

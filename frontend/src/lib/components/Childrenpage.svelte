@@ -84,6 +84,48 @@
 	let data: ChildData[] = [];
 	let loading = true;
 
+	function searchName(data: any[], key: string): any[] {
+		if (key === '') {
+			return data;
+		} else {
+			return data.filter((item) => {
+				item.header.toLowerCase().includes(key.toLowerCase());
+			});
+		}
+	}
+
+	function searchRemarks(data: any[], key: string): any[] {
+		if (key === '') {
+			return data;
+		} else {
+			return data.filter((item) => {
+				item.summary.toLowerCase().includes(key.toLowerCase());
+			});
+		}
+	}
+
+	function searchAll(data: any[], key: string) {
+		return [...new Set(...searchName(data, key), ...searchRemarks(data, key))];
+	}
+
+	const searchData = [
+		{
+			label: 'Alle',
+			placeholder: 'Alle Kategorien durchsuchen',
+			filterFunction: searchAll
+		},
+		{
+			label: 'Name',
+			placeholder: 'Kinder nach Namen durchsuchen',
+			filterFunction: searchName
+		},
+		{
+			label: 'Bemerkung',
+			placeholder: 'Bemerkungen zu Kindern durchsuchen',
+			filterFunction: searchRemarks
+		}
+	];
+
 	// this fetches dummy child data for the dummy user whenever the component is mounted into the dom
 	// it is conceptualized as emulating an API call that would normally fetch this from the server.
 	onMount(init);
@@ -104,8 +146,8 @@
 		<GalleryDisplay
 			{data}
 			itemComponent={CardDisplay}
-			searchableCol={'header'}
 			componentProps={createStyle(data)}
+			{searchData}
 		/>
 	{/if}
 </div>
