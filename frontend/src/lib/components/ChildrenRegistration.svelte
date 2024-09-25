@@ -24,7 +24,6 @@
 		const verified = await verifyInput();
 		if (verified) {
 			const childID = generateChildID(childData.name);
-			console.log('childData: ', childData);
 			await children.addChildData(userID, childID, childData);
 			await children.addChildObservation(userID, childID, {
 				user: userID,
