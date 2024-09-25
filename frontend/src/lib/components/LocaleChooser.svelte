@@ -2,6 +2,8 @@
 	import { Dropdown, DropdownItem } from 'flowbite-svelte';
 	import { ChevronDownOutline } from 'flowbite-svelte-icons';
 	import { locale, locales } from 'svelte-i18n';
+	import { languages, lang_id } from '$lib/stores/adminStore';
+
 	let dropdownOpen = false;
 </script>
 
@@ -20,6 +22,7 @@
 				class="flex items-center"
 				on:click={() => {
 					locale.set(loc);
+					lang_id.set(`${Object.keys($languages).find((key) => $languages[key] === loc)}`);
 					dropdownOpen = false;
 				}}
 			>

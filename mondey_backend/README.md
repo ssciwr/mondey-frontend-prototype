@@ -36,7 +36,6 @@ sqlite> UPDATE user SET is_superuser = 1 WHERE email = 'youremail@yourdomain.com
 
 The backend can be configured using environment variables,
 which can be set in a `.env` file in the working directory where you start the backend.
-Default settings for local development are included in [.env](.env).
 
 ## Tests
 

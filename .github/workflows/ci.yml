@@ -24,7 +24,15 @@ jobs:
           cache: 'pnpm'
           cache-dependency-path: frontend/pnpm-lock.yaml
       - run: pnpm install
+      - run: pnpm build
       - run: pnpm run test
+      - uses: codecov/codecov-action@v4
+        with:
+          files: ./frontend/coverage/coverage-final.json
+          name: frontend
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: true
+          verbose: true
   backend-unit-tests:
     runs-on: ubuntu-latest
     defaults:
@@ -36,4 +44,11 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install -e .[tests]
-      - run: python -m pytest -sv
+      - run: python -m pytest --cov=mondey_backend --cov-report=xml -svvv
+      - uses: codecov/codecov-action@v4
+        with:
+          files: ./mondey_backend/coverage.xml
+          name: backend
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: true
+          verbose: true

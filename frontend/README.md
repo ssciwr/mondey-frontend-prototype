@@ -14,3 +14,5 @@ Initial setup to edit the frontend locally:
 To start a development server:
 
 - `pnpm run dev`
+
+This will serve the website at [http://localhost:5173](http://localhost:5173)

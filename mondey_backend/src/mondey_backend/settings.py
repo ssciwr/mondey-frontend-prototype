@@ -1,21 +1,20 @@
 from __future__ import annotations
 
-import secrets
-
 from pydantic_settings import BaseSettings
 from pydantic_settings import SettingsConfigDict
 
 
 class AppSettings(BaseSettings):
+    # this will load settings from environment variables or an .env file if present
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
-    SECRET: str = secrets.token_urlsafe(64)
-    USER_DATABASE_PATH: str = "users.db"
-    MILESTONE_DATABASE_PATH: str = "milestones.db"
+    # these defaults are for local development and are used if the environment variables are not set
+    SECRET: str = "abc123"
+    DATABASE_PATH: str = "db"
     STATIC_FILES_PATH: str = "static"
-    ENABLE_CORS: bool = False
+    ENABLE_CORS: bool = True
     HOST: str = "localhost"
     PORT: int = 8000
-    RELOAD: bool = False
+    RELOAD: bool = True
     LOG_LEVEL: str = "info"
 
 

@@ -6,6 +6,7 @@ from mondey_backend.dependencies import current_active_superuser
 from mondey_backend.dependencies import current_active_user
 from mondey_backend.dependencies import get_session
 from mondey_backend.main import app
+from mondey_backend.models.milestones import Language
 from mondey_backend.models.milestones import MilestoneGroup
 from mondey_backend.models.milestones import MilestoneGroupText
 from mondey_backend.models.users import UserRead
@@ -27,13 +28,16 @@ def session():
     SQLModel.metadata.create_all(engine)
     with Session(engine) as session:
         # add some test data to the database
-        session.add(MilestoneGroup(order=2, image=None))
-        session.add(MilestoneGroupText(group_id=1, lang="de", title="t1", desc="d1"))
-        session.add(MilestoneGroupText(group_id=1, lang="en", title="t2", desc="d2"))
-        session.add(MilestoneGroup(order=1, image=None))
-        session.add(MilestoneGroupText(group_id=2, lang="de", title="t3", desc="d3"))
-        session.add(MilestoneGroupText(group_id=2, lang="en", title="t4", desc="d4"))
-        session.add(MilestoneGroupText(group_id=2, lang="fr", title="t5", desc="d5"))
+        session.add(Language(lang="de"))
+        session.add(Language(lang="en"))
+        session.add(Language(lang="fr"))
+        session.add(MilestoneGroup(order=2))
+        session.add(MilestoneGroupText(group_id=1, lang_id=1, title="t1", desc="d1"))
+        session.add(MilestoneGroupText(group_id=1, lang_id=2, title="t2", desc="d2"))
+        session.add(MilestoneGroup(order=1))
+        session.add(MilestoneGroupText(group_id=2, lang_id=1, title="t3", desc="d3"))
+        session.add(MilestoneGroupText(group_id=2, lang_id=2, title="t4", desc="d4"))
+        session.add(MilestoneGroupText(group_id=2, lang_id=3, title="t5", desc="d5"))
         session.commit()
         yield session
 

@@ -3,6 +3,12 @@ import pytest
 
 @pytest.mark.parametrize("client_type", ["user_client", "admin_client"])
 class TestMilestones:
+    def test_get_languages(self, client_type: str, request: pytest.FixtureRequest):
+        client = request.getfixturevalue(client_type)
+        response = client.get("/languages/")
+        assert response.status_code == 200
+        assert response.json() == {"1": "de", "2": "en", "3": "fr"}
+
     def test_get_milestone_groups(
         self, client_type: str, request: pytest.FixtureRequest
     ):
@@ -13,20 +19,18 @@ class TestMilestones:
         group1, group2 = response.json()
         assert group1 == {
             "id": 2,
-            "order": 1,
             "text": {
-                "de": {"title": "t3", "desc": "d3"},
-                "en": {"title": "t4", "desc": "d4"},
-                "fr": {"title": "t5", "desc": "d5"},
+                "1": {"title": "t3", "desc": "d3"},
+                "2": {"title": "t4", "desc": "d4"},
+                "3": {"title": "t5", "desc": "d5"},
             },
             "milestones": [],
         }
         assert group2 == {
             "id": 1,
-            "order": 2,
             "text": {
-                "de": {"title": "t1", "desc": "d1"},
-                "en": {"title": "t2", "desc": "d2"},
+                "1": {"title": "t1", "desc": "d1"},
+                "2": {"title": "t2", "desc": "d2"},
             },
             "milestones": [],
         }
@@ -39,11 +43,10 @@ class TestMilestones:
         assert response.status_code == 200
         assert response.json() == {
             "id": 2,
-            "order": 1,
             "text": {
-                "de": {"title": "t3", "desc": "d3"},
-                "en": {"title": "t4", "desc": "d4"},
-                "fr": {"title": "t5", "desc": "d5"},
+                "1": {"title": "t3", "desc": "d3"},
+                "2": {"title": "t4", "desc": "d4"},
+                "3": {"title": "t5", "desc": "d5"},
             },
             "milestones": [],
         }

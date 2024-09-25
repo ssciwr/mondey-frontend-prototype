@@ -32,6 +32,7 @@
 				current: await createDummyCurrent()
 			});
 
+			await children.save();
 			await goto(nextpage as string);
 		} else {
 			showAlert = true;

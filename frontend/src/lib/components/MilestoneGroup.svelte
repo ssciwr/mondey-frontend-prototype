@@ -2,25 +2,10 @@
 	import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
 	import CardDisplay from '$lib/components/DataDisplay/CardDisplay.svelte';
 	import GalleryDisplay from '$lib/components/DataDisplay/GalleryDisplay.svelte';
+
 	export let breadcrumbdata: any[] = [];
 	export let milestonedata: any[] = [];
-
-	function filterData(data: object[], dummy: any, key: string): object[] {
-		if (key === '') {
-			return data;
-		} else {
-			return data.filter((item) => {
-				// button label contains info about completion status => use for search
-				if (key === completeKey) {
-					return item.progress === 1;
-				} else if (key === incompleteKey) {
-					return item.progress < 1;
-				} else {
-					return item.header.toLowerCase().includes(key.toLowerCase());
-				}
-			});
-		}
-	}
+	export let searchData: any[] = [];
 
 	// FIXME:styling has no business being here... not sure where to put it though given thatparts of it are data dependent
 	export function createStyle(data) {
@@ -52,11 +37,9 @@
 		<GalleryDisplay
 			data={milestonedata.sort((a, b) => a.progress - b.progress)}
 			itemComponent={CardDisplay}
-			searchableCol={'header'}
 			componentProps={createStyle(milestonedata)}
-			searchPlaceHolder={`Nach Status (${completeKey}/${incompleteKey}) oder Titel durchsuchen`}
 			withSearch={true}
-			{filterData}
+			{searchData}
 		/>
 	</div>
 </div>

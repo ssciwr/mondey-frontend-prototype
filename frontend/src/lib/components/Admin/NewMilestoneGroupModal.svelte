@@ -1,16 +1,17 @@
 <script lang="ts">
 	import {
-		Card,
 		Button,
 		InputAddon,
 		Textarea,
 		Input,
 		Label,
 		ButtonGroup,
-		Fileupload
+		Fileupload,
+		Modal
 	} from 'flowbite-svelte';
 	import { FileImageSolid } from 'flowbite-svelte-icons';
 
+	export let open: boolean = false;
 	export let milestoneGroupData = {
 		group: { order: 0 },
 		text: [
@@ -20,7 +21,6 @@
 	};
 	let files: FileList;
 	let image: string | ArrayBuffer | null | undefined = '';
-	let result = '';
 
 	$: if (files) {
 		const reader = new FileReader();
@@ -47,7 +47,6 @@
 			);
 			const new_milestone_group = await res_milestone_group.json();
 			console.log(new_milestone_group);
-			result = JSON.stringify(new_milestone_group);
 			if (files) {
 				let formData = new FormData();
 				formData.append('file', files[0]);
@@ -68,10 +67,7 @@
 	}
 </script>
 
-<Card size="xl">
-	<h5 class="mb-5 text-center text-2xl font-bold text-gray-900 dark:text-white">
-		New MilestoneGroup
-	</h5>
+<Modal title="Create milestone group" bind:open autoclose size="xl">
 	<div class="mb-5">
 		<Label class="mb-2">Title</Label>
 		{#each milestoneGroupData.text as text}
@@ -96,13 +92,17 @@
 	</div>
 	<div class="mb-5">
 		<Label for="img_upload" class="pb-2">Image</Label>
-		{#if image}
-			<img src={`${image ?? ''}`} width="100" height="100" alt="MilestoneGroup" />
-		{:else}
-			<FileImageSolid class="h-[100px] w-[100px]" />
-		{/if}
-		<Fileupload bind:files accept=".jpg, .jpeg" id="img_upload" class="mb-2" />
+		<div class="flex flex-row">
+			{#if image}
+				<img src={`${image ?? ''}`} width="48" height="48" alt="MilestoneGroup" class="mx-2" />
+			{:else}
+				<FileImageSolid class="h-[48px] w-[48px]" />
+			{/if}
+			<Fileupload bind:files accept=".jpg, .jpeg" id="img_upload" class="mb-2 flex-grow-0" />
+		</div>
 	</div>
-	<Button class="w-full" on:click={postMilestoneGroup}>Create</Button>
-</Card>
-<h1>{result}</h1>
+	<svelte:fragment slot="footer">
+		<Button color="green" on:click={postMilestoneGroup}>Save changes</Button>
+		<Button color="alternative">Cancel</Button>
+	</svelte:fragment>
+</Modal>
