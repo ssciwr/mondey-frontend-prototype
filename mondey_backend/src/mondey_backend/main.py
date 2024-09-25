@@ -60,6 +60,7 @@ def main():
         port=app_settings.PORT,
         reload=app_settings.RELOAD,
         log_level=app_settings.LOG_LEVEL,
+        forwarded_allow_ips="*",
     )
 
 
