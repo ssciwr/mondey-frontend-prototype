@@ -183,6 +183,7 @@
 			});
 
 			console.log(childData);
+			await children.save();
 			await goto(nextpage as string);
 		} else {
 			showAlert = true;

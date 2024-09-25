@@ -5,23 +5,6 @@
 	import GalleryDisplay from '$lib/components/DataDisplay/GalleryDisplay.svelte';
 	import { CheckCircleSolid, ExclamationCircleSolid } from 'flowbite-svelte-icons';
 
-	function filterData(data: object[], dummy: any, key: string): object[] {
-		if (key === '') {
-			return data;
-		} else {
-			return data.filter((item) => {
-				// button label contains info about completion status => use for search
-				if (key === completeKey) {
-					return item.complete === true;
-				} else if (key === incompleteKey) {
-					return item.complete === false;
-				} else {
-					return item.header.toLowerCase().includes(key.toLowerCase());
-				}
-			});
-		}
-	}
-
 	// FIXME: this must go eventually. Either must happen in the backend or there
 	// should be in a refactored version of the card component
 	function convertData(data: object[]): object[] {
@@ -30,6 +13,8 @@
 				header: item.title,
 				href: `${base}/milestone`, // hardcoded link for the moment
 				complete: item.answer !== null,
+				summary: item.desc,
+				answer: item.answer,
 				auxilliary: item.answer !== null ? CheckCircleSolid : ExclamationCircleSolid
 			};
 		});
@@ -38,6 +23,7 @@
 	const completeKey = 'fertig';
 	const incompleteKey = 'unfertig';
 	export let breadcrumbdata: object[] = [];
+	export let searchData: any[];
 	export let data: object[] = [];
 	const rawdata = convertData(data).sort((a, b) => a.complete - b.complete); // FIXME: the convert step should not be here and will be handeled backend-side
 </script>
@@ -60,9 +46,8 @@
 					}
 				};
 			})}
-			searchPlaceHolder={`Nach Status (${completeKey}/${incompleteKey}) oder Titel durchsuchen`}
 			withSearch={true}
-			{filterData}
+			{searchData}
 		/>
 	</div>
 </div>
