@@ -78,7 +78,7 @@
 		answer: string;
 	}
 
-	function searchStatus(data: MilestoneData[], dummy: any, key: string): MilestoneData[] {
+	function searchStatus(data: MilestoneData[], key: string): MilestoneData[] {
 		if (key === '') {
 			return data;
 		} else {
@@ -93,7 +93,7 @@
 		}
 	}
 
-	function searchDescription(data: MilestoneData[], dummy: any, key: string): MilestoneData[] {
+	function searchDescription(data: MilestoneData[], key: string): MilestoneData[] {
 		if (key === '') {
 			return data;
 		} else {
@@ -103,7 +103,7 @@
 		}
 	}
 
-	function searchTitle(data: MilestoneData[], dummy: any, key: string): MilestoneData[] {
+	function searchTitle(data: MilestoneData[], key: string): MilestoneData[] {
 		if (key === '') {
 			return data;
 		} else {
@@ -113,7 +113,7 @@
 		}
 	}
 
-	function searchAnswer(data: MilestoneData[], dummy: any, key: string): MilestoneData[] {
+	function searchAnswer(data: MilestoneData[], key: string): MilestoneData[] {
 		if (key === '') {
 			return data;
 		} else {
@@ -123,13 +123,13 @@
 		}
 	}
 
-	function searchAll(data: MilestoneData[], dummy: any, key: string): MilestoneData[] {
+	function searchAll(data: MilestoneData[], key: string): MilestoneData[] {
 		return [
 			...new Set([
-				...searchDescription(data, dummy, key),
-				...searchStatus(data, dummy, key),
-				...searchTitle(data, dummy, key),
-				...searchAnswer(data, dummy, key)
+				...searchDescription(data, key),
+				...searchStatus(data, key),
+				...searchTitle(data, key),
+				...searchAnswer(data, key)
 			])
 		];
 	}
