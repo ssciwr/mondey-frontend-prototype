@@ -78,7 +78,6 @@ async function createDummyUser(name: string = 'dummyUser') {
 }
 
 async function hash(input: string): string {
-	console.log('hash input');
 	const encoder = new TextEncoder();
 	const data = encoder.encode(input);
 	const hashArray = Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', data)));

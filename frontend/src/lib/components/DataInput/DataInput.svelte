@@ -7,14 +7,12 @@
 
 	// variables
 	export let component: any;
-	export let value: any = null;
-	export let label: string | null = null;
+	export let value: any;
+	export let label: string = null;
 	export let componentClass: string = '';
 	export let textTrigger: string = 'noAdditionalText';
 	export let showTextField: boolean = false;
-	let additionalInput: any = value;
-	// Flag to track initialization
-	let initialized = false;
+	export let additionalInput: any = null;
 
 	// data to display and event handlers for dynamcis.
 	export let properties: any = {};
@@ -28,50 +26,28 @@
 		return true;
 	};
 
-	// internal functionality for managing additional information given via textfield
-	function replaceValue(arrayvalue: any[], target: any, element: any): void {
-		for (let i = 0; i < arrayvalue.length; i++) {
-			if (arrayvalue[i] === target && element) {
-				arrayvalue[i] = element;
-			}
-		}
-	}
-
-	function updateValue(toupdate: any, additionalInput: string): any {
-		if (showTextField) {
-			if (toupdate instanceof Array) {
-				replaceValue(toupdate, textTrigger, additionalInput);
-				return toupdate;
-			} else {
-				return additionalInput as typeof value;
-			}
-		} else {
-			return toupdate;
-		}
-	}
-
 	// functionality for showing the textfield when the trigger is selected
-	function checkShowTextfield(v: any, trigger: string) {
+	function checkShowTextfield(v: any): boolean {
 		if (v instanceof Array) {
-			return v.includes(trigger);
+			return v.includes(textTrigger);
 		} else {
-			return v === trigger;
+			return v === textTrigger;
 		}
+	}
+
+	function evalValid(v: any): boolean {
+		let result = true;
+		if (Array.isArray(v)) {
+			result = v.length > 0;
+		}
+
+		return result && value !== undefined && value !== null && value !== '' && checkValid();
 	}
 
 	// reactive statement that makes sure 'valid' updates the page
-	$: valid = value !== undefined && value !== null && value !== '' && checkValid(value);
+	$: valid = evalValid(value);
 	$: highlight = !valid && properties.required === true;
-	$: showTextField = showTextField || checkShowTextfield(value, textTrigger);
-
-	// Reactive statement to initialize additionalInput based on value
-	$: {
-		if (!initialized && value !== null) {
-			additionalInput = value;
-			initialized = true;
-		}
-	}
-	$: console.log('highlight: ', highlight, valid, value);
+	$: showTextField = checkShowTextfield(value);
 </script>
 
 {#if label}
@@ -82,7 +58,7 @@
 	<svelte:component
 		this={component}
 		class={highlight
-			? 'border-primary-600 dark:border-primary-600 border-2' + componentClass
+			? 'border-primary-600 dark:border-primary-600 rounded border-2 ' + componentClass
 			: componentClass}
 		bind:value
 		{...properties}
@@ -92,11 +68,6 @@
 	/>
 
 	{#if showTextField === true}
-		<Textarea
-			bind:value={additionalInput}
-			on:blur={() => {
-				value = updateValue(value, additionalInput);
-			}}
-		/>
+		<Textarea bind:value={additionalInput} />
 	{/if}
 </div>

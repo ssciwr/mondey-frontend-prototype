@@ -17,6 +17,7 @@
 	}
 
 	onMount(async () => {
+		console.log(import.meta.env.VITE_MONDEY_API_URL);
 		updateLanguages();
 		updateIsLoggedIn();
 	});

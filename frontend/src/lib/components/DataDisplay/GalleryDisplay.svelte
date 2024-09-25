@@ -1,25 +1,40 @@
 <script lang="ts">
-	import { Gallery, Heading, Search } from 'flowbite-svelte';
-
-	export let filterData = (data, col, searchTerm) => {
-		if (searchTerm === '') {
-			return data;
-		} else {
-			return data.filter((item) => item[col].toLowerCase().includes(searchTerm.toLowerCase()));
-		}
-	};
+	import { Button, Dropdown, DropdownItem, Gallery, Heading, Search } from 'flowbite-svelte';
+	import { ChevronDownOutline } from 'flowbite-svelte-icons';
+	import { tick } from 'svelte';
 
 	export let data;
 	export let header: string | null = null;
 	export let itemComponent;
 	export let withSearch = true;
-	export let searchableCol = '';
 	export let componentProps;
-	export let searchPlaceHolder = 'Durchsuchen';
+
+	export let searchData = [
+		{
+			label: 'Alle',
+			placeholder: 'Durchsuchen',
+			filterFunction: (data: any[], searchTerm: string): any[] => {
+				if (searchTerm === '') {
+					return data;
+				} else {
+					return data.filter((item) =>
+						Object.values(item).some((element) => {
+							return element.toLowerCase().includes(searchTerm.toLowerCase());
+						})
+					);
+				}
+			}
+		}
+	];
+
+	let searchCategory: string = searchData[0].label;
+	let searchPlaceHolder: string = searchData[0].placeholder;
+	let filterData = searchData[0].filterFunction;
+	let dropdownOpen: boolean = false;
 
 	// dynamic statements
 	let searchTerm = '';
-	$: filteredItems = withSearch === true ? filterData(data, searchableCol, searchTerm) : data;
+	$: filteredItems = withSearch === true ? filterData(data, searchTerm) : data;
 
 	// Create a new array of componentProps that matches the filtered data
 	$: filteredComponentProps = filteredItems.map((item) => {
@@ -41,8 +56,47 @@
 	{/if}
 
 	{#if withSearch}
-		<form class="m-2 w-full p-4">
-			<Search size="md" placeholder={searchPlaceHolder} bind:value={searchTerm} />
+		<form class="m-2 flex w-full rounded p-4">
+			{#if searchData.length > 1}
+				<!-- after example: https://flowbite-svelte.com/docs/forms/search-input#Search_with_dropdown -->
+				<div class="relative">
+					<Button
+						class="h-full whitespace-nowrap rounded-e-none border border-e-0 border-primary-700"
+					>
+						{searchCategory}
+						<ChevronDownOutline class="ms-2.5 h-2.5 w-2.5" />
+					</Button>
+					<Dropdown classContainer="flex w-auto" bind:open={dropdownOpen}>
+						{#each searchData as { label, placeholder, filterFunction }}
+							<DropdownItem
+								on:click={async () => {
+									searchCategory = label;
+									searchPlaceHolder = placeholder;
+									filterData = filterFunction;
+									dropdownOpen = false;
+									await tick();
+								}}
+								class={searchCategory === label ? 'underline' : ''}
+							>
+								{label}
+							</DropdownItem>
+						{/each}
+					</Dropdown>
+				</div>
+				<Search
+					class="rounded-e rounded-s-none py-2.5"
+					size="md"
+					placeholder={searchPlaceHolder}
+					bind:value={searchTerm}
+				/>
+			{:else}
+				<Search
+					size="md"
+					class="rounded py-2.5"
+					placeholder={searchPlaceHolder}
+					bind:value={searchTerm}
+				/>
+			{/if}
 		</form>
 	{/if}
 

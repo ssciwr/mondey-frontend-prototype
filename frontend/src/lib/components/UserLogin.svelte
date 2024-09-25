@@ -8,7 +8,7 @@
 	import NavigationButtons from '$lib/components/Navigation/NavigationButtons.svelte';
 
 	import { hash, users, type UserData } from '$lib/stores/userStore';
-	import { Card, Heading, Input, Select } from 'flowbite-svelte';
+	import { Card, Heading } from 'flowbite-svelte';
 	import { onDestroy, onMount } from 'svelte';
 
 	// functionality
@@ -51,40 +51,7 @@
 	}
 
 	// data and variables
-	let data = [
-		{
-			component: Input,
-			value: null,
-			props: {
-				label: 'Benutzerkennung',
-				type: 'text',
-				placeholder: 'Benutzerkennung',
-				required: true
-			}
-		},
-		{
-			component: Input,
-			value: null,
-			props: {
-				label: 'Passwort',
-				type: 'password',
-				placeholder: 'Passwort',
-				required: true
-			}
-		},
-		{
-			component: Select,
-			value: null,
-			props: {
-				label: 'Rolle',
-				items: ['Beobachter', 'Wissenschaftler', 'Admin'].map((v) => {
-					return { name: String(v), value: v };
-				}),
-				placeholder: 'Bitte auswählen',
-				required: true
-			}
-		}
-	];
+	export let data: any[];
 
 	const buttons = [
 		{

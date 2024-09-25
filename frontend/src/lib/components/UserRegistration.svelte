@@ -22,7 +22,8 @@
 		const mailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 		missingValues[0] = inputValues[0] === null || inputValues[0] === ''; // username
 		missingValues[1] = inputValues[1] === null || mailRegex.test(inputValues[1]) === false; // email
-		missingValues[2] = inputValues[2] === null || inputValues[2] === ''; // password
+		missingValues[2] =
+			inputValues[2] === null || inputValues[2] === '' || inputValues[2] !== inputValues[3]; // password
 		missingValues[3] = inputValues[3] === null || missingValues[2];
 	}
 
@@ -35,14 +36,9 @@
 			})
 		) {
 			// README: userID is username+password just as a placeholder
-			const userID = inputValues[0] + passwd;
+			const h = await hash(inputValues[2]);
+			const userID = inputValues[0] + h;
 			let userAddSuccess: boolean = true;
-
-			if (passwd !== passwdTest) {
-				userAddSuccess = false;
-				alertMessage = 'Passwörter sind nicht identisch';
-				showAlert = true;
-			}
 
 			let userdata = {
 				name: inputValues[0],
@@ -106,54 +102,7 @@
 		}
 	}
 
-	const data = [
-		{
-			label: 'Benutzername',
-			name: 'Benutzername',
-			type: 'text',
-			placeholder: 'Wählen sie einen beliebigen Benutzernamen',
-			required: true,
-			checkValid: () => {
-				return true;
-			}
-		},
-		{
-			label: 'E-Mail',
-			name: 'E-Mail',
-			type: 'email',
-			placeholder: 'E-Mail',
-			required: true,
-			checkValid: () => {
-				return true;
-			}
-		},
-		{
-			label: 'Passwort',
-			name: 'Passwort',
-			type: 'password',
-			placeholder: 'Passwort',
-			required: true,
-			onBlur: async (event: Event) => {
-				passwd = await hash(event.srcElement.value);
-			},
-			checkValid: () => {
-				return passwd !== '' && passwd !== null && passwd !== undefined && passwd === passwdTest;
-			}
-		},
-		{
-			label: 'Passwort wiederholen',
-			name: 'Passwort wiederholen',
-			type: 'password',
-			placeholder: 'Passwort wiederholen',
-			required: true,
-			onBlur: async (event: Event) => {
-				passwdTest = await hash(event.srcElement.value);
-			},
-			checkValid: () => {
-				return passwd !== '' && passwd !== null && passwd !== undefined && passwd === passwdTest;
-			}
-		}
-	];
+	export let data;
 
 	const heading = 'Als neuer Benutzer registrieren';
 	let showAlert: boolean = false;
@@ -201,7 +150,11 @@
 					component={Input}
 					properties={element}
 					bind:value={inputValues[i]}
-					eventHandlers={{ 'on:blur': element.onBlur }}
+					eventHandlers={{
+						'on:change': element.onChange,
+						'on:blur': element.onBlur,
+						'on:click': element.onClick
+					}}
 					checkValid={element.checkValid}
 				/>
 			{/each}
