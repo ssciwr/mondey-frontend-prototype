@@ -26,7 +26,7 @@
 			await hash(data[1].value),
 			data[2].value
 		);
-		console.log('userData that has been fetched: ', user);
+
 		if (user) {
 			userID = user.id;
 
@@ -42,13 +42,11 @@
 
 			goto(`${base}/userLand/userLandingpage/`);
 		} else {
-			console.log('bad user');
 			showAlert = true;
 			data = data.map((element) => {
 				element.value = null;
 				return element;
 			});
-			console.log(data);
 		}
 	}
 
@@ -125,8 +123,6 @@
 	onDestroy(async () => {
 		await users.save();
 	});
-
-	$: console.log('data: ', data);
 </script>
 
 {#if showAlert}
