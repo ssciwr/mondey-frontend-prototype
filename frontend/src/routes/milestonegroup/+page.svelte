@@ -159,7 +159,7 @@
 		[key: string]: any;
 	}
 
-	function searchByStatus(data: DataElement[], dummy: any, key: string): DataElement[] {
+	function searchByStatus(data: DataElement[], key: string): DataElement[] {
 		if (key === '') {
 			return data;
 		} else {
@@ -176,7 +176,7 @@
 		}
 	}
 
-	function searchBySurvey(data: DataElement[], dummy: any, key: string): DataElement[] {
+	function searchBySurvey(data: DataElement[], key: string): DataElement[] {
 		if (key === '') {
 			return data;
 		} else {
@@ -186,7 +186,7 @@
 		}
 	}
 
-	function searchBySurveyDescription(data: DataElement[], dummy: any, key: string): DataElement[] {
+	function searchBySurveyDescription(data: DataElement[], key: string): DataElement[] {
 		if (key === '') {
 			return data;
 		} else {
@@ -196,7 +196,7 @@
 		}
 	}
 
-	function searchByMilestone(data: DataElement[], dummy: any, key: string): DataElement[] {
+	function searchByMilestone(data: DataElement[], key: string): DataElement[] {
 		if (key === '') {
 			return data;
 		} else {
@@ -209,13 +209,13 @@
 	}
 
 	// README: this is slow and quite a bit of work because a lot of text has to be searched. Kill it?
-	function searchAll(data: DataElement[], dummy: any, key: string): DataElement[] {
+	function searchAll(data: DataElement[], key: string): DataElement[] {
 		return [
 			...new Set([
-				...searchBySurvey(data, dummy, key),
-				...searchByStatus(data, dummy, key),
-				...searchByMilestone(data, dummy, key),
-				...searchBySurveyDescription(data, dummy, key)
+				...searchBySurvey(data, key),
+				...searchByStatus(data, key),
+				...searchByMilestone(data, key),
+				...searchBySurveyDescription(data, key)
 			])
 		];
 	}
