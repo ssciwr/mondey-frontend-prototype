@@ -1,6 +1,6 @@
 <script>
 	import { base } from '$app/paths';
-	import Childrenpage from '$lib/components/Childrenpage.svelte';
+	import ChildrenGallery from '$lib/components/ChildrenGallery.svelte';
 	const breadcrumbdata = [
 		{
 			href: `${base}/userLand/userLandingpage`,
@@ -13,4 +13,4 @@
 	];
 </script>
 
-<Childrenpage {breadcrumbdata} />
+<ChildrenGallery {breadcrumbdata} />

@@ -1,7 +1,5 @@
 <script lang="ts">
-	import Childrenpage from '$lib/components/Childrenpage.svelte';
 	import CardDisplay from '$lib/components/DataDisplay/CardDisplay.svelte';
-	import UserDataInput from '$lib/components/UserDataInput.svelte';
 	import { TabItem, Tabs } from 'flowbite-svelte';
 	import {
 		AdjustmentsVerticalSolid,
@@ -10,14 +8,31 @@
 		ProfileCardSolid
 	} from 'flowbite-svelte-icons';
 
+	import { activeTabChildren, activeTabPersonal, componentTable } from '$lib/stores/componentStore';
+	import { onDestroy } from 'svelte';
+
 	export let userData: any[];
-
 	let windowWidth = 1920;
-
-	let currentlyDisplayed = 'personalData';
+	let currentPersonal = 'userDataInput';
+	let currentChildren = 'childrenGallery';
 
 	// this is used to switch the view to something less cluttery and more easily rendered on small screens
 	$: smallScreen = windowWidth < 800;
+
+	const unsubscribePersonal = activeTabPersonal.subscribe((value) => {
+		console.log('personal tab: ', value);
+		currentPersonal = value;
+	});
+
+	const unsubscribeChildren = activeTabChildren.subscribe((value) => {
+		console.log('children tab: ', value);
+		currentChildren = value;
+	});
+
+	onDestroy(() => {
+		unsubscribeChildren();
+		unsubscribePersonal();
+	});
 </script>
 
 <svelte:window bind:innerWidth={windowWidth} />
@@ -29,7 +44,7 @@
 				<ProfileCardSolid size="lg" />
 				Persönliche Daten
 			</div>
-			<UserDataInput data={userData} />
+			<svelte:component this={componentTable[currentPersonal]} data={userData} />
 		</TabItem>
 		{#if smallScreen === false}
 			<TabItem>
@@ -37,7 +52,7 @@
 					<GridPlusSolid size="lg" />
 					Kinder
 				</div>
-				<Childrenpage />
+				<svelte:component this={componentTable[currentChildren]} />
 			</TabItem>
 			<TabItem>
 				<div slot="title" class="flex items-center gap-2 text-lg">
