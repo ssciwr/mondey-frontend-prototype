@@ -27,6 +27,8 @@
 			data[2].value
 		);
 
+		console.log(user);
+
 		if (user) {
 			userID = user.id;
 
