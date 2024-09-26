@@ -21,11 +21,16 @@
 				(userData as UserData)[data[i].props.name]['value'] = data[i].value;
 				(userData as UserData)[data[i].props.name]['additionalValue'] = data[i].additionalValue;
 			}
+
 			if (userID) {
 				await users.update(userID, userData);
 			}
+
 			await users.save();
-			goto('/childrengallery');
+
+			buttons[0].disabled = true;
+
+			goto('/userLand/userLandingpage');
 		} else {
 			showAlert = true;
 		}
@@ -35,6 +40,7 @@
 	let userID: string;
 
 	onMount(async () => {
+		console.log('loading users');
 		await users.load();
 		userID = users.get()['loggedIn'] as string;
 		userData = users.get()[userID] as UserData;
@@ -62,7 +68,7 @@
 				}
 			}
 		}
-
+		console.log('loaded data: ', data);
 		buttons[0].label = 'Fertig';
 	});
 
@@ -90,7 +96,8 @@
 	const buttons = [
 		{
 			label: 'Abschließen',
-			onclick: acceptData
+			onclick: acceptData,
+			disabled: true
 		}
 	];
 </script>
@@ -100,7 +107,7 @@
 	<AlertMessage
 		title="Fehler"
 		message={alertMessage}
-		infopage="{base}/info"
+		infopage={`${base}/info`}
 		infotitle="Was passiert mit den Daten"
 		onclick={() => {
 			showAlert = false;
@@ -129,7 +136,22 @@
 					properties={element.props}
 					textTrigger={element.props.textTrigger}
 					eventHandlers={{
-						'on:change': element.onchange,
+						'on:change': (e) => {
+							buttons[0].disabled = false;
+							if (element.onchange) {
+								element.onchange(e);
+							}
+						},
+						'on:blur': element.onblur,
+						'on:click': element.onclick
+					}}
+					additionalEventHandlers={{
+						'on:change': (e) => {
+							buttons[0].disabled = false;
+							if (element.additionalOnChange) {
+								element.additionalOnChange(e);
+							}
+						},
 						'on:blur': element.onblur,
 						'on:click': element.onclick
 					}}
