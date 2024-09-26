@@ -65,13 +65,14 @@ class UserStore extends BasicStore<UserList> {
 
 const users = new UserStore();
 
-async function createDummyUser(name: string = 'dummyUser') {
+async function createDummyUser(userStore: UserStore): Promise<void> {
 	console.log('Creating dummy user');
 	const h = await hash('123');
-	const r = 'Admin';
-	await users.add('dummyUser' + h + r, {
+	const r = 'Beobachter';
+	const name = 'dummyUser';
+	await userStore.add(name + h + r, {
+		id: name + h + r,
 		name: name,
-		id: 'dummyUser' + h + r,
 		role: r,
 		password: h
 	});
