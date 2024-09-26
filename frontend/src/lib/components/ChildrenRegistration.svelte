@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { base } from '$app/paths';
+	import Breadcrumbs from '$lib/components//Breadcrumbs.svelte';
 	import AlertMessage from '$lib/components/AlertMessage.svelte';
 	import DataInput from '$lib/components/DataInput/DataInput.svelte';
 	import NavigationButtons from '$lib/components/Navigation/NavigationButtons.svelte';
@@ -82,12 +83,14 @@
 	let refs: unknown[] = [];
 	// let data = rawData.map(processData);
 	let childData: ChildData;
-	let nextpage: string = `${base}/childrengallery`;
-	let unsubscribe: unknown = children.subscribe((childrenlist) => {
+	let nextpage: string = `${base}/userLand/userLandingpage`;
+	let unsubscribe: unknown = children.subscribe((_) => {
 		children.save();
 	});
+
 	// this can be supplied from the database
 	export let data: any[];
+	export let breadcrumbdata: any[];
 
 	// rerender page if missing values or showAlert changes
 	$: missingValues = [];
@@ -100,11 +103,13 @@
 		await children.load();
 		await users.load();
 
+		const loggedInUser = await users.fetch('loggedIn');
+
 		// README: temporary fix because the linking is broken atm
 		const h = await hash('123');
 
-		if (!children.get()['dummyUser' + h]) {
-			await children.addUser('dummyUser' + h);
+		if (!children.get()[loggedInUser]) {
+			await children.addUser(loggedInUser);
 		}
 	});
 
@@ -121,36 +126,40 @@
 	];
 </script>
 
-<!-- Show big alert message when something is missing -->
-{#if showAlert}
-	<AlertMessage
-		title="Fehler"
-		message="Bitte füllen Sie mindestens die benötigten Felder (hervorgehoben) aus."
-		lastpage="{base}/childLand/childDataInput/"
-		infopage="{base}/info"
-		infotitle="Was passiert mit den Daten"
-		onclick={() => {
-			showAlert = false;
-			missingValues = [];
-		}}
-	/>
-{/if}
+<div
+	class="container m-2 mx-auto w-full border border-gray-200 pb-4 md:rounded-t-lg dark:border-gray-700"
+>
+	<Breadcrumbs data={breadcrumbdata} />
+	<!-- Show big alert message when something is missing -->
+	{#if showAlert}
+		<AlertMessage
+			title="Fehler"
+			message="Bitte füllen Sie mindestens die benötigten Felder (hervorgehoben) aus."
+			lastpage="{base}/childLand/childDataInput/"
+			infopage="{base}/info"
+			infotitle="Was passiert mit den Daten"
+			onclick={() => {
+				showAlert = false;
+				missingValues = [];
+			}}
+		/>
+	{/if}
 
-{#if showCheckMessage}
-	<AlertMessage
-		title="Bevor es weitergeht"
-		message="Bitte überprüfen sie ihre eingaben nochmals genau bevor sie weiter gehen"
-		lastpage="{base}/childLand/childDataInput"
-		infopage={base}
-		infotitle="Was passiert mit den Daten?"
-		onclick={() => {
-			showCheckMessage = false;
-		}}
-	/>
-{/if}
+	{#if showCheckMessage}
+		<AlertMessage
+			title="Bevor es weitergeht"
+			message="Bitte überprüfen sie ihre eingaben nochmals genau bevor sie weiter gehen"
+			lastpage="{base}/childLand/childDataInput"
+			infopage={base}
+			infotitle="Was passiert mit den Daten?"
+			onclick={() => {
+				showCheckMessage = false;
+			}}
+		/>
+	{/if}
 
-<!-- The actual content -->
-<div class="container m-1 mx-auto w-full max-w-xl">
+	<!-- The actual content -->
+
 	<Card class="container m-1 mx-auto w-full max-w-xl">
 		{#if heading}
 			<Heading

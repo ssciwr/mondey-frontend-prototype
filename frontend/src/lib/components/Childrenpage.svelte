@@ -50,6 +50,7 @@
 </script>
 
 <script lang="ts">
+	import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
 	import CardDisplay from '$lib/components/DataDisplay/CardDisplay.svelte';
 	import GalleryDisplay from '$lib/components/DataDisplay/GalleryDisplay.svelte';
 	import { children, type ChildData } from '$lib/stores/childrenStore';
@@ -82,6 +83,7 @@
 	}
 
 	let data: ChildData[] = [];
+	export let breadcrumbdata: any[];
 	let loading = true;
 
 	function searchName(data: any[], key: string): any[] {
@@ -136,20 +138,28 @@
 	});
 </script>
 
-<Heading tag="h1" class="mb-2" color="text-gray-700 dark:text-gray-400">Übersicht</Heading>
-
-<div class="cols-1 grid gap-y-8">
-	{#if loading}
-		<p>Daten werden geladen...</p>
-	{:else}
-		<p class="text-lg text-gray-700 dark:text-gray-400">
-			Wählen sie ein Kind zur Beobachtung aus oder legen melden sie ein neues Kind an.
-		</p>
-		<GalleryDisplay
-			{data}
-			itemComponent={CardDisplay}
-			componentProps={createStyle(data)}
-			{searchData}
-		/>
+<div class="container m-2 mx-auto w-full pb-4 md:rounded-t-lg">
+	{#if breadcrumbdata}
+		<Breadcrumbs data={breadcrumbdata} />
 	{/if}
+
+	<Heading tag="h1" class="m-2 mb-2 p-4 " color="text-gray-700 dark:text-gray-400"
+		>Übersicht</Heading
+	>
+
+	<div class="cols-1 grid w-full gap-y-8 p-2">
+		{#if loading}
+			<p>Daten werden geladen...</p>
+		{:else}
+			<p class="w-auto p-2 text-lg text-gray-700 dark:text-gray-400">
+				Wählen sie ein Kind zur Beobachtung aus oder legen melden sie ein neues Kind an.
+			</p>
+			<GalleryDisplay
+				{data}
+				itemComponent={CardDisplay}
+				componentProps={createStyle(data)}
+				{searchData}
+			/>
+		{/if}
+	</div>
 </div>
