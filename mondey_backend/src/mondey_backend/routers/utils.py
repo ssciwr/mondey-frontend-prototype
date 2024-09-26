@@ -12,7 +12,10 @@ from ..models.milestones import MilestoneAdmin
 from ..models.milestones import MilestoneGroupAdmin
 from ..models.milestones import MilestoneGroupText
 from ..models.milestones import MilestoneText
-from ..models.milestones import Text
+from ..models.questions import UserQuestionAdmin
+from ..models.questions import UserQuestionText
+
+Text = MilestoneText | MilestoneGroupText | UserQuestionText
 
 
 def write_file(file: UploadFile, filename: str):
@@ -65,4 +68,10 @@ def update_milestone_group_text(
 ):
     _update_text(
         session, MilestoneGroupText, milestone_group.text.values(), milestone_group.id
+    )
+
+
+def update_user_question_text(session: SessionDep, user_question: UserQuestionAdmin):
+    _update_text(
+        session, UserQuestionText, user_question.text.values(), user_question.id
     )
