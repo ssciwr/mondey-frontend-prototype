@@ -1,5 +1,6 @@
 import pathlib
 
+import pytest
 from fastapi.testclient import TestClient
 
 
@@ -80,8 +81,16 @@ def test_delete_milestone_group_invalid_group_id(admin_client: TestClient):
     assert response.status_code == 404
 
 
-def test_delete_milestone_group_invalid_admin_user(user_client: TestClient):
-    response = user_client.delete("/admin/milestone-groups/2")
+@pytest.mark.parametrize(
+    "endpoint",
+    ["/admin/languages/1", "/admin/milestone-groups/1", "/admin/milestones/1"],
+)
+@pytest.mark.parametrize("client_type", ["user_client", "research_client"])
+def test_delete_endpoints_invalid_admin_user(
+    endpoint: str, client_type: str, request: pytest.FixtureRequest
+):
+    client = request.getfixturevalue(client_type)
+    response = client.delete(endpoint)
     assert response.status_code == 401
 
 

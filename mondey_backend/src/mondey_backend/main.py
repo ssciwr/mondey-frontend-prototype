@@ -14,6 +14,7 @@ from .databases.users import create_user_db_and_tables
 from .routers import admin
 from .routers import auth
 from .routers import milestones
+from .routers import research
 from .routers import users
 from .settings import app_settings
 
@@ -33,6 +34,7 @@ def create_app() -> FastAPI:
     app.include_router(admin.create_router())
     app.include_router(users.create_router())
     app.include_router(auth.create_router())
+    app.include_router(research.create_router())
     app.mount(
         "/static", StaticFiles(directory=app_settings.STATIC_FILES_PATH), name="static"
     )

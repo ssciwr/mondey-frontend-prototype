@@ -6,6 +6,7 @@ import pytest
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 from mondey_backend import settings
+from mondey_backend.dependencies import current_active_researcher
 from mondey_backend.dependencies import current_active_superuser
 from mondey_backend.dependencies import current_active_user
 from mondey_backend.dependencies import get_session
@@ -117,23 +118,37 @@ def session(static_dir: pathlib.Path):
 
 
 @pytest.fixture
-def admin():
+def active_admin_user():
     UserRead(
-        id=1,
+        id=3,
         email="admin@mondey.de",
         is_active=True,
         is_superuser=True,
+        is_researcher=False,
         is_verified=True,
     )
 
 
 @pytest.fixture
-def user():
+def active_research_user():
     UserRead(
         id=2,
+        email="research@mondey.de",
+        is_active=True,
+        is_superuser=False,
+        is_researcher=True,
+        is_verified=True,
+    )
+
+
+@pytest.fixture
+def active_user():
+    UserRead(
+        id=1,
         email="user@mondey.de",
         is_active=True,
         is_superuser=False,
+        is_researcher=False,
         is_verified=True,
     )
 
@@ -147,10 +162,24 @@ def app(static_dir: pathlib.Path):
 
 @pytest.fixture
 def user_client(
-    app: FastAPI, static_dir: pathlib.Path, session: Session, user: UserRead
+    app: FastAPI, static_dir: pathlib.Path, session: Session, active_user: UserRead
 ):
     app.dependency_overrides[get_session] = lambda: session
-    app.dependency_overrides[current_active_user] = lambda: user
+    app.dependency_overrides[current_active_user] = lambda: active_user
+    client = TestClient(app)
+    yield client
+    app.dependency_overrides.clear()
+
+
+@pytest.fixture
+def research_client(
+    app: FastAPI,
+    static_dir: pathlib.Path,
+    session: Session,
+    active_research_user: UserRead,
+):
+    app.dependency_overrides[get_session] = lambda: session
+    app.dependency_overrides[current_active_researcher] = lambda: active_research_user
     client = TestClient(app)
     yield client
     app.dependency_overrides.clear()
@@ -158,10 +187,13 @@ def user_client(
 
 @pytest.fixture
 def admin_client(
-    app: FastAPI, static_dir: pathlib.Path, session: Session, admin: UserRead
+    app: FastAPI,
+    static_dir: pathlib.Path,
+    session: Session,
+    active_admin_user: UserRead,
 ):
     app.dependency_overrides[get_session] = lambda: session
-    app.dependency_overrides[current_active_superuser] = lambda: admin
+    app.dependency_overrides[current_active_superuser] = lambda: active_admin_user
     client = TestClient(app)
     yield client
     app.dependency_overrides.clear()
