@@ -1,4 +1,5 @@
 <script>
+	import { base } from '$app/paths';
 	import ChildrenRegistration from '$lib/components/ChildrenRegistration.svelte';
 	import Fileupload from '$lib/components/DataInput/Fileupload.svelte';
 	import RadioList from '$lib/components/DataInput/RadioList.svelte';
@@ -156,6 +157,21 @@
 			}
 		}
 	];
+
+	const breadcrumbdata = [
+		{
+			href: `${base}/userLand/userLandingpage`,
+			label: 'Benutzer'
+		},
+		{
+			href: `${base}/childLand/childrengallery`,
+			label: 'Kinderübersicht'
+		},
+		{
+			href: `${base}/childLand/childDataInput`,
+			label: 'Neues Kind registrieren'
+		}
+	];
 </script>
 
-<ChildrenRegistration {data} />
+<ChildrenRegistration {data} {breadcrumbdata} />

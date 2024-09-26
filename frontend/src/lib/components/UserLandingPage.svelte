@@ -10,20 +10,26 @@
 		ProfileCardSolid
 	} from 'flowbite-svelte-icons';
 
+	export let userData: any[];
+
 	let windowWidth = 1920;
+
+	let currentlyDisplayed = 'personalData';
+
+	// this is used to switch the view to something less cluttery and more easily rendered on small screens
 	$: smallScreen = windowWidth < 800;
 </script>
 
 <svelte:window bind:innerWidth={windowWidth} />
 
-<div>
+<div class="m-2 p-2">
 	<Tabs tabStyle="pill">
 		<TabItem open={true}>
 			<div slot="title" class="flex items-center gap-2 text-lg">
 				<ProfileCardSolid size="lg" />
 				Persönliche Daten
 			</div>
-			<UserDataInput />
+			<UserDataInput data={userData} />
 		</TabItem>
 		{#if smallScreen === false}
 			<TabItem>
@@ -46,13 +52,6 @@
 					Mehr
 				</div>
 				<div class="grid grid-cols-1">
-					<CardDisplay
-						data={{
-							header: 'Persönliche Daten',
-							href: '/userLand/userDataInput'
-						}}
-						styleProps={{}}
-					/>
 					<CardDisplay
 						data={{
 							header: 'Kinder',

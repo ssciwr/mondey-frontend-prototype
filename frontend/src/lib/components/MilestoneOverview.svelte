@@ -20,8 +20,6 @@
 		});
 	}
 
-	const completeKey = 'fertig';
-	const incompleteKey = 'unfertig';
 	export let breadcrumbdata: object[] = [];
 	export let searchData: any[];
 	export let data: object[] = [];
