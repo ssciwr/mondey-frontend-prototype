@@ -1,5 +1,13 @@
-<script context="module">
+<script lang="ts">
 	import { base } from '$app/paths';
+	import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
+	import CardDisplay from '$lib/components/DataDisplay/CardDisplay.svelte';
+	import GalleryDisplay from '$lib/components/DataDisplay/GalleryDisplay.svelte';
+	import { children, type ChildData } from '$lib/stores/childrenStore';
+	import { users } from '$lib/stores/userStore';
+	import { Heading } from 'flowbite-svelte';
+	import { onDestroy, onMount } from 'svelte';
+
 	export function convertData(rawdata) {
 		let data = rawdata.map((item) => {
 			return {
@@ -47,17 +55,6 @@
 			button: null
 		}));
 	}
-</script>
-
-<script lang="ts">
-	import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
-	import CardDisplay from '$lib/components/DataDisplay/CardDisplay.svelte';
-	import GalleryDisplay from '$lib/components/DataDisplay/GalleryDisplay.svelte';
-	import { children, type ChildData } from '$lib/stores/childrenStore';
-	import { users } from '$lib/stores/userStore';
-	import { Heading } from 'flowbite-svelte';
-	import { onDestroy, onMount } from 'svelte';
-	// create data and
 
 	async function init() {
 		loading = true;
@@ -81,10 +78,6 @@
 		data = convertData(rawdata);
 		loading = false;
 	}
-
-	let data: ChildData[] = [];
-	export let breadcrumbdata: any[];
-	let loading = true;
 
 	function searchName(data: any[], key: string): any[] {
 		if (key === '') {
@@ -111,6 +104,10 @@
 	function searchAll(data: any[], key: string) {
 		return [...new Set([...searchName(data, key), ...searchRemarks(data, key)])];
 	}
+
+	let data: ChildData[] = [];
+	let loading = true;
+	export let breadcrumbdata: any[] | null = null;
 
 	const searchData = [
 		{
