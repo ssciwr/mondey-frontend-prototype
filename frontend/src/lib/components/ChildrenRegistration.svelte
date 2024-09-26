@@ -3,6 +3,7 @@
 	import { base } from '$app/paths';
 	import AlertMessage from '$lib/components/AlertMessage.svelte';
 	import DataInput from '$lib/components/DataInput/DataInput.svelte';
+	import NavigationButtons from '$lib/components/Navigation/NavigationButtons.svelte';
 
 	import {
 		children,
@@ -14,160 +15,9 @@
 
 	import { hash, users } from '$lib/stores/userStore';
 
-	import {
-		Button,
-		Card,
-		Fileupload,
-		Heading,
-		Input,
-		MultiSelect,
-		Select,
-		Textarea
-	} from 'flowbite-svelte';
+	import { Card, Heading } from 'flowbite-svelte';
 
 	import { onDestroy, onMount } from 'svelte';
-
-	// this can be supplied from the database
-	export let data = [
-		{
-			component: Input,
-			value: null,
-			props: {
-				type: 'text',
-
-				label: 'Name',
-				placeholder: 'Bitte eintragen',
-				key: 'name',
-				required: true
-			}
-		},
-		{
-			component: Input,
-			value: null,
-			props: {
-				type: 'date',
-
-				label: 'Geburtsdatum',
-				placeholder: 'Bitte eintragen',
-				key: 'dateOfBirth',
-				required: true
-			}
-		},
-		{
-			component: Select,
-			value: null,
-			props: {
-				label: 'Frühgeburt',
-				items: ['nein', '0-2 Monate', '2-4 Monate', '4-6 Monate'].map((v) => {
-					return { name: String(v), value: v };
-				}),
-				placeholder: 'Bitte auswählen',
-				key: 'bornEarly',
-				required: true
-			}
-		},
-		{
-			component: Select,
-			value: null,
-			props: {
-				label: 'Geschlecht',
-				items: ['männlich', 'weiblich'].map((v) => {
-					return { name: String(v), value: v };
-				}),
-				placeholder: 'Bitte auswählen',
-				key: 'gender',
-				required: true
-			}
-		},
-		{
-			component: MultiSelect,
-			value: [],
-			props: {
-				label: 'Nationalität',
-				items: ['Andere', 'Deutschland', 'Grossbritannien', 'USA', 'China'].map((v) => {
-					return { name: String(v), value: v };
-				}),
-				placeholder: 'Bitte auswählen',
-				key: 'nationality',
-				required: true,
-				textTrigger: 'Andere'
-			}
-		},
-		{
-			component: MultiSelect,
-			value: [],
-			props: {
-				label: 'Sprache',
-				items: ['Andere', 'Deutsch', 'Englisch (UK)', 'Englisch (Us)', 'Mandarin', 'Arabisch'].map(
-					(v) => {
-						return { name: String(v), value: v };
-					}
-				),
-				placeholder: 'Bitte auswählen',
-				key: 'language',
-				required: true,
-				textTrigger: 'Andere'
-			}
-		},
-		{
-			component: Select,
-			value: null,
-			props: {
-				label: 'Verhältnis zum Kind',
-				key: 'relationship',
-				items: [
-					'Anderes',
-					'Kind',
-					'Enkelkind',
-					'Neffe/Nichte',
-					'Pflegekind',
-					'Adoptivkind',
-					'Betreuung extern',
-					'Betreuung zu Hause'
-				].map((v) => {
-					return { name: String(v), value: v };
-				}),
-				placeholder: 'Bitte auswählen',
-				required: true,
-				textTrigger: 'Anderes'
-			}
-		},
-		{
-			component: MultiSelect,
-			value: [],
-			props: {
-				label: 'Entwicklungsauffälligkeiten',
-				items: ['keine', 'Hörprobleme', 'Fehlsichtigkeit', 'Sprachfehler', 'Andere'].map((v) => {
-					return { name: String(v), value: v };
-				}),
-				placeholder: 'Bitte auswählen',
-				key: 'developmentalIssues',
-				required: true,
-				textTrigger: 'Andere'
-			}
-		},
-		{
-			component: Textarea,
-			value: null,
-			props: {
-				label: 'Anmerkungen',
-				placeholder: 'Weitere Bemerkungen',
-				key: 'remarks',
-				required: false
-			}
-		},
-		{
-			component: Fileupload,
-			value: null,
-			props: {
-				label: 'Foto',
-				placeholder: 'Bitte wählen sie ein Bild aus falls gewünscht',
-				key: 'image',
-				required: false,
-				accept: ['png', 'jpg', 'svg', 'webp']
-			}
-		}
-	];
 
 	// event handlers and verification function
 	export async function submitData() {
@@ -182,7 +32,6 @@
 				current: await createDummyCurrent()
 			});
 
-			console.log(childData);
 			await children.save();
 			await goto(nextpage as string);
 		} else {
@@ -195,6 +44,11 @@
 
 		childData = data.reduce((dict: any, curr) => {
 			dict[curr.props.key] = curr.value;
+
+			if (curr.additionalValue !== null) {
+				dict[curr.props.key + '_additional'] = curr.additionalValue;
+			}
+
 			required[curr.props.key] = curr.props.required;
 			return dict;
 		}, {});
@@ -232,6 +86,8 @@
 	let unsubscribe: unknown = children.subscribe((childrenlist) => {
 		children.save();
 	});
+	// this can be supplied from the database
+	export let data: any[];
 
 	// rerender page if missing values or showAlert changes
 	$: missingValues = [];
@@ -256,6 +112,13 @@
 		await children.save();
 		await (unsubscribe as Function)();
 	});
+
+	const buttons = [
+		{
+			label: 'Abschließen',
+			onclick: submitData
+		}
+	];
 </script>
 
 <!-- Show big alert message when something is missing -->
@@ -287,55 +150,33 @@
 {/if}
 
 <!-- The actual content -->
-<Card class="container m-1 mx-auto w-full max-w-xl">
-	{#if heading}
-		<Heading
-			tag="h3"
-			class="m-1 mb-3 p-1 text-center font-bold tracking-tight text-gray-700 dark:text-gray-400"
-			>{heading}</Heading
-		>
-	{/if}
+<div class="container m-1 mx-auto w-full max-w-xl">
+	<Card class="container m-1 mx-auto w-full max-w-xl">
+		{#if heading}
+			<Heading
+				tag="h3"
+				class="m-1 mb-3 p-1 text-center font-bold tracking-tight text-gray-700 dark:text-gray-400"
+				>{heading}</Heading
+			>
+		{/if}
 
-	<form class="m-1 mx-auto w-full flex-col space-y-6">
-		{#each data as element, i}
-			{#if element.props.key === 'image'}
+		<form class="m-1 mx-auto w-full flex-col space-y-6">
+			{#each data as element}
 				<DataInput
 					component={element.component}
-					bind:this={refs[i]}
-					properties={element.props}
+					bind:value={element.value}
+					bind:additionalInput={element.additionalValue}
 					label={element.props.label}
+					properties={element.props}
+					textTrigger={element.props.textTrigger}
 					eventHandlers={{
-						...element?.eventHandlers,
-						...{
-							'on:change': (event) => {
-								if (!(event.target === null)) {
-									const image = event.target.files[0];
-									// use https://svelte.dev/repl/b17c13d4f1bb40799ccf09e0841ddd90?version=4.2.19
-									let reader = new FileReader();
-									reader.readAsDataURL(image);
-									reader.onload = (e) => {
-										element.value = e.target.result;
-									};
-								}
-							}
-						}
+						'on:change': element.onchange,
+						'on:blur': element.onblur,
+						'on:click': element.onclick
 					}}
 				/>
-			{:else}
-				<DataInput
-					component={element.component}
-					properties={element.props}
-					label={element.props.label}
-					textTrigger={element.props.textTrigger}
-					bind:value={element.value}
-				/>
-			{/if}
-		{/each}
-
-		<Button
-			class="w-full rounded-lg bg-primary-700 px-4 py-2 font-semibold text-white hover:bg-primary-800"
-			on:click={submitData}
-			>{'Kind hinzufügen'}
-		</Button>
-	</form>
-</Card>
+			{/each}
+		</form>
+		<NavigationButtons {buttons} />
+	</Card>
+</div>

@@ -40,22 +40,7 @@
 	}
 
 	// data and variables
-	let data = [
-		{
-			type: 'text',
-			name: 'Benutzerkennung',
-			placeholder: 'Benutzerkennung',
-			label: 'Benutzerkennung',
-			required: true
-		},
-		{
-			type: 'password',
-			name: 'Passwort',
-			placeholder: 'Passwort',
-			label: 'Passwort',
-			required: true
-		}
-	];
+	export let data;
 
 	const buttons = [
 		{
@@ -138,6 +123,11 @@
 						bind:value={credentials[i]}
 						properties={element}
 						label={element.label}
+						eventHandlers={{
+							'on:change': element.onchange,
+							'on:blur': element.onblur,
+							'on:click': element.onclick
+						}}
 					/>
 				{/each}
 			</form>
