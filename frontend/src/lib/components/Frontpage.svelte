@@ -73,17 +73,19 @@
 
 	onMount(async () => {
 		const h = await hash('123');
+		const name = 'dummyUser';
+		const role = 'Beobachter';
 		try {
-			if (!users.get()['dummyUser' + h]) {
-				await createDummyUser();
+			if (!users.get()[name + h + role]) {
+				await createDummyUser(users);
 			}
 		} catch (error) {
 			console.log('error in frontpage: ', error);
 		}
 
 		try {
-			if (!children.get()['dummyUser' + h]) {
-				await children.addUser('dummyUser' + h);
+			if (!children.get()[name + h + role]) {
+				await children.addUser(name + h + role);
 			}
 		} catch (error) {
 			console.log('error in frontpage: ', error);
