@@ -27,6 +27,7 @@
 <Popover {triggeredBy} class="text-gray-700 dark:text-gray-400">
 	{#if userData !== null}
 		<div class="mx-auto flex flex-col items-center justify-center">
+			<p class="m-2 w-full rounded-lg border p-2 text-lg font-semibold">{userData.name}</p>
 			<Button href={base} on:click={logout} size="lg">Logout</Button>
 		</div>
 	{:else}

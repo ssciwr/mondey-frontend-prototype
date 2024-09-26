@@ -55,7 +55,7 @@
 			'Familieneinkommen/Jahr',
 			'Beruf'
 		];
-
+		let allThere: boolean = false;
 		for (let i = 0; i < data.length; ++i) {
 			if (userData[keys[i]]) {
 				data[i]['value'] = userData[keys[i]].value;
@@ -66,8 +66,11 @@
 						return e.value === userData[keys[i]].value;
 					});
 				}
+			} else {
+				allThere = true;
 			}
 		}
+		showAlert = allThere;
 		console.log('loaded data: ', data);
 		buttons[0].label = 'Fertig';
 	});
