@@ -1,6 +1,20 @@
 <script lang="ts">
 	import { Radio, RadioButton } from 'flowbite-svelte';
+	import { createEventDispatcher } from 'svelte';
 
+	const dispatch = createEventDispatcher();
+
+	function handleChange(event) {
+		dispatch('change', { value: event.target.value });
+	}
+
+	function handleBlur(event) {
+		dispatch('blur', { value: event.target.value });
+	}
+
+	function handleClick(event) {
+		dispatch('click', { value: event.target.value });
+	}
 	export let value: any;
 	let windowWidth = 1920;
 	$: smallScreen = windowWidth < 800;
@@ -11,11 +25,25 @@
 <div class="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
 	{#if smallScreen}
 		{#each $$props.items as item, index}
-			<RadioButton class="mx-2" bind:group={value} value={item.value}>{item.label}</RadioButton>
+			<RadioButton
+				class="mx-2"
+				bind:group={value}
+				value={item.value}
+				on:change={handleChange}
+				on:blur={handleBlur}
+				on:click={handleClick}>{item.label}</RadioButton
+			>
 		{/each}
 	{:else}
 		{#each $$props.items as item, index}
-			<Radio class="mx-2" bind:group={value} value={item.value}>{item.label}</Radio>
+			<Radio
+				class="mx-2"
+				bind:group={value}
+				value={item.value}
+				on:change={handleChange}
+				on:blur={handleBlur}
+				on:click={handleClick}>{item.label}</Radio
+			>
 		{/each}
 	{/if}
 </div>

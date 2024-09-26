@@ -8,7 +8,7 @@
 	// variables
 	export let component: any;
 	export let value: any;
-	export let label: string = null;
+	export let label: string;
 	export let componentClass: string = '';
 	export let textTrigger: string = 'noAdditionalText';
 	export let showTextField: boolean = false;
@@ -17,9 +17,14 @@
 	// data to display and event handlers for dynamcis.
 	export let properties: any = {};
 
+	interface EventHandler {
+		[key: string]: (event: Event) => void | Promise<void>;
+	}
+
 	// README: This structure is not necessary here yet, as the events could be exposed directly,
 	// but will afais be useful later in svelte5
-	export let eventHandlers: { [key: string]: (event: Event) => void | Promise<void> } = {};
+	export let eventHandlers: EventHandler = {};
+	export let additionalEventHandlers: EventHandler = {};
 
 	// custom valid checker that can optionally be supplied
 	export let checkValid = (_) => {
@@ -68,6 +73,11 @@
 	/>
 
 	{#if showTextField === true}
-		<Textarea bind:value={additionalInput} />
+		<Textarea
+			bind:value={additionalInput}
+			on:blur={additionalEventHandlers['on:blur']}
+			on:change={additionalEventHandlers['on:change']}
+			on:click={additionalEventHandlers['on:click']}
+		/>
 	{/if}
 </div>
