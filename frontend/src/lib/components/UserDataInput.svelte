@@ -29,7 +29,7 @@
 			await users.save();
 
 			buttons[0].disabled = true;
-
+			showAlert = false;
 			goto('/userLand/userLandingpage');
 		} else {
 			showAlert = true;
@@ -89,7 +89,7 @@
 
 	let missingValues = data.map(() => false);
 
-	let showAlert: boolean = false;
+	let showAlert: boolean = true;
 
 	let alertMessage: string = 'Bitte füllen Sie die benötigten Felder (hervorgehoben) aus.';
 
