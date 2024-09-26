@@ -2,6 +2,9 @@
 	import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
 	import CardDisplay from '$lib/components/DataDisplay/CardDisplay.svelte';
 	import GalleryDisplay from '$lib/components/DataDisplay/GalleryDisplay.svelte';
+	import { children } from '$lib/stores/childrenStore';
+	import { users } from '$lib/stores/userStore';
+	import { onMount } from 'svelte';
 
 	export let breadcrumbdata: any[] = [];
 	export let milestonedata: any[] = [];
@@ -27,8 +30,10 @@
 		});
 	}
 
-	const completeKey = 'fertig';
-	const incompleteKey = 'unfertig';
+	onMount(async () => {
+		let userID = await users.getLoggedIn();
+		let childrenData = await children.fetchObservationDataForUser(userID);
+	});
 </script>
 
 <div class="flex flex-col border border-gray-200 md:rounded-t-lg dark:border-gray-700">
