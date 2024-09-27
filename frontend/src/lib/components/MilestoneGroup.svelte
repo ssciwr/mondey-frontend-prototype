@@ -1,48 +1,23 @@
 <script lang="ts">
-	import Breadcrumbs from '$lib/components/Navigation/Breadcrumbs.svelte';
 	import CardDisplay from '$lib/components/DataDisplay/CardDisplay.svelte';
 	import GalleryDisplay from '$lib/components/DataDisplay/GalleryDisplay.svelte';
-	import { children } from '$lib/stores/childrenStore';
-	import { users } from '$lib/stores/userStore';
-	import { onMount } from 'svelte';
+	import { createStyle, getData } from '$lib/components/MilestoneGroup';
+	import Breadcrumbs from '$lib/components/Navigation/Breadcrumbs.svelte';
 
 	export let breadcrumbdata: any[] = [];
-	export let milestonedata: any[] = [];
+	export let data: any[] = [];
 	export let searchData: any[] = [];
 
-	// FIXME:styling has no business being here... not sure where to put it though given thatparts of it are data dependent
-	export function createStyle(data) {
-		return data.map((item) => {
-			return {
-				card: {
-					class: 'm-2 max-w-prose dark:text-white text-gray-700 '
-				},
-				header: null,
-				summary: null,
-				progress: {
-					labelInsideClass: 'h-4 rounded-full text-xs text-center text-white',
-					size: 'h-4',
-					divClass: `h-full rounded-full w-${100 * item.progress}`,
-					color: 'primary',
-					completeColor: 'green'
-				}
-			};
-		});
-	}
 
-	onMount(async () => {
-		let userID = await users.getLoggedIn();
-		let childrenData = await children.fetchObservationDataForUser(userID);
-	});
 </script>
 
 <div class="flex flex-col border border-gray-200 md:rounded-t-lg dark:border-gray-700">
 	<Breadcrumbs data={breadcrumbdata} />
 	<div class="grid gap-y-8">
 		<GalleryDisplay
-			data={milestonedata.sort((a, b) => a.progress - b.progress)}
+			data={data.sort((a, b) => a.progress - b.progress)}
 			itemComponent={CardDisplay}
-			componentProps={createStyle(milestonedata)}
+			componentProps={createStyle(data)}
 			withSearch={true}
 			{searchData}
 		/>

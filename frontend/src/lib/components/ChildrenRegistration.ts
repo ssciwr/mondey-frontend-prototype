@@ -1,6 +1,8 @@
-import { Fileupload, Input, MultiSelect, Select, Textarea } from 'flowbite-svelte';
+import { Input, MultiSelect, Select, Textarea } from 'flowbite-svelte';
 
+import Fileupload from '$lib/components/DataInput/Fileupload.svelte';
 import RadioList from '$lib/components/DataInput/RadioList.svelte';
+
 import {
 	children,
 	createDummyCurrent,

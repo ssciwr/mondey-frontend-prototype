@@ -1,91 +1,16 @@
 <script lang="ts">
-	import { base } from '$app/paths';
 	import CardDisplay from '$lib/components/DataDisplay/CardDisplay.svelte';
 	import GalleryDisplay from '$lib/components/DataDisplay/GalleryDisplay.svelte';
 	import Breadcrumbs from '$lib/components/Navigation/Breadcrumbs.svelte';
 	import { children, type ChildData } from '$lib/stores/childrenStore';
-	import { activeTabChildren } from '$lib/stores/componentStore';
-	import { users } from '$lib/stores/userStore';
+
+	import { createStyle, init } from '$lib/components/ChildrenGallery';
 	import { Heading } from 'flowbite-svelte';
 	import { onDestroy, onMount } from 'svelte';
 
-	export function convertData(rawdata) {
-		let data = rawdata.map((item) => {
-			return {
-				header: item.name,
-				summary: item.info,
-				image: item.image,
-				href: `${base}/childLand/${item.user}/${item.id}`
-			};
-		});
+	let data: ChildData[] = [];
 
-		// put in new element at the front which adds new child
-		data.unshift({
-			header: 'Neu',
-			summary: 'Ein neues Kind anmelden',
-			events: {
-				onclick: (event) => {
-					console.log('onclick on new children card');
-					activeTabChildren.update((_) => {
-						return 'childernRegistration';
-					});
-				}
-			}
-		});
-		return data;
-	}
-
-	// dynamically create the styles for individual gallery tiles based on the data.
-	// The 'Neu' element needs to be styled differently in particular
-	// FIXME: this needs to go. styles have no business being defined in <script>
-	export function createStyle(data) {
-		return data.map((item) => ({
-			card:
-				item.header === 'Neu'
-					? {
-							class:
-								'm-2 max-w-prose bg-primary-700 dark:bg-primary-600 hover:bg-primary-800 dark:hover:bg-primary-700',
-							horizontal: false
-						}
-					: { horizontal: false },
-			header:
-				item.header == 'Neu'
-					? {
-							class: 'mb-2 text-2xl font-bold tracking-tight text-white dark:text-white'
-						}
-					: null,
-			summary:
-				item.header == 'Neu'
-					? {
-							class: 'mb-3 flex font-normal leading-tight text-white dark:text-white'
-						}
-					: null,
-			button: null
-		}));
-	}
-
-	async function init() {
-		loading = true;
-		users.load();
-		try {
-			await children.load();
-		} catch (error) {
-			console.log('Error loading data: ', error);
-		}
-
-		const loggedIn = users.get()['loggedIn'];
-
-		// Update the store with the value from localStorage
-		let rawdata: unknown = [];
-
-		try {
-			rawdata = await children.fetchChildrenDataforUser(loggedIn);
-		} catch (error) {
-			console.log('some error occured: ', error);
-		}
-		data = convertData(rawdata);
-		loading = false;
-	}
+	export let breadcrumbdata: any[] | null = null;
 
 	function searchName(data: any[], key: string): any[] {
 		if (key === '') {
@@ -113,10 +38,6 @@
 		return [...new Set([...searchName(data, key), ...searchRemarks(data, key)])];
 	}
 
-	let data: ChildData[] = [];
-	let loading = true;
-	export let breadcrumbdata: any[] | null = null;
-
 	const searchData = [
 		{
 			label: 'Alle',
@@ -137,7 +58,9 @@
 
 	// this fetches dummy child data for the dummy user whenever the component is mounted into the dom
 	// it is conceptualized as emulating an API call that would normally fetch this from the server.
-	onMount(init);
+	onMount(async () => {
+		data = await init();
+	});
 	onDestroy(async () => {
 		children.save();
 	});
@@ -153,18 +76,14 @@
 	>
 
 	<div class="cols-1 grid w-full gap-y-8 p-2">
-		{#if loading}
-			<p>Daten werden geladen...</p>
-		{:else}
-			<p class="w-auto p-2 text-lg text-gray-700 dark:text-gray-400">
-				Wählen sie ein Kind zur Beobachtung aus oder legen melden sie ein neues Kind an.
-			</p>
-			<GalleryDisplay
-				{data}
-				itemComponent={CardDisplay}
-				componentProps={createStyle(data)}
-				{searchData}
-			/>
-		{/if}
+		<p class="w-auto p-2 text-lg text-gray-700 dark:text-gray-400">
+			Wählen sie ein Kind zur Beobachtung aus oder legen melden sie ein neues Kind an.
+		</p>
+		<GalleryDisplay
+			{data}
+			itemComponent={CardDisplay}
+			componentProps={createStyle(data)}
+			{searchData}
+		/>
 	</div>
 </div>

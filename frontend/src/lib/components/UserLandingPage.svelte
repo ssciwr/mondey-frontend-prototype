@@ -6,7 +6,6 @@
 	import { onDestroy } from 'svelte';
 
 	export let userData: any[];
-	let windowWidth = 1920;
 	let currentPersonal = 'userDataInput';
 	let currentChildren = 'childrenGallery';
 
