@@ -25,7 +25,7 @@ export function convertData(rawdata) {
 		events: {
 			onclick: (event) => {
 				activeTabChildren.update((_) => {
-					return 'childernRegistration';
+					return 'childrenRegistration';
 				});
 			}
 		}
