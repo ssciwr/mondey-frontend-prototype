@@ -1,24 +1,9 @@
 <script lang="ts">
-	import { base } from '$app/paths';
-	import Breadcrumbs from '$lib/components/Navigation/Breadcrumbs.svelte';
 	import CardDisplay from '$lib/components/DataDisplay/CardDisplay.svelte';
 	import GalleryDisplay from '$lib/components/DataDisplay/GalleryDisplay.svelte';
-	import { CheckCircleSolid, ExclamationCircleSolid } from 'flowbite-svelte-icons';
+	import Breadcrumbs from '$lib/components/Navigation/Breadcrumbs.svelte';
 
-	// FIXME: this must go eventually. Either must happen in the backend or there
-	// should be in a refactored version of the card component
-	function convertData(data: object[]): object[] {
-		return data.map((item) => {
-			return {
-				header: item.title,
-				href: `${base}/milestone`, // hardcoded link for the moment
-				complete: item.answer !== null,
-				summary: item.desc,
-				answer: item.answer,
-				auxilliary: item.answer !== null ? CheckCircleSolid : ExclamationCircleSolid
-			};
-		});
-	}
+	import { convertData } from '$lib/components/MilestoneOverview';
 
 	export let breadcrumbdata: object[] = [];
 	export let searchData: any[];

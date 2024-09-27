@@ -1,4 +1,7 @@
 import { base } from '$app/paths';
+import imgJump from '$lib/assets/baby0.jpg';
+import imgHead from '$lib/assets/baby2.jpg';
+import { activeTabChildren } from '$lib/stores/componentStore';
 
 export function createStyle(data: any[]) {
 	return data.map((item) => {
@@ -67,7 +70,14 @@ export const surveyData: any[] = [
 		image: imgJump,
 		href: `${base}/milestoneoverview`,
 		progress: 0.75,
-		milestoneData: milestoneData
+		milestoneData: milestoneData,
+		events: {
+			onclick: (event) => {
+				activeTabChildren.update((_) => {
+					return 'milestoneOverview';
+				});
+			}
+		}
 	},
 	{
 		header: 'Feinmotorik',
@@ -76,7 +86,14 @@ export const surveyData: any[] = [
 		image: null,
 		href: `${base}/milestoneoverview`,
 		progress: 1.0,
-		milestoneData: milestoneData
+		milestoneData: milestoneData,
+		events: {
+			onclick: (event) => {
+				activeTabChildren.update((_) => {
+					return 'milestoneOverview';
+				});
+			}
+		}
 	},
 	{
 		header: 'Geistige Grundfunktionen',
@@ -84,7 +101,14 @@ export const surveyData: any[] = [
 		image: imgHead,
 		href: `${base}/milestoneoverview`,
 		progress: 1.0,
-		milestoneData: milestoneData
+		milestoneData: milestoneData,
+		events: {
+			onclick: (event) => {
+				activeTabChildren.update((_) => {
+					return 'milestoneOverview';
+				});
+			}
+		}
 	},
 	{
 		header: 'Höhere Denkfunktionen',
@@ -92,48 +116,85 @@ export const surveyData: any[] = [
 		image: null,
 		href: `${base}/milestoneoverview`,
 		progress: 1.0,
-		milestoneData: milestoneData
+		milestoneData: milestoneData,
+		events: {
+			onclick: (event) => {
+				activeTabChildren.update((_) => {
+					return 'milestoneOverview';
+				});
+			}
+		}
 	},
 	{
 		header: 'Sprache',
 		summary: 'how much noise the child makes',
 		image: null,
-		href: `${base}/milestoneoverview`,
 		progress: 0.5,
-		milestoneData: milestoneData
+		milestoneData: milestoneData,
+		events: {
+			onclick: (event) => {
+				activeTabChildren.update((_) => {
+					return 'milestoneOverview';
+				});
+			}
+		}
 	},
 	{
 		header: 'Soziale Entwicklung',
 		summary:
 			'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit.',
 		image: imgHead,
-		href: `${base}/milestoneoverview`,
 		progress: 0.3,
-		milestoneData: milestoneData
+		milestoneData: milestoneData,
+		events: {
+			onclick: (event) => {
+				activeTabChildren.update((_) => {
+					return 'milestoneOverview';
+				});
+			}
+		}
 	},
 	{
 		header: 'Selbstregulation',
 		summary: 'something something',
 		image: null,
-		href: `${base}/milestoneoverview`,
 		progress: 0.6,
-		milestoneData: milestoneData
+		milestoneData: milestoneData,
+		events: {
+			onclick: (event) => {
+				activeTabChildren.update((_) => {
+					return 'milestoneOverview';
+				});
+			}
+		}
 	},
 	{
 		header: 'Emotionen',
 		summary: 'something something',
 		image: null,
-		href: `${base}/milestoneoverview`,
 		progress: 0.9,
-		milestoneData: milestoneData
+		milestoneData: milestoneData,
+		events: {
+			onclick: (event) => {
+				activeTabChildren.update((_) => {
+					return 'milestoneOverview';
+				});
+			}
+		}
 	},
 	{
 		header: 'Vorläuferfertigkeiten Schule',
 		summary:
 			'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit.',
 		image: null,
-		href: `${base}/milestoneoverview`,
 		progress: 0.3,
-		milestoneData: milestoneData
+		milestoneData: milestoneData,
+		events: {
+			onclick: (event) => {
+				activeTabChildren.update((_) => {
+					return 'milestoneOverview';
+				});
+			}
+		}
 	}
 ];

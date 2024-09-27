@@ -12,7 +12,7 @@ import { writable } from 'svelte/store';
 export const componentTable = {
 	userDataInput: UserDataInput,
 	childrenGallery: ChildrenGallery,
-	childernRegistration: ChildrenRegistration,
+	childrenRegistration: ChildrenRegistration,
 	milestoneGroup: MilestoneGroup,
 	milestoneOverview: MilestoneOverview,
 	radioList: RadioList,
