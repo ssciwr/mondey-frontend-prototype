@@ -1,9 +1,9 @@
 <script lang="ts">
+	import { base } from '$app/paths';
 	import CardDisplay from '$lib/components/DataDisplay/CardDisplay.svelte';
 	import GalleryDisplay from '$lib/components/DataDisplay/GalleryDisplay.svelte';
-	import Breadcrumbs from '$lib/components/Navigation/Breadcrumbs.svelte';
-
 	import { convertData, data } from '$lib/components/MilestoneOverview';
+	import Breadcrumbs from '$lib/components/Navigation/Breadcrumbs.svelte';
 	import { activeTabChildren } from '$lib/stores/componentStore';
 
 	export let milestones = data.milestones;
@@ -135,11 +135,7 @@
 		},
 		{
 			label: `Grobmotorik`,
-			onclick: () => {
-				activeTabChildren.update((_) => {
-					return 'milestoneOverview';
-				});
-			}
+			href: `${base}/milestone`
 		}
 	];
 
