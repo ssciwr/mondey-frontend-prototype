@@ -8,7 +8,6 @@
 	class={$$props.class}
 	accept={$$props.accept}
 	on:change={(event) => {
-		console.log(event);
 		if (!(event.target === null)) {
 			const image = event.target.files[0];
 			// use https://svelte.dev/repl/b17c13d4f1bb40799ccf09e0841ddd90?version=4.2.19
