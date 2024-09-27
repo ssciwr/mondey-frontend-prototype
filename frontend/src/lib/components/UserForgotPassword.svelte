@@ -4,7 +4,7 @@
 	import DataInput from '$lib/components/DataInput/DataInput.svelte';
 	import { Button, Card, Heading, Input } from 'flowbite-svelte';
 
-	const heading = 'Password vergessen?';
+	const heading = 'Passwort vergessen?';
 	const data = [
 		{
 			component: Input,
@@ -15,7 +15,7 @@
 			}
 		}
 	];
-	const alertMessage = 'Die angegebene email Adresse hat ein falsches Format';
+	let alertMessage = 'Die angegebene email Adresse hat ein falsches Format';
 	const alertTitle = 'Fehler';
 	let valid: boolean = true;
 	let showAlert: boolean = !valid;
@@ -23,6 +23,26 @@
 	function validateEmail(value: string): boolean {
 		const mailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 		return mailRegex.test(value) && value !== null;
+	}
+
+	async function submitData(mailstring: string): Promise<void> {
+		try {
+			const response = await fetchDummy('api/forgot-password', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(mailstring)
+			});
+
+			if (!response.ok) {
+				throw new Error('Network error');
+			}
+		} catch (error) {
+			console.log(error);
+			showAlert = true;
+			alertMessage = 'Beim Senden ist ein Fehler aufgetreten';
+		}
 	}
 </script>
 
@@ -68,6 +88,9 @@
 			on:click={(event) => {
 				valid = validateEmail(data[0].value);
 				showAlert = !valid;
+				if (valid) {
+					submitData(data[0].value);
+				}
 			}}>Absenden</Button
 		>
 	</Card>
