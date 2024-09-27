@@ -18,7 +18,7 @@
 				{item.label}
 			{:else}
 				<button
-					class="text-md hover:text-primary-700 ms-1 font-medium text-gray-700 md:ms-2 dark:text-gray-400 dark:hover:text-white"
+					class="text-md ms-1 font-medium text-gray-700 hover:text-primary-700 md:ms-2 dark:text-gray-400 dark:hover:text-white"
 					on:click={item.onclick}
 					>{item.label}
 				</button>
