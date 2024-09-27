@@ -132,6 +132,11 @@
 						label={element.props.label}
 						bind:value={element.value}
 						properties={element.props}
+						eventHandlers={{
+							'on:change': element.onchange,
+							'on:blur': element.onblur,
+							'on:click': element.onclick
+						}}
 					/>
 				{/each}
 			</form>
@@ -144,7 +149,7 @@
 		<span class="container mx-auto w-full text-gray-700 dark:text-gray-400">Not registered?</span>
 		<a
 			href={`${base}/userLand/userRegistration`}
-			class="text-primary-700 hover:underline dark:text-primary-500"
+			class="text-primary-700 dark:text-primary-500 hover:underline"
 		>
 			Create account
 		</a>
