@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { users } from '$lib/stores/userStore';
-	import { Button, Heading, Listgroup, Popover } from 'flowbite-svelte';
-	import { onDestroy } from 'svelte';
 	import { base } from '$app/paths';
+	import { users } from '$lib/stores/userStore';
+	import { Button, Heading, Popover } from 'flowbite-svelte';
+	import { onDestroy } from 'svelte';
 
 	export let triggeredBy = '';
 	let loggedIn: string | null = users.get()['loggedIn'];
@@ -26,18 +26,9 @@
 
 <Popover {triggeredBy} class="text-gray-700 dark:text-gray-400">
 	{#if userData !== null}
-		<div class="mx-auto mb-6 flex flex-col items-center justify-center space-y-6">
-			<Listgroup
-				active
-				items={[
-					{ name: 'Übersicht', href: `${base}/childrengallery`, current: true },
-					{ name: 'Profil', href: `${base}/userLand/userDataInput` }
-				]}
-				let:item
-			>
-				{item.name}
-			</Listgroup>
-			<Button href={base} on:click={logout}>Logout</Button>
+		<div class="mx-auto flex flex-col items-center justify-center">
+			<p class="m-2 w-full rounded-lg border p-2 text-lg font-semibold">{userData.name}</p>
+			<Button href={`${base}/`} on:click={logout} size="lg">Logout</Button>
 		</div>
 	{:else}
 		<div class="mx-auto mb-6 flex flex-col items-center justify-center space-y-6">

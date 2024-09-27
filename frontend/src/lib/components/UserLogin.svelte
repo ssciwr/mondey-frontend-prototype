@@ -1,12 +1,14 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { base } from '$app/paths';
+
 	import UserLoginUtil from '$lib/components//UserLoginUtil.svelte';
 	import AlertMessage from '$lib/components/AlertMessage.svelte';
 	import DataInput from '$lib/components/DataInput/DataInput.svelte';
 	import NavigationButtons from '$lib/components/Navigation/NavigationButtons.svelte';
+
 	import { hash, users, type UserData } from '$lib/stores/userStore';
-	import { Card, Heading, Input } from 'flowbite-svelte';
+	import { Card, Heading } from 'flowbite-svelte';
 	import { onDestroy, onMount } from 'svelte';
 
 	// functionality
@@ -18,29 +20,40 @@
 	async function validateCredentials() {
 		// README: this should not be set here but in the child component. However, indication of something missing should
 		// not happen immediatelly in the first round of entry, so this code here defers it until the first hit of the login button.
-		for (let i = 0; i < credentials.length; ++i) {
-			credentialsValid[i] = credentials[i] !== '';
-		}
-		const user = await users.fetchWithCredentials(credentials[uid], await hash(credentials[pid]));
 
-		if (!user || user === null) {
-			showAlert = true;
-			credentialsValid = [false, false];
-		} else {
+		const user = await users.fetchWithCredentials(
+			data[0].value,
+			await hash(data[1].value),
+			data[2].value
+		);
+
+		console.log(user);
+
+		if (user) {
 			userID = user.id;
+
 			if (remember) {
 				localStorage.setItem('currentUser', JSON.stringify(userID));
 			} else {
 				localStorage.removeItem('currentUser');
 			}
+
 			await users.setLoggedIn(userID);
+
 			await users.save();
-			goto(`${base}/userLand/userDataInput/`);
+
+			goto(`${base}/userLand/userLandingpage/`);
+		} else {
+			showAlert = true;
+			data = data.map((element) => {
+				element.value = null;
+				return element;
+			});
 		}
 	}
 
 	// data and variables
-	export let data;
+	export let data: any[];
 
 	const buttons = [
 		{
@@ -50,14 +63,8 @@
 		}
 	];
 
-	const uid = 0;
-	const pid = 1;
-	let alertMessage = 'Benutzerkennung oder Passwort sind falsch';
-
+	let alertMessage = 'Eingaben sind falsch';
 	let userID: string;
-	$: credentials = ['', ''];
-	$: credentialsValid = [false, false];
-
 	let remember: boolean = false;
 	let showAlert: boolean = false;
 	const heading = 'Einloggen';
@@ -69,11 +76,15 @@
 
 		// check if credentials are saved
 		const savedUID = JSON.parse(localStorage.getItem('currentUser'));
+
 		if (savedUID) {
 			userID = savedUID;
 
 			const user: UserData = (await users.fetch(userID)) as UserData;
-			credentials = [user.name, user.password];
+
+			data[0].value = user.name;
+			data[1].value = user.password;
+			data[2].value = user.role;
 			remember = true;
 		}
 	});
@@ -90,7 +101,6 @@
 		lastpage={`${base}/userLand/userLogin`}
 		onclick={() => {
 			showAlert = false;
-			credentialsValid = [true, true];
 		}}
 	/>
 {/if}
@@ -102,7 +112,6 @@
 		lastpage={`${base}`}
 		onclick={() => {
 			showAlert = false;
-			credentialsValid = [true, true];
 		}}
 	/>
 {:else}
@@ -117,12 +126,12 @@
 			{/if}
 
 			<form class="m-1 m-3 mx-auto w-full flex-col space-y-6">
-				{#each data as element, i}
+				{#each data as element}
 					<DataInput
-						component={Input}
-						bind:value={credentials[i]}
-						properties={element}
-						label={element.label}
+						component={element.component}
+						label={element.props.label}
+						bind:value={element.value}
+						properties={element.props}
 						eventHandlers={{
 							'on:change': element.onchange,
 							'on:blur': element.onblur,

@@ -1,30 +1,24 @@
-<script lang="ts">
-	import { base } from '$app/paths';
-	import MilestoneOverview from '$lib/components/MilestoneOverview.svelte';
-	const breadcrumbdata: any[] = [
-		{
-			href: `${base}/userLand/userDataInput`,
-			label: 'Benutzer'
-		},
-		{
-			href: `${base}/childrengallery`,
-			label: 'Kinderübersicht'
-		},
-		{
-			href: '#',
-			label: 'Meike'
-		},
-		{
-			href: `${base}/milestonegroup`,
-			label: 'Bereichsübersicht'
-		},
-		{
-			href: `${base}/milestoneoverview`,
-			label: `Grobmotorik`
-		}
-	];
+import { base } from '$app/paths';
+import { CheckCircleSolid, ExclamationCircleSolid } from 'flowbite-svelte-icons';
 
-	const data = [
+export function convertData(data: object[]): object[] {
+	return data.map((item) => {
+		return {
+			header: item.title,
+			href: `${base}/milestone`, // hardcoded link for the moment
+			complete: item.answer !== null,
+			summary: item.desc,
+			answer: item.answer,
+			auxilliary: item.answer !== null ? CheckCircleSolid : ExclamationCircleSolid
+		};
+	});
+}
+
+export const data = {
+	title: 'Grobmotorik',
+	desc: 'Hier geht es darum, zu beschreiben, wie sich das Kind fortbewegt Und seinen Körper (Rumpf, Arme, Beine) kontrollieren kann.',
+	progress: 0.5,
+	milestones: [
 		{
 			number: 1,
 			title: 'Alleine von Stufe/Absatz springen',
@@ -62,104 +56,5 @@
 			imgs: ['baby3.jpg'],
 			answer: null
 		}
-	];
-
-	const title = 'Grobmotorik';
-	const desc =
-		'Hier geht es darum, zu beschreiben, wie sich das Kind fortbewegt Und seinen Körper (Rumpf, Arme, Beine) kontrollieren kann.';
-	const progress = 0.5;
-
-	interface MilestoneData {
-		header: string;
-		href: string;
-		summary: string;
-		auxilliary: string;
-		complete: boolean;
-		answer: string;
-	}
-
-	function searchStatus(data: MilestoneData[], key: string): MilestoneData[] {
-		if (key === '') {
-			return data;
-		} else {
-			return data.filter((item) => {
-				// button label contains info about completion status => use for search
-				if (key === 'fertig') {
-					return item.complete === true;
-				} else if (key === 'unfertig') {
-					return item.complete === false;
-				}
-			});
-		}
-	}
-
-	function searchDescription(data: MilestoneData[], key: string): MilestoneData[] {
-		if (key === '') {
-			return data;
-		} else {
-			return data.filter((item) => {
-				return item.summary.toLowerCase().includes(key.toLowerCase());
-			});
-		}
-	}
-
-	function searchTitle(data: MilestoneData[], key: string): MilestoneData[] {
-		if (key === '') {
-			return data;
-		} else {
-			return data.filter((item) => {
-				return item.header.toLowerCase().includes(key.toLowerCase());
-			});
-		}
-	}
-
-	function searchAnswer(data: MilestoneData[], key: string): MilestoneData[] {
-		if (key === '') {
-			return data;
-		} else {
-			return data.filter((item) => {
-				return item.answer === null ? false : item.answer.toLowerCase().includes(key.toLowerCase());
-			});
-		}
-	}
-
-	function searchAll(data: MilestoneData[], key: string): MilestoneData[] {
-		return [
-			...new Set([
-				...searchDescription(data, key),
-				...searchStatus(data, key),
-				...searchTitle(data, key),
-				...searchAnswer(data, key)
-			])
-		];
-	}
-	const searchData = [
-		{
-			label: 'Alle',
-			placeholder: 'Alle Kategorien durchsuchen',
-			filterFunction: searchAll
-		},
-		{
-			label: 'Status',
-			placeholder: 'Nach Status durchsuchen',
-			filterFunction: searchStatus
-		},
-		{
-			label: 'Anwort',
-			placeholder: 'Nach Antwort durchsuchen',
-			filterFunction: searchAnswer
-		},
-		{
-			label: 'Titel',
-			placeholder: 'Nach Meilenstein durchsuchen',
-			filterFunction: searchTitle
-		},
-		{
-			label: 'Beschreibung',
-			placeholder: 'Beschreibungen durchsuchen',
-			filterFunction: searchDescription
-		}
-	];
-</script>
-
-<MilestoneOverview {breadcrumbdata} {data} {searchData} />
+	]
+};

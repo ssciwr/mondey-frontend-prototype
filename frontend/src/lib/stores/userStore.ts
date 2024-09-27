@@ -48,12 +48,14 @@ class UserStore extends BasicStore<UserList> {
 
 	public async fetchWithCredentials(
 		username: string,
-		userpw: string
+		userpw: string,
+		role: string
 	): Promise<UserData | string | undefined> {
-		console.log('Fetching with credentials', username);
+		console.log('Fetching with credentials', username, userpw, role);
+
 		return Object.values(this.get()).find((userdata) => {
 			if (userdata && userdata !== null) {
-				return userdata.name === username && userdata.password === userpw;
+				return userdata.name === username && userdata.password === userpw && userdata.role == role;
 			} else {
 				return false;
 			}
@@ -63,13 +65,15 @@ class UserStore extends BasicStore<UserList> {
 
 const users = new UserStore();
 
-async function createDummyUser(name: string = 'dummyUser') {
+async function createDummyUser(userStore: UserStore): Promise<void> {
 	console.log('Creating dummy user');
 	const h = await hash('123');
-	await users.add('dummyUser' + h, {
+	const r = 'Beobachter';
+	const name = 'dummyUser';
+	await userStore.add(name + h + r, {
+		id: name + h + r,
 		name: name,
-		id: 'dummyUser' + h,
-		role: 'admin',
+		role: r,
 		password: h
 	});
 }

@@ -10,7 +10,7 @@
 	export let onclick = () => {};
 </script>
 
-<Alert>
+<Alert class="m-4 p-4">
 	<div class="flex items-center gap-3">
 		<InfoCircleSolid class="h-5 w-5" />
 		<span class="text-lg font-medium"> {title} </span>

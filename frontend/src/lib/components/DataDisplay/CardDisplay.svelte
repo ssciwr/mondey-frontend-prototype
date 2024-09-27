@@ -7,7 +7,8 @@
 		button: undefined,
 		href: undefined,
 		image: undefined,
-		progress: undefined
+		progress: undefined,
+		events: undefined
 	};
 
 	export let styleProps = {
@@ -17,6 +18,8 @@
 		button: {},
 		progress: {}
 	};
+
+	// TODO: generalize event passing. currently only the on:click event is exposed
 </script>
 
 <Card
@@ -27,6 +30,7 @@
 		? 'm-2 max-w-prose items-center  text-gray-700 dark:text-white'
 		: 'hover:transition-color m-2 max-w-prose cursor-pointer items-center text-gray-700 hover:bg-gray-300 dark:text-white dark:hover:bg-gray-600 '}
 	{...styleProps.card}
+	on:click={data.events['onclick']}
 >
 	{#if data.header}
 		<h5 class="mb-2 text-2xl font-bold tracking-tight" {...styleProps.header}>
@@ -39,7 +43,11 @@
 		</p>
 	{/if}
 	{#if data.button}
-		<Button href={data.href} class="w-fit" {...styleProps.button}
+		<Button
+			href={data.href}
+			class="w-fit"
+			{...styleProps.button}
+			on:click={data.button.events.onclick}
 			>{data.button}
 
 			{#if data.buttonIcon}

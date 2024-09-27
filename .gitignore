@@ -16,6 +16,7 @@ Thumbs.db
 !.env.example
 !.env.test
 */.svelte-kit
+*/.venv
 
 # Vite
 vite.config.js.timestamp-*

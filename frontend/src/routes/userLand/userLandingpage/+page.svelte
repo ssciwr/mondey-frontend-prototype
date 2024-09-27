@@ -1,7 +1,6 @@
 <script lang="ts">
 	import RadioList from '$lib/components/DataInput/RadioList.svelte';
-
-	import UserDataInput from '$lib/components/UserDataInput.svelte';
+	import UserLandingPage from '$lib/components/UserLandingPage.svelte';
 	import { Input, Select } from 'flowbite-svelte';
 
 	// this stuff here will become backend calls in the end because that is where the data this page will be filled with
@@ -31,7 +30,7 @@
 			return values;
 		}
 	}
-	const data = [
+	const userData = [
 		{
 			component: Select,
 			value: null,
@@ -124,4 +123,4 @@
 	];
 </script>
 
-<UserDataInput {data} />
+<UserLandingPage {userData} />

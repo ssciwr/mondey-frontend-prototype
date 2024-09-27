@@ -43,7 +43,7 @@
 			let userdata = {
 				name: inputValues[0],
 				id: userID, // README: without the backend, userID is emulated as username + password
-				role: 'user',
+				role: 'Beobachter',
 				password: passwd
 			};
 
@@ -95,7 +95,7 @@
 
 			if (userAddSuccess) {
 				showAlert = false;
-				goto(`${base}/${'userLand/userDataInput'}`);
+				goto(`${base}/${'userLand/userLandingpage'}`);
 			}
 		} else {
 			showAlert = true;
@@ -156,6 +156,7 @@
 						'on:click': element.onClick
 					}}
 					checkValid={element.checkValid}
+					label={element.label}
 				/>
 			{/each}
 		</form>

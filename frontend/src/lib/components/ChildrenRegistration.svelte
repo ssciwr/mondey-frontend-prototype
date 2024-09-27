@@ -1,156 +1,117 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
 	import { base } from '$app/paths';
 	import AlertMessage from '$lib/components/AlertMessage.svelte';
-	import DataInput from '$lib/components/DataInput/DataInput.svelte';
-	import NavigationButtons from '$lib/components/Navigation/NavigationButtons.svelte';
-
 	import {
-		children,
-		createDummyCurrent,
-		createDummySummary,
-		generateChildID,
-		type ChildData
-	} from '$lib/stores/childrenStore';
-
-	import { hash, users } from '$lib/stores/userStore';
-
+		buildDataToSend,
+		buildMissingValues,
+		buildRequired,
+		getData,
+		setUpDynamic,
+		setUpOnMount,
+		submitData,
+		tearDown,
+		verifyInput
+	} from '$lib/components/ChildrenRegistration';
+	import DataInput from '$lib/components/DataInput/DataInput.svelte';
+	import Breadcrumbs from '$lib/components/Navigation/Breadcrumbs.svelte';
+	import NavigationButtons from '$lib/components/Navigation/NavigationButtons.svelte';
+	import { activeTabChildren } from '$lib/stores/componentStore';
 	import { Card, Heading } from 'flowbite-svelte';
-
 	import { onDestroy, onMount } from 'svelte';
 
-	// event handlers and verification function
-	export async function submitData() {
-		const verified = await verifyInput();
-		if (verified) {
-			const childID = generateChildID(childData.name);
-			await children.addChildData(userID, childID, childData);
-			await children.addChildObservation(userID, childID, {
-				user: userID,
-				id: childID,
-				summary: await createDummySummary(),
-				current: await createDummyCurrent()
-			});
+	// get data to fill in
+	const data = getData();
 
-			await children.save();
-			await goto(nextpage as string);
-		} else {
-			showAlert = true;
-		}
-	}
-
-	async function verifyInput(): Promise<Boolean> {
-		let required: { [key: string]: Boolean } = {};
-
-		childData = data.reduce((dict: any, curr) => {
-			dict[curr.props.key] = curr.value;
-
-			if (curr.additionalValue !== null) {
-				dict[curr.props.key + '_additional'] = curr.additionalValue;
+	const breadcrumbdata = [
+		{
+			label: 'Kinderübersicht',
+			onclick: () => {
+				activeTabChildren.update((value) => {
+					return 'childrenGallery';
+				});
 			}
-
-			required[curr.props.key] = curr.props.required;
-			return dict;
-		}, {});
-
-		const test = Object.entries(childData).every((kv) =>
-			required[kv[0]] ? kv[1] !== undefined && kv[1] !== null && kv[1] !== '' : true
-		);
-
-		if (test) {
-			missingValues = [];
-			const childID = generateChildID(childData.name);
-			// add additional data to the child
-			childData['user'] = userID;
-			childData['id'] = childID;
-			childData['info'] = childData.remarks;
-			showCheckMessage = false;
-			return true;
-		} else {
-			(missingValues as Boolean[]) = Object.keys(childData).map((key) => {
-				return childData[key] && required[key] ? false : true;
-			});
-			return false;
+		},
+		{
+			label: 'Neues Kind registrieren'
 		}
-	}
-
-	// data to display -> will later be fetched from the server
-	const heading = 'Neues Kind registrieren';
-	const userID = users.get()['loggedIn'];
-
-	// data
-	let refs: unknown[] = [];
-	// let data = rawData.map(processData);
-	let childData: ChildData;
-	let nextpage: string = `${base}/childrengallery`;
-	let unsubscribe: unknown = children.subscribe((childrenlist) => {
-		children.save();
-	});
-	// this can be supplied from the database
-	export let data: any[];
-
-	// rerender page if missing values or showAlert changes
-	$: missingValues = [];
-	$: showAlert = false;
-	$: showCheckMessage = true;
+	];
 
 	// use component lifecycle to make sure data is written and read persistently
 
-	onMount(async () => {
-		await children.load();
-		await users.load();
-
-		// README: temporary fix because the linking is broken atm
-		const h = await hash('123');
-
-		if (!children.get()['dummyUser' + h]) {
-			await children.addUser('dummyUser' + h);
-		}
-	});
+	onMount(setUpOnMount);
 
 	onDestroy(async () => {
-		await children.save();
-		await (unsubscribe as Function)();
+		await tearDown(unsubscribe);
 	});
+
+	// data to display -> will later be fetched from the server
+	const heading = 'Neues Kind registrieren';
+
+	// data
+	let unsubscribe: unknown = setUpDynamic();
+
+	// rerender page if missing values or showAlert changes
+	let missingValues = [];
+	$: showAlert = false;
+	$: showCheckMessage = true;
 
 	const buttons = [
 		{
 			label: 'Abschließen',
-			onclick: submitData
+			onclick: async () => {
+				console.log('build shit');
+				const childData = buildDataToSend(data);
+				const required = buildRequired(data);
+				const verified = await verifyInput(childData, required);
+				if (verified) {
+					console.log('good');
+					showAlert = false;
+					await submitData(data);
+					activeTabChildren.update((v) => {
+						return 'childrenGallery';
+					});
+				} else {
+					console.log('not good');
+					missingValues = buildMissingValues(childData, required);
+					showAlert = true;
+				}
+			}
 		}
 	];
 </script>
 
-<!-- Show big alert message when something is missing -->
-{#if showAlert}
-	<AlertMessage
-		title="Fehler"
-		message="Bitte füllen Sie mindestens die benötigten Felder (hervorgehoben) aus."
-		lastpage="{base}/childLand/childDataInput/"
-		infopage="{base}/info"
-		infotitle="Was passiert mit den Daten"
-		onclick={() => {
-			showAlert = false;
-			missingValues = [];
-		}}
-	/>
-{/if}
+<div
+	class="container m-2 mx-auto w-full border border-gray-200 pb-4 md:rounded-t-lg dark:border-gray-700"
+>
+	<Breadcrumbs data={breadcrumbdata} />
+	<!-- Show big alert message when something is missing -->
+	{#if showAlert}
+		<AlertMessage
+			title="Fehler"
+			message="Bitte füllen Sie mindestens die benötigten Felder (hervorgehoben) aus."
+			infopage="{base}/info"
+			infotitle="Was passiert mit den Daten"
+			onclick={() => {
+				showAlert = false;
+				missingValues = [];
+			}}
+		/>
+	{/if}
 
-{#if showCheckMessage}
-	<AlertMessage
-		title="Bevor es weitergeht"
-		message="Bitte überprüfen sie ihre eingaben nochmals genau bevor sie weiter gehen"
-		lastpage="{base}/childLand/childDataInput"
-		infopage={base}
-		infotitle="Was passiert mit den Daten?"
-		onclick={() => {
-			showCheckMessage = false;
-		}}
-	/>
-{/if}
+	{#if showCheckMessage}
+		<AlertMessage
+			title="Bevor es weitergeht"
+			message="Bitte überprüfen sie ihre eingaben nochmals genau bevor sie weiter gehen"
+			infopage="{base}/info"
+			infotitle="Was passiert mit den Daten?"
+			onclick={() => {
+				showCheckMessage = false;
+			}}
+		/>
+	{/if}
 
-<!-- The actual content -->
-<div class="container m-1 mx-auto w-full max-w-xl">
+	<!-- The actual content -->
+
 	<Card class="container m-1 mx-auto w-full max-w-xl">
 		{#if heading}
 			<Heading
