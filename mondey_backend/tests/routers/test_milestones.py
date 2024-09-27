@@ -1,7 +1,9 @@
 import pytest
 
 
-@pytest.mark.parametrize("client_type", ["user_client", "admin_client"])
+@pytest.mark.parametrize(
+    "client_type", ["user_client", "research_client", "admin_client"]
+)
 class TestMilestones:
     def test_get_languages(self, client_type: str, request: pytest.FixtureRequest):
         client = request.getfixturevalue(client_type)
