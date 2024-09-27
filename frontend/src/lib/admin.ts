@@ -28,7 +28,7 @@ export async function refreshMilestoneGroups() {
 export async function newMilestoneGroup() {
 	console.log('newMilestoneGroup...');
 	try {
-		const res = await fetch(`${import.meta.env.VITE_MONDEY_API_URL}/admin/milestone-group/`, {
+		const res = await fetch(`${import.meta.env.VITE_MONDEY_API_URL}/admin/milestone-groups/`, {
 			method: 'POST',
 			credentials: 'include',
 			headers: {
@@ -50,12 +50,12 @@ export async function newMilestoneGroup() {
 	return null;
 }
 
-export async function patchMilestoneGroup(milestoneGroup) {
-	console.log('patchMilestoneGroup...');
+export async function updateMilestoneGroup(milestoneGroup) {
+	console.log('updateMilestoneGroup...');
 	console.log(milestoneGroup);
 	try {
-		const res = await fetch(`${import.meta.env.VITE_MONDEY_API_URL}/admin/milestone-group`, {
-			method: 'PATCH',
+		const res = await fetch(`${import.meta.env.VITE_MONDEY_API_URL}/admin/milestone-groups`, {
+			method: 'PUT',
 			credentials: 'include',
 			headers: {
 				'Content-Type': 'application/json',
@@ -83,9 +83,9 @@ export async function uploadMilestoneGroupImage(milestoneGroupId: number, file) 
 		const formData = new FormData();
 		formData.append('file', file);
 		const res = await fetch(
-			`${import.meta.env.VITE_MONDEY_API_URL}/admin/upload-milestone-group-image/${milestoneGroupId}`,
+			`${import.meta.env.VITE_MONDEY_API_URL}/admin/milestone-group-images/${milestoneGroupId}`,
 			{
-				method: 'POST',
+				method: 'PUT',
 				credentials: 'include',
 				body: formData
 			}
@@ -120,4 +120,8 @@ export async function deleteMilestoneGroup(milestoneGroupId: number | null) {
 	} catch (e) {
 		console.error(e);
 	}
+}
+
+export function milestoneGroupImageUrl(id: number) {
+	return `${import.meta.env.VITE_MONDEY_API_URL}/static/mg${id}.jpg`;
 }

@@ -14,7 +14,7 @@
 	import EditMilestoneGroupModal from '$lib/components/Admin/EditMilestoneGroupModal.svelte';
 	import DeleteMilestoneGroupModal from '$lib/components/Admin/DeleteMilestoneGroupModal.svelte';
 	import { lang_id, milestoneGroups } from '$lib/stores/adminStore';
-	import { refreshMilestoneGroups, newMilestoneGroup } from '$lib/admin';
+	import { refreshMilestoneGroups, newMilestoneGroup, milestoneGroupImageUrl } from '$lib/admin';
 	import { onMount } from 'svelte';
 
 	let currentGroup: object | null = null;
@@ -77,7 +77,7 @@
 						</TableBodyCell>
 						<TableBodyCell>
 							<img
-								src={`${import.meta.env.VITE_MONDEY_API_URL}/static/milestone_group_${milestoneGroup.id}.jpg`}
+								src={milestoneGroupImageUrl(milestoneGroup.id)}
 								width="64"
 								height="64"
 								alt={title}

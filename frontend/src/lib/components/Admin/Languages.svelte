@@ -27,7 +27,7 @@
 
 	async function newLanguage() {
 		try {
-			const res = await fetch(`${import.meta.env.VITE_MONDEY_API_URL}/admin/language`, {
+			const res = await fetch(`${import.meta.env.VITE_MONDEY_API_URL}/admin/languages`, {
 				method: 'POST',
 				credentials: 'include',
 				headers: {
@@ -48,7 +48,7 @@
 
 	async function deleteLanguage(id: string) {
 		try {
-			const res = await fetch(`${import.meta.env.VITE_MONDEY_API_URL}/admin/language/${id}`, {
+			const res = await fetch(`${import.meta.env.VITE_MONDEY_API_URL}/admin/languages/${id}`, {
 				method: 'DELETE',
 				credentials: 'include',
 				headers: {

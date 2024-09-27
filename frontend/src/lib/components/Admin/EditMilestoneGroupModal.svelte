@@ -10,7 +10,11 @@
 		Modal
 	} from 'flowbite-svelte';
 	import { lang_id, languages } from '$lib/stores/adminStore';
-	import { patchMilestoneGroup, uploadMilestoneGroupImage } from '$lib/admin';
+	import {
+		updateMilestoneGroup,
+		uploadMilestoneGroupImage,
+		milestoneGroupImageUrl
+	} from '$lib/admin';
 
 	export let open: boolean = false;
 	export let milestoneGroup: object | null = null;
@@ -19,7 +23,7 @@
 	let image: string | ArrayBuffer | null | undefined = null;
 
 	$: if (milestoneGroup !== null) {
-		image = `${import.meta.env.VITE_MONDEY_API_URL}/static/milestone_group_${milestoneGroup.id}.jpg`;
+		image = milestoneGroupImageUrl(milestoneGroup.id);
 	}
 
 	$: if (files) {
@@ -30,20 +34,17 @@
 		};
 	}
 
-	async function reloadImg(url) {
-		console.log(`Reloading ${url}`);
+	async function reloadImg(url: string) {
 		await fetch(url, { cache: 'reload', mode: 'no-cors' });
 		document.body.querySelectorAll(`img[src='${url}']`).forEach((img) => (img.src = url));
 	}
 
 	export async function saveChanges() {
 		try {
-			await patchMilestoneGroup(milestoneGroup);
+			await updateMilestoneGroup(milestoneGroup);
 			if (files) {
 				await uploadMilestoneGroupImage(milestoneGroup.id, files[0]);
-				reloadImg(
-					`${import.meta.env.VITE_MONDEY_API_URL}/static/milestone_group_${milestoneGroup.id}.jpg`
-				);
+				await reloadImg(milestoneGroupImageUrl(milestoneGroup.id));
 			}
 		} catch (e) {
 			console.error(e);
