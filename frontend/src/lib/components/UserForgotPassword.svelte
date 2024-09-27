@@ -1,29 +1,38 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import { base } from '$app/paths';
-	import AlertMessage from '$lib/components//AlertMessage.svelte';
+	import AlertMessage from '$lib/components/AlertMessage.svelte';
 	import DataInput from '$lib/components/DataInput/DataInput.svelte';
 	import { Button, Card, Heading, Input } from 'flowbite-svelte';
 
 	const heading = 'Passwort vergessen?';
-	const data = [
-		{
-			component: Input,
-			type: 'text',
-			value: null,
-			props: {
-				placeholder: 'Bitte geben sie eine E-mail Adresse an um ihr Passwort zu erneuern'
-			}
+	const maildata = {
+		component: Input,
+		type: 'text',
+		value: null,
+		props: {
+			placeholder: 'Bitte geben sie eine E-mail Adresse an um ihr Passwort zu erneuern'
 		}
-	];
-	let alertMessage = 'Die angegebene email Adresse hat ein falsches Format';
-	const alertTitle = 'Fehler';
+	};
+	const successButtonLabel: string = 'Zurück zur Startseite';
+	const pendingButtonLabel: string = 'Absenden';
+	const mailSentMessage: string = 'Überprüfen sie ihr e-mail Postfach';
+	const alertTitle: string = 'Fehler';
+	let alertMessage: string = 'Die angegebene email Adresse hat ein falsches Format';
 	let valid: boolean = true;
 	let showAlert: boolean = !valid;
+	let showSuccess: boolean = false;
 
 	function validateEmail(value: string): boolean {
 		const mailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 		return mailRegex.test(value) && value !== null;
 	}
+
+	function fetchDummy(endpoint: string, data: any): any {
+		return {
+			ok: true
+		};
+	} // README: this is a dummy. Needs to be replaced with real backend call later
 
 	async function submitData(mailstring: string): Promise<void> {
 		try {
@@ -37,6 +46,8 @@
 
 			if (!response.ok) {
 				throw new Error('Network error');
+			} else {
+				showSuccess = true;
 			}
 		} catch (error) {
 			console.log(error);
@@ -58,7 +69,7 @@
 {/if}
 
 <div class="container m-1 mx-auto w-full max-w-xl">
-	<Card class="container m-1 mx-auto mb-6 w-full max-w-xl pb-6">
+	<Card class="container m-1 mx-auto mb-6 w-full max-w-xl items-center  justify-center pb-6 ">
 		{#if heading}
 			<Heading
 				tag="h3"
@@ -66,32 +77,40 @@
 				>{heading}</Heading
 			>
 		{/if}
-
-		<div class="m-1 m-3 mx-auto w-full flex-col space-y-6">
-			{#each data as element}
+		{#if showSuccess === false}
+			<div class="m-1 m-3 mx-auto w-full flex-col space-y-6">
 				<DataInput
-					component={element.component}
-					label={element.props.label}
-					bind:value={element.value}
-					properties={element.props}
+					component={maildata.component}
+					label={maildata.props.label}
+					bind:value={maildata.value}
+					properties={maildata.props}
 					eventHandlers={{
-						'on:change': element.onchange,
-						'on:blur': element.onblur,
-						'on:click': element.onclick
+						'on:change': maildata.onchange,
+						'on:blur': maildata.onblur,
+						'on:click': maildata.onclick
 					}}
 				/>
-			{/each}
-		</div>
-
-		<Button
-			size="md"
-			on:click={(event) => {
-				valid = validateEmail(data[0].value);
-				showAlert = !valid;
-				if (valid) {
-					submitData(data[0].value);
-				}
-			}}>Absenden</Button
-		>
+			</div>
+			<Button
+				size="md"
+				on:click={(event) => {
+					valid = validateEmail(maildata.value);
+					showAlert = !valid;
+					if (valid) {
+						submitData(maildata.value);
+					}
+				}}>{pendingButtonLabel}</Button
+			>
+		{:else}
+			<div class="m-1 m-3 mx-auto w-full flex-col space-y-6">
+				<p class=" items-center justify-center">{mailSentMessage}</p>
+			</div>
+			<Button
+				size="md"
+				on:click={(event) => {
+					goto(`${base}/`);
+				}}>{successButtonLabel}</Button
+			>
+		{/if}
 	</Card>
 </div>
