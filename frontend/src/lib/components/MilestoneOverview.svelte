@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { base } from '$app/paths';
 	import CardDisplay from '$lib/components/DataDisplay/CardDisplay.svelte';
 	import GalleryDisplay from '$lib/components/DataDisplay/GalleryDisplay.svelte';
 	import { convertData, data } from '$lib/components/MilestoneOverview';
@@ -135,7 +134,12 @@
 		},
 		{
 			label: `Grobmotorik`,
-			href: `${base}/milestone`
+			// href: `${base}/milestone`,
+			onclick: () => {
+				activeTabChildren.update((value) => {
+					return 'milestone';
+				});
+			}
 		}
 	];
 
