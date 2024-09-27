@@ -1,6 +1,7 @@
 import ChildrenGallery from '$lib/components/ChildrenGallery.svelte';
 import ChildrenRegistration from '$lib/components/ChildrenRegistration.svelte';
 import RadioList from '$lib/components/DataInput/RadioList.svelte';
+import Milestone from '$lib/components/Milestone.svelte';
 import MilestoneGroup from '$lib/components/MilestoneGroup.svelte';
 import MilestoneOverview from '$lib/components/MilestoneOverview.svelte';
 import UserDataInput from '$lib/components/UserDataInput.svelte';
@@ -15,6 +16,7 @@ export const componentTable = {
 	childrenRegistration: ChildrenRegistration,
 	milestoneGroup: MilestoneGroup,
 	milestoneOverview: MilestoneOverview,
+	milestone: Milestone,
 	radioList: RadioList,
 	input: Input,
 	multiSelect: MultiSelect,
