@@ -1,280 +1,81 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
 	import { base } from '$app/paths';
 	import AlertMessage from '$lib/components/AlertMessage.svelte';
+	import {
+		buildDataToSend,
+		buildMissingValues,
+		buildRequired,
+		getData,
+		setUpDynamic,
+		setUpOnMount,
+		submitData,
+		tearDown,
+		verifyInput
+	} from '$lib/components/ChildrenRegistration';
 	import DataInput from '$lib/components/DataInput/DataInput.svelte';
 	import Breadcrumbs from '$lib/components/Navigation/Breadcrumbs.svelte';
 	import NavigationButtons from '$lib/components/Navigation/NavigationButtons.svelte';
-
-	import {
-		children,
-		createDummyCurrent,
-		createDummySummary,
-		generateChildID,
-		type ChildData
-	} from '$lib/stores/childrenStore';
-
-	import { Fileupload, Input, MultiSelect, Select, Textarea } from 'flowbite-svelte';
-	import RadioList from './DataInput/RadioList.svelte';
-
-	import { hash, users } from '$lib/stores/userStore';
-
+	import { activeTabChildren } from '$lib/stores/componentStore';
 	import { Card, Heading } from 'flowbite-svelte';
-
 	import { onDestroy, onMount } from 'svelte';
 
-	// import { data } from '$lib/components/ChildrenRegistration';
-	const data = [
-		{
-			component: Input,
-			value: null,
-			props: {
-				type: 'text',
+	// get data to fill in
+	const data = getData();
 
-				label: 'Name',
-				placeholder: 'Bitte eintragen',
-				key: 'name',
-				required: true
+	const breadcrumbdata = [
+		{
+			label: 'Kinderübersicht',
+			onclick: () => {
+				activeTabChildren.update((value) => {
+					return 'childrenGallery';
+				});
 			}
 		},
 		{
-			component: Input,
-			value: null,
-			props: {
-				type: 'date',
-
-				label: 'Geburtsdatum',
-				placeholder: 'Bitte eintragen',
-				key: 'dateOfBirth',
-				required: true
-			}
-		},
-		{
-			component: RadioList,
-			value: null,
-			additionalValue: null,
-			props: {
-				label: 'Frühgeburt',
-				items: ['nein', '0-2 Monate', '2-4 Monate', '4-6 Monate', 'Anderes'].map((v) => {
-					return { label: String(v), value: v };
-				}),
-				placeholder: 'Bitte auswählen',
-				key: 'bornEarly',
-				required: true,
-				unique: true,
-				textTrigger: 'Anderes',
-				selected: [false, false, false, false]
-			}
-		},
-		{
-			component: RadioList,
-			value: null,
-			additionalValue: null,
-			props: {
-				label: 'Geschlecht',
-				items: ['männlich', 'weiblich'].map((v) => {
-					return { label: String(v), value: v };
-				}),
-				placeholder: 'Bitte auswählen',
-				key: 'gender',
-				required: true,
-				unique: true,
-				selected: [false, false]
-			}
-		},
-		{
-			component: MultiSelect,
-			value: [],
-			additionalValue: null,
-			props: {
-				label: 'Nationalität',
-				items: ['Andere', 'Deutschland', 'Grossbritannien', 'USA', 'China'].map((v) => {
-					return { name: String(v), value: v };
-				}),
-				placeholder: 'Bitte auswählen',
-				key: 'nationality',
-				required: true,
-				textTrigger: 'Andere'
-			}
-		},
-		{
-			component: MultiSelect,
-			value: [],
-			additionalValue: null,
-			props: {
-				label: 'Sprache',
-				items: ['Andere', 'Deutsch', 'Englisch (UK)', 'Englisch (Us)', 'Mandarin', 'Arabisch'].map(
-					(v) => {
-						return { name: String(v), value: v };
-					}
-				),
-				placeholder: 'Bitte auswählen',
-				key: 'language',
-				required: true,
-				textTrigger: 'Andere'
-			}
-		},
-		{
-			component: Select,
-			value: null,
-			additionalValue: null,
-			props: {
-				label: 'Verhältnis zum Kind',
-				key: 'relationship',
-				items: [
-					'Anderes',
-					'Kind',
-					'Enkelkind',
-					'Neffe/Nichte',
-					'Pflegekind',
-					'Adoptivkind',
-					'Betreuung extern',
-					'Betreuung zu Hause'
-				].map((v) => {
-					return { name: String(v), value: v };
-				}),
-				placeholder: 'Bitte auswählen',
-				required: true,
-				textTrigger: 'Anderes'
-			}
-		},
-		{
-			component: MultiSelect,
-			value: [],
-			additionalValue: null,
-			props: {
-				label: 'Entwicklungsauffälligkeiten',
-				items: ['keine', 'Hörprobleme', 'Fehlsichtigkeit', 'Sprachfehler', 'Andere'].map((v) => {
-					return { name: String(v), value: v };
-				}),
-				placeholder: 'Bitte auswählen',
-				key: 'developmentalIssues',
-				required: true,
-				textTrigger: 'Andere'
-			}
-		},
-		{
-			component: Textarea,
-			value: null,
-			props: {
-				label: 'Anmerkungen',
-				placeholder: 'Weitere Bemerkungen',
-				key: 'remarks',
-				required: false
-			}
-		},
-		{
-			component: Fileupload,
-			value: null,
-			props: {
-				label: 'Foto',
-				placeholder: 'Bitte wählen sie ein Bild aus falls gewünscht',
-				key: 'image',
-				required: false,
-				accept: ['png', 'jpg', 'svg', 'webp']
-			}
+			label: 'Neues Kind registrieren'
 		}
 	];
 
-	// event handlers and verification function
-	export async function submitData() {
-		const verified = await verifyInput();
-		if (verified) {
-			const childID = generateChildID(childData.name);
-			await children.addChildData(userID, childID, childData);
-			await children.addChildObservation(userID, childID, {
-				user: userID,
-				id: childID,
-				summary: await createDummySummary(),
-				current: await createDummyCurrent()
-			});
+	// use component lifecycle to make sure data is written and read persistently
 
-			await children.save();
-			await goto(nextpage as string);
-		} else {
-			showAlert = true;
-		}
-	}
+	onMount(setUpOnMount);
 
-	async function verifyInput(): Promise<Boolean> {
-		let required: { [key: string]: Boolean } = {};
-
-		childData = data.reduce((dict: any, curr) => {
-			dict[curr.props.key] = curr.value;
-
-			if (curr.additionalValue !== null) {
-				dict[curr.props.key + '_additional'] = curr.additionalValue;
-			}
-
-			required[curr.props.key] = curr.props.required;
-			return dict;
-		}, {});
-
-		const test = Object.entries(childData).every((kv) =>
-			required[kv[0]] ? kv[1] !== undefined && kv[1] !== null && kv[1] !== '' : true
-		);
-
-		if (test) {
-			missingValues = [];
-			const childID = generateChildID(childData.name);
-			// add additional data to the child
-			childData['user'] = userID;
-			childData['id'] = childID;
-			childData['info'] = childData.remarks;
-			showCheckMessage = false;
-			return true;
-		} else {
-			(missingValues as Boolean[]) = Object.keys(childData).map((key) => {
-				return childData[key] && required[key] ? false : true;
-			});
-			return false;
-		}
-	}
+	onDestroy(async () => {
+		await tearDown(unsubscribe);
+	});
 
 	// data to display -> will later be fetched from the server
 	const heading = 'Neues Kind registrieren';
-	const userID = users.get()['loggedIn'];
 
 	// data
-	let childData: ChildData;
-	let nextpage: string = `${base}/userLand/userLandingpage`;
-	let unsubscribe: unknown = children.subscribe((_) => {
-		children.save();
-	});
-
-	// this can be supplied from the database
-	export let breadcrumbdata: any[];
+	let unsubscribe: unknown = setUpDynamic();
 
 	// rerender page if missing values or showAlert changes
-	$: missingValues = [];
+	let missingValues = [];
 	$: showAlert = false;
 	$: showCheckMessage = true;
-
-	// use component lifecycle to make sure data is written and read persistently
-
-	onMount(async () => {
-		await children.load();
-		await users.load();
-
-		const loggedInUser = await users.fetch('loggedIn');
-
-		// README: temporary fix because the linking is broken atm
-		const h = await hash('123');
-
-		if (!children.get()[loggedInUser]) {
-			await children.addUser(loggedInUser);
-		}
-	});
-
-	onDestroy(async () => {
-		await children.save();
-		await (unsubscribe as Function)();
-	});
 
 	const buttons = [
 		{
 			label: 'Abschließen',
-			onclick: submitData
+			onclick: async () => {
+				console.log('build shit');
+				const childData = buildDataToSend(data);
+				const required = buildRequired(data);
+				const verified = await verifyInput(childData, required);
+				if (verified) {
+					console.log('good');
+					showAlert = false;
+					await submitData(data);
+					activeTabChildren.update((v) => {
+						return 'childrenGallery';
+					});
+				} else {
+					console.log('not good');
+					missingValues = buildMissingValues(childData, required);
+					showAlert = true;
+				}
+			}
 		}
 	];
 </script>
@@ -288,7 +89,6 @@
 		<AlertMessage
 			title="Fehler"
 			message="Bitte füllen Sie mindestens die benötigten Felder (hervorgehoben) aus."
-			lastpage="{base}/childLand/childDataInput/"
 			infopage="{base}/info"
 			infotitle="Was passiert mit den Daten"
 			onclick={() => {
@@ -302,8 +102,7 @@
 		<AlertMessage
 			title="Bevor es weitergeht"
 			message="Bitte überprüfen sie ihre eingaben nochmals genau bevor sie weiter gehen"
-			lastpage="{base}/childLand/childDataInput"
-			infopage={base}
+			infopage="{base}/info"
 			infotitle="Was passiert mit den Daten?"
 			onclick={() => {
 				showCheckMessage = false;

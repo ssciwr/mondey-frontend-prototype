@@ -8,7 +8,7 @@
 		href: undefined,
 		image: undefined,
 		progress: undefined,
-		events: object
+		events: undefined
 	};
 
 	export let styleProps = {
@@ -19,7 +19,7 @@
 		progress: {}
 	};
 
-	console.log('data: ', data);
+	// TOOD: generalize event passing. currently only the on:click event is exposed
 </script>
 
 <Card
