@@ -45,7 +45,7 @@
 	$: console.log('data in gallery: ', data);
 </script>
 
-<div class="mx-auto w-full">
+<div class="mx-auto p-4">
 	{#if header !== null}
 		<Heading
 			tag="h1"
@@ -58,12 +58,12 @@
 	{/if}
 
 	{#if withSearch}
-		<form class="m-2 flex w-auto rounded">
+		<form class="m-2 flex w-full rounded p-4">
 			{#if searchData.length > 1}
 				<!-- after example: https://flowbite-svelte.com/docs/forms/search-input#Search_with_dropdown -->
 				<div class="relative">
 					<Button
-						class="h-full whitespace-nowrap rounded-e-none border border-e-0 border-primary-700"
+						class="border-primary-700 h-full whitespace-nowrap rounded-e-none border border-e-0"
 					>
 						{searchCategory}
 						<ChevronDownOutline class="ms-2.5 h-2.5 w-2.5" />
@@ -103,7 +103,7 @@
 	{/if}
 
 	<Gallery
-		class="grid w-full grid-cols-1 justify-center gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+		class="grid w-full grid-cols-1 justify-center gap-8 p-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
 	>
 		{#each filteredItems as item, index}
 			<svelte:component

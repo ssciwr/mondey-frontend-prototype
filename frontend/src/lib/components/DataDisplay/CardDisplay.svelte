@@ -19,7 +19,7 @@
 		progress: {}
 	};
 
-	// TOOD: generalize event passing. currently only the on:click event is exposed
+	// TODO: generalize event passing. currently only the on:click event is exposed
 </script>
 
 <Card
@@ -43,7 +43,11 @@
 		</p>
 	{/if}
 	{#if data.button}
-		<Button href={data.href} class="w-fit" {...styleProps.button} {...data.button.events}
+		<Button
+			href={data.href}
+			class="w-fit"
+			{...styleProps.button}
+			on:click={data.button.events.onclick}
 			>{data.button}
 
 			{#if data.buttonIcon}
