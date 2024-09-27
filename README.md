@@ -20,9 +20,9 @@ on every push to the main branch using this [Github Action](.github/workflows/de
 
 A preview of the full website including the admin interface backend is temporarily hosted on a heicloud VM during development:
 
-- [Mondey website](http://129.206.6.74/)
-- [Mondey admin](http://129.206.6.74/admin)
-- [API documentation](http://129.206.6.74/api/redoc)
-- [Swagger UI to interact with API](http://129.206.6.74/api/docs)
+- [Mondey website](https://mondey.lkeegan.dev/)
+- [Mondey admin](https://mondey.lkeegan.dev/admin)
+- [API documentation](https://mondey.lkeegan.dev/api/redoc)
+- [Swagger UI to interact with API](https://mondey.lkeegan.dev/api/docs)
 
-(Note: for now this is unsecured http with public API interfaces for convenience during development, the production server would have https and the api interfaces would not be public)
+(Note: for now the API interface docs are public and unsecured for convenience during development, in production these would not be public)
