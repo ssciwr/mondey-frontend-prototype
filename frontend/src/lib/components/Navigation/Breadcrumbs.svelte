@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { Breadcrumb, BreadcrumbItem } from 'flowbite-svelte';
-
 	export let data: any[] = [];
 </script>
 
@@ -14,7 +13,16 @@
 		<BreadcrumbItem
 			href={item.href}
 			linkClass="ms-1 text-md font-medium text-gray-700 hover:text-primary-700 md:ms-2 dark:text-gray-400 dark:hover:text-white"
-			>{item.label}</BreadcrumbItem
 		>
+			{#if item.href}
+				{item.label}
+			{:else}
+				<button
+					class="text-md hover:text-primary-700 ms-1 font-medium text-gray-700 md:ms-2 dark:text-gray-400 dark:hover:text-white"
+					on:click={item.onclick}
+					>{item.label}
+				</button>
+			{/if}
+		</BreadcrumbItem>
 	{/each}
 </Breadcrumb>
