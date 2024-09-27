@@ -1,9 +1,10 @@
 <script lang="ts">
 	import { base } from '$app/paths';
-	import Breadcrumbs from '$lib/components/Navigation/Breadcrumbs.svelte';
 	import CardDisplay from '$lib/components/DataDisplay/CardDisplay.svelte';
 	import GalleryDisplay from '$lib/components/DataDisplay/GalleryDisplay.svelte';
+	import Breadcrumbs from '$lib/components/Navigation/Breadcrumbs.svelte';
 	import { children, type ChildData } from '$lib/stores/childrenStore';
+	import { activeTabChildren } from '$lib/stores/componentStore';
 	import { users } from '$lib/stores/userStore';
 	import { Heading } from 'flowbite-svelte';
 	import { onDestroy, onMount } from 'svelte';
@@ -22,7 +23,14 @@
 		data.unshift({
 			header: 'Neu',
 			summary: 'Ein neues Kind anmelden',
-			href: `${base}/childLand/childDataInput`
+			events: {
+				onclick: (event) => {
+					console.log('onclick on new children card');
+					activeTabChildren.update((_) => {
+						return 'childernRegistration';
+					});
+				}
+			}
 		});
 		return data;
 	}
