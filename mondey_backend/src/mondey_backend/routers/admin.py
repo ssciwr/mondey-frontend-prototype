@@ -45,14 +45,14 @@ def create_router() -> APIRouter:
         return {"ok": True}
 
     @router.get("/milestone-groups/", response_model=list[MilestoneGroupAdmin])
-    def get_milestone_groups(session: SessionDep):
+    def get_milestone_groups_admin(session: SessionDep):
         milestone_groups = session.exec(
             select(MilestoneGroup).order_by(col(MilestoneGroup.order))
         ).all()
         return milestone_groups
 
     @router.post("/milestone-groups/", response_model=MilestoneGroupAdmin)
-    def create_milestone_group(session: SessionDep):
+    def create_milestone_group_admin(session: SessionDep):
         db_milestone_group = MilestoneGroup()
         add(session, db_milestone_group)
         for language in session.exec(select(Language)).all():
@@ -63,8 +63,8 @@ def create_router() -> APIRouter:
         session.refresh(db_milestone_group)
         return db_milestone_group
 
-    @router.put("/milestone-groups/", response_model=MilestoneGroupAdmin)
-    def update_milestone_group(
+    @router.put("/milestone-groups", response_model=MilestoneGroupAdmin)
+    def update_milestone_group_admin(
         session: SessionDep,
         milestone_group: MilestoneGroupAdmin,
     ):
@@ -78,7 +78,7 @@ def create_router() -> APIRouter:
         return db_milestone_group
 
     @router.delete("/milestone-groups/{milestone_group_id}")
-    def delete_milestone_group(session: SessionDep, milestone_group_id: int):
+    def delete_milestone_group_admin(session: SessionDep, milestone_group_id: int):
         milestone_group = get(session, MilestoneGroup, milestone_group_id)
         session.delete(milestone_group)
         session.commit()

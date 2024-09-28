@@ -8,85 +8,85 @@ import {
 	urlSearchParamsBodySerializer
 } from '@hey-api/client-fetch';
 import type {
-	GetLanguagesLanguagesGetError,
-	GetLanguagesLanguagesGetResponse,
-	GetMilestonesMilestonesGetError,
-	GetMilestonesMilestonesGetResponse,
-	GetMilestoneMilestonesMilestoneIdGetData,
-	GetMilestoneMilestonesMilestoneIdGetError,
-	GetMilestoneMilestonesMilestoneIdGetResponse,
-	GetMilestoneGroupsMilestoneGroupsGetError,
-	GetMilestoneGroupsMilestoneGroupsGetResponse,
-	GetMilestoneGroupMilestoneGroupsMilestoneGroupIdGetData,
-	GetMilestoneGroupMilestoneGroupsMilestoneGroupIdGetError,
-	GetMilestoneGroupMilestoneGroupsMilestoneGroupIdGetResponse,
-	CreateLanguageAdminLanguagesPostData,
-	CreateLanguageAdminLanguagesPostError,
-	CreateLanguageAdminLanguagesPostResponse,
-	DeleteLanguageAdminLanguagesLanguageIdDeleteData,
-	DeleteLanguageAdminLanguagesLanguageIdDeleteError,
-	DeleteLanguageAdminLanguagesLanguageIdDeleteResponse,
-	GetMilestoneGroupsAdminMilestoneGroupsGetError,
-	GetMilestoneGroupsAdminMilestoneGroupsGetResponse,
-	CreateMilestoneGroupAdminMilestoneGroupsPostError,
-	CreateMilestoneGroupAdminMilestoneGroupsPostResponse,
-	UpdateMilestoneGroupAdminMilestoneGroupsPutData,
-	UpdateMilestoneGroupAdminMilestoneGroupsPutError,
-	UpdateMilestoneGroupAdminMilestoneGroupsPutResponse,
-	DeleteMilestoneGroupAdminMilestoneGroupsMilestoneGroupIdDeleteData,
-	DeleteMilestoneGroupAdminMilestoneGroupsMilestoneGroupIdDeleteError,
-	DeleteMilestoneGroupAdminMilestoneGroupsMilestoneGroupIdDeleteResponse,
-	UploadMilestoneGroupImageAdminMilestoneGroupImagesMilestoneGroupIdPutData,
-	UploadMilestoneGroupImageAdminMilestoneGroupImagesMilestoneGroupIdPutError,
-	UploadMilestoneGroupImageAdminMilestoneGroupImagesMilestoneGroupIdPutResponse,
-	CreateMilestoneAdminMilestonesMilestoneGroupIdPostData,
-	CreateMilestoneAdminMilestonesMilestoneGroupIdPostError,
-	CreateMilestoneAdminMilestonesMilestoneGroupIdPostResponse,
-	UpdateMilestoneAdminMilestonesPutData,
-	UpdateMilestoneAdminMilestonesPutError,
-	UpdateMilestoneAdminMilestonesPutResponse,
-	DeleteMilestoneAdminMilestonesMilestoneIdDeleteData,
-	DeleteMilestoneAdminMilestonesMilestoneIdDeleteError,
-	DeleteMilestoneAdminMilestonesMilestoneIdDeleteResponse,
-	UploadMilestoneImageAdminMilestoneImagesMilestoneIdPostData,
-	UploadMilestoneImageAdminMilestoneImagesMilestoneIdPostError,
-	UploadMilestoneImageAdminMilestoneImagesMilestoneIdPostResponse,
-	UsersCurrentUserUsersMeGetError,
-	UsersCurrentUserUsersMeGetResponse,
-	UsersPatchCurrentUserUsersMePatchData,
-	UsersPatchCurrentUserUsersMePatchError,
-	UsersPatchCurrentUserUsersMePatchResponse,
-	UsersUserUsersIdGetData,
-	UsersUserUsersIdGetError,
-	UsersUserUsersIdGetResponse,
-	UsersPatchUserUsersIdPatchData,
-	UsersPatchUserUsersIdPatchError,
-	UsersPatchUserUsersIdPatchResponse,
-	UsersDeleteUserUsersIdDeleteData,
-	UsersDeleteUserUsersIdDeleteError,
-	UsersDeleteUserUsersIdDeleteResponse,
-	AuthCookieLoginAuthLoginPostData,
-	AuthCookieLoginAuthLoginPostError,
-	AuthCookieLoginAuthLoginPostResponse,
-	AuthCookieLogoutAuthLogoutPostError,
-	AuthCookieLogoutAuthLogoutPostResponse,
-	RegisterRegisterAuthRegisterPostData,
-	RegisterRegisterAuthRegisterPostError,
-	RegisterRegisterAuthRegisterPostResponse,
-	ResetForgotPasswordAuthForgotPasswordPostData,
-	ResetForgotPasswordAuthForgotPasswordPostError,
-	ResetForgotPasswordAuthForgotPasswordPostResponse,
-	ResetResetPasswordAuthResetPasswordPostData,
-	ResetResetPasswordAuthResetPasswordPostError,
-	ResetResetPasswordAuthResetPasswordPostResponse,
-	VerifyRequestTokenAuthRequestVerifyTokenPostData,
-	VerifyRequestTokenAuthRequestVerifyTokenPostError,
-	VerifyRequestTokenAuthRequestVerifyTokenPostResponse,
-	VerifyVerifyAuthVerifyPostData,
-	VerifyVerifyAuthVerifyPostError,
-	VerifyVerifyAuthVerifyPostResponse,
-	AuthResearchAuthGetError,
-	AuthResearchAuthGetResponse
+	GetLanguagesError,
+	GetLanguagesResponse,
+	GetMilestonesError,
+	GetMilestonesResponse,
+	GetMilestoneData,
+	GetMilestoneError,
+	GetMilestoneResponse,
+	GetMilestoneGroupsError,
+	GetMilestoneGroupsResponse,
+	GetMilestoneGroupData,
+	GetMilestoneGroupError,
+	GetMilestoneGroupResponse,
+	CreateLanguageData,
+	CreateLanguageError,
+	CreateLanguageResponse,
+	DeleteLanguageData,
+	DeleteLanguageError,
+	DeleteLanguageResponse,
+	GetMilestoneGroupsAdminError,
+	GetMilestoneGroupsAdminResponse,
+	CreateMilestoneGroupAdminError,
+	CreateMilestoneGroupAdminResponse,
+	UpdateMilestoneGroupAdminData,
+	UpdateMilestoneGroupAdminError,
+	UpdateMilestoneGroupAdminResponse,
+	DeleteMilestoneGroupAdminData,
+	DeleteMilestoneGroupAdminError,
+	DeleteMilestoneGroupAdminResponse,
+	UploadMilestoneGroupImageData,
+	UploadMilestoneGroupImageError,
+	UploadMilestoneGroupImageResponse,
+	CreateMilestoneData,
+	CreateMilestoneError,
+	CreateMilestoneResponse,
+	UpdateMilestoneData,
+	UpdateMilestoneError,
+	UpdateMilestoneResponse,
+	DeleteMilestoneData,
+	DeleteMilestoneError,
+	DeleteMilestoneResponse,
+	UploadMilestoneImageData,
+	UploadMilestoneImageError,
+	UploadMilestoneImageResponse,
+	UsersCurrentUserError,
+	UsersCurrentUserResponse,
+	UsersPatchCurrentUserData,
+	UsersPatchCurrentUserError,
+	UsersPatchCurrentUserResponse,
+	UsersUserData,
+	UsersUserError,
+	UsersUserResponse,
+	UsersPatchUserData,
+	UsersPatchUserError,
+	UsersPatchUserResponse,
+	UsersDeleteUserData,
+	UsersDeleteUserError,
+	UsersDeleteUserResponse,
+	AuthCookieLoginData,
+	AuthCookieLoginError,
+	AuthCookieLoginResponse,
+	AuthCookieLogoutError,
+	AuthCookieLogoutResponse,
+	RegisterRegisterData,
+	RegisterRegisterError,
+	RegisterRegisterResponse,
+	ResetForgotPasswordData,
+	ResetForgotPasswordError,
+	ResetForgotPasswordResponse,
+	ResetResetPasswordData,
+	ResetResetPasswordError,
+	ResetResetPasswordResponse,
+	VerifyRequestTokenData,
+	VerifyRequestTokenError,
+	VerifyRequestTokenResponse,
+	VerifyVerifyData,
+	VerifyVerifyError,
+	VerifyVerifyResponse,
+	AuthError,
+	AuthResponse
 } from './types.gen';
 
 export const client = createClient(createConfig());
@@ -94,14 +94,10 @@ export const client = createClient(createConfig());
 /**
  * Get Languages
  */
-export const getLanguagesLanguagesGet = <ThrowOnError extends boolean = false>(
+export const getLanguages = <ThrowOnError extends boolean = false>(
 	options?: Options<unknown, ThrowOnError>
 ) => {
-	return (options?.client ?? client).get<
-		GetLanguagesLanguagesGetResponse,
-		GetLanguagesLanguagesGetError,
-		ThrowOnError
-	>({
+	return (options?.client ?? client).get<GetLanguagesResponse, GetLanguagesError, ThrowOnError>({
 		...options,
 		url: '/languages/'
 	});
@@ -110,14 +106,10 @@ export const getLanguagesLanguagesGet = <ThrowOnError extends boolean = false>(
 /**
  * Get Milestones
  */
-export const getMilestonesMilestonesGet = <ThrowOnError extends boolean = false>(
+export const getMilestones = <ThrowOnError extends boolean = false>(
 	options?: Options<unknown, ThrowOnError>
 ) => {
-	return (options?.client ?? client).get<
-		GetMilestonesMilestonesGetResponse,
-		GetMilestonesMilestonesGetError,
-		ThrowOnError
-	>({
+	return (options?.client ?? client).get<GetMilestonesResponse, GetMilestonesError, ThrowOnError>({
 		...options,
 		url: '/milestones/'
 	});
@@ -126,14 +118,10 @@ export const getMilestonesMilestonesGet = <ThrowOnError extends boolean = false>
 /**
  * Get Milestone
  */
-export const getMilestoneMilestonesMilestoneIdGet = <ThrowOnError extends boolean = false>(
-	options: Options<GetMilestoneMilestonesMilestoneIdGetData, ThrowOnError>
+export const getMilestone = <ThrowOnError extends boolean = false>(
+	options: Options<GetMilestoneData, ThrowOnError>
 ) => {
-	return (options?.client ?? client).get<
-		GetMilestoneMilestonesMilestoneIdGetResponse,
-		GetMilestoneMilestonesMilestoneIdGetError,
-		ThrowOnError
-	>({
+	return (options?.client ?? client).get<GetMilestoneResponse, GetMilestoneError, ThrowOnError>({
 		...options,
 		url: '/milestones/{milestone_id}'
 	});
@@ -142,12 +130,12 @@ export const getMilestoneMilestonesMilestoneIdGet = <ThrowOnError extends boolea
 /**
  * Get Milestone Groups
  */
-export const getMilestoneGroupsMilestoneGroupsGet = <ThrowOnError extends boolean = false>(
+export const getMilestoneGroups = <ThrowOnError extends boolean = false>(
 	options?: Options<unknown, ThrowOnError>
 ) => {
 	return (options?.client ?? client).get<
-		GetMilestoneGroupsMilestoneGroupsGetResponse,
-		GetMilestoneGroupsMilestoneGroupsGetError,
+		GetMilestoneGroupsResponse,
+		GetMilestoneGroupsError,
 		ThrowOnError
 	>({
 		...options,
@@ -158,14 +146,12 @@ export const getMilestoneGroupsMilestoneGroupsGet = <ThrowOnError extends boolea
 /**
  * Get Milestone Group
  */
-export const getMilestoneGroupMilestoneGroupsMilestoneGroupIdGet = <
-	ThrowOnError extends boolean = false
->(
-	options: Options<GetMilestoneGroupMilestoneGroupsMilestoneGroupIdGetData, ThrowOnError>
+export const getMilestoneGroup = <ThrowOnError extends boolean = false>(
+	options: Options<GetMilestoneGroupData, ThrowOnError>
 ) => {
 	return (options?.client ?? client).get<
-		GetMilestoneGroupMilestoneGroupsMilestoneGroupIdGetResponse,
-		GetMilestoneGroupMilestoneGroupsMilestoneGroupIdGetError,
+		GetMilestoneGroupResponse,
+		GetMilestoneGroupError,
 		ThrowOnError
 	>({
 		...options,
@@ -176,12 +162,12 @@ export const getMilestoneGroupMilestoneGroupsMilestoneGroupIdGet = <
 /**
  * Create Language
  */
-export const createLanguageAdminLanguagesPost = <ThrowOnError extends boolean = false>(
-	options: Options<CreateLanguageAdminLanguagesPostData, ThrowOnError>
+export const createLanguage = <ThrowOnError extends boolean = false>(
+	options: Options<CreateLanguageData, ThrowOnError>
 ) => {
 	return (options?.client ?? client).post<
-		CreateLanguageAdminLanguagesPostResponse,
-		CreateLanguageAdminLanguagesPostError,
+		CreateLanguageResponse,
+		CreateLanguageError,
 		ThrowOnError
 	>({
 		...options,
@@ -192,12 +178,12 @@ export const createLanguageAdminLanguagesPost = <ThrowOnError extends boolean = 
 /**
  * Delete Language
  */
-export const deleteLanguageAdminLanguagesLanguageIdDelete = <ThrowOnError extends boolean = false>(
-	options: Options<DeleteLanguageAdminLanguagesLanguageIdDeleteData, ThrowOnError>
+export const deleteLanguage = <ThrowOnError extends boolean = false>(
+	options: Options<DeleteLanguageData, ThrowOnError>
 ) => {
 	return (options?.client ?? client).delete<
-		DeleteLanguageAdminLanguagesLanguageIdDeleteResponse,
-		DeleteLanguageAdminLanguagesLanguageIdDeleteError,
+		DeleteLanguageResponse,
+		DeleteLanguageError,
 		ThrowOnError
 	>({
 		...options,
@@ -206,14 +192,14 @@ export const deleteLanguageAdminLanguagesLanguageIdDelete = <ThrowOnError extend
 };
 
 /**
- * Get Milestone Groups
+ * Get Milestone Groups Admin
  */
-export const getMilestoneGroupsAdminMilestoneGroupsGet = <ThrowOnError extends boolean = false>(
+export const getMilestoneGroupsAdmin = <ThrowOnError extends boolean = false>(
 	options?: Options<unknown, ThrowOnError>
 ) => {
 	return (options?.client ?? client).get<
-		GetMilestoneGroupsAdminMilestoneGroupsGetResponse,
-		GetMilestoneGroupsAdminMilestoneGroupsGetError,
+		GetMilestoneGroupsAdminResponse,
+		GetMilestoneGroupsAdminError,
 		ThrowOnError
 	>({
 		...options,
@@ -222,14 +208,14 @@ export const getMilestoneGroupsAdminMilestoneGroupsGet = <ThrowOnError extends b
 };
 
 /**
- * Create Milestone Group
+ * Create Milestone Group Admin
  */
-export const createMilestoneGroupAdminMilestoneGroupsPost = <ThrowOnError extends boolean = false>(
+export const createMilestoneGroupAdmin = <ThrowOnError extends boolean = false>(
 	options?: Options<unknown, ThrowOnError>
 ) => {
 	return (options?.client ?? client).post<
-		CreateMilestoneGroupAdminMilestoneGroupsPostResponse,
-		CreateMilestoneGroupAdminMilestoneGroupsPostError,
+		CreateMilestoneGroupAdminResponse,
+		CreateMilestoneGroupAdminError,
 		ThrowOnError
 	>({
 		...options,
@@ -238,14 +224,14 @@ export const createMilestoneGroupAdminMilestoneGroupsPost = <ThrowOnError extend
 };
 
 /**
- * Update Milestone Group
+ * Update Milestone Group Admin
  */
-export const updateMilestoneGroupAdminMilestoneGroupsPut = <ThrowOnError extends boolean = false>(
-	options: Options<UpdateMilestoneGroupAdminMilestoneGroupsPutData, ThrowOnError>
+export const updateMilestoneGroupAdmin = <ThrowOnError extends boolean = false>(
+	options: Options<UpdateMilestoneGroupAdminData, ThrowOnError>
 ) => {
 	return (options?.client ?? client).put<
-		UpdateMilestoneGroupAdminMilestoneGroupsPutResponse,
-		UpdateMilestoneGroupAdminMilestoneGroupsPutError,
+		UpdateMilestoneGroupAdminResponse,
+		UpdateMilestoneGroupAdminError,
 		ThrowOnError
 	>({
 		...options,
@@ -254,16 +240,14 @@ export const updateMilestoneGroupAdminMilestoneGroupsPut = <ThrowOnError extends
 };
 
 /**
- * Delete Milestone Group
+ * Delete Milestone Group Admin
  */
-export const deleteMilestoneGroupAdminMilestoneGroupsMilestoneGroupIdDelete = <
-	ThrowOnError extends boolean = false
->(
-	options: Options<DeleteMilestoneGroupAdminMilestoneGroupsMilestoneGroupIdDeleteData, ThrowOnError>
+export const deleteMilestoneGroupAdmin = <ThrowOnError extends boolean = false>(
+	options: Options<DeleteMilestoneGroupAdminData, ThrowOnError>
 ) => {
 	return (options?.client ?? client).delete<
-		DeleteMilestoneGroupAdminMilestoneGroupsMilestoneGroupIdDeleteResponse,
-		DeleteMilestoneGroupAdminMilestoneGroupsMilestoneGroupIdDeleteError,
+		DeleteMilestoneGroupAdminResponse,
+		DeleteMilestoneGroupAdminError,
 		ThrowOnError
 	>({
 		...options,
@@ -274,17 +258,12 @@ export const deleteMilestoneGroupAdminMilestoneGroupsMilestoneGroupIdDelete = <
 /**
  * Upload Milestone Group Image
  */
-export const uploadMilestoneGroupImageAdminMilestoneGroupImagesMilestoneGroupIdPut = <
-	ThrowOnError extends boolean = false
->(
-	options: Options<
-		UploadMilestoneGroupImageAdminMilestoneGroupImagesMilestoneGroupIdPutData,
-		ThrowOnError
-	>
+export const uploadMilestoneGroupImage = <ThrowOnError extends boolean = false>(
+	options: Options<UploadMilestoneGroupImageData, ThrowOnError>
 ) => {
 	return (options?.client ?? client).put<
-		UploadMilestoneGroupImageAdminMilestoneGroupImagesMilestoneGroupIdPutResponse,
-		UploadMilestoneGroupImageAdminMilestoneGroupImagesMilestoneGroupIdPutError,
+		UploadMilestoneGroupImageResponse,
+		UploadMilestoneGroupImageError,
 		ThrowOnError
 	>({
 		...options,
@@ -300,14 +279,12 @@ export const uploadMilestoneGroupImageAdminMilestoneGroupImagesMilestoneGroupIdP
 /**
  * Create Milestone
  */
-export const createMilestoneAdminMilestonesMilestoneGroupIdPost = <
-	ThrowOnError extends boolean = false
->(
-	options: Options<CreateMilestoneAdminMilestonesMilestoneGroupIdPostData, ThrowOnError>
+export const createMilestone = <ThrowOnError extends boolean = false>(
+	options: Options<CreateMilestoneData, ThrowOnError>
 ) => {
 	return (options?.client ?? client).post<
-		CreateMilestoneAdminMilestonesMilestoneGroupIdPostResponse,
-		CreateMilestoneAdminMilestonesMilestoneGroupIdPostError,
+		CreateMilestoneResponse,
+		CreateMilestoneError,
 		ThrowOnError
 	>({
 		...options,
@@ -318,12 +295,12 @@ export const createMilestoneAdminMilestonesMilestoneGroupIdPost = <
 /**
  * Update Milestone
  */
-export const updateMilestoneAdminMilestonesPut = <ThrowOnError extends boolean = false>(
-	options: Options<UpdateMilestoneAdminMilestonesPutData, ThrowOnError>
+export const updateMilestone = <ThrowOnError extends boolean = false>(
+	options: Options<UpdateMilestoneData, ThrowOnError>
 ) => {
 	return (options?.client ?? client).put<
-		UpdateMilestoneAdminMilestonesPutResponse,
-		UpdateMilestoneAdminMilestonesPutError,
+		UpdateMilestoneResponse,
+		UpdateMilestoneError,
 		ThrowOnError
 	>({
 		...options,
@@ -334,14 +311,12 @@ export const updateMilestoneAdminMilestonesPut = <ThrowOnError extends boolean =
 /**
  * Delete Milestone
  */
-export const deleteMilestoneAdminMilestonesMilestoneIdDelete = <
-	ThrowOnError extends boolean = false
->(
-	options: Options<DeleteMilestoneAdminMilestonesMilestoneIdDeleteData, ThrowOnError>
+export const deleteMilestone = <ThrowOnError extends boolean = false>(
+	options: Options<DeleteMilestoneData, ThrowOnError>
 ) => {
 	return (options?.client ?? client).delete<
-		DeleteMilestoneAdminMilestonesMilestoneIdDeleteResponse,
-		DeleteMilestoneAdminMilestonesMilestoneIdDeleteError,
+		DeleteMilestoneResponse,
+		DeleteMilestoneError,
 		ThrowOnError
 	>({
 		...options,
@@ -352,14 +327,12 @@ export const deleteMilestoneAdminMilestonesMilestoneIdDelete = <
 /**
  * Upload Milestone Image
  */
-export const uploadMilestoneImageAdminMilestoneImagesMilestoneIdPost = <
-	ThrowOnError extends boolean = false
->(
-	options: Options<UploadMilestoneImageAdminMilestoneImagesMilestoneIdPostData, ThrowOnError>
+export const uploadMilestoneImage = <ThrowOnError extends boolean = false>(
+	options: Options<UploadMilestoneImageData, ThrowOnError>
 ) => {
 	return (options?.client ?? client).post<
-		UploadMilestoneImageAdminMilestoneImagesMilestoneIdPostResponse,
-		UploadMilestoneImageAdminMilestoneImagesMilestoneIdPostError,
+		UploadMilestoneImageResponse,
+		UploadMilestoneImageError,
 		ThrowOnError
 	>({
 		...options,
@@ -375,12 +348,12 @@ export const uploadMilestoneImageAdminMilestoneImagesMilestoneIdPost = <
 /**
  * Users:Current User
  */
-export const usersCurrentUserUsersMeGet = <ThrowOnError extends boolean = false>(
+export const usersCurrentUser = <ThrowOnError extends boolean = false>(
 	options?: Options<unknown, ThrowOnError>
 ) => {
 	return (options?.client ?? client).get<
-		UsersCurrentUserUsersMeGetResponse,
-		UsersCurrentUserUsersMeGetError,
+		UsersCurrentUserResponse,
+		UsersCurrentUserError,
 		ThrowOnError
 	>({
 		...options,
@@ -391,12 +364,12 @@ export const usersCurrentUserUsersMeGet = <ThrowOnError extends boolean = false>
 /**
  * Users:Patch Current User
  */
-export const usersPatchCurrentUserUsersMePatch = <ThrowOnError extends boolean = false>(
-	options: Options<UsersPatchCurrentUserUsersMePatchData, ThrowOnError>
+export const usersPatchCurrentUser = <ThrowOnError extends boolean = false>(
+	options: Options<UsersPatchCurrentUserData, ThrowOnError>
 ) => {
 	return (options?.client ?? client).patch<
-		UsersPatchCurrentUserUsersMePatchResponse,
-		UsersPatchCurrentUserUsersMePatchError,
+		UsersPatchCurrentUserResponse,
+		UsersPatchCurrentUserError,
 		ThrowOnError
 	>({
 		...options,
@@ -407,14 +380,10 @@ export const usersPatchCurrentUserUsersMePatch = <ThrowOnError extends boolean =
 /**
  * Users:User
  */
-export const usersUserUsersIdGet = <ThrowOnError extends boolean = false>(
-	options: Options<UsersUserUsersIdGetData, ThrowOnError>
+export const usersUser = <ThrowOnError extends boolean = false>(
+	options: Options<UsersUserData, ThrowOnError>
 ) => {
-	return (options?.client ?? client).get<
-		UsersUserUsersIdGetResponse,
-		UsersUserUsersIdGetError,
-		ThrowOnError
-	>({
+	return (options?.client ?? client).get<UsersUserResponse, UsersUserError, ThrowOnError>({
 		...options,
 		url: '/users/{id}'
 	});
@@ -423,12 +392,12 @@ export const usersUserUsersIdGet = <ThrowOnError extends boolean = false>(
 /**
  * Users:Patch User
  */
-export const usersPatchUserUsersIdPatch = <ThrowOnError extends boolean = false>(
-	options: Options<UsersPatchUserUsersIdPatchData, ThrowOnError>
+export const usersPatchUser = <ThrowOnError extends boolean = false>(
+	options: Options<UsersPatchUserData, ThrowOnError>
 ) => {
 	return (options?.client ?? client).patch<
-		UsersPatchUserUsersIdPatchResponse,
-		UsersPatchUserUsersIdPatchError,
+		UsersPatchUserResponse,
+		UsersPatchUserError,
 		ThrowOnError
 	>({
 		...options,
@@ -439,12 +408,12 @@ export const usersPatchUserUsersIdPatch = <ThrowOnError extends boolean = false>
 /**
  * Users:Delete User
  */
-export const usersDeleteUserUsersIdDelete = <ThrowOnError extends boolean = false>(
-	options: Options<UsersDeleteUserUsersIdDeleteData, ThrowOnError>
+export const usersDeleteUser = <ThrowOnError extends boolean = false>(
+	options: Options<UsersDeleteUserData, ThrowOnError>
 ) => {
 	return (options?.client ?? client).delete<
-		UsersDeleteUserUsersIdDeleteResponse,
-		UsersDeleteUserUsersIdDeleteError,
+		UsersDeleteUserResponse,
+		UsersDeleteUserError,
 		ThrowOnError
 	>({
 		...options,
@@ -455,12 +424,12 @@ export const usersDeleteUserUsersIdDelete = <ThrowOnError extends boolean = fals
 /**
  * Auth:Cookie.Login
  */
-export const authCookieLoginAuthLoginPost = <ThrowOnError extends boolean = false>(
-	options: Options<AuthCookieLoginAuthLoginPostData, ThrowOnError>
+export const authCookieLogin = <ThrowOnError extends boolean = false>(
+	options: Options<AuthCookieLoginData, ThrowOnError>
 ) => {
 	return (options?.client ?? client).post<
-		AuthCookieLoginAuthLoginPostResponse,
-		AuthCookieLoginAuthLoginPostError,
+		AuthCookieLoginResponse,
+		AuthCookieLoginError,
 		ThrowOnError
 	>({
 		...options,
@@ -476,12 +445,12 @@ export const authCookieLoginAuthLoginPost = <ThrowOnError extends boolean = fals
 /**
  * Auth:Cookie.Logout
  */
-export const authCookieLogoutAuthLogoutPost = <ThrowOnError extends boolean = false>(
+export const authCookieLogout = <ThrowOnError extends boolean = false>(
 	options?: Options<unknown, ThrowOnError>
 ) => {
 	return (options?.client ?? client).post<
-		AuthCookieLogoutAuthLogoutPostResponse,
-		AuthCookieLogoutAuthLogoutPostError,
+		AuthCookieLogoutResponse,
+		AuthCookieLogoutError,
 		ThrowOnError
 	>({
 		...options,
@@ -492,12 +461,12 @@ export const authCookieLogoutAuthLogoutPost = <ThrowOnError extends boolean = fa
 /**
  * Register:Register
  */
-export const registerRegisterAuthRegisterPost = <ThrowOnError extends boolean = false>(
-	options: Options<RegisterRegisterAuthRegisterPostData, ThrowOnError>
+export const registerRegister = <ThrowOnError extends boolean = false>(
+	options: Options<RegisterRegisterData, ThrowOnError>
 ) => {
 	return (options?.client ?? client).post<
-		RegisterRegisterAuthRegisterPostResponse,
-		RegisterRegisterAuthRegisterPostError,
+		RegisterRegisterResponse,
+		RegisterRegisterError,
 		ThrowOnError
 	>({
 		...options,
@@ -508,12 +477,12 @@ export const registerRegisterAuthRegisterPost = <ThrowOnError extends boolean = 
 /**
  * Reset:Forgot Password
  */
-export const resetForgotPasswordAuthForgotPasswordPost = <ThrowOnError extends boolean = false>(
-	options: Options<ResetForgotPasswordAuthForgotPasswordPostData, ThrowOnError>
+export const resetForgotPassword = <ThrowOnError extends boolean = false>(
+	options: Options<ResetForgotPasswordData, ThrowOnError>
 ) => {
 	return (options?.client ?? client).post<
-		ResetForgotPasswordAuthForgotPasswordPostResponse,
-		ResetForgotPasswordAuthForgotPasswordPostError,
+		ResetForgotPasswordResponse,
+		ResetForgotPasswordError,
 		ThrowOnError
 	>({
 		...options,
@@ -524,12 +493,12 @@ export const resetForgotPasswordAuthForgotPasswordPost = <ThrowOnError extends b
 /**
  * Reset:Reset Password
  */
-export const resetResetPasswordAuthResetPasswordPost = <ThrowOnError extends boolean = false>(
-	options: Options<ResetResetPasswordAuthResetPasswordPostData, ThrowOnError>
+export const resetResetPassword = <ThrowOnError extends boolean = false>(
+	options: Options<ResetResetPasswordData, ThrowOnError>
 ) => {
 	return (options?.client ?? client).post<
-		ResetResetPasswordAuthResetPasswordPostResponse,
-		ResetResetPasswordAuthResetPasswordPostError,
+		ResetResetPasswordResponse,
+		ResetResetPasswordError,
 		ThrowOnError
 	>({
 		...options,
@@ -540,12 +509,12 @@ export const resetResetPasswordAuthResetPasswordPost = <ThrowOnError extends boo
 /**
  * Verify:Request-Token
  */
-export const verifyRequestTokenAuthRequestVerifyTokenPost = <ThrowOnError extends boolean = false>(
-	options: Options<VerifyRequestTokenAuthRequestVerifyTokenPostData, ThrowOnError>
+export const verifyRequestToken = <ThrowOnError extends boolean = false>(
+	options: Options<VerifyRequestTokenData, ThrowOnError>
 ) => {
 	return (options?.client ?? client).post<
-		VerifyRequestTokenAuthRequestVerifyTokenPostResponse,
-		VerifyRequestTokenAuthRequestVerifyTokenPostError,
+		VerifyRequestTokenResponse,
+		VerifyRequestTokenError,
 		ThrowOnError
 	>({
 		...options,
@@ -556,14 +525,10 @@ export const verifyRequestTokenAuthRequestVerifyTokenPost = <ThrowOnError extend
 /**
  * Verify:Verify
  */
-export const verifyVerifyAuthVerifyPost = <ThrowOnError extends boolean = false>(
-	options: Options<VerifyVerifyAuthVerifyPostData, ThrowOnError>
+export const verifyVerify = <ThrowOnError extends boolean = false>(
+	options: Options<VerifyVerifyData, ThrowOnError>
 ) => {
-	return (options?.client ?? client).post<
-		VerifyVerifyAuthVerifyPostResponse,
-		VerifyVerifyAuthVerifyPostError,
-		ThrowOnError
-	>({
+	return (options?.client ?? client).post<VerifyVerifyResponse, VerifyVerifyError, ThrowOnError>({
 		...options,
 		url: '/auth/verify'
 	});
@@ -572,14 +537,10 @@ export const verifyVerifyAuthVerifyPost = <ThrowOnError extends boolean = false>
 /**
  * Auth
  */
-export const authResearchAuthGet = <ThrowOnError extends boolean = false>(
+export const auth = <ThrowOnError extends boolean = false>(
 	options?: Options<unknown, ThrowOnError>
 ) => {
-	return (options?.client ?? client).get<
-		AuthResearchAuthGetResponse,
-		AuthResearchAuthGetError,
-		ThrowOnError
-	>({
+	return (options?.client ?? client).get<AuthResponse, AuthError, ThrowOnError>({
 		...options,
 		url: '/research/auth/'
 	});

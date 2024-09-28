@@ -166,231 +166,229 @@ export type ValidationError = {
 	type: string;
 };
 
-export type GetLanguagesLanguagesGetResponse = {
+export type GetLanguagesResponse = {
 	[key: string]: string;
 };
 
-export type GetLanguagesLanguagesGetError = unknown;
+export type GetLanguagesError = unknown;
 
-export type GetMilestonesMilestonesGetResponse = Array<MilestonePublic>;
+export type GetMilestonesResponse = Array<MilestonePublic>;
 
-export type GetMilestonesMilestonesGetError = unknown;
+export type GetMilestonesError = unknown;
 
-export type GetMilestoneMilestonesMilestoneIdGetData = {
+export type GetMilestoneData = {
 	path: {
 		milestone_id: number;
 	};
 };
 
-export type GetMilestoneMilestonesMilestoneIdGetResponse = MilestonePublic;
+export type GetMilestoneResponse = MilestonePublic;
 
-export type GetMilestoneMilestonesMilestoneIdGetError = HTTPValidationError;
+export type GetMilestoneError = HTTPValidationError;
 
-export type GetMilestoneGroupsMilestoneGroupsGetResponse = Array<MilestoneGroupPublic>;
+export type GetMilestoneGroupsResponse = Array<MilestoneGroupPublic>;
 
-export type GetMilestoneGroupsMilestoneGroupsGetError = unknown;
+export type GetMilestoneGroupsError = unknown;
 
-export type GetMilestoneGroupMilestoneGroupsMilestoneGroupIdGetData = {
+export type GetMilestoneGroupData = {
 	path: {
 		milestone_group_id: number;
 	};
 };
 
-export type GetMilestoneGroupMilestoneGroupsMilestoneGroupIdGetResponse = MilestoneGroupPublic;
+export type GetMilestoneGroupResponse = MilestoneGroupPublic;
 
-export type GetMilestoneGroupMilestoneGroupsMilestoneGroupIdGetError = HTTPValidationError;
+export type GetMilestoneGroupError = HTTPValidationError;
 
-export type CreateLanguageAdminLanguagesPostData = {
+export type CreateLanguageData = {
 	body: LanguageCreate;
 };
 
-export type CreateLanguageAdminLanguagesPostResponse = Language;
+export type CreateLanguageResponse = Language;
 
-export type CreateLanguageAdminLanguagesPostError = HTTPValidationError;
+export type CreateLanguageError = HTTPValidationError;
 
-export type DeleteLanguageAdminLanguagesLanguageIdDeleteData = {
+export type DeleteLanguageData = {
 	path: {
 		language_id: number;
 	};
 };
 
-export type DeleteLanguageAdminLanguagesLanguageIdDeleteResponse = Language;
+export type DeleteLanguageResponse = Language;
 
-export type DeleteLanguageAdminLanguagesLanguageIdDeleteError = HTTPValidationError;
+export type DeleteLanguageError = HTTPValidationError;
 
-export type GetMilestoneGroupsAdminMilestoneGroupsGetResponse = Array<MilestoneGroupAdmin_Output>;
+export type GetMilestoneGroupsAdminResponse = Array<MilestoneGroupAdmin_Output>;
 
-export type GetMilestoneGroupsAdminMilestoneGroupsGetError = unknown;
+export type GetMilestoneGroupsAdminError = unknown;
 
-export type CreateMilestoneGroupAdminMilestoneGroupsPostResponse = MilestoneGroupAdmin_Output;
+export type CreateMilestoneGroupAdminResponse = MilestoneGroupAdmin_Output;
 
-export type CreateMilestoneGroupAdminMilestoneGroupsPostError = unknown;
+export type CreateMilestoneGroupAdminError = unknown;
 
-export type UpdateMilestoneGroupAdminMilestoneGroupsPutData = {
+export type UpdateMilestoneGroupAdminData = {
 	body: MilestoneGroupAdmin_Input;
 };
 
-export type UpdateMilestoneGroupAdminMilestoneGroupsPutResponse = MilestoneGroupAdmin_Output;
+export type UpdateMilestoneGroupAdminResponse = MilestoneGroupAdmin_Output;
 
-export type UpdateMilestoneGroupAdminMilestoneGroupsPutError = HTTPValidationError;
+export type UpdateMilestoneGroupAdminError = HTTPValidationError;
 
-export type DeleteMilestoneGroupAdminMilestoneGroupsMilestoneGroupIdDeleteData = {
+export type DeleteMilestoneGroupAdminData = {
 	path: {
 		milestone_group_id: number;
 	};
 };
 
-export type DeleteMilestoneGroupAdminMilestoneGroupsMilestoneGroupIdDeleteResponse = unknown;
+export type DeleteMilestoneGroupAdminResponse = unknown;
 
-export type DeleteMilestoneGroupAdminMilestoneGroupsMilestoneGroupIdDeleteError =
-	HTTPValidationError;
+export type DeleteMilestoneGroupAdminError = HTTPValidationError;
 
-export type UploadMilestoneGroupImageAdminMilestoneGroupImagesMilestoneGroupIdPutData = {
+export type UploadMilestoneGroupImageData = {
 	body: Body_upload_milestone_group_image_admin_milestone_group_images__milestone_group_id__put;
 	path: {
 		milestone_group_id: number;
 	};
 };
 
-export type UploadMilestoneGroupImageAdminMilestoneGroupImagesMilestoneGroupIdPutResponse = unknown;
+export type UploadMilestoneGroupImageResponse = unknown;
 
-export type UploadMilestoneGroupImageAdminMilestoneGroupImagesMilestoneGroupIdPutError =
-	HTTPValidationError;
+export type UploadMilestoneGroupImageError = HTTPValidationError;
 
-export type CreateMilestoneAdminMilestonesMilestoneGroupIdPostData = {
+export type CreateMilestoneData = {
 	path: {
 		milestone_group_id: number;
 	};
 };
 
-export type CreateMilestoneAdminMilestonesMilestoneGroupIdPostResponse = MilestoneAdmin;
+export type CreateMilestoneResponse = MilestoneAdmin;
 
-export type CreateMilestoneAdminMilestonesMilestoneGroupIdPostError = HTTPValidationError;
+export type CreateMilestoneError = HTTPValidationError;
 
-export type UpdateMilestoneAdminMilestonesPutData = {
+export type UpdateMilestoneData = {
 	body: MilestoneAdmin;
 };
 
-export type UpdateMilestoneAdminMilestonesPutResponse = MilestoneAdmin;
+export type UpdateMilestoneResponse = MilestoneAdmin;
 
-export type UpdateMilestoneAdminMilestonesPutError = HTTPValidationError;
+export type UpdateMilestoneError = HTTPValidationError;
 
-export type DeleteMilestoneAdminMilestonesMilestoneIdDeleteData = {
+export type DeleteMilestoneData = {
 	path: {
 		milestone_id: number;
 	};
 };
 
-export type DeleteMilestoneAdminMilestonesMilestoneIdDeleteResponse = unknown;
+export type DeleteMilestoneResponse = unknown;
 
-export type DeleteMilestoneAdminMilestonesMilestoneIdDeleteError = HTTPValidationError;
+export type DeleteMilestoneError = HTTPValidationError;
 
-export type UploadMilestoneImageAdminMilestoneImagesMilestoneIdPostData = {
+export type UploadMilestoneImageData = {
 	body: Body_upload_milestone_image_admin_milestone_images__milestone_id__post;
 	path: {
 		milestone_id: number;
 	};
 };
 
-export type UploadMilestoneImageAdminMilestoneImagesMilestoneIdPostResponse = MilestoneImage;
+export type UploadMilestoneImageResponse = MilestoneImage;
 
-export type UploadMilestoneImageAdminMilestoneImagesMilestoneIdPostError = HTTPValidationError;
+export type UploadMilestoneImageError = HTTPValidationError;
 
-export type UsersCurrentUserUsersMeGetResponse = UserRead;
+export type UsersCurrentUserResponse = UserRead;
 
-export type UsersCurrentUserUsersMeGetError = unknown;
+export type UsersCurrentUserError = unknown;
 
-export type UsersPatchCurrentUserUsersMePatchData = {
+export type UsersPatchCurrentUserData = {
 	body: UserUpdate;
 };
 
-export type UsersPatchCurrentUserUsersMePatchResponse = UserRead;
+export type UsersPatchCurrentUserResponse = UserRead;
 
-export type UsersPatchCurrentUserUsersMePatchError = ErrorModel | unknown | HTTPValidationError;
+export type UsersPatchCurrentUserError = ErrorModel | unknown | HTTPValidationError;
 
-export type UsersUserUsersIdGetData = {
+export type UsersUserData = {
 	path: {
 		id: string;
 	};
 };
 
-export type UsersUserUsersIdGetResponse = UserRead;
+export type UsersUserResponse = UserRead;
 
-export type UsersUserUsersIdGetError = unknown | HTTPValidationError;
+export type UsersUserError = unknown | HTTPValidationError;
 
-export type UsersPatchUserUsersIdPatchData = {
+export type UsersPatchUserData = {
 	body: UserUpdate;
 	path: {
 		id: string;
 	};
 };
 
-export type UsersPatchUserUsersIdPatchResponse = UserRead;
+export type UsersPatchUserResponse = UserRead;
 
-export type UsersPatchUserUsersIdPatchError = ErrorModel | unknown | HTTPValidationError;
+export type UsersPatchUserError = ErrorModel | unknown | HTTPValidationError;
 
-export type UsersDeleteUserUsersIdDeleteData = {
+export type UsersDeleteUserData = {
 	path: {
 		id: string;
 	};
 };
 
-export type UsersDeleteUserUsersIdDeleteResponse = void;
+export type UsersDeleteUserResponse = void;
 
-export type UsersDeleteUserUsersIdDeleteError = unknown | HTTPValidationError;
+export type UsersDeleteUserError = unknown | HTTPValidationError;
 
-export type AuthCookieLoginAuthLoginPostData = {
+export type AuthCookieLoginData = {
 	body: Body_auth_cookie_login_auth_login_post;
 };
 
-export type AuthCookieLoginAuthLoginPostResponse = unknown | void;
+export type AuthCookieLoginResponse = unknown | void;
 
-export type AuthCookieLoginAuthLoginPostError = ErrorModel | HTTPValidationError;
+export type AuthCookieLoginError = ErrorModel | HTTPValidationError;
 
-export type AuthCookieLogoutAuthLogoutPostResponse = unknown | void;
+export type AuthCookieLogoutResponse = unknown | void;
 
-export type AuthCookieLogoutAuthLogoutPostError = unknown;
+export type AuthCookieLogoutError = unknown;
 
-export type RegisterRegisterAuthRegisterPostData = {
+export type RegisterRegisterData = {
 	body: UserCreate;
 };
 
-export type RegisterRegisterAuthRegisterPostResponse = UserRead;
+export type RegisterRegisterResponse = UserRead;
 
-export type RegisterRegisterAuthRegisterPostError = ErrorModel | HTTPValidationError;
+export type RegisterRegisterError = ErrorModel | HTTPValidationError;
 
-export type ResetForgotPasswordAuthForgotPasswordPostData = {
+export type ResetForgotPasswordData = {
 	body: Body_reset_forgot_password_auth_forgot_password_post;
 };
 
-export type ResetForgotPasswordAuthForgotPasswordPostResponse = unknown;
+export type ResetForgotPasswordResponse = unknown;
 
-export type ResetForgotPasswordAuthForgotPasswordPostError = HTTPValidationError;
+export type ResetForgotPasswordError = HTTPValidationError;
 
-export type ResetResetPasswordAuthResetPasswordPostData = {
+export type ResetResetPasswordData = {
 	body: Body_reset_reset_password_auth_reset_password_post;
 };
 
-export type ResetResetPasswordAuthResetPasswordPostResponse = unknown;
+export type ResetResetPasswordResponse = unknown;
 
-export type ResetResetPasswordAuthResetPasswordPostError = ErrorModel | HTTPValidationError;
+export type ResetResetPasswordError = ErrorModel | HTTPValidationError;
 
-export type VerifyRequestTokenAuthRequestVerifyTokenPostData = {
+export type VerifyRequestTokenData = {
 	body: Body_verify_request_token_auth_request_verify_token_post;
 };
 
-export type VerifyRequestTokenAuthRequestVerifyTokenPostResponse = unknown;
+export type VerifyRequestTokenResponse = unknown;
 
-export type VerifyRequestTokenAuthRequestVerifyTokenPostError = HTTPValidationError;
+export type VerifyRequestTokenError = HTTPValidationError;
 
-export type VerifyVerifyAuthVerifyPostData = {
+export type VerifyVerifyData = {
 	body: Body_verify_verify_auth_verify_post;
 };
 
-export type VerifyVerifyAuthVerifyPostResponse = UserRead;
+export type VerifyVerifyResponse = UserRead;
 
-export type VerifyVerifyAuthVerifyPostError = ErrorModel | HTTPValidationError;
+export type VerifyVerifyError = ErrorModel | HTTPValidationError;
 
-export type AuthResearchAuthGetResponse = unknown;
+export type AuthResponse = unknown;
 
-export type AuthResearchAuthGetError = unknown;
+export type AuthError = unknown;
