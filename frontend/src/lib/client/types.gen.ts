@@ -142,6 +142,37 @@ export type UserCreate = {
 	is_researcher?: boolean | null;
 };
 
+export type UserQuestionAdmin = {
+	id: number;
+	order: number;
+	input: string;
+	options: string;
+	text?: {
+		[key: string]: UserQuestionText;
+	};
+};
+
+export type UserQuestionPublic = {
+	id: number;
+	input: string;
+	text?: {
+		[key: string]: UserQuestionTextPublic;
+	};
+};
+
+export type UserQuestionText = {
+	question?: string;
+	options_json?: string;
+	user_question_id?: number | null;
+	lang_id?: number | null;
+	options?: string;
+};
+
+export type UserQuestionTextPublic = {
+	question?: string;
+	options_json?: string;
+};
+
 export type UserRead = {
 	id: number;
 	email: string;
@@ -200,6 +231,10 @@ export type GetMilestoneGroupResponse = MilestoneGroupPublic;
 
 export type GetMilestoneGroupError = HTTPValidationError;
 
+export type GetUserQuestionsResponse = Array<UserQuestionPublic>;
+
+export type GetUserQuestionsError = unknown;
+
 export type CreateLanguageData = {
 	body: LanguageCreate;
 };
@@ -214,7 +249,7 @@ export type DeleteLanguageData = {
 	};
 };
 
-export type DeleteLanguageResponse = Language;
+export type DeleteLanguageResponse = unknown;
 
 export type DeleteLanguageError = HTTPValidationError;
 
@@ -293,6 +328,32 @@ export type UploadMilestoneImageData = {
 export type UploadMilestoneImageResponse = MilestoneImage;
 
 export type UploadMilestoneImageError = HTTPValidationError;
+
+export type GetUserQuestions1Response = Array<UserQuestionAdmin>;
+
+export type GetUserQuestions1Error = unknown;
+
+export type UpdateUserQuestionData = {
+	body: UserQuestionAdmin;
+};
+
+export type UpdateUserQuestionResponse = UserQuestionAdmin;
+
+export type UpdateUserQuestionError = HTTPValidationError;
+
+export type CreateUserQuestionResponse = UserQuestionAdmin;
+
+export type CreateUserQuestionError = unknown;
+
+export type DeleteQuestionData = {
+	path: {
+		user_question_id: number;
+	};
+};
+
+export type DeleteQuestionResponse = unknown;
+
+export type DeleteQuestionError = HTTPValidationError;
 
 export type UsersCurrentUserResponse = UserRead;
 

@@ -20,6 +20,8 @@ import type {
 	GetMilestoneGroupData,
 	GetMilestoneGroupError,
 	GetMilestoneGroupResponse,
+	GetUserQuestionsError,
+	GetUserQuestionsResponse,
 	CreateLanguageData,
 	CreateLanguageError,
 	CreateLanguageResponse,
@@ -51,6 +53,16 @@ import type {
 	UploadMilestoneImageData,
 	UploadMilestoneImageError,
 	UploadMilestoneImageResponse,
+	GetUserQuestions1Error,
+	GetUserQuestions1Response,
+	UpdateUserQuestionData,
+	UpdateUserQuestionError,
+	UpdateUserQuestionResponse,
+	CreateUserQuestionError,
+	CreateUserQuestionResponse,
+	DeleteQuestionData,
+	DeleteQuestionError,
+	DeleteQuestionResponse,
 	UsersCurrentUserError,
 	UsersCurrentUserResponse,
 	UsersPatchCurrentUserData,
@@ -156,6 +168,22 @@ export const getMilestoneGroup = <ThrowOnError extends boolean = false>(
 	>({
 		...options,
 		url: '/milestone-groups/{milestone_group_id}'
+	});
+};
+
+/**
+ * Get User Questions
+ */
+export const getUserQuestions = <ThrowOnError extends boolean = false>(
+	options?: Options<unknown, ThrowOnError>
+) => {
+	return (options?.client ?? client).get<
+		GetUserQuestionsResponse,
+		GetUserQuestionsError,
+		ThrowOnError
+	>({
+		...options,
+		url: '/user-questions/'
 	});
 };
 
@@ -304,7 +332,7 @@ export const updateMilestone = <ThrowOnError extends boolean = false>(
 		ThrowOnError
 	>({
 		...options,
-		url: '/admin/milestones'
+		url: '/admin/milestones/'
 	});
 };
 
@@ -342,6 +370,70 @@ export const uploadMilestoneImage = <ThrowOnError extends boolean = false>(
 			...options?.headers
 		},
 		url: '/admin/milestone-images/{milestone_id}'
+	});
+};
+
+/**
+ * Get User Questions
+ */
+export const getUserQuestions1 = <ThrowOnError extends boolean = false>(
+	options?: Options<unknown, ThrowOnError>
+) => {
+	return (options?.client ?? client).get<
+		GetUserQuestions1Response,
+		GetUserQuestions1Error,
+		ThrowOnError
+	>({
+		...options,
+		url: '/admin/user-questions/'
+	});
+};
+
+/**
+ * Update User Question
+ */
+export const updateUserQuestion = <ThrowOnError extends boolean = false>(
+	options: Options<UpdateUserQuestionData, ThrowOnError>
+) => {
+	return (options?.client ?? client).put<
+		UpdateUserQuestionResponse,
+		UpdateUserQuestionError,
+		ThrowOnError
+	>({
+		...options,
+		url: '/admin/user-questions/'
+	});
+};
+
+/**
+ * Create User Question
+ */
+export const createUserQuestion = <ThrowOnError extends boolean = false>(
+	options?: Options<unknown, ThrowOnError>
+) => {
+	return (options?.client ?? client).post<
+		CreateUserQuestionResponse,
+		CreateUserQuestionError,
+		ThrowOnError
+	>({
+		...options,
+		url: '/admin/user-questions/'
+	});
+};
+
+/**
+ * Delete Question
+ */
+export const deleteQuestion = <ThrowOnError extends boolean = false>(
+	options: Options<DeleteQuestionData, ThrowOnError>
+) => {
+	return (options?.client ?? client).delete<
+		DeleteQuestionResponse,
+		DeleteQuestionError,
+		ThrowOnError
+	>({
+		...options,
+		url: '/admin/user-questions/{user_question_id}'
 	});
 };
 

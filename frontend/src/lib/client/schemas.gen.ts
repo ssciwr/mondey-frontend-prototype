@@ -590,6 +590,123 @@ export const UserCreateSchema = {
 	title: 'UserCreate'
 } as const;
 
+export const UserQuestionAdminSchema = {
+	properties: {
+		id: {
+			type: 'integer',
+			title: 'Id'
+		},
+		order: {
+			type: 'integer',
+			title: 'Order'
+		},
+		input: {
+			type: 'string',
+			title: 'Input'
+		},
+		options: {
+			type: 'string',
+			title: 'Options'
+		},
+		text: {
+			additionalProperties: {
+				$ref: '#/components/schemas/UserQuestionText'
+			},
+			type: 'object',
+			title: 'Text',
+			default: {}
+		}
+	},
+	type: 'object',
+	required: ['id', 'order', 'input', 'options'],
+	title: 'UserQuestionAdmin'
+} as const;
+
+export const UserQuestionPublicSchema = {
+	properties: {
+		id: {
+			type: 'integer',
+			title: 'Id'
+		},
+		input: {
+			type: 'string',
+			title: 'Input'
+		},
+		text: {
+			additionalProperties: {
+				$ref: '#/components/schemas/UserQuestionTextPublic'
+			},
+			type: 'object',
+			title: 'Text',
+			default: {}
+		}
+	},
+	type: 'object',
+	required: ['id', 'input'],
+	title: 'UserQuestionPublic'
+} as const;
+
+export const UserQuestionTextSchema = {
+	properties: {
+		question: {
+			type: 'string',
+			title: 'Question',
+			default: ''
+		},
+		options_json: {
+			type: 'string',
+			title: 'Options Json',
+			default: ''
+		},
+		user_question_id: {
+			anyOf: [
+				{
+					type: 'integer'
+				},
+				{
+					type: 'null'
+				}
+			],
+			title: 'User Question Id'
+		},
+		lang_id: {
+			anyOf: [
+				{
+					type: 'integer'
+				},
+				{
+					type: 'null'
+				}
+			],
+			title: 'Lang Id'
+		},
+		options: {
+			type: 'string',
+			title: 'Options',
+			default: ''
+		}
+	},
+	type: 'object',
+	title: 'UserQuestionText'
+} as const;
+
+export const UserQuestionTextPublicSchema = {
+	properties: {
+		question: {
+			type: 'string',
+			title: 'Question',
+			default: ''
+		},
+		options_json: {
+			type: 'string',
+			title: 'Options Json',
+			default: ''
+		}
+	},
+	type: 'object',
+	title: 'UserQuestionTextPublic'
+} as const;
+
 export const UserReadSchema = {
 	properties: {
 		id: {
