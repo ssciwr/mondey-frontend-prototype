@@ -17,6 +17,7 @@
 	import DeleteModal from '$lib/components/Admin/DeleteModal.svelte';
 	import AddButton from '$lib/components/Admin/AddButton.svelte';
 	import DeleteButton from '$lib/components/Admin/DeleteButton.svelte';
+	import { createLanguage, deleteLanguage } from '$lib/client/services.gen';
 
 	const langCodes = ISO6391.getAllCodes();
 	const langNames = ISO6391.getAllNativeNames();
@@ -28,44 +29,23 @@
 	let currentLanguageId: string = '';
 	let showDeleteModal: boolean = false;
 
-	async function newLanguage() {
-		try {
-			const res = await fetch(`${import.meta.env.VITE_MONDEY_API_URL}/admin/languages`, {
-				method: 'POST',
-				credentials: 'include',
-				headers: {
-					'Content-Type': 'application/json',
-					Accept: 'application/json'
-				},
-				body: JSON.stringify({ lang: selectedLang })
-			});
-			if (res.status === 200) {
-				await updateLanguages();
-			} else {
-				console.log('Failed to create new Language');
-			}
-		} catch (e) {
-			console.error(e);
+	async function createLanguageAndUpdateLanguages() {
+		const { data, error } = await createLanguage({ body: { lang: selectedLang } });
+		if (error) {
+			console.log(error);
+		} else {
+			console.log(data);
+			await updateLanguages();
 		}
 	}
 
-	async function deleteLanguage(id: string) {
-		try {
-			const res = await fetch(`${import.meta.env.VITE_MONDEY_API_URL}/admin/languages/${id}`, {
-				method: 'DELETE',
-				credentials: 'include',
-				headers: {
-					'Content-Type': 'application/json',
-					Accept: 'application/json'
-				}
-			});
-			if (res.status === 200) {
-				await updateLanguages();
-			} else {
-				console.log('Failed to create new Language');
-			}
-		} catch (e) {
-			console.error(e);
+	async function deleteLanguageAndUpdateLanguages(id: string) {
+		const { data, error } = await deleteLanguage({ path: { language_id: Number(id) } });
+		if (error) {
+			console.log(error);
+		} else {
+			console.log(data);
+			await updateLanguages();
 		}
 	}
 </script>
@@ -108,7 +88,7 @@
 					/>
 				</TableBodyCell>
 				<TableBodyCell>
-					<AddButton onClick={newLanguage} disabled={selectedLang === ''} />
+					<AddButton onClick={createLanguageAndUpdateLanguages} disabled={selectedLang === ''} />
 				</TableBodyCell>
 			</TableBodyRow>
 		</TableBody>
@@ -118,6 +98,6 @@
 <DeleteModal
 	bind:open={showDeleteModal}
 	onClick={() => {
-		deleteLanguage(currentLanguageId);
+		deleteLanguageAndUpdateLanguages(currentLanguageId);
 	}}
 ></DeleteModal>
