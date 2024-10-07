@@ -17,7 +17,7 @@ class AppSettings(BaseSettings):
     HOST: str = "localhost"
     PORT: int = 8000
     RELOAD: bool = True
-    LOG_LEVEL: str = "info"
+    LOG_LEVEL: str = "debug"
     COOKIE_SECURE: bool = False
 
 

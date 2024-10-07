@@ -7,23 +7,26 @@
 		TableHead,
 		TableHeadCell,
 		Card,
-		Button,
 		Select
 	} from 'flowbite-svelte';
-	import { PlusOutline } from 'flowbite-svelte-icons';
 	import ISO6391 from 'iso-639-1';
 	import { _ } from 'svelte-i18n';
 	import type { SelectOptionType } from 'flowbite-svelte';
 	import { updateLanguages } from '$lib/i18n';
 	import { languages } from '$lib/stores/adminStore';
+	import DeleteModal from '$lib/components/Admin/DeleteModal.svelte';
+	import AddButton from '$lib/components/Admin/AddButton.svelte';
+	import DeleteButton from '$lib/components/Admin/DeleteButton.svelte';
 
 	const langCodes = ISO6391.getAllCodes();
 	const langNames = ISO6391.getAllNativeNames();
-	const langItems = langCodes.reduce(
-		(acc, k, i) => [...acc, { value: k, name: langNames[i] }],
-		[] as SelectOptionType<string>[]
-	);
+	const langItems = langCodes.map((k, i) => {
+		return { value: k, name: langNames[i] };
+	}) as SelectOptionType<string>[];
+
 	let selectedLang: string = '';
+	let currentLanguageId: string = '';
+	let showDeleteModal: boolean = false;
 
 	async function newLanguage() {
 		try {
@@ -85,12 +88,12 @@
 						{ISO6391.getNativeName(lang)}
 					</TableBodyCell>
 					<TableBodyCell>
-						<Button
-							color="red"
-							on:click={() => {
-								deleteLanguage(id);
-							}}>Delete</Button
-						>
+						<DeleteButton
+							onClick={() => {
+								currentLanguageId = id;
+								showDeleteModal = true;
+							}}
+						/>
 					</TableBodyCell>
 				</TableBodyRow>
 			{/each}
@@ -105,11 +108,16 @@
 					/>
 				</TableBodyCell>
 				<TableBodyCell>
-					<Button color="blue" on:click={newLanguage} disabled={selectedLang === ''}
-						><PlusOutline class="mr-2"></PlusOutline>Add language</Button
-					>
+					<AddButton onClick={newLanguage} disabled={selectedLang === ''} />
 				</TableBodyCell>
 			</TableBodyRow>
 		</TableBody>
 	</Table>
 </Card>
+
+<DeleteModal
+	bind:open={showDeleteModal}
+	onClick={() => {
+		deleteLanguage(currentLanguageId);
+	}}
+></DeleteModal>

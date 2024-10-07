@@ -25,6 +25,13 @@
 	},
 	"admin": {
 		"languages": "Sprachen",
-		"milestonegroups": "Meilensteingruppen"
+		"milestone-groups": "Meilensteingruppen",
+		"user-questions": "Benutzerfragen",
+		"add": "Hinzufügen",
+		"edit": "Bearbeiten",
+		"delete": "Löschen",
+		"delete-are-you-sure": "Möchten Sie dies wirklich löschen?",
+		"yes-sure": "Ja, ich bin sicher",
+		"no-cancel": "Nein, abbrechen"
 	}
 }

@@ -9,7 +9,7 @@
 		Fileupload,
 		Modal
 	} from 'flowbite-svelte';
-	import { lang_id, languages } from '$lib/stores/adminStore';
+	import { languages } from '$lib/stores/adminStore';
 	import {
 		updateMilestoneGroup,
 		uploadMilestoneGroupImage,

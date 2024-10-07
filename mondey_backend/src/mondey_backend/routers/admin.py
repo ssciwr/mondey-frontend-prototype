@@ -16,11 +16,15 @@ from ..models.milestones import MilestoneGroupAdmin
 from ..models.milestones import MilestoneGroupText
 from ..models.milestones import MilestoneImage
 from ..models.milestones import MilestoneText
+from ..models.questions import UserQuestion
+from ..models.questions import UserQuestionAdmin
+from ..models.questions import UserQuestionText
 from ..settings import app_settings
 from .utils import add
 from .utils import get
 from .utils import update_milestone_group_text
 from .utils import update_milestone_text
+from .utils import update_user_question_text
 from .utils import write_file
 
 
@@ -33,7 +37,7 @@ def create_router() -> APIRouter:
         add(session, db_language)
         return db_language
 
-    @router.delete("/languages/{language_id}", response_model=Language)
+    @router.delete("/languages/{language_id}")
     def delete_language(session: SessionDep, language_id: int):
         language = get(session, Language, language_id)
         session.delete(language)
@@ -59,7 +63,7 @@ def create_router() -> APIRouter:
         session.refresh(db_milestone_group)
         return db_milestone_group
 
-    @router.put("/milestone-groups", response_model=MilestoneGroupAdmin)
+    @router.put("/milestone-groups/", response_model=MilestoneGroupAdmin)
     def update_milestone_group(
         session: SessionDep,
         milestone_group: MilestoneGroupAdmin,
@@ -101,7 +105,7 @@ def create_router() -> APIRouter:
         session.refresh(db_milestone)
         return db_milestone
 
-    @router.put("/milestones", response_model=MilestoneAdmin)
+    @router.put("/milestones/", response_model=MilestoneAdmin)
     def update_milestone(
         session: SessionDep,
         milestone: MilestoneAdmin,
@@ -133,5 +137,43 @@ def create_router() -> APIRouter:
         session.commit()
         session.refresh(milestone_image)
         return milestone_image
+
+    @router.get("/user-questions/", response_model=list[UserQuestionAdmin])
+    def get_user_questions(session: SessionDep):
+        user_questions = session.exec(
+            select(UserQuestion).order_by(col(UserQuestion.order))
+        ).all()
+        return user_questions
+
+    @router.post("/user-questions/", response_model=UserQuestionAdmin)
+    def create_user_question(session: SessionDep):
+        user_question = UserQuestion()
+        add(session, user_question)
+        for language in session.exec(select(Language)).all():
+            session.add(
+                UserQuestionText(user_question_id=user_question.id, lang_id=language.id)
+            )
+        session.commit()
+        session.refresh(user_question)
+        return user_question
+
+    @router.put("/user-questions/", response_model=UserQuestionAdmin)
+    def update_user_question(
+        session: SessionDep,
+        user_question: UserQuestionAdmin,
+    ):
+        db_user_question = get(session, UserQuestion, user_question.id)
+        for key, value in user_question.model_dump(exclude={"text"}).items():
+            setattr(db_user_question, key, value)
+        update_user_question_text(session, user_question)
+        add(session, db_user_question)
+        return db_user_question
+
+    @router.delete("/user-questions/{user_question_id}")
+    def delete_question(session: SessionDep, user_question_id: int):
+        question = get(session, UserQuestion, user_question_id)
+        session.delete(question)
+        session.commit()
+        return {"ok": True}
 
     return router

@@ -147,8 +147,6 @@ class MilestoneImagePublic(SQLModel):
     approved: bool
 
 
-Text = MilestoneText | MilestoneGroupText
-
 ## MilestoneAnswer
 
 
