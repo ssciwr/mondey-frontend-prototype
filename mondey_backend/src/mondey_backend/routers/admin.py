@@ -131,9 +131,9 @@ def create_router() -> APIRouter:
         milestone = get(session, Milestone, milestone_id)
         milestone_image = MilestoneImage(milestone_id=milestone.id, approved=True)
         add(session, milestone_image)
-        filename = f"{app_settings.STATIC_FILES_PATH}/m{milestone_image.id}.jpg"
-        write_file(file, filename)
+        filename = f"m{milestone_image.id}.jpg"
         milestone_image.filename = filename
+        write_file(file, f"{app_settings.STATIC_FILES_PATH}/{filename}")
         session.commit()
         session.refresh(milestone_image)
         return milestone_image

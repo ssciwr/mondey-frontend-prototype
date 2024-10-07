@@ -25,6 +25,7 @@
 	},
 	"admin": {
 		"languages": "Languages",
+		"milestones": "Milestones",
 		"milestone-groups": "Milestone groups",
 		"user-questions": "User Questions",
 		"add": "Add",

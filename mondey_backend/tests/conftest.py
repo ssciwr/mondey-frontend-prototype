@@ -98,21 +98,9 @@ def session(static_dir: pathlib.Path):
                     )
                 )
         # add the milestone images that were created in the static directory
-        session.add(
-            MilestoneImage(
-                milestone_id=1, filename=str(static_dir / "m1.jpg"), approved=True
-            )
-        )
-        session.add(
-            MilestoneImage(
-                milestone_id=1, filename=str(static_dir / "m2.jpg"), approved=True
-            )
-        )
-        session.add(
-            MilestoneImage(
-                milestone_id=2, filename=str(static_dir / "m3.jpg"), approved=True
-            )
-        )
+        session.add(MilestoneImage(milestone_id=1, filename="m1.jpg", approved=True))
+        session.add(MilestoneImage(milestone_id=1, filename="m2.jpg", approved=True))
+        session.add(MilestoneImage(milestone_id=2, filename="m3.jpg", approved=True))
         session.commit()
         yield session
 
@@ -161,9 +149,7 @@ def app(static_dir: pathlib.Path):
 
 
 @pytest.fixture
-def user_client(
-    app: FastAPI, static_dir: pathlib.Path, session: Session, active_user: UserRead
-):
+def user_client(app: FastAPI, session: Session, active_user: UserRead):
     app.dependency_overrides[get_session] = lambda: session
     app.dependency_overrides[current_active_user] = lambda: active_user
     client = TestClient(app)
@@ -174,7 +160,6 @@ def user_client(
 @pytest.fixture
 def research_client(
     app: FastAPI,
-    static_dir: pathlib.Path,
     session: Session,
     active_research_user: UserRead,
 ):
@@ -188,7 +173,6 @@ def research_client(
 @pytest.fixture
 def admin_client(
     app: FastAPI,
-    static_dir: pathlib.Path,
     session: Session,
     active_admin_user: UserRead,
 ):
@@ -208,7 +192,7 @@ def jpg_file(tmp_path: pathlib.Path):
 
 
 @pytest.fixture
-def milestone_group1(static_dir: pathlib.Path):
+def milestone_group1():
     return {
         "id": 1,
         "text": {
@@ -225,8 +209,8 @@ def milestone_group1(static_dir: pathlib.Path):
                     "3": {"title": "m1_l3_t", "desc": "m1_l3_d"},
                 },
                 "images": [
-                    {"filename": f"{static_dir}/m1.jpg", "approved": True},
-                    {"filename": f"{static_dir}/m2.jpg", "approved": True},
+                    {"filename": "m1.jpg", "approved": True},
+                    {"filename": "m2.jpg", "approved": True},
                 ],
             },
             {
@@ -236,7 +220,7 @@ def milestone_group1(static_dir: pathlib.Path):
                     "2": {"title": "m2_l2_t", "desc": "m2_l2_d"},
                     "3": {"title": "m2_l3_t", "desc": "m2_l3_d"},
                 },
-                "images": [{"filename": f"{static_dir}/m3.jpg", "approved": True}],
+                "images": [{"filename": "m3.jpg", "approved": True}],
             },
             {
                 "id": 3,
@@ -252,7 +236,7 @@ def milestone_group1(static_dir: pathlib.Path):
 
 
 @pytest.fixture
-def milestone_group_admin1(static_dir: pathlib.Path):
+def milestone_group_admin1():
     return {
         "id": 1,
         "order": 2,
@@ -270,13 +254,13 @@ def milestone_group_admin1(static_dir: pathlib.Path):
                     {
                         "id": 1,
                         "milestone_id": 1,
-                        "filename": f"{static_dir}/m1.jpg",
+                        "filename": "m1.jpg",
                         "approved": True,
                     },
                     {
                         "id": 2,
                         "milestone_id": 1,
-                        "filename": f"{static_dir}/m2.jpg",
+                        "filename": "m2.jpg",
                         "approved": True,
                     },
                 ],
@@ -315,7 +299,7 @@ def milestone_group_admin1(static_dir: pathlib.Path):
                     {
                         "id": 3,
                         "milestone_id": 2,
-                        "filename": f"{static_dir}/m3.jpg",
+                        "filename": "m3.jpg",
                         "approved": True,
                     }
                 ],

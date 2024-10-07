@@ -25,6 +25,12 @@ sudo docker compose ps
 sudo docker compose logs
 ```
 
+To update the running website to the latest version:
+
+```
+sudo docker compose pull && sudo docker compose up -d && sudo docker system prune -af
+```
+
 ### Give users admin rights
 
 To make an existing user with email `user@domain.com` into an admin, modify the users database, e.g.
