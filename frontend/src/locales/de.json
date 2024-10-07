@@ -25,6 +25,7 @@
 	},
 	"admin": {
 		"languages": "Sprachen",
+		"milestones": "Meilensteine",
 		"milestone-groups": "Meilensteingruppen",
 		"user-questions": "Benutzerfragen",
 		"add": "Hinzufügen",

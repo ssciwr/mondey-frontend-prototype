@@ -39,7 +39,7 @@
 		<TabItem open>
 			<div slot="title" class="flex items-center gap-2">
 				<BadgeCheckOutline size="md" />
-				{$_('admin.milestone-groups')}
+				{$_('admin.milestones')}
 			</div>
 			<MilestoneGroups />
 		</TabItem>

@@ -171,17 +171,19 @@ def test_delete_milestone(admin_client: TestClient):
 def test_post_milestone_image(
     admin_client: TestClient, static_dir: pathlib.Path, jpg_file: pathlib.Path
 ):
-    # 3 milestone images already exist, image ids are sequential
+    # 3 milestone images already exist
     assert len(admin_client.get("/milestones/1").json()["images"]) == 2
     assert len(admin_client.get("/milestones/2").json()["images"]) == 1
     assert len(admin_client.get("/milestones/3").json()["images"]) == 0
     assert len(admin_client.get("/milestones/4").json()["images"]) == 0
     assert len(admin_client.get("/milestones/5").json()["images"]) == 0
+    # image ids are sequential
     image_id = 3
     # add an image to each milestone
     for milestone_id in [1, 2, 3, 4, 5]:
         image_id += 1
-        static_dir_jpg = static_dir / f"m{image_id}.jpg"
+        filename = f"m{image_id}.jpg"
+        static_dir_jpg = static_dir / filename
         assert not static_dir_jpg.is_file()
         with open(jpg_file, "rb") as f:
             response = admin_client.post(
@@ -189,7 +191,7 @@ def test_post_milestone_image(
                 files={"file": ("filename", f, "image/jpeg")},
             )
         assert response.status_code == 200
-        assert response.json()["filename"] == str(static_dir_jpg)
+        assert response.json()["filename"] == filename
         assert static_dir_jpg.is_file()
     assert len(admin_client.get("/milestones/1").json()["images"]) == 3
     assert len(admin_client.get("/milestones/2").json()["images"]) == 2

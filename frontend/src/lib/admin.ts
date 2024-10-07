@@ -126,6 +126,105 @@ export function milestoneGroupImageUrl(id: number) {
 	return `${import.meta.env.VITE_MONDEY_API_URL}/static/mg${id}.jpg`;
 }
 
+export async function newMilestone(milestoneGroupId: number) {
+	console.log('newMilestone...');
+	try {
+		const res = await fetch(
+			`${import.meta.env.VITE_MONDEY_API_URL}/admin/milestones/${milestoneGroupId}`,
+			{
+				method: 'POST',
+				credentials: 'include',
+				headers: {
+					'Content-Type': 'application/json',
+					Accept: 'application/json'
+				}
+			}
+		);
+		if (res.status === 200) {
+			const newMilestone = await res.json();
+			console.log(newMilestone);
+			await refreshMilestoneGroups();
+			return newMilestone;
+		} else {
+			console.log('Failed to create new Milestone');
+		}
+	} catch (e) {
+		console.error(e);
+	}
+	return null;
+}
+
+export async function updateMilestone(milestone) {
+	console.log('updateMilestone...');
+	console.log(milestone);
+	try {
+		const res = await fetch(`${import.meta.env.VITE_MONDEY_API_URL}/admin/milestones/`, {
+			method: 'PUT',
+			credentials: 'include',
+			headers: {
+				'Content-Type': 'application/json',
+				Accept: 'application/json'
+			},
+			body: JSON.stringify(milestone)
+		});
+		if (res.status === 200) {
+			const updatedMilestone = await res.json();
+			console.log(updatedMilestone);
+			return updatedMilestone;
+		} else {
+			console.log('Failed to update Milestone');
+		}
+	} catch (e) {
+		console.error(e);
+	}
+	return null;
+}
+
+export async function uploadMilestoneImage(milestoneId: number, file) {
+	console.log('uploadMilestoneImage...');
+	try {
+		const formData = new FormData();
+		formData.append('file', file);
+		const res = await fetch(
+			`${import.meta.env.VITE_MONDEY_API_URL}/admin/milestone-images/${milestoneId}`,
+			{
+				method: 'POST',
+				credentials: 'include',
+				body: formData
+			}
+		);
+		console.log(await res.json());
+	} catch (e) {
+		console.error(e);
+	}
+}
+
+export async function deleteMilestone(milestoneId: number | null) {
+	try {
+		const res = await fetch(
+			`${import.meta.env.VITE_MONDEY_API_URL}/admin/milestones/${milestoneId}`,
+			{
+				method: 'DELETE',
+				credentials: 'include',
+				headers: {
+					'Content-Type': 'application/json',
+					Accept: 'application/json'
+				}
+			}
+		);
+		const json = await res.json();
+		console.log(json);
+		if (res.status === 200) {
+			console.log(`Deleted Milestone with id ${milestoneId}.`);
+			await refreshMilestoneGroups();
+		} else {
+			console.log(`Error deleting Milestone with id ${milestoneId}.`);
+		}
+	} catch (e) {
+		console.error(e);
+	}
+}
+
 export async function refreshUserQuestions() {
 	console.log('refreshQuestions...');
 	try {
