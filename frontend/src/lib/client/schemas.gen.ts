@@ -245,39 +245,7 @@ export const MilestoneAdminSchema = {
 	title: 'MilestoneAdmin'
 } as const;
 
-export const MilestoneGroupAdmin_InputSchema = {
-	properties: {
-		id: {
-			type: 'integer',
-			title: 'Id'
-		},
-		order: {
-			type: 'integer',
-			title: 'Order'
-		},
-		text: {
-			additionalProperties: {
-				$ref: '#/components/schemas/MilestoneGroupText'
-			},
-			type: 'object',
-			title: 'Text',
-			default: {}
-		},
-		milestones: {
-			items: {
-				$ref: '#/components/schemas/MilestoneAdmin'
-			},
-			type: 'array',
-			title: 'Milestones',
-			default: []
-		}
-	},
-	type: 'object',
-	required: ['id', 'order'],
-	title: 'MilestoneGroupAdmin'
-} as const;
-
-export const MilestoneGroupAdmin_OutputSchema = {
+export const MilestoneGroupAdminSchema = {
 	properties: {
 		id: {
 			type: 'integer',

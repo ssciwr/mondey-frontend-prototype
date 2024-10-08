@@ -139,7 +139,7 @@ def create_router() -> APIRouter:
         return milestone_image
 
     @router.get("/user-questions/", response_model=list[UserQuestionAdmin])
-    def get_user_questions(session: SessionDep):
+    def get_user_questions_admin(session: SessionDep):
         user_questions = session.exec(
             select(UserQuestion).order_by(col(UserQuestion.order))
         ).all()
@@ -170,7 +170,7 @@ def create_router() -> APIRouter:
         return db_user_question
 
     @router.delete("/user-questions/{user_question_id}")
-    def delete_question(session: SessionDep, user_question_id: int):
+    def delete_user_question(session: SessionDep, user_question_id: int):
         question = get(session, UserQuestion, user_question_id)
         session.delete(question)
         session.commit()

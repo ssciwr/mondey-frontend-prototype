@@ -26,6 +26,7 @@ def export_openapi_json(filename: str) -> None:
                 openapi_version=app.openapi_version,
                 description=app.description,
                 routes=app.routes,
+                separate_input_output_schemas=False,
             ),
             f,
         )

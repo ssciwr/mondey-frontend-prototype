@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Button } from 'flowbite-svelte';
-	import { TrashBinOutline } from 'flowbite-svelte-icons';
+	import TrashBinOutline from 'flowbite-svelte-icons/TrashBinOutline.svelte';
 	import { _ } from 'svelte-i18n';
 
 	export let onClick: () => void;

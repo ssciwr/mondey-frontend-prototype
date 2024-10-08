@@ -12,12 +12,15 @@
 		Select,
 		type SelectOptionType
 	} from 'flowbite-svelte';
-	import { lang_id, languages } from '$lib/stores/adminStore';
-	import { updateUserQuestion } from '$lib/admin';
+	import { _ } from 'svelte-i18n';
+	import { languages } from '$lib/stores/adminStore';
+	import { updateUserQuestion } from '$lib/client/services.gen';
 	import InputPreview from '$lib/components/Admin/InputPreview.svelte';
+	import type { UserQuestionAdmin } from '$lib/client/types.gen';
+	import { refreshUserQuestions } from '$lib/admin';
 
 	export let open: boolean = false;
-	export let userQuestion: object | null = null;
+	export let userQuestion: UserQuestionAdmin | null = null;
 
 	let preview_lang_id = '1';
 	let preview_answer = '';
@@ -28,10 +31,13 @@
 	];
 
 	function updateOptionsJson() {
+		if (!userQuestion) {
+			return;
+		}
 		const values = userQuestion.options.split(';');
-		for (const lid in $languages) {
-			const items = userQuestion.text[lid].options.split(';');
-			userQuestion.text[lid].options_json = JSON.stringify(
+		for (const lang_id in $languages) {
+			const items = userQuestion.text[lang_id].options.split(';');
+			userQuestion.text[lang_id].options_json = JSON.stringify(
 				values.map(function (value, index) {
 					return { value: value, name: items[index] };
 				})
@@ -40,10 +46,15 @@
 	}
 
 	export async function saveChanges() {
-		try {
-			await updateUserQuestion(userQuestion);
-		} catch (e) {
-			console.error(e);
+		if (!userQuestion) {
+			return;
+		}
+		const { data, error } = await updateUserQuestion({ body: userQuestion });
+		if (error) {
+			console.log(error);
+		} else {
+			console.log(data);
+			await refreshUserQuestions();
 		}
 	}
 </script>
@@ -53,7 +64,7 @@
 		<div class="flex flex-row items-center">
 			<div class="mr-5 grow">
 				<div class="mb-5">
-					<Label class="mb-2">Question</Label>
+					<Label class="mb-2">{$_('admin.question')}</Label>
 					{#each Object.values(userQuestion.text) as text}
 						<div class="mb-1">
 							<ButtonGroup class="w-full">
@@ -63,7 +74,7 @@
 									on:input={() => {
 										userQuestion = userQuestion;
 									}}
-									placeholder="Question"
+									placeholder={$_('admin.question')}
 								/>
 							</ButtonGroup>
 						</div>
@@ -107,12 +118,12 @@
 						<Label class="mb-2">Preview</Label>
 						<div class="flex flex-row">
 							<ButtonGroup class="mb-2 mr-2">
-								{#each Object.entries($languages) as [lid, lang]}
+								{#each Object.entries($languages) as [lang_id, lang]}
 									<Button
-										checked={preview_lang_id === lid}
+										checked={preview_lang_id === lang_id}
 										on:click={(e) => {
 											e.stopPropagation();
-											preview_lang_id = lid;
+											preview_lang_id = lang_id;
 										}}>{lang}</Button
 									>
 								{/each}
@@ -133,7 +144,7 @@
 		</div>
 	{/if}
 	<svelte:fragment slot="footer">
-		<Button color="green" on:click={saveChanges}>Save changes</Button>
-		<Button color="alternative">Cancel</Button>
+		<Button color="green" on:click={saveChanges}>{$_('admin.save-changes')}</Button>
+		<Button color="alternative">{$_('admin.cancel')}</Button>
 	</svelte:fragment>
 </Modal>
