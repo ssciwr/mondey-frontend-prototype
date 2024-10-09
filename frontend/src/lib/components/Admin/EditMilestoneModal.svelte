@@ -2,7 +2,7 @@
 
 <script lang="ts">
 	import { InputAddon, Textarea, Label, ButtonGroup, Fileupload, Modal } from 'flowbite-svelte';
-	import { languages } from '$lib/stores/adminStore';
+	import { languages } from '$lib/stores/langStore';
 	import SaveButton from '$lib/components/Admin/SaveButton.svelte';
 	import CancelButton from '$lib/components/Admin/CancelButton.svelte';
 	import { _ } from 'svelte-i18n';

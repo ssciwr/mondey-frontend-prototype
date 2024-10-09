@@ -4,7 +4,7 @@
 	import { InputAddon, Textarea, Label, ButtonGroup, Fileupload, Modal } from 'flowbite-svelte';
 	import { _ } from 'svelte-i18n';
 	import { onMount } from 'svelte';
-	import { languages } from '$lib/stores/adminStore';
+	import { languages } from '$lib/stores/langStore';
 	import type { MilestoneGroupAdmin } from '$lib/client/types.gen';
 	import { updateMilestoneGroupAdmin, uploadMilestoneGroupImage } from '$lib/client/services.gen';
 	import { milestoneGroupImageUrl, refreshMilestoneGroups } from '$lib/admin.svelte';
