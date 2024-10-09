@@ -5,8 +5,6 @@ import type {
 	UserQuestionAdmin
 } from '$lib/client/types.gen';
 
-export const isLoggedIn = writable(false);
-
 export const milestoneGroups: Writable<Array<MilestoneGroupAdmin>> = writable([]);
 
 export const userQuestions: Writable<Array<UserQuestionAdmin>> = writable([]);

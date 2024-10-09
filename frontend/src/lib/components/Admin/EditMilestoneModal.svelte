@@ -1,25 +1,21 @@
+<svelte:options runes={true} />
+
 <script lang="ts">
-	import {
-		Button,
-		InputAddon,
-		Textarea,
-		Label,
-		ButtonGroup,
-		Fileupload,
-		Modal
-	} from 'flowbite-svelte';
+	import { InputAddon, Textarea, Label, ButtonGroup, Fileupload, Modal } from 'flowbite-svelte';
 	import { languages } from '$lib/stores/adminStore';
+	import SaveButton from '$lib/components/Admin/SaveButton.svelte';
+	import CancelButton from '$lib/components/Admin/CancelButton.svelte';
 	import { _ } from 'svelte-i18n';
 	import type { MilestoneAdmin } from '$lib/client/types.gen';
-	import { refreshMilestoneGroups } from '$lib/admin';
+	import { refreshMilestoneGroups } from '$lib/admin.svelte';
 	import { updateMilestone, uploadMilestoneImage } from '$lib/client/services.gen';
 
-	export let open: boolean = false;
-	export let milestone: MilestoneAdmin | null = null;
+	let { open = $bindable(false), milestone }: { open: boolean; milestone: MilestoneAdmin | null } =
+		$props();
+	let files: FileList | undefined = $state(undefined);
+	let images: Array<string> = $state([]);
 
 	const textKeys = ['title', 'desc', 'obs', 'help'];
-	let files: FileList;
-	let images: string[] = [];
 
 	function updateImagesToUpload(event: Event) {
 		const target = event.target as HTMLInputElement;
@@ -95,7 +91,7 @@
 		</div>
 	{/if}
 	<svelte:fragment slot="footer">
-		<Button color="green" on:click={saveChanges}>{$_('admin.save-changes')}</Button>
-		<Button color="alternative">{$_('admin.cancel')}</Button>
+		<SaveButton onclick={saveChanges} />
+		<CancelButton />
 	</svelte:fragment>
 </Modal>

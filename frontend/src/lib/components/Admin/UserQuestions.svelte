@@ -1,3 +1,5 @@
+<svelte:options runes={true} />
+
 <script lang="ts">
 	import {
 		Table,
@@ -12,7 +14,7 @@
 	import { _ } from 'svelte-i18n';
 	import { lang_id, userQuestions } from '$lib/stores/adminStore';
 	import { onMount } from 'svelte';
-	import { refreshUserQuestions } from '$lib/admin';
+	import { refreshUserQuestions } from '$lib/admin.svelte';
 	import { deleteUserQuestion, createUserQuestion } from '$lib/client/services.gen';
 	import type { UserQuestionAdmin } from '$lib/client/types.gen';
 	import EditUserQuestionModal from '$lib/components/Admin/EditUserQuestionModal.svelte';
@@ -21,16 +23,16 @@
 	import EditButton from '$lib/components/Admin/EditButton.svelte';
 	import DeleteButton from '$lib/components/Admin/DeleteButton.svelte';
 
-	let currentUserQuestion: UserQuestionAdmin | null = null;
-	let currentUserQuestionId: number | null = null;
-	let showEditUserQuestionModal: boolean = false;
-	let showDeleteModal: boolean = false;
+	let currentUserQuestion = $state(undefined as UserQuestionAdmin | undefined);
+	let currentUserQuestionId = $state(null as number | null);
+	let showEditUserQuestionModal = $state(false);
+	let showDeleteModal = $state(false);
 
 	async function addUserQuestion() {
 		const { data, error } = await createUserQuestion();
 		if (error) {
 			console.log(error);
-			currentUserQuestion = null;
+			currentUserQuestion = undefined;
 		} else {
 			console.log(data);
 			await refreshUserQuestions();
@@ -86,13 +88,13 @@
 					</TableBodyCell>
 					<TableBodyCell>
 						<EditButton
-							onClick={() => {
+							onclick={() => {
 								currentUserQuestion = $userQuestions[groupIndex];
 								showEditUserQuestionModal = true;
 							}}
 						/>
 						<DeleteButton
-							onClick={() => {
+							onclick={() => {
 								currentUserQuestionId = userQuestion.id;
 								showDeleteModal = true;
 							}}
@@ -105,7 +107,7 @@
 				<TableBodyCell></TableBodyCell>
 				<TableBodyCell></TableBodyCell>
 				<TableBodyCell>
-					<AddButton onClick={addUserQuestion} />
+					<AddButton onclick={addUserQuestion} />
 				</TableBodyCell>
 			</TableBodyRow>
 		</TableBody>
@@ -115,4 +117,4 @@
 {#key showEditUserQuestionModal}
 	<EditUserQuestionModal bind:open={showEditUserQuestionModal} userQuestion={currentUserQuestion} />
 {/key}
-<DeleteModal bind:open={showDeleteModal} onClick={doDeleteUserQuestion} />
+<DeleteModal bind:open={showDeleteModal} onclick={doDeleteUserQuestion} />
