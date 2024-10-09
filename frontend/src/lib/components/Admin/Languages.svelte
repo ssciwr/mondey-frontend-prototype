@@ -39,8 +39,10 @@
 		}
 	}
 
-	async function deleteLanguageAndUpdateLanguages(id: string) {
-		const { data, error } = await deleteLanguage({ path: { language_id: Number(id) } });
+	async function deleteLanguageAndUpdateLanguages() {
+		const { data, error } = await deleteLanguage({
+			path: { language_id: Number(currentLanguageId) }
+		});
 		if (error) {
 			console.log(error);
 		} else {
@@ -95,9 +97,4 @@
 	</Table>
 </Card>
 
-<DeleteModal
-	bind:open={showDeleteModal}
-	onClick={() => {
-		deleteLanguageAndUpdateLanguages(currentLanguageId);
-	}}
-></DeleteModal>
+<DeleteModal bind:open={showDeleteModal} onClick={deleteLanguageAndUpdateLanguages}></DeleteModal>

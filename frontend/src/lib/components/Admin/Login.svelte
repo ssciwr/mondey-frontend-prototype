@@ -1,19 +1,24 @@
 <script lang="ts">
-	import { Input, Label, Button, Card } from 'flowbite-svelte';
+	import { Input, Label, Button, Card, Alert } from 'flowbite-svelte';
 	import { isLoggedIn } from '$lib/stores/adminStore';
 	import { authCookieLogin } from '$lib/client/services.gen';
 	import type { AuthCookieLoginData } from '$lib/client/types.gen';
+	import { _ } from 'svelte-i18n';
 
 	const loginData: AuthCookieLoginData = {
 		body: { username: '', password: '' }
 	};
+	let errorCode: string = '';
 
 	async function doLogin() {
 		const { data, error } = await authCookieLogin(loginData);
 		console.log(data);
+		console.log(error);
 		if (error) {
+			errorCode = error?.detail as string;
 			isLoggedIn.set(false);
 		} else {
+			errorCode = '';
 			isLoggedIn.set(true);
 		}
 	}
@@ -45,7 +50,10 @@
 					autocomplete="current-password"
 				/>
 			</div>
-			<Button type="submit">Login</Button>
+			<Button type="submit" class="mb-6">Login</Button>
+			{#if errorCode !== ''}
+				<Alert>{$_(errorCode)}</Alert>
+			{/if}
 		</form>
 	</div>
 </Card>

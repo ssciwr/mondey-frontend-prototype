@@ -3,107 +3,73 @@
 		Button,
 		InputAddon,
 		Textarea,
-		Input,
 		Label,
 		ButtonGroup,
 		Fileupload,
 		Modal
 	} from 'flowbite-svelte';
 	import { languages } from '$lib/stores/adminStore';
-	import { refreshMilestoneGroups, updateMilestone, uploadMilestoneImage } from '$lib/admin';
+	import { _ } from 'svelte-i18n';
+	import type { MilestoneAdmin } from '$lib/client/types.gen';
+	import { refreshMilestoneGroups } from '$lib/admin';
+	import { updateMilestone, uploadMilestoneImage } from '$lib/client/services.gen';
 
 	export let open: boolean = false;
-	export let milestone: object | null = null;
+	export let milestone: MilestoneAdmin | null = null;
 
+	const textKeys = ['title', 'desc', 'obs', 'help'];
 	let files: FileList;
 	let images: string[] = [];
 
-	async function uploadImagesChanged(event) {
-		const uploaded_files = [...event.target.files];
-		images = await Promise.all(
-			uploaded_files.map((f) => {
-				return imageAsDataURL(f);
-			})
-		);
-	}
-
-	function imageAsDataURL(file: Blob) {
-		return new Promise((resolve, reject) => {
-			const fileReader = new FileReader();
-			fileReader.onload = function () {
-				return resolve(fileReader.result);
-			};
-			fileReader.onerror = function () {
-				fileReader.abort();
-				return reject(fileReader.error);
-			};
-			fileReader.readAsDataURL(file);
-		});
+	function updateImagesToUpload(event: Event) {
+		const target = event.target as HTMLInputElement;
+		if (target.files) {
+			images = Array.from(target.files).map((f) => URL.createObjectURL(f));
+		} else {
+			images = [];
+		}
 	}
 
 	export async function saveChanges() {
-		try {
-			await updateMilestone(milestone);
-			if (files) {
+		if (!milestone) {
+			return;
+		}
+		const { data, error } = await updateMilestone({ body: milestone });
+		if (error) {
+			console.log(error);
+		} else {
+			console.log(data);
+			if (files && files.length > 0) {
 				for (const file of files) {
-					await uploadMilestoneImage(milestone.id, file);
+					await uploadMilestoneImage({
+						body: { file: file },
+						path: { milestone_id: milestone.id }
+					});
 				}
 			}
 			await refreshMilestoneGroups();
-		} catch (e) {
-			console.error(e);
 		}
 	}
 </script>
 
-<Modal title="Edit milestone" bind:open autoclose size="xl">
+<Modal title={$_('admin.edit')} bind:open autoclose size="xl">
 	{#if milestone}
+		{#each textKeys as textKey}
+			{@const title = $_(`admin.${textKey}`)}
+			<div class="mb-5">
+				<Label class="mb-2">{title}</Label>
+				{#each Object.entries($languages) as [lang_id, lang]}
+					<div class="mb-1">
+						<ButtonGroup class="w-full">
+							<InputAddon>{lang}</InputAddon>
+							<Textarea bind:value={milestone.text[lang_id][textKey]} placeholder={title} />
+						</ButtonGroup>
+					</div>
+				{/each}
+			</div>
+		{/each}
 		<div class="mb-5">
-			<Label class="mb-2">Title</Label>
-			{#each Object.entries(milestone.text) as [lang_id, text]}
-				<div class="mb-1">
-					<ButtonGroup class="w-full">
-						<InputAddon>{$languages[text.lang_id]}</InputAddon>
-						<Input bind:value={text.title} placeholder="Title" />
-					</ButtonGroup>
-				</div>
-			{/each}
-		</div>
-		<div class="mb-5">
-			<Label class="mb-2">Description</Label>
-			{#each Object.entries(milestone.text) as [lang_id, text]}
-				<div class="mb-1">
-					<ButtonGroup class="w-full">
-						<InputAddon>{$languages[text.lang_id]}</InputAddon>
-						<Textarea bind:value={text.desc} placeholder="Description" />
-					</ButtonGroup>
-				</div>
-			{/each}
-		</div>
-		<div class="mb-5">
-			<Label class="mb-2">Observation</Label>
-			{#each Object.entries(milestone.text) as [lang_id, text]}
-				<div class="mb-1">
-					<ButtonGroup class="w-full">
-						<InputAddon>{$languages[text.lang_id]}</InputAddon>
-						<Textarea bind:value={text.obs} placeholder="Observation" />
-					</ButtonGroup>
-				</div>
-			{/each}
-		</div>
-		<div class="mb-5">
-			<Label class="mb-2">Help</Label>
-			{#each Object.entries(milestone.text) as [lang_id, text]}
-				<div class="mb-1">
-					<ButtonGroup class="w-full">
-						<InputAddon>{$languages[text.lang_id]}</InputAddon>
-						<Textarea bind:value={text.help} placeholder="Help" />
-					</ButtonGroup>
-				</div>
-			{/each}
-		</div>
-		<div class="mb-5">
-			<Label for="img_upload" class="pb-2">Images</Label>
+			<Label for="img_upload" class="pb-2">{$_('admin.images')}</Label>
 			<div class="flex flex-row">
 				{#each milestone.images as milestoneImage, milestoneImageId (milestoneImage.id)}
 					<img
@@ -120,7 +86,7 @@
 			</div>
 			<Fileupload
 				bind:files
-				on:change={uploadImagesChanged}
+				on:change={updateImagesToUpload}
 				multiple
 				accept=".jpg, .jpeg"
 				id="img_upload"
@@ -129,7 +95,7 @@
 		</div>
 	{/if}
 	<svelte:fragment slot="footer">
-		<Button color="green" on:click={saveChanges}>Save changes</Button>
-		<Button color="alternative">Cancel</Button>
+		<Button color="green" on:click={saveChanges}>{$_('admin.save-changes')}</Button>
+		<Button color="alternative">{$_('admin.cancel')}</Button>
 	</svelte:fragment>
 </Modal>

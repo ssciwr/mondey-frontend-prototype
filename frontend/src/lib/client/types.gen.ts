@@ -66,16 +66,7 @@ export type MilestoneAdmin = {
 	images?: Array<MilestoneImage>;
 };
 
-export type MilestoneGroupAdmin_Input = {
-	id: number;
-	order: number;
-	text?: {
-		[key: string]: MilestoneGroupText;
-	};
-	milestones?: Array<MilestoneAdmin>;
-};
-
-export type MilestoneGroupAdmin_Output = {
+export type MilestoneGroupAdmin = {
 	id: number;
 	order: number;
 	text?: {
@@ -253,19 +244,19 @@ export type DeleteLanguageResponse = unknown;
 
 export type DeleteLanguageError = HTTPValidationError;
 
-export type GetMilestoneGroupsAdminResponse = Array<MilestoneGroupAdmin_Output>;
+export type GetMilestoneGroupsAdminResponse = Array<MilestoneGroupAdmin>;
 
 export type GetMilestoneGroupsAdminError = unknown;
 
-export type CreateMilestoneGroupAdminResponse = MilestoneGroupAdmin_Output;
+export type CreateMilestoneGroupAdminResponse = MilestoneGroupAdmin;
 
 export type CreateMilestoneGroupAdminError = unknown;
 
 export type UpdateMilestoneGroupAdminData = {
-	body: MilestoneGroupAdmin_Input;
+	body: MilestoneGroupAdmin;
 };
 
-export type UpdateMilestoneGroupAdminResponse = MilestoneGroupAdmin_Output;
+export type UpdateMilestoneGroupAdminResponse = MilestoneGroupAdmin;
 
 export type UpdateMilestoneGroupAdminError = HTTPValidationError;
 
@@ -329,9 +320,9 @@ export type UploadMilestoneImageResponse = MilestoneImage;
 
 export type UploadMilestoneImageError = HTTPValidationError;
 
-export type GetUserQuestions1Response = Array<UserQuestionAdmin>;
+export type GetUserQuestionsAdminResponse = Array<UserQuestionAdmin>;
 
-export type GetUserQuestions1Error = unknown;
+export type GetUserQuestionsAdminError = unknown;
 
 export type UpdateUserQuestionData = {
 	body: UserQuestionAdmin;
@@ -345,15 +336,15 @@ export type CreateUserQuestionResponse = UserQuestionAdmin;
 
 export type CreateUserQuestionError = unknown;
 
-export type DeleteQuestionData = {
+export type DeleteUserQuestionData = {
 	path: {
 		user_question_id: number;
 	};
 };
 
-export type DeleteQuestionResponse = unknown;
+export type DeleteUserQuestionResponse = unknown;
 
-export type DeleteQuestionError = HTTPValidationError;
+export type DeleteUserQuestionError = HTTPValidationError;
 
 export type UsersCurrentUserResponse = UserRead;
 

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Button, Modal } from 'flowbite-svelte';
-	import { ExclamationCircleOutline } from 'flowbite-svelte-icons';
+	import ExclamationCircleOutline from 'flowbite-svelte-icons/ExclamationCircleOutline.svelte';
 	import { _ } from 'svelte-i18n';
 
 	export let open: boolean;

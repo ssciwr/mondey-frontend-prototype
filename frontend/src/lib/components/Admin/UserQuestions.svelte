@@ -12,24 +12,48 @@
 	import { _ } from 'svelte-i18n';
 	import { lang_id, userQuestions } from '$lib/stores/adminStore';
 	import { onMount } from 'svelte';
-	import { deleteUserQuestion, newUserQuestion, refreshUserQuestions } from '$lib/admin';
+	import { refreshUserQuestions } from '$lib/admin';
+	import { deleteUserQuestion, createUserQuestion } from '$lib/client/services.gen';
+	import type { UserQuestionAdmin } from '$lib/client/types.gen';
 	import EditUserQuestionModal from '$lib/components/Admin/EditUserQuestionModal.svelte';
 	import DeleteModal from '$lib/components/Admin/DeleteModal.svelte';
 	import AddButton from '$lib/components/Admin/AddButton.svelte';
 	import EditButton from '$lib/components/Admin/EditButton.svelte';
 	import DeleteButton from '$lib/components/Admin/DeleteButton.svelte';
 
-	let currentUserQuestion = null;
-	let currentUserQuestionId = null;
+	let currentUserQuestion: UserQuestionAdmin | null = null;
+	let currentUserQuestionId: number | null = null;
 	let showEditUserQuestionModal: boolean = false;
 	let showDeleteModal: boolean = false;
 
 	async function addUserQuestion() {
-		currentUserQuestion = await newUserQuestion();
-		if (currentUserQuestion === null) {
+		const { data, error } = await createUserQuestion();
+		if (error) {
+			console.log(error);
+			currentUserQuestion = null;
+		} else {
+			console.log(data);
+			await refreshUserQuestions();
+			currentUserQuestion = data;
+			showEditUserQuestionModal = true;
+		}
+	}
+
+	async function doDeleteUserQuestion() {
+		if (!currentUserQuestionId) {
 			return;
 		}
-		showEditUserQuestionModal = true;
+		const { data, error } = await deleteUserQuestion({
+			path: {
+				user_question_id: currentUserQuestionId
+			}
+		});
+		if (error) {
+			console.log(error);
+		} else {
+			console.log(data);
+			await refreshUserQuestions();
+		}
 	}
 
 	onMount(async () => {
@@ -89,12 +113,6 @@
 </Card>
 
 {#key showEditUserQuestionModal}
-	<EditUserQuestionModal bind:open={showEditUserQuestionModal} userQuestion={currentUserQuestion}
-	></EditUserQuestionModal>
+	<EditUserQuestionModal bind:open={showEditUserQuestionModal} userQuestion={currentUserQuestion} />
 {/key}
-<DeleteModal
-	bind:open={showDeleteModal}
-	onClick={() => {
-		deleteUserQuestion(currentUserQuestionId);
-	}}
-></DeleteModal>
+<DeleteModal bind:open={showDeleteModal} onClick={doDeleteUserQuestion} />

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Button } from 'flowbite-svelte';
-	import { PlusOutline } from 'flowbite-svelte-icons';
+	import PlusOutline from 'flowbite-svelte-icons/PlusOutline.svelte';
 	import { _ } from 'svelte-i18n';
 
 	export let onClick: () => void;

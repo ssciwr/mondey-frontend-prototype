@@ -53,16 +53,16 @@ import type {
 	UploadMilestoneImageData,
 	UploadMilestoneImageError,
 	UploadMilestoneImageResponse,
-	GetUserQuestions1Error,
-	GetUserQuestions1Response,
+	GetUserQuestionsAdminError,
+	GetUserQuestionsAdminResponse,
 	UpdateUserQuestionData,
 	UpdateUserQuestionError,
 	UpdateUserQuestionResponse,
 	CreateUserQuestionError,
 	CreateUserQuestionResponse,
-	DeleteQuestionData,
-	DeleteQuestionError,
-	DeleteQuestionResponse,
+	DeleteUserQuestionData,
+	DeleteUserQuestionError,
+	DeleteUserQuestionResponse,
 	UsersCurrentUserError,
 	UsersCurrentUserResponse,
 	UsersPatchCurrentUserData,
@@ -374,14 +374,14 @@ export const uploadMilestoneImage = <ThrowOnError extends boolean = false>(
 };
 
 /**
- * Get User Questions
+ * Get User Questions Admin
  */
-export const getUserQuestions1 = <ThrowOnError extends boolean = false>(
+export const getUserQuestionsAdmin = <ThrowOnError extends boolean = false>(
 	options?: Options<unknown, ThrowOnError>
 ) => {
 	return (options?.client ?? client).get<
-		GetUserQuestions1Response,
-		GetUserQuestions1Error,
+		GetUserQuestionsAdminResponse,
+		GetUserQuestionsAdminError,
 		ThrowOnError
 	>({
 		...options,
@@ -422,14 +422,14 @@ export const createUserQuestion = <ThrowOnError extends boolean = false>(
 };
 
 /**
- * Delete Question
+ * Delete User Question
  */
-export const deleteQuestion = <ThrowOnError extends boolean = false>(
-	options: Options<DeleteQuestionData, ThrowOnError>
+export const deleteUserQuestion = <ThrowOnError extends boolean = false>(
+	options: Options<DeleteUserQuestionData, ThrowOnError>
 ) => {
 	return (options?.client ?? client).delete<
-		DeleteQuestionResponse,
-		DeleteQuestionError,
+		DeleteUserQuestionResponse,
+		DeleteUserQuestionError,
 		ThrowOnError
 	>({
 		...options,
