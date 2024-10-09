@@ -1,26 +1,24 @@
+<svelte:options runes={true} />
+
 <script lang="ts">
-	import {
-		Button,
-		InputAddon,
-		Textarea,
-		Label,
-		ButtonGroup,
-		Fileupload,
-		Modal
-	} from 'flowbite-svelte';
+	import { InputAddon, Textarea, Label, ButtonGroup, Fileupload, Modal } from 'flowbite-svelte';
 	import { _ } from 'svelte-i18n';
 	import { onMount } from 'svelte';
 	import { languages } from '$lib/stores/adminStore';
 	import type { MilestoneGroupAdmin } from '$lib/client/types.gen';
 	import { updateMilestoneGroupAdmin, uploadMilestoneGroupImage } from '$lib/client/services.gen';
-	import { milestoneGroupImageUrl, refreshMilestoneGroups } from '$lib/admin';
+	import { milestoneGroupImageUrl, refreshMilestoneGroups } from '$lib/admin.svelte';
+	import SaveButton from '$lib/components/Admin/SaveButton.svelte';
+	import CancelButton from '$lib/components/Admin/CancelButton.svelte';
 
-	export let open: boolean = false;
-	export let milestoneGroup: MilestoneGroupAdmin | null = null;
+	let {
+		open = $bindable(false),
+		milestoneGroup
+	}: { open: boolean; milestoneGroup: MilestoneGroupAdmin | null } = $props();
+	let files: FileList | undefined = $state(undefined);
+	let image: string = $state('');
 
 	const textKeys = ['title', 'desc'];
-	let files: FileList;
-	let image: string = '';
 
 	onMount(() => {
 		if (milestoneGroup) {
@@ -85,7 +83,7 @@
 				<img src={image} width="48" height="48" alt="MilestoneGroup" class="mx-2" />
 				<Fileupload
 					bind:files
-					on:change={updateImageToUpload}
+					onchange={updateImageToUpload}
 					accept=".jpg, .jpeg"
 					id="img_upload"
 					class="mb-2 flex-grow-0"
@@ -94,7 +92,7 @@
 		</div>
 	{/if}
 	<svelte:fragment slot="footer">
-		<Button color="green" on:click={saveChanges}>{$_('admin.save-changes')}</Button>
-		<Button color="alternative">{$_('admin.cancel')}</Button>
+		<SaveButton onclick={saveChanges} />
+		<CancelButton />
 	</svelte:fragment>
 </Modal>

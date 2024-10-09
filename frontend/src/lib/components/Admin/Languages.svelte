@@ -1,3 +1,5 @@
+<svelte:options runes={true} />
+
 <script lang="ts">
 	import {
 		Table,
@@ -25,9 +27,9 @@
 		return { value: k, name: langNames[i] };
 	}) as SelectOptionType<string>[];
 
-	let selectedLang: string = '';
-	let currentLanguageId: string = '';
-	let showDeleteModal: boolean = false;
+	let selectedLang: string = $state('');
+	let currentLanguageId: string = $state('');
+	let showDeleteModal: boolean = $state(false);
 
 	async function createLanguageAndUpdateLanguages() {
 		const { data, error } = await createLanguage({ body: { lang: selectedLang } });
@@ -71,7 +73,7 @@
 					</TableBodyCell>
 					<TableBodyCell>
 						<DeleteButton
-							onClick={() => {
+							onclick={() => {
 								currentLanguageId = id;
 								showDeleteModal = true;
 							}}
@@ -90,11 +92,11 @@
 					/>
 				</TableBodyCell>
 				<TableBodyCell>
-					<AddButton onClick={createLanguageAndUpdateLanguages} disabled={selectedLang === ''} />
+					<AddButton onclick={createLanguageAndUpdateLanguages} disabled={selectedLang === ''} />
 				</TableBodyCell>
 			</TableBodyRow>
 		</TableBody>
 	</Table>
 </Card>
 
-<DeleteModal bind:open={showDeleteModal} onClick={deleteLanguageAndUpdateLanguages}></DeleteModal>
+<DeleteModal bind:open={showDeleteModal} onclick={deleteLanguageAndUpdateLanguages}></DeleteModal>

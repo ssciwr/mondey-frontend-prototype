@@ -1,3 +1,5 @@
+<svelte:options runes={true} />
+
 <script lang="ts">
 	import {
 		Table,
@@ -18,7 +20,7 @@
 	import EditButton from '$lib/components/Admin/EditButton.svelte';
 	import DeleteButton from '$lib/components/Admin/DeleteButton.svelte';
 	import { lang_id, milestoneGroups } from '$lib/stores/adminStore';
-	import { refreshMilestoneGroups, milestoneGroupImageUrl } from '$lib/admin';
+	import { refreshMilestoneGroups, milestoneGroupImageUrl } from '$lib/admin.svelte';
 	import {
 		createMilestone,
 		createMilestoneGroupAdmin,
@@ -28,14 +30,14 @@
 	import type { MilestoneAdmin, MilestoneGroupAdmin } from '$lib/client/types.gen';
 	import { onMount } from 'svelte';
 
-	let currentMilestoneGroup: MilestoneGroupAdmin | null = null;
-	let openMilestoneGroupIndex: number | null = null;
-	let showEditMilestoneGroupModal: boolean = false;
-	let showDeleteMilestoneGroupModal: boolean = false;
+	let currentMilestoneGroup = $state(null as MilestoneGroupAdmin | null);
+	let openMilestoneGroupIndex = $state(null as number | null);
+	let showEditMilestoneGroupModal = $state(false);
+	let showDeleteMilestoneGroupModal = $state(false);
 
-	let currentMilestone: MilestoneAdmin | null = null;
-	let showEditMilestoneModal: boolean = false;
-	let showDeleteMilestoneModal: boolean = false;
+	let currentMilestone = $state(null as MilestoneAdmin | null);
+	let showEditMilestoneModal = $state(false);
+	let showDeleteMilestoneModal = $state(false);
 
 	function toggleOpenGroupIndex(index: number) {
 		if (openMilestoneGroupIndex == index) {
@@ -150,13 +152,15 @@
 						</TableBodyCell>
 						<TableBodyCell>
 							<EditButton
-								onClick={() => {
+								onclick={(event: Event) => {
+									event.stopPropagation();
 									currentMilestoneGroup = milestoneGroup;
 									showEditMilestoneGroupModal = true;
 								}}
 							/>
 							<DeleteButton
-								onClick={() => {
+								onclick={(event: Event) => {
+									event.stopPropagation();
 									currentMilestoneGroup = milestoneGroup;
 									showDeleteMilestoneGroupModal = true;
 								}}
@@ -189,13 +193,15 @@
 												<TableBodyCell>{milestoneTitle}</TableBodyCell>
 												<TableBodyCell>
 													<EditButton
-														onClick={() => {
+														onclick={(event: Event) => {
+															event.stopPropagation();
 															currentMilestone = milestone;
 															showEditMilestoneModal = true;
 														}}
 													/>
 													<DeleteButton
-														onClick={() => {
+														onclick={(event: Event) => {
+															event.stopPropagation();
 															currentMilestone = milestone;
 															showDeleteMilestoneModal = true;
 														}}
@@ -207,7 +213,7 @@
 											<TableBodyCell></TableBodyCell>
 											<TableBodyCell></TableBodyCell>
 											<TableBodyCell>
-												<AddButton onClick={() => addMilestone(milestoneGroup.id)} />
+												<AddButton onclick={() => addMilestone(milestoneGroup.id)} />
 											</TableBodyCell>
 										</TableBodyRow>
 									</TableBody>
@@ -221,7 +227,7 @@
 					<TableBodyCell></TableBodyCell>
 					<TableBodyCell></TableBodyCell>
 					<TableBodyCell>
-						<AddButton onClick={addMilestoneGroup} />
+						<AddButton onclick={addMilestoneGroup} />
 					</TableBodyCell>
 				</TableBodyRow>
 			</TableBody>
@@ -235,11 +241,11 @@
 		milestoneGroup={currentMilestoneGroup}
 	></EditMilestoneGroupModal>
 {/key}
-<DeleteModal bind:open={showDeleteMilestoneGroupModal} onClick={doDeleteMilestoneGroup}
+<DeleteModal bind:open={showDeleteMilestoneGroupModal} onclick={doDeleteMilestoneGroup}
 ></DeleteModal>
 
 {#key showEditMilestoneModal}
 	<EditMilestoneModal bind:open={showEditMilestoneModal} milestone={currentMilestone}
 	></EditMilestoneModal>
 {/key}
-<DeleteModal bind:open={showDeleteMilestoneModal} onClick={doDeleteMilestone}></DeleteModal>
+<DeleteModal bind:open={showDeleteMilestoneModal} onclick={doDeleteMilestone}></DeleteModal>

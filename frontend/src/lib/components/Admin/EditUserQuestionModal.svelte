@@ -1,3 +1,5 @@
+<svelte:options runes={true} />
+
 <script lang="ts">
 	import {
 		Button,
@@ -16,16 +18,20 @@
 	import { languages } from '$lib/stores/adminStore';
 	import { updateUserQuestion } from '$lib/client/services.gen';
 	import InputPreview from '$lib/components/Admin/InputPreview.svelte';
+	import SaveButton from '$lib/components/Admin/SaveButton.svelte';
+	import CancelButton from '$lib/components/Admin/CancelButton.svelte';
 	import type { UserQuestionAdmin } from '$lib/client/types.gen';
-	import { refreshUserQuestions } from '$lib/admin';
+	import { refreshUserQuestions } from '$lib/admin.svelte';
 
-	export let open: boolean = false;
-	export let userQuestion: UserQuestionAdmin | null = null;
+	let {
+		open = $bindable(false),
+		userQuestion
+	}: { open: boolean; userQuestion: UserQuestionAdmin | undefined } = $props();
 
-	let preview_lang_id = '1';
-	let preview_answer = '';
+	let preview_lang_id = $state('1');
+	let preview_answer = $state('');
 
-	const inputTypes: SelectOptionType<string>[] = [
+	const inputTypes: Array<SelectOptionType<string>> = [
 		{ value: 'text', name: 'text' },
 		{ value: 'select', name: 'select' }
 	];
@@ -144,7 +150,7 @@
 		</div>
 	{/if}
 	<svelte:fragment slot="footer">
-		<Button color="green" on:click={saveChanges}>{$_('admin.save-changes')}</Button>
-		<Button color="alternative">{$_('admin.cancel')}</Button>
+		<SaveButton onclick={saveChanges} />
+		<CancelButton />
 	</svelte:fragment>
 </Modal>

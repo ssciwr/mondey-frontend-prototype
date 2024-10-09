@@ -1,20 +1,22 @@
-<script lang="ts">
-	import { Input, Select, Label } from 'flowbite-svelte';
-	export let data;
-	export let lang_id;
-	export let answer = '';
+<svelte:options runes={true} />
 
-	function parse_options_json(options_json) {
+<script lang="ts">
+	import { Input, Select, Label, type SelectOptionType } from 'flowbite-svelte';
+	import type { UserQuestionAdmin } from '$lib/client/types.gen';
+	let { data, lang_id, answer }: { data: UserQuestionAdmin; lang_id: string; answer: string } =
+		$props();
+	let items: Array<SelectOptionType<string>> = $derived(parse_options_json());
+
+	function parse_options_json() {
 		try {
-			return JSON.parse(data.text[lang_id].options_json);
+			const options_json = data.text[lang_id].options_json;
+			return JSON.parse(options_json);
 		} catch (e) {
 			console.log("Couldn't parse options_json");
 			console.log(e);
 		}
 		return [];
 	}
-
-	$: items = parse_options_json(data.text[lang_id].options_json);
 </script>
 
 <div class="mb-5">
