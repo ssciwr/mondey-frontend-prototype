@@ -119,7 +119,7 @@ class Milestone(SQLModel, table=True):
 
 class MilestonePublic(SQLModel):
     id: int
-    text: dict[int, MilestoneGroupTextPublic] = {}
+    text: dict[int, MilestoneTextPublic] = {}
     images: list[MilestoneImagePublic] = []
 
 

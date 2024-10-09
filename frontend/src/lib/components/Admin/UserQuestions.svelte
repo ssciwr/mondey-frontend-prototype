@@ -12,7 +12,8 @@
 	} from 'flowbite-svelte';
 
 	import { _ } from 'svelte-i18n';
-	import { lang_id, userQuestions } from '$lib/stores/adminStore';
+	import { lang_id } from '$lib/stores/langStore';
+	import { userQuestions } from '$lib/stores/adminStore';
 	import { onMount } from 'svelte';
 	import { refreshUserQuestions } from '$lib/admin.svelte';
 	import { deleteUserQuestion, createUserQuestion } from '$lib/client/services.gen';

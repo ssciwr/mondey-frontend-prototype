@@ -424,7 +424,7 @@ export const MilestonePublicSchema = {
 		},
 		text: {
 			additionalProperties: {
-				$ref: '#/components/schemas/MilestoneGroupTextPublic'
+				$ref: '#/components/schemas/MilestoneTextPublic'
 			},
 			type: 'object',
 			title: 'Text',
@@ -491,6 +491,33 @@ export const MilestoneTextSchema = {
 	},
 	type: 'object',
 	title: 'MilestoneText'
+} as const;
+
+export const MilestoneTextPublicSchema = {
+	properties: {
+		title: {
+			type: 'string',
+			title: 'Title',
+			default: ''
+		},
+		desc: {
+			type: 'string',
+			title: 'Desc',
+			default: ''
+		},
+		obs: {
+			type: 'string',
+			title: 'Obs',
+			default: ''
+		},
+		help: {
+			type: 'string',
+			title: 'Help',
+			default: ''
+		}
+	},
+	type: 'object',
+	title: 'MilestoneTextPublic'
 } as const;
 
 export const UserCreateSchema = {

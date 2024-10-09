@@ -110,7 +110,7 @@ export type MilestoneImagePublic = {
 export type MilestonePublic = {
 	id: number;
 	text?: {
-		[key: string]: MilestoneGroupTextPublic;
+		[key: string]: MilestoneTextPublic;
 	};
 	images?: Array<MilestoneImagePublic>;
 };
@@ -122,6 +122,13 @@ export type MilestoneText = {
 	help?: string;
 	milestone_id?: number | null;
 	lang_id?: number | null;
+};
+
+export type MilestoneTextPublic = {
+	title?: string;
+	desc?: string;
+	obs?: string;
+	help?: string;
 };
 
 export type UserCreate = {

@@ -205,9 +205,24 @@ def milestone_group1():
             {
                 "id": 1,
                 "text": {
-                    "1": {"title": "m1_l1_t", "desc": "m1_l1_d"},
-                    "2": {"title": "m1_l2_t", "desc": "m1_l2_d"},
-                    "3": {"title": "m1_l3_t", "desc": "m1_l3_d"},
+                    "1": {
+                        "title": "m1_l1_t",
+                        "desc": "m1_l1_d",
+                        "obs": "m1_l1_o",
+                        "help": "m1_l1_h",
+                    },
+                    "2": {
+                        "title": "m1_l2_t",
+                        "desc": "m1_l2_d",
+                        "obs": "m1_l2_o",
+                        "help": "m1_l2_h",
+                    },
+                    "3": {
+                        "title": "m1_l3_t",
+                        "desc": "m1_l3_d",
+                        "obs": "m1_l3_o",
+                        "help": "m1_l3_h",
+                    },
                 },
                 "images": [
                     {"filename": "m1.jpg", "approved": True},
@@ -217,18 +232,48 @@ def milestone_group1():
             {
                 "id": 2,
                 "text": {
-                    "1": {"title": "m2_l1_t", "desc": "m2_l1_d"},
-                    "2": {"title": "m2_l2_t", "desc": "m2_l2_d"},
-                    "3": {"title": "m2_l3_t", "desc": "m2_l3_d"},
+                    "1": {
+                        "title": "m2_l1_t",
+                        "desc": "m2_l1_d",
+                        "obs": "m2_l1_o",
+                        "help": "m2_l1_h",
+                    },
+                    "2": {
+                        "title": "m2_l2_t",
+                        "desc": "m2_l2_d",
+                        "obs": "m2_l2_o",
+                        "help": "m2_l2_h",
+                    },
+                    "3": {
+                        "title": "m2_l3_t",
+                        "desc": "m2_l3_d",
+                        "obs": "m2_l3_o",
+                        "help": "m2_l3_h",
+                    },
                 },
                 "images": [{"filename": "m3.jpg", "approved": True}],
             },
             {
                 "id": 3,
                 "text": {
-                    "1": {"title": "m3_l1_t", "desc": "m3_l1_d"},
-                    "2": {"title": "m3_l2_t", "desc": "m3_l2_d"},
-                    "3": {"title": "m3_l3_t", "desc": "m3_l3_d"},
+                    "1": {
+                        "title": "m3_l1_t",
+                        "desc": "m3_l1_d",
+                        "obs": "m3_l1_o",
+                        "help": "m3_l1_h",
+                    },
+                    "2": {
+                        "title": "m3_l2_t",
+                        "desc": "m3_l2_d",
+                        "obs": "m3_l2_o",
+                        "help": "m3_l2_h",
+                    },
+                    "3": {
+                        "title": "m3_l3_t",
+                        "desc": "m3_l3_d",
+                        "obs": "m3_l3_o",
+                        "help": "m3_l3_h",
+                    },
                 },
                 "images": [],
             },
@@ -384,14 +429,20 @@ def milestone_group2():
                     "1": {
                         "desc": "m4_l1_d",
                         "title": "m4_l1_t",
+                        "obs": "m4_l1_o",
+                        "help": "m4_l1_h",
                     },
                     "2": {
                         "desc": "m4_l2_d",
                         "title": "m4_l2_t",
+                        "obs": "m4_l2_o",
+                        "help": "m4_l2_h",
                     },
                     "3": {
                         "desc": "m4_l3_d",
                         "title": "m4_l3_t",
+                        "obs": "m4_l3_o",
+                        "help": "m4_l3_h",
                     },
                 },
             },
@@ -402,14 +453,20 @@ def milestone_group2():
                     "1": {
                         "desc": "m5_l1_d",
                         "title": "m5_l1_t",
+                        "obs": "m5_l1_o",
+                        "help": "m5_l1_h",
                     },
                     "2": {
                         "desc": "m5_l2_d",
                         "title": "m5_l2_t",
+                        "obs": "m5_l2_o",
+                        "help": "m5_l2_h",
                     },
                     "3": {
                         "desc": "m5_l3_d",
                         "title": "m5_l3_t",
+                        "obs": "m5_l3_o",
+                        "help": "m5_l3_h",
                     },
                 },
             },

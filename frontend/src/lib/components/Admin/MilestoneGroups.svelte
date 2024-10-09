@@ -19,7 +19,8 @@
 	import AddButton from '$lib/components/Admin/AddButton.svelte';
 	import EditButton from '$lib/components/Admin/EditButton.svelte';
 	import DeleteButton from '$lib/components/Admin/DeleteButton.svelte';
-	import { lang_id, milestoneGroups } from '$lib/stores/adminStore';
+	import { lang_id } from '$lib/stores/langStore';
+	import { milestoneGroups } from '$lib/stores/adminStore';
 	import { refreshMilestoneGroups, milestoneGroupImageUrl } from '$lib/admin.svelte';
 	import {
 		createMilestone,

@@ -15,7 +15,7 @@
 		type SelectOptionType
 	} from 'flowbite-svelte';
 	import { _ } from 'svelte-i18n';
-	import { languages } from '$lib/stores/adminStore';
+	import { languages } from '$lib/stores/langStore';
 	import { updateUserQuestion } from '$lib/client/services.gen';
 	import InputPreview from '$lib/components/Admin/InputPreview.svelte';
 	import SaveButton from '$lib/components/Admin/SaveButton.svelte';

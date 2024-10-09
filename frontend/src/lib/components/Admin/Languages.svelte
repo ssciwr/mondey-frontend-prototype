@@ -15,7 +15,7 @@
 	import { _ } from 'svelte-i18n';
 	import type { SelectOptionType } from 'flowbite-svelte';
 	import { updateLanguages } from '$lib/i18n';
-	import { languages } from '$lib/stores/adminStore';
+	import { languages } from '$lib/stores/langStore';
 	import DeleteModal from '$lib/components/Admin/DeleteModal.svelte';
 	import AddButton from '$lib/components/Admin/AddButton.svelte';
 	import DeleteButton from '$lib/components/Admin/DeleteButton.svelte';
