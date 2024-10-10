@@ -12,22 +12,21 @@ export async function getI18nJson(lang_id: number) {
 	return await res.json();
 }
 
-async function refreshLanguage(lang: string, lang_id: number) {
+async function getTranslation(lang: string, lang_id: number) {
 	const json = await getI18nJson(lang_id);
 	addMessages(lang, json);
 }
 
-export async function refreshLanguages() {
+export async function getTranslations() {
 	const { data, error } = await getLanguages();
 	if (!error && data) {
 		languages.set(data);
 		Object.entries(data).forEach(([lang, lang_id]) => {
-			refreshLanguage(lang, lang_id);
+			if(lang_id !== 1){getTranslation(lang, lang_id);}
 		});
 	}
 }
 
-// use a hard-coded copy of the DE text initially to ensure i18n works until languages are loaded by refreshLanguages
 addMessages('de', de);
 init({
 	fallbackLocale: 'de',

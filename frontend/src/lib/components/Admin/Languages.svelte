@@ -14,7 +14,7 @@
 	import ISO6391 from 'iso-639-1';
 	import { _ } from 'svelte-i18n';
 	import type { SelectOptionType } from 'flowbite-svelte';
-	import { refreshLanguages } from '$lib/i18n';
+	import { getTranslations } from '$lib/i18n';
 	import { languages } from '$lib/stores/langStore';
 	import DeleteModal from '$lib/components/Admin/DeleteModal.svelte';
 	import AddButton from '$lib/components/Admin/AddButton.svelte';
@@ -37,7 +37,7 @@
 			console.log(error);
 		} else {
 			console.log(data);
-			await refreshLanguages();
+			await getTranslations();
 		}
 	}
 
@@ -49,7 +49,7 @@
 			console.log(error);
 		} else {
 			console.log(data);
-			await refreshLanguages();
+			await getTranslations();
 		}
 	}
 </script>

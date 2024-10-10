@@ -2,44 +2,40 @@
 
 <script lang="ts">
 	import {
+		Card,
+		Input,
 		Table,
 		TableBody,
 		TableBodyCell,
 		TableBodyRow,
 		TableHead,
-		TableHeadCell,
-		Card,
-		Input,
-		InputAddon
+		TableHeadCell
 	} from 'flowbite-svelte';
+	import { onMount } from 'svelte';
 	import { _ } from 'svelte-i18n';
-	import { refreshLanguages, getI18nJson } from '$lib/i18n';
+	import { getI18nJson, getTranslations } from '$lib/i18n';
 	import { languages } from '$lib/stores/langStore';
 	import { updateI18N } from '$lib/client/services.gen';
 	import SaveButton from '$lib/components/Admin/SaveButton.svelte';
-	import { onMount } from 'svelte';
+	import de from '../../../locales/de.json';
 
 	type Translation = Record<string, Record<string, string>>;
-	let translations = $state({} as Record<string,Translation>);
+	let translations = $state({} as Record<string, Translation>);
 
 	async function refreshTranslations() {
 		for (const lang_id of Object.values($languages)) {
-			console.log(lang_id);
-			const json = await getI18nJson(lang_id);
-			console.log(`${lang_id}`);
-			console.log(json);
-			translations[`${lang_id}`] = json;
-			console.log(translations);
+			if(lang_id !== 1){
+				translations[`${lang_id}`] = await getI18nJson(lang_id);
+			}
 		}
-		console.log(translations);
 	}
 
 	async function saveChanges() {
-		for (const lang_id of Object.values($languages)) {
+		for (const lang_id of Object.keys(translations)) {
 			const { data, error } = await updateI18N({
 				body: translations[`${lang_id}`],
 				path: {
-					language_id: lang_id
+					language_id: Number(lang_id)
 				}
 			});
 			if (error) {
@@ -49,7 +45,7 @@
 				console.log(data);
 			}
 		}
-		await refreshLanguages();
+		await getTranslations();
 	}
 
 	onMount(() => refreshTranslations());
@@ -65,23 +61,18 @@
 			{/each}
 		</TableHead>
 		<TableBody>
-			{#if '1' in translations}
-				{#each Object.keys(translations['1']) as section}
-					<TableBodyRow>
-						<TableBodyCell>
-							{section}
-						</TableBodyCell>
-					</TableBodyRow>
-					{#each Object.keys(translations['1'][section]) as key}
+				{#each Object.keys(de) as section}
+					{#each Object.entries(de[section]) as [key, value]}
 						<TableBodyRow>
 							<TableBodyCell>
-								{key}
+								{section}.{key}
 							</TableBodyCell>
-							{#each Object.entries($languages) as [lang, lang_id]}
+							<TableBodyCell>
+								{value}
+							</TableBodyCell>
+							{#each Object.keys(translations) as lang_id}
 								<TableBodyCell>
-									{lang_id}
-<!--									<InputAddon>{lang}</InputAddon>-->
-<!--									<Input bind:value={translations[`${lang_id}`][section][key]} />-->
+									<Input bind:value={translations[lang_id][section][key]} />
 								</TableBodyCell>
 							{/each}
 						</TableBodyRow>
@@ -92,7 +83,6 @@
 						<SaveButton onclick={saveChanges} />
 					</TableBodyCell>
 				</TableBodyRow>
-			{/if}
 		</TableBody>
 	</Table>
 </Card>

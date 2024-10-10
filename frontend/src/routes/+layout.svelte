@@ -10,10 +10,10 @@
 	import '../app.css';
 	import { base } from '$app/paths';
 	import { onMount } from 'svelte';
-	import { refreshLanguages } from '$lib/i18n';
+	import { getTranslations } from '$lib/i18n';
 
 	onMount(() => {
-		refreshLanguages();
+		getTranslations();
 	});
 </script>
 
