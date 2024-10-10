@@ -1,5 +1,7 @@
 {
-	"LOGIN_BAD_CREDENTIALS": "Ungültige E-Mail-Adresse oder ungültiges Passwort",
+	"login": {
+		"LOGIN_BAD_CREDENTIALS": "Ungültige E-Mail-Adresse oder ungültiges Passwort"
+	},
 	"milestone": {
 		"answer0": {
 			"text": "Noch gar nicht",
